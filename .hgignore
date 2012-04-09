@@ -1,0 +1,12 @@
+Thumbs.db
+obj/
+bin/
+
+syntax: glob
+*.exe
+*.s3db
+*.dll
+*.o
+*.cscope_file_list
+*.depend
+*.layout

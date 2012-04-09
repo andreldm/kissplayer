@@ -1,0 +1,28 @@
+#define APP_ICON 0
+
+APP_ICON ICON DISCARDABLE "img/kiss.ico"
+
+1       VERSIONINFO
+FILEVERSION     1,0,0,0
+FILEFLAGSMASK   0X3FL
+FILEFLAGS       0L
+FILEOS          0X40004L
+FILETYPE        0X2
+FILESUBTYPE     0
+BEGIN
+        BLOCK "StringFileInfo"
+        BEGIN
+                BLOCK "040904B0"
+                BEGIN
+                        VALUE "ProductVersion", "1.0"
+                        VALUE "FileDescription", "Keep It Simple Stupid - Music Player"
+                        VALUE "CompanyName", "André Miranda"
+                        VALUE "LegalCopyright", "Distributed under GPL v2.0"
+                        VALUE "ProductName", "KISS Player"
+                END
+        END
+        BLOCK "VarFileInfo"
+        BEGIN
+                VALUE "Translation", 0x0409, 0x04B0
+        END
+END

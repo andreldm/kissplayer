@@ -1,0 +1,290 @@
+#include "dao.h"
+
+sqlite3 *db;
+char *ErrMsg = 0;
+sqlite3_stmt *stmt;
+
+void print_errors()
+{
+    if(ErrMsg != 0)
+        cout<<"SQL Error: "<<ErrMsg<<endl;
+
+    ErrMsg = 0;
+}
+
+void openDB()
+{
+    sqlite3_open(DB_NAME, &db);
+}
+
+void closeDB()
+{
+    sqlite3_close(db);
+}
+
+void beginTransaction()
+{
+    openDB();
+
+    sqlite3_exec(db,"BEGIN;", 0, 0, &ErrMsg);
+    print_errors();
+}
+
+void commitTransaction()
+{
+    sqlite3_exec(db,"COMMIT;", 0, 0, &ErrMsg);
+    print_errors();
+    closeDB();
+}
+
+void startDB()
+{
+    openDB();
+    const char *query;
+    query = "CREATE TABLE IF NOT EXISTS [TB_MUSIC] ( [cod] INTEGER PRIMARY KEY ON CONFLICT ABORT AUTOINCREMENT, [title] VARCHAR(255), [artist] VARCHAR(255), [album] VARCHAR(255), [filepath] VARCHAR UNIQUE ON CONFLICT IGNORE NOT NULL)";
+    sqlite3_exec(db, query, 0, 0, &ErrMsg);
+    print_errors();
+    query = "CREATE TABLE IF NOT EXISTS [TB_DIRECTORY] ( [cod] INTEGER PRIMARY KEY ON CONFLICT ABORT AUTOINCREMENT, [directory] VARCHAR UNIQUE ON CONFLICT IGNORE NOT NULL)";
+    sqlite3_exec(db, query, 0, 0, &ErrMsg);
+    print_errors();
+    closeDB();
+}
+
+void insertMusic(string title, string artist, string album, string filepath)
+{
+    string temp;
+    size_t foundSlash;
+    size_t foundDot;
+    size_t foundHyphen;
+
+    sqlite3_prepare_v2(db, "INSERT INTO TB_MUSIC(title, artist, album, filepath) VALUES(?,?,?,?);", -1, &stmt, NULL);
+
+    if(!title.empty())
+    {
+        sqlite3_bind_text(stmt, 1, title.c_str(), -1, SQLITE_STATIC);
+    }
+    else
+    {
+        foundSlash = filepath.find_last_of("/\\");
+        temp = filepath.substr(foundSlash+1);
+
+        foundDot = temp.find_last_of(".");
+        temp = temp.substr(0, foundDot);
+
+        foundHyphen = temp.find_last_of("-");
+        temp = temp.substr(foundHyphen+1);
+        trim(temp);
+        sqlite3_bind_text(stmt, 1, temp.c_str(), -1, SQLITE_STATIC);
+    }
+
+    if(!artist.empty())
+    {
+        sqlite3_bind_text(stmt, 2, artist.c_str(), -1, SQLITE_STATIC);
+    }
+    else
+    {
+        foundSlash = filepath.find_last_of("/\\");
+        temp = filepath.substr(foundSlash+1);
+
+        foundDot = temp.find_last_of(".");
+        temp = temp.substr(0, foundDot);
+
+        foundHyphen = temp.find_last_of("-");
+        temp = temp.substr(0, foundHyphen);
+        trim(temp);
+        sqlite3_bind_text(stmt, 2, temp.c_str(), -1, SQLITE_STATIC);
+    }
+
+
+    sqlite3_bind_text(stmt, 3, album.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 4, filepath.c_str(), -1, SQLITE_STATIC);
+    int rc = sqlite3_step(stmt);
+    if(rc == SQLITE_ERROR)
+    {
+        cout << sqlite3_errmsg(db)<< endl;
+    }
+
+    sqlite3_finalize(stmt);
+    return;
+}
+
+void deleteAllMusics()
+{
+    sqlite3_exec(db,"DELETE FROM TB_MUSIC;", 0, 0, &ErrMsg);
+    print_errors();
+    sqlite3_exec(db,"VACUUM;", 0, 0, &ErrMsg);
+    print_errors();
+    closeDB();
+}
+
+void insertDirectory(const char * directory)
+{
+    openDB();
+    sqlite3_prepare_v2(db, "INSERT INTO TB_DIRECTORY(directory) VALUES(?);", -1, &stmt, NULL);
+    sqlite3_bind_text(stmt, 1, directory, -1, SQLITE_STATIC);
+    int rc = sqlite3_step(stmt);
+    if(rc == SQLITE_ERROR)
+    {
+        cout << sqlite3_errmsg(db)<< endl;
+    }
+    closeDB();
+    sqlite3_finalize(stmt);
+    return;
+}
+
+void deleteDirectory(int cod)
+{
+    openDB();
+    sqlite3_prepare_v2(db, "DELETE FROM TB_DIRECTORY WHERE cod = ?;", -1, &stmt, NULL);
+    sqlite3_bind_int(stmt, 1, cod);
+    int rc = sqlite3_step(stmt);
+    if(rc == SQLITE_ERROR)
+    {
+        cout << sqlite3_errmsg(db)<< endl;
+    }
+    closeDB();
+    sqlite3_finalize(stmt);
+    return;
+}
+
+vector<Music> *getAllMusics()
+{
+    openDB();
+    vector<Music> *listMusics = new vector<Music>();
+    sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC ORDER BY artist, title;", -1, &stmt, NULL);
+    while(sqlite3_step(stmt) == SQLITE_ROW)
+    {
+        Music m;
+        for(int i = 0; i < sqlite3_column_count(stmt); i++)
+        {
+            string col = sqlite3_column_name(stmt, i);
+            if(col.compare("cod") == 0)
+            {
+                m.cod = sqlite3_column_int(stmt, i);
+                continue;
+            }
+            if(col.compare("title") == 0)
+            {
+                m.title = (char *)sqlite3_column_text(stmt, i);
+                continue;
+            }
+            if(col.compare("artist") == 0)
+            {
+                m.artist = (char *)sqlite3_column_text(stmt, i);
+                continue;
+            }
+            if(col.compare("album") == 0)
+            {
+                m.album = (char *)sqlite3_column_text(stmt, i);
+                continue;
+            }
+            if(col.compare("filepath") == 0)
+            {
+                m.filepath = (char *)sqlite3_column_text(stmt, i);
+                continue;
+            }
+        }
+        listMusics->push_back(m);
+    }
+    closeDB();
+    sqlite3_finalize(stmt);
+    return listMusics;
+}
+
+vector<Music> *searchMusics(const char *text)
+{
+    openDB();
+    vector<Music> *listMusics = new vector<Music>();
+    sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE title LIKE ? OR artist LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
+
+    //On Windows we need to convert from CP-1252 to UTF-8
+#if defined WIN32
+    wchar_t *wText = CodePageToUnicode(65001, text);
+    text = UnicodeToCodePage(1252, wText);
+#endif
+
+    string text_prepared = "%";
+    text_prepared.append(text);
+    text_prepared.append("%");
+
+    sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, text_prepared.c_str(), -1, SQLITE_STATIC);
+
+    if(FLAG_SEARCH_TYPE == SEARCH_TYPE_ARTIST)
+    {
+        sqlite3_bind_text(stmt, 1, "", -1, SQLITE_STATIC);
+    }
+    else if(FLAG_SEARCH_TYPE == SEARCH_TYPE_TITLE)
+    {
+        sqlite3_bind_text(stmt, 2, "", -1, SQLITE_STATIC);
+    }
+
+    while(sqlite3_step(stmt) == SQLITE_ROW)
+    {
+        Music m;
+        for(int i = 0; i < sqlite3_column_count(stmt); i++)
+        {
+            string col = sqlite3_column_name(stmt, i);
+            if(col.compare("cod") == 0)
+            {
+                m.cod = sqlite3_column_int(stmt, i);
+                continue;
+            }
+            if(col.compare("title") == 0)
+            {
+                m.title = (char *)sqlite3_column_text(stmt, i);
+                continue;
+            }
+            if(col.compare("artist") == 0)
+            {
+                m.artist = (char *)sqlite3_column_text(stmt, i);
+                continue;
+            }
+            if(col.compare("album") == 0)
+            {
+                m.album = (char *)sqlite3_column_text(stmt, i);
+                continue;
+            }
+            if(col.compare("filepath") == 0)
+            {
+                m.filepath = (char *)sqlite3_column_text(stmt, i);
+                continue;
+            }
+        }
+        listMusics->push_back(m);
+    }
+    closeDB();
+    sqlite3_finalize(stmt);
+    return listMusics;
+}
+
+/**
+* On Windows, we have to convert from SQLite's Encoding (UTF-8, 65001) to CP-1252
+*/
+vector<NameCod *> *getAllDirectories()
+{
+    openDB();
+    vector<NameCod *> *listDiretorios = new vector<NameCod *>();
+    sqlite3_prepare_v2(db, "SELECT * FROM TB_DIRECTORY", -1, &stmt, NULL);
+
+    while(sqlite3_step(stmt) == SQLITE_ROW)
+    {
+        int cod = sqlite3_column_int(stmt, 0);
+        const char *dir = (const char *)sqlite3_column_text(stmt, 1);
+        NameCod *nc = new NameCod();
+        nc->cod = cod;
+
+#if defined WIN32
+        wchar_t *wText = CodePageToUnicode(65001, dir);
+        char *ansiText = UnicodeToCodePage(1252, wText);
+        nc->name = ansiText;
+#else
+        nc->name = dir;
+#endif
+        listDiretorios->push_back(nc);
+    }
+
+    closeDB();
+
+    return listDiretorios;
+}

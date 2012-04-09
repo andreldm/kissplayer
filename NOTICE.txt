@@ -1,0 +1,1 @@
+Currently Linux support is not good, the .cbp file is outdated :(

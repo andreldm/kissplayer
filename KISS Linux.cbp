@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="KISS" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/KISS" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/KISS" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-s" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="`fltk-config --cxxflags`" />
+		</Compiler>
+		<Linker>
+			<Add option="`fltk-config --ldstaticflags`" />
+			<Add library="/usr/local/lib/libfmodexL-4.38.06.so" />
+			<Add library="/usr/local/lib/libtag.so" />
+			<Add library="/usr/lib/libXpm.a" />
+			<Add library="/usr/local/lib/libsqlite3.a" />
+			<Add library="/usr/local/lib/libfltk_images.a" />
+			<Add library="/usr/local/lib/libpng.a" />
+		</Linker>
+		<Unit filename="src/dao.cpp" />
+		<Unit filename="src/dao.h" />
+		<Unit filename="src/dir_tools.cpp" />
+		<Unit filename="src/dir_tools.h" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/misc.cpp" />
+		<Unit filename="src/misc.h" />
+		<Unit filename="src/music.cpp" />
+		<Unit filename="src/music.h" />
+		<Unit filename="src/name_cod.cpp" />
+		<Unit filename="src/name_cod.h" />
+		<Unit filename="src/sound.cpp" />
+		<Unit filename="src/sound.h" />
+		<Unit filename="src/window_dir_mgr.cpp" />
+		<Unit filename="src/window_dir_mgr.h" />
+		<Unit filename="src/window_loading.cpp" />
+		<Unit filename="src/window_loading.h" />
+		<Unit filename="src/window_main.cpp" />
+		<Unit filename="src/window_main.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
