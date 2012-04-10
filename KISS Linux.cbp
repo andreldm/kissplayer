@@ -31,17 +31,21 @@
 		</Compiler>
 		<Linker>
 			<Add option="`fltk-config --ldstaticflags`" />
-			<Add library="/usr/local/lib/libfmodexL-4.38.06.so" />
-			<Add library="/usr/local/lib/libtag.so" />
-			<Add library="/usr/lib/libXpm.a" />
-			<Add library="/usr/local/lib/libsqlite3.a" />
-			<Add library="/usr/local/lib/libfltk_images.a" />
-			<Add library="/usr/local/lib/libpng.a" />
+			<Add option="-lcurl" />
+			<Add option="-ltag" />
+			<Add option="-lXpm" />
+			<Add option="-lsqlite3" />
+			<Add option="-lfltk_images" />
+			<Add option="-lpng" />
+			<Add option="-lfmodexL" />
 		</Linker>
 		<Unit filename="src/dao.cpp" />
 		<Unit filename="src/dao.h" />
 		<Unit filename="src/dir_tools.cpp" />
 		<Unit filename="src/dir_tools.h" />
+		<Unit filename="src/icon.xpm" />
+		<Unit filename="src/lyrics_fetcher.cpp" />
+		<Unit filename="src/lyrics_fetcher.h" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/misc.cpp" />
 		<Unit filename="src/misc.h" />
