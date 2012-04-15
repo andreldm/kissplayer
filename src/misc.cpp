@@ -66,41 +66,43 @@ void synchronizeLibrary()
     window->show();
 
     deleteAllMusics();
+    beginTransaction();
 
     for(int i = 0; i < listDir->size(); i++)
     {
         vector<string> *listFiles = new vector<string>();
         Fl::check();
         travelDirectoryRecursive(listDir->at(i)->name, listFiles);
-        beginTransaction();
         progress_bar_file->maximum(listFiles->size());
         for(int j = 0; j < listFiles->size(); j++)
         {
-            if(FLAG_CANCEL_SYNC)
-                break;
             //cout<<"Dir: "<<i+1<<"/"<<listDir->size()<<" - File: "<<j+1<<"/"<<listFiles->size()<< endl;
-            TagLib::FileRef *f = new TagLib::FileRef(listFiles->at(j).c_str());
-            string title = f->tag()->title().to8Bit();
-            string artist = f->tag()->artist().to8Bit();
-            string album = f->tag()->album().to8Bit();
+            if(FLAG_CANCEL_SYNC) break;
             string filepath = listFiles->at(j).c_str();
+            string title = "";
+            string artist = "";
+            string album = "";
+
+            TagLib::FileRef *f = new TagLib::FileRef(filepath.c_str());
+            title = f->tag()->title().to8Bit();
+            artist = f->tag()->artist().to8Bit();
+            album = f->tag()->album().to8Bit();
             delete(f);
 
             insertMusic(title, artist, album, filepath);
             progress_bar_file->value(j+1);
             Fl::check();
         }
-        commitTransaction();
         listFiles->clear();
         delete listFiles;
-        if(FLAG_CANCEL_SYNC)
-            break;
+        if(FLAG_CANCEL_SYNC) break;
 
         progress_bar_dir->value(i+1);
     }
     delete listDir;
     Fl::delete_widget(window);
 
+    commitTransaction();
     FLAG_CANCEL_SYNC = false;
 }
 
