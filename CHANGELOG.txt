@@ -1,3 +1,7 @@
+v 0.5.2 - 03/05/2012:
+- Polishing the Lyrics Pane
+- New configuration table, now the app can restore its previous window size
+
 v 0.5.1 - 15/04/2012:
 - Fixed the sync crash while loading .wma files
 - Start of versioning

@@ -1,22 +1,9 @@
 #include "lyrics_fetcher.h"
 
-size_t writeToString(void *ptr, size_t size, size_t count, void *stream)
-{
-    ((string*)stream)->append((char*)ptr, 0, size* count);
-    return size* count;
-}
+size_t writeToString(void *ptr, size_t size, size_t count, void *stream);
+void replaceAll(string& str, const string& from, const string& to);
 
-void replaceAll(string& str, const string& from, const string& to)
-{
-    size_t start_pos = 0;
-    while((start_pos = str.find(from, start_pos)) != string::npos)
-    {
-        str.replace(start_pos, from.length(), to);
-        start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
-    }
-}
-
-void fetch_lyrics(Fl_Help_View *lyrics_pane, string artist, string title)
+void fetch_lyrics(Fl_Text_Buffer *lyrics_text_buffer, string artist, string title)
 {
 CURL *curl;
     string data;
@@ -30,12 +17,13 @@ CURL *curl;
     //Google has started to use a Hash on the url :(
     string url = "http://lyrics.wikia.com/";
 
-    //As of April 2012, these regex are valid.
+    //As of May 2012, these regex are valid.
     //If they change the site layout, this fetcher
     //might not work properly or not work at all!
     string conditionNotFound = "This page needs content.";
-    string conditionStart = "alt='phone' width='16' height='17'/></a></div>";
-    string conditionEnd = "<!--";
+    string conditionNotFound2 = "PUT LYRICS HERE";
+    string conditionStart = "lyrics>";
+    string conditionEnd = "&lt;/lyrics>";
 
     replaceAll(artist, " ", "_");
     replaceAll(title, " ", "_");
@@ -43,6 +31,7 @@ CURL *curl;
     url = url.append(artist);
     url = url.append(":");
     url = url.append(title);
+    url = url.append("?action=edit");
 
     curl = curl_easy_init();
     if(curl)
@@ -57,8 +46,7 @@ CURL *curl;
         if(res != CURLE_OK)
         {
             curl_easy_cleanup(curl);
-            lyrics_pane->value(
-                "<html> <body bgcolor=\'Black\'> <center> <h2> Connection problem! </h2> </center> </body> </html>");
+            lyrics_text_buffer->text("Connection failure!");
             return;
         }
 
@@ -68,17 +56,23 @@ CURL *curl;
         if(a != string::npos)
         {
             curl_easy_cleanup(curl);
-            lyrics_pane->value(
-                "<html> <body bgcolor=\'Black\'> <center> <h2> Not found! </h2> </center> </body> </html>");
+            lyrics_text_buffer->text("Not found!");
+            return;
+        }
+
+        a = data.find(conditionNotFound2);
+        if(a != string::npos)
+        {
+            curl_easy_cleanup(curl);
+            lyrics_text_buffer->text("Not found!");
             return;
         }
 
         int b = data.find(conditionStart);
-        if(b ==  -1)
+        if(b == -1)
         {
             curl_easy_cleanup(curl);
-            lyrics_pane->value(
-                "<html> <body bgcolor=\'Black\'> <center> <h2> Error while fetching. </h2> </center> </body> </html>");
+            lyrics_text_buffer->text("Error while fetching.");
             return;
         }
         data.erase(0, b+conditionStart.size());
@@ -92,16 +86,30 @@ CURL *curl;
         //As of version 1.3.0, multiple <br> tags are handled as only
         //one, so we use to use the <p> tag.
         replaceAll(data, "<br /><br />", "</p><p>");
-
-        //We should not initiate with <p>, because we got a blank line
-        data = data.insert(0, "<html> <body bgcolor=\'Black\'>");
-        data = data.append("</p></body></html>");
-
-        //Export file, just to help development
-        //ofstream myfile;
-        //myfile.open ("lyrics.html");
-        //myfile << data;
-        //myfile.close();
     }
-    lyrics_pane->value(data.c_str());
+
+    replaceAll(artist, "_", " ");
+    replaceAll(title, "_", " ");
+
+    string result = artist+"\n"+title+"\n"+data;
+    replaceAll(result, "\n\n\n", "\n\n");
+    while(result.at(result.size()-1) == '\n')
+        result = result.substr(0, result.size()-1);
+    lyrics_text_buffer->text(result.c_str());
+}
+
+size_t writeToString(void *ptr, size_t size, size_t count, void *stream)
+{
+    ((string*)stream)->append((char*)ptr, 0, size* count);
+    return size* count;
+}
+
+void replaceAll(string& str, const string& from, const string& to)
+{
+    size_t start_pos = 0;
+    while((start_pos = str.find(from, start_pos)) != string::npos)
+    {
+        str.replace(start_pos, from.length(), to);
+        start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
+    }
 }

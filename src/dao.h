@@ -14,20 +14,20 @@
 
 using namespace std;
 
-extern sqlite3 *db;
-
-extern void openDB();
-extern void closeDB();
-extern void startDB();
-extern void beginTransaction();
-extern void commitTransaction();
-extern void insertMusic(string title, string artist, string album, string filepath);
-extern void deleteAllMusics();
-extern void insertDirectory(const char *directory);
-extern void deleteDirectory(int cod);
-extern vector<Music> *getAllMusics();
-extern vector<NameCod *> *getAllDirectories();
-extern vector<Music> *searchMusics(const char *text);
+void openDB();
+void closeDB();
+void startDB();
+void beginTransaction();
+void commitTransaction();
+void setKey(string key, string value);
+string getKey(string key);
+void insertMusic(string title, string artist, string album, string filepath);
+void deleteAllMusics();
+void insertDirectory(const char *directory);
+void deleteDirectory(int cod);
+vector<Music> *getAllMusics();
+vector<NameCod *> *getAllDirectories();
+vector<Music> *searchMusics(const char *text);
 
 //GLOBALS
 extern int FLAG_SEARCH_TYPE;

@@ -106,6 +106,20 @@ void synchronizeLibrary()
     FLAG_CANCEL_SYNC = false;
 }
 
+
+int stringToInt(string value)
+{
+    if(value.empty()) return -1;
+    return atoi (value.c_str());
+}
+
+string intToString(int value)
+{
+    stringstream out;
+    out << value;
+    return out.str();
+}
+
 /**
 * WINDOWS ONLY
 */

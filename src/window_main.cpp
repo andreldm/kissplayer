@@ -20,7 +20,8 @@ Fl_Hor_Nice_Slider *slider_music;
 Fl_Box *box_current_time;
 Fl_Input *input_search;
 Fl_Choice *choice_search_type;
-Fl_Help_View *lyrics_pane;
+Fl_Text_Display *lyrics_pane;
+Fl_Text_Buffer *lyrics_text_buffer;
 Fl_Group *group_search;
 Fl_Group *group_controls;
 Fl_Tile *tile_center;
@@ -42,6 +43,7 @@ void play_music();
 void update_playlist(vector<Music> * l);
 void timer_title_scrolling(void*);
 void timer_check_music(void*);
+void load_config();
 int myHandler(int, Fl_Window *);
 
 //LOCAL CALLBACKS
@@ -103,7 +105,7 @@ Fl_Double_Window* make_window_main()
     group_search->box(FL_UP_FRAME);
     group_search->begin();
 
-    input_search = new Fl_Input(60, 10, 180, 22,"Search:");
+    input_search = new Fl_Input(67, 10, 175, 22,"Search:");
     input_search->maximum_size(50);
     input_search->when(FL_WHEN_ENTER_KEY|FL_WHEN_NOT_CHANGED);
     input_search->callback(cb_search);
@@ -133,14 +135,23 @@ Fl_Double_Window* make_window_main()
 
     browser_music = new Fl_Select_Browser(5, 40, 205, 230, NULL);
     browser_music->color(0xDDEEFF00);
+    browser_music->box(FL_DOWN_BOX);
     browser_music->type(FL_HOLD_BROWSER);
     browser_music->callback(cb_music_browser);
 
-    lyrics_pane = new Fl_Help_View(210, 40, 205, 230, NULL);
-    lyrics_pane->value("<html> <body bgcolor=BLACK></body> </html>");
-    lyrics_pane->textfont(FL_HELVETICA);
-    lyrics_pane->textcolor(0x6C926C00);
+    lyrics_text_buffer = new Fl_Text_Buffer();
 
+    lyrics_pane = new Fl_Text_Display (210, 40, 205, 230, NULL);
+    lyrics_pane->buffer(lyrics_text_buffer);
+    lyrics_pane->box(FL_DOWN_BOX);
+    lyrics_pane->textfont(FL_HELVETICA);
+    lyrics_pane->wrap_mode(3, 1);
+    lyrics_pane->scrollbar_width(15);
+    lyrics_pane->textcolor(0x33333300);
+    lyrics_pane->color(0xDDEEFF00);
+    lyrics_pane->scrollbar_align(FL_ALIGN_RIGHT);
+
+    tile_center->box(FL_DOWN_BOX);
     tile_center->end();
 
     //CONTROLS GROUP AND ITS WIDGETS
@@ -214,6 +225,8 @@ Fl_Double_Window* make_window_main()
     window_main->resizable(tile_center);
     window_main->end();
 
+    load_config();
+
     return window_main;
 }
 
@@ -221,6 +234,18 @@ void cb_close_window(Fl_Widget* widget, void*)
 {
     if (Fl::event()==FL_SHORTCUT && Fl::event_key()==FL_Escape) return; // ignore Escape
     sound->unload();
+
+    openDB();
+
+    setKey("window_main_x", intToString(window_main->x()));
+    setKey("window_main_y", intToString(window_main->y()));
+    setKey("window_main_width", intToString(window_main->w()));
+    setKey("window_main_height", intToString(window_main->h()));
+
+    setKey("browser_music_width", intToString(browser_music->w()));
+
+    closeDB();
+
     exit(0);
 }
 
@@ -290,7 +315,7 @@ void cb_next(Fl_Widget* widget, void*)
     if(sound->getSound() == false) return; //If there's no music playing, do not continue
     if(FLAG_RANDOM)
     {
-        //-1 é o começo da playlist
+        // '-1' is the beginning of the playlist
         if(musicIndexRandom == -1 || musicIndexRandom <= listRandom->size())
         {
             musicIndex = listRandom->at(++musicIndexRandom);
@@ -487,7 +512,8 @@ void play_music()
     slider_music->maximum(sound->getLength());
     slider_music->value(0);
 
-    fetch_lyrics(lyrics_pane, listMusic->at(musicIndex).artist, listMusic->at(musicIndex).title);
+    fetch_lyrics(lyrics_text_buffer, listMusic->at(musicIndex).artist, listMusic->at(musicIndex).title);
+    lyrics_pane->scroll(0,0);
 }
 
 void timer_title_scrolling(void*)
@@ -537,6 +563,28 @@ void timer_check_music(void*)
     if(Fl::event_buttons()) return;
 
     slider_music->value(sound->getPosition());
+}
+
+void load_config()
+{
+    openDB();
+
+    int x = stringToInt(getKey("window_main_x"));
+    if(x != -1) window_main->position(x, window_main->y());
+
+    int y = stringToInt(getKey("window_main_y"));
+    if(y != -1) window_main->position(window_main->x(), y);
+
+    int width = stringToInt(getKey("window_main_width"));
+    if(width != -1) window_main->size(width, window_main->h());
+
+    int height = stringToInt(getKey("window_main_height"));
+    if(height != -1) window_main->size(window_main->w(), height);
+
+    /*int browser_music_width = stringToInt(getKey("browser_music_width"));
+    if(browser_music_width != -1) browser_music->size(browser_music_width, browser_music->h());*/
+
+    closeDB();
 }
 
 void update_playlist(vector<Music> * l)

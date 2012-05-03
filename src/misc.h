@@ -5,6 +5,7 @@
 #include <sstream>
 #include <map>
 #include <vector>
+#include <stdlib.h>
 
 #include <FL/Fl.H>
 #include <FL/fl_ask.H>
@@ -41,6 +42,8 @@ void trim(string &str);
 const char *formatTime(int secs);
 void randomize(vector<int> **, int);
 void synchronizeLibrary();
+int stringToInt(string value);
+string intToString(int value);
 
 extern bool     FLAG_CANCEL_SYNC;
 

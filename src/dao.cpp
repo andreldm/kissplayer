@@ -41,13 +41,61 @@ void startDB()
 {
     openDB();
     const char *query;
+
     query = "CREATE TABLE IF NOT EXISTS [TB_MUSIC] ( [cod] INTEGER PRIMARY KEY ON CONFLICT ABORT AUTOINCREMENT, [title] VARCHAR(255), [artist] VARCHAR(255), [album] VARCHAR(255), [filepath] VARCHAR UNIQUE ON CONFLICT IGNORE NOT NULL)";
     sqlite3_exec(db, query, 0, 0, &ErrMsg);
     print_errors();
+
     query = "CREATE TABLE IF NOT EXISTS [TB_DIRECTORY] ( [cod] INTEGER PRIMARY KEY ON CONFLICT ABORT AUTOINCREMENT, [directory] VARCHAR UNIQUE ON CONFLICT IGNORE NOT NULL)";
     sqlite3_exec(db, query, 0, 0, &ErrMsg);
     print_errors();
+
+    query = "CREATE TABLE IF NOT EXISTS [TB_CONFIG] ( [key] VARCHAR UNIQUE ON CONFLICT REPLACE NOT NULL, [value] VARCHAR)";
+    sqlite3_exec(db, query, 0, 0, &ErrMsg);
+    print_errors();
+
     closeDB();
+}
+
+string getKey(string key)
+{
+    string value;
+
+    sqlite3_prepare_v2(db, "SELECT * FROM TB_CONFIG WHERE key = ?;", -1, &stmt, NULL);
+    sqlite3_bind_text(stmt, 1, key.c_str(), -1, SQLITE_STATIC);
+    if(sqlite3_step(stmt) == SQLITE_ROW)
+    {
+        for(int i = 0; i < sqlite3_column_count(stmt); i++)
+        {
+            string col = sqlite3_column_name(stmt, i);
+            if(col.compare("value") == 0)
+            {
+                value = (char *)sqlite3_column_text(stmt, i);
+                break;
+            }
+        }
+    }
+
+    sqlite3_finalize(stmt);
+
+    return value;
+}
+
+void setKey(string key, string value)
+{
+    sqlite3_prepare_v2(db, "INSERT INTO TB_CONFIG VALUES(?,?);", -1, &stmt, NULL);
+    sqlite3_bind_text(stmt, 1, key.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, value.c_str(), -1, SQLITE_STATIC);
+
+    int rc = sqlite3_step(stmt);
+    if(rc == SQLITE_ERROR)
+    {
+        cout << sqlite3_errmsg(db)<< endl;
+    }
+
+    sqlite3_finalize(stmt);
+
+    return;
 }
 
 void insertMusic(string title, string artist, string album, string filepath)
