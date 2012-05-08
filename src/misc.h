@@ -29,11 +29,17 @@
 #ifndef SEARCH_TYPE_ALL
 #define SEARCH_TYPE_ALL     0
 #endif
+
 #ifndef SEARCH_TYPE_TITLE
 #define SEARCH_TYPE_TITLE   1
 #endif
+
 #ifndef SEARCH_TYPE_ARTIST
 #define SEARCH_TYPE_ARTIST  2
+#endif
+
+#ifndef SEARCH_TYPE_ALBUM
+#define SEARCH_TYPE_ALBUM   3
 #endif
 
 using namespace std;

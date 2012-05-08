@@ -105,15 +105,16 @@ Fl_Double_Window* make_window_main()
     group_search->box(FL_UP_FRAME);
     group_search->begin();
 
-    input_search = new Fl_Input(67, 10, 175, 22,"Search:");
+    input_search = new Fl_Input(67, 10, 205, 22,"Search:");
     input_search->maximum_size(50);
     input_search->when(FL_WHEN_ENTER_KEY|FL_WHEN_NOT_CHANGED);
     input_search->callback(cb_search);
 
-    choice_search_type = new Fl_Choice(245, 10, 110, 22);
+    choice_search_type = new Fl_Choice(275, 10, 80, 22);
     choice_search_type->add("All");
     choice_search_type->add("Title");
     choice_search_type->add("Artist");
+    choice_search_type->add("Album");
     choice_search_type->value(0);
     choice_search_type->callback(cb_search_type);
     FLAG_SEARCH_TYPE = SEARCH_TYPE_ALL;
@@ -145,9 +146,8 @@ Fl_Double_Window* make_window_main()
     lyrics_pane->buffer(lyrics_text_buffer);
     lyrics_pane->box(FL_DOWN_BOX);
     lyrics_pane->textfont(FL_HELVETICA);
-    lyrics_pane->wrap_mode(3, 1);
+    lyrics_pane->wrap_mode(Fl_Text_Display::WRAP_AT_BOUNDS, 0);
     lyrics_pane->scrollbar_width(15);
-    lyrics_pane->textcolor(0x33333300);
     lyrics_pane->color(0xDDEEFF00);
     lyrics_pane->scrollbar_align(FL_ALIGN_RIGHT);
 
@@ -375,6 +375,7 @@ void cb_search_type(Fl_Widget* widget, void*)
     if(strcmp(choice, "All") == 0) FLAG_SEARCH_TYPE = SEARCH_TYPE_ALL;
     else if(strcmp(choice, "Title") == 0) FLAG_SEARCH_TYPE = SEARCH_TYPE_TITLE;
     else if(strcmp(choice, "Artist") == 0) FLAG_SEARCH_TYPE = SEARCH_TYPE_ARTIST;
+    else if(strcmp(choice, "Album") == 0) FLAG_SEARCH_TYPE = SEARCH_TYPE_ALBUM;
 
     input_search->take_focus();
     input_search->do_callback();
