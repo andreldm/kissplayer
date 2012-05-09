@@ -243,7 +243,6 @@ vector<Music> *searchMusics(const char *text)
 {
     openDB();
     vector<Music> *listMusics = new vector<Music>();
-    sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE title LIKE ? OR artist LIKE ? OR album LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
 
     //On Windows we need to convert from CP-1252 to UTF-8
 #if defined WIN32
@@ -255,24 +254,31 @@ vector<Music> *searchMusics(const char *text)
     text_prepared.append(text);
     text_prepared.append("%");
 
-    sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, text_prepared.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, text_prepared.c_str(), -1, SQLITE_STATIC);
-
-    if(FLAG_SEARCH_TYPE == SEARCH_TYPE_TITLE)
+    if(FLAG_SEARCH_TYPE == SEARCH_TYPE_ALL)
     {
-        sqlite3_bind_text(stmt, 2, "", -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 3, "", -1, SQLITE_STATIC);
+        sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE title LIKE ? OR artist LIKE ? OR album LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
+        sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, text_prepared.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 3, text_prepared.c_str(), -1, SQLITE_STATIC);
+    }
+    else if(FLAG_SEARCH_TYPE == SEARCH_TYPE_TITLE)
+    {
+        sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE title LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
+        sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
     }
     else if(FLAG_SEARCH_TYPE == SEARCH_TYPE_ARTIST)
     {
-        sqlite3_bind_text(stmt, 1, "", -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 3, "", -1, SQLITE_STATIC);
+        sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE artist LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
+        sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
     }
     else if(FLAG_SEARCH_TYPE == SEARCH_TYPE_ALBUM)
     {
-        sqlite3_bind_text(stmt, 1, "", -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 2, "", -1, SQLITE_STATIC);
+        sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE album LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
+        sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
+    }
+    else
+    {
+         sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC ORDER BY artist, title;", -1, &stmt, NULL);
     }
 
     while(sqlite3_step(stmt) == SQLITE_ROW)

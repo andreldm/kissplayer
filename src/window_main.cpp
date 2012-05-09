@@ -313,20 +313,25 @@ void cb_next(Fl_Widget* widget, void*)
 {
     if(listMusic->empty()) return; //If there's no music on the list, do not continue
     if(sound->getSound() == false) return; //If there's no music playing, do not continue
+
     if(FLAG_RANDOM)
     {
         // '-1' is the beginning of the playlist
-        if(musicIndexRandom == -1 || musicIndexRandom <= listRandom->size())
+        if(musicIndexRandom == -1 || musicIndexRandom + 2 <= listRandom->size())
         {
             musicIndex = listRandom->at(++musicIndexRandom);
-            cout << "musicIndex = "<< musicIndex<< endl;
-            cout << "musicIndexRandom = "<< musicIndexRandom<< endl;
+            //cout << "\nmusicIndex = "<< musicIndex<< endl;
+            //cout << "listMusic->size() = "<< listMusic->size()<< endl;
+            //cout << "musicIndexRandom = "<< musicIndexRandom<< endl;
             play_music();
         }
     }
-    else if(musicIndex <= listMusic->size())
+    else if(musicIndex + 2 <= listMusic->size())
     {
         musicIndex++;
+        //cout << "\nmusicIndex = "<< musicIndex<< endl;
+        //cout << "listMusic->size() = "<< listMusic->size()<< endl;
+        //cout << "musicIndexRandom = "<< musicIndexRandom<< endl;
         play_music();
     }
 }
