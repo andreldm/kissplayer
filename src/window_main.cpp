@@ -29,7 +29,7 @@ Fl_Tile *tile_center;
 //LOCAL VARIABLES
 vector<Music> *listMusic;
 vector<int> *listRandom; // we use this when randomization is activated
-Fl_Double_Window *window_main;
+extern Fl_Double_Window *window_main;
 Fl_Window *window_loading;
 Fl_Window *window_lyrics;
 Fl_Window *window_dir_mgr;
@@ -44,7 +44,7 @@ void update_playlist(vector<Music> * l);
 void timer_title_scrolling(void*);
 void timer_check_music(void*);
 void load_config();
-int myHandler(int, Fl_Window *);
+int main_handler(int, Fl_Window *);
 
 //LOCAL CALLBACKS
 void cb_close_window(Fl_Widget*, void*);
@@ -216,7 +216,7 @@ Fl_Double_Window* make_window_main()
 
     update_playlist(getAllMusics());
 
-    Fl::event_dispatch(myHandler);
+    Fl::event_dispatch(main_handler);
 
     Fl::add_timeout(0.5, timer_check_music);
     Fl::add_timeout(0.2, timer_title_scrolling);
@@ -232,13 +232,22 @@ Fl_Double_Window* make_window_main()
 
 void cb_close_window(Fl_Widget* widget, void*)
 {
-    if (Fl::event()==FL_SHORTCUT && Fl::event_key()==FL_Escape) return; // ignore Escape
+    // ignore Escape key
+    if (Fl::event()==FL_SHORTCUT && Fl::event_key()==FL_Escape)
+        return;
+
     sound->unload();
 
     openDB();
 
-    setKey("window_main_x", intToString(window_main->x()));
-    setKey("window_main_y", intToString(window_main->y()));
+    // TODO: On Windows, when the window is minimized its location becomes -32000, -32000.
+    //       We need to save the location before it becomes minimized.
+    if(window_main->x() > 0)
+    {
+        setKey("window_main_x", intToString(window_main->x()));
+        setKey("window_main_y", intToString(window_main->y()));
+    }
+
     setKey("window_main_width", intToString(window_main->w()));
     setKey("window_main_height", intToString(window_main->h()));
 
@@ -259,11 +268,17 @@ void cb_toggle_play(Fl_Widget* widget, void*)
             window_main->label("Kiss Player - Paused");
             button_play->image(icon_play);
             button_play->redraw();
+            #if defined WIN32
+            update_thumbnail_toolbar("play");
+            #endif
         }
         else
         {
             button_play->image(icon_pause);
             button_play->redraw();
+            #if defined WIN32
+            update_thumbnail_toolbar("pause");
+            #endif
         }
 
         sound->togglePause();
@@ -411,13 +426,8 @@ void cb_sync(Fl_Widget* widget, void*)
     update_playlist(getAllMusics());
 }
 
-int myHandler(int e, Fl_Window *w)
+int main_handler(int e, Fl_Window *w)
 {
-    if(e == FL_HIDE)
-    {
-        cout << "Hide\n";
-    }
-
     //AS THE SLIDER IS RELEASED, WE SET THE SOUND'S POSITION
     if(e == FL_RELEASE && Fl::belowmouse() == slider_music && !Fl::event_buttons())
     {
@@ -512,6 +522,9 @@ void play_music()
 
     button_play->image(icon_pause);
     button_play->redraw();
+    #if defined WIN32
+    update_thumbnail_toolbar("pause");
+    #endif
 
     box_current_time->label("00:00");
     slider_music->copy_label(formatTime(sound->getLength()));

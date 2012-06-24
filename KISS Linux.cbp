@@ -43,7 +43,9 @@
 		<Unit filename="src/dao.h" />
 		<Unit filename="src/dir_tools.cpp" />
 		<Unit filename="src/dir_tools.h" />
-		<Unit filename="src/icon.xpm" />
+		<Unit filename="src/linux/icon.xpm" />
+		<Unit filename="src/linux/linux_specific.cpp" />
+		<Unit filename="src/linux/linux_specific.h" />
 		<Unit filename="src/lyrics_fetcher.cpp" />
 		<Unit filename="src/lyrics_fetcher.h" />
 		<Unit filename="src/main.cpp" />

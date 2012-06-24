@@ -1,3 +1,7 @@
+v 0.5.3 - 24/06/2012:
+- Windows: Thumbnail Toolbar Buttons
+- Windows and Linux specific codes separated
+
 v 0.5.2 - 08/05/2012:
 - Polishing the Lyrics Pane
 - New configuration table, now the app can restore its previous window size

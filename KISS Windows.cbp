@@ -52,10 +52,6 @@
 		<Unit filename="src\dao.h" />
 		<Unit filename="src\dir_tools.cpp" />
 		<Unit filename="src\dir_tools.h" />
-		<Unit filename="src\icon.xpm" />
-		<Unit filename="src\kiss.rc">
-			<Option compilerVar="WINDRES" />
-		</Unit>
 		<Unit filename="src\lyrics_fetcher.cpp" />
 		<Unit filename="src\lyrics_fetcher.h" />
 		<Unit filename="src\main.cpp" />
@@ -67,6 +63,12 @@
 		<Unit filename="src\name_cod.h" />
 		<Unit filename="src\sound.cpp" />
 		<Unit filename="src\sound.h" />
+		<Unit filename="src\win\kiss.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="src\win\mingw_fix.h" />
+		<Unit filename="src\win\windows_specific.cpp" />
+		<Unit filename="src\win\windows_specific.h" />
 		<Unit filename="src\window_dir_mgr.cpp" />
 		<Unit filename="src\window_dir_mgr.h" />
 		<Unit filename="src\window_loading.cpp" />
