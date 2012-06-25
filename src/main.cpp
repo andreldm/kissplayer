@@ -42,5 +42,12 @@ int main(int argc, char **argv)
 
     init_os_specific();
 
-    return Fl::run();
+    int fl_result = Fl::run();
+
+    if(fl_result == 0)
+        save_config();
+
+    end_os_specific();
+
+    return fl_result;
 }

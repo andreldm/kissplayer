@@ -48,8 +48,11 @@ void trim(string &str);
 const char *formatTime(int secs);
 void randomize(vector<int> **, int);
 void synchronizeLibrary();
+
 int stringToInt(string value);
 string intToString(int value);
+float stringToFloat(string value);
+string floatToString(float value);
 
 extern bool     FLAG_CANCEL_SYNC;
 

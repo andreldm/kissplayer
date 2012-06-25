@@ -238,24 +238,7 @@ void cb_close_window(Fl_Widget* widget, void*)
 
     sound->unload();
 
-    openDB();
-
-    // TODO: On Windows, when the window is minimized its location becomes -32000, -32000.
-    //       We need to save the location before it becomes minimized.
-    if(window_main->x() > 0)
-    {
-        setKey("window_main_x", intToString(window_main->x()));
-        setKey("window_main_y", intToString(window_main->y()));
-    }
-
-    setKey("window_main_width", intToString(window_main->w()));
-    setKey("window_main_height", intToString(window_main->h()));
-
-    setKey("browser_music_width", intToString(browser_music->w()));
-
-    closeDB();
-
-    exit(0);
+    window_main->~Fl_Window();
 }
 
 void cb_toggle_play(Fl_Widget* widget, void*)
@@ -584,6 +567,28 @@ void timer_check_music(void*)
     slider_music->value(sound->getPosition());
 }
 
+void save_config()
+{
+    openDB();
+
+    // TODO: On Windows, when the window is minimized its location becomes -32000, -32000.
+    //       We need to save the location before it becomes minimized.
+    if(window_main->x() > 0)
+    {
+        setKey("window_main_x", intToString(window_main->x()));
+        setKey("window_main_y", intToString(window_main->y()));
+    }
+
+    setKey("window_main_width", intToString(window_main->w()));
+    setKey("window_main_height", intToString(window_main->h()));
+
+    setKey("browser_music_width", intToString(browser_music->w()));
+
+    setKey("volume_level", floatToString(dial_volume->value()));
+
+    closeDB();
+}
+
 void load_config()
 {
     openDB();
@@ -599,6 +604,9 @@ void load_config()
 
     int height = stringToInt(getKey("window_main_height"));
     if(height != -1) window_main->size(window_main->w(), height);
+
+    float volume = stringToFloat(getKey("volume_level"));
+    if(volume != -1) dial_volume->value(volume);
 
     /*int browser_music_width = stringToInt(getKey("browser_music_width"));
     if(browser_music_width != -1) browser_music->size(browser_music_width, browser_music->h());*/

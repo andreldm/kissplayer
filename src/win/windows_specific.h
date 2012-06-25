@@ -21,6 +21,7 @@
 void set_app_icon(Fl_Window *window);
 void set_app_icon_transparency(Fl_Window *window);
 void init_os_specific();
+void end_os_specific();
 
 int windows_event_handler(int e);
 

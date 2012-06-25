@@ -22,6 +22,11 @@ void init_os_specific()
     taskBarCreatedId = RegisterWindowMessage(TEXT("TaskbarButtonCreated"));
 }
 
+void end_os_specific()
+{
+    taskbarList->Release();
+}
+
 int windows_event_handler(int e)
 {
 	if(fl_msg.message == taskBarCreatedId)
@@ -95,13 +100,16 @@ void create_thumbnail_toolbar(HWND hwnd)
 
 			taskbarList->ThumbBarAddButtons(__hwnd, ARRAYSIZE(thumb_buttons), thumb_buttons);
 		}
-		//ImageList_Destroy(imageList);
+		ImageList_Destroy(imageList);
 	}
-	//taskbarList->Release();
 }
 
 void update_thumbnail_toolbar(string command)
 {
+    //Not on Windows 7
+    if(taskbarList == NULL)
+        return;
+
     if(strcmp(command.c_str(), "pause"))
     {
         thumb_buttons[1].iBitmap = 1;

@@ -41,5 +41,6 @@ Fl_Double_Window* make_window_main();
 void cb_next(Fl_Widget*, void*);
 void cb_previous(Fl_Widget*, void*);
 void cb_toggle_play(Fl_Widget*, void*);
+void save_config();
 
 #endif

@@ -120,6 +120,19 @@ string intToString(int value)
     return out.str();
 }
 
+float stringToFloat(string value)
+{
+    if(value.empty()) return -1;
+    return atof (value.c_str());
+}
+
+string floatToString(float value)
+{
+    stringstream out;
+    out << value;
+    return out.str();
+}
+
 /**
 * WINDOWS ONLY
 */
