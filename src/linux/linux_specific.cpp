@@ -16,7 +16,7 @@ void init_os_specific(Fl_Window *window)
 {
 	//To archieve icon transparency on Linux, we need this operation.
 	//Source: www.fltk.org/newsgroups.php?gfltk.general+v:14448
-	
+
 	XWMHints* hints = XGetWMHints(fl_display, fl_xid(window));
 	hints->flags |= IconMaskHint;
 	hints->icon_mask = mask;
@@ -24,4 +24,4 @@ void init_os_specific(Fl_Window *window)
     XFree(hints);
 }
 
-void init_os_specific(){ }
+void end_os_specific(){ }
