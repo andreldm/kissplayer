@@ -35,12 +35,10 @@ int main(int argc, char **argv)
 
     window_main->show(argc, argv);
 
-    set_app_icon_transparency(window_main);
+    init_os_specific(window_main);
 
     sound = new Sound();
     sound->initialise();
-
-    init_os_specific();
 
     int fl_result = Fl::run();
 

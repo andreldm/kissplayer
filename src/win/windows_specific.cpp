@@ -9,13 +9,7 @@ void set_app_icon(Fl_Window *window)
     window->icon((char *)LoadIcon(fl_display, MAKEINTRESOURCE(APP_ICON)));
 }
 
-//Not necessary on Windows
-void set_app_icon_transparency(Fl_Window *window)
-{
-
-}
-
-void init_os_specific()
+void init_os_specific(Fl_Window *window)
 {
     Fl::add_handler(windows_event_handler);
 
@@ -24,6 +18,10 @@ void init_os_specific()
 
 void end_os_specific()
 {
+    //Not on Windows 7
+    if(taskbarList == NULL)
+        return;
+
     taskbarList->Release();
 }
 
