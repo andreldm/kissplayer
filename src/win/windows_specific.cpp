@@ -110,12 +110,12 @@ void update_thumbnail_toolbar(string command)
     if(taskbarList == NULL)
         return;
 
-    if(strcmp(command.c_str(), "pause"))
+    if(strcmp(command.c_str(), "play") == 0)
     {
         thumb_buttons[1].iBitmap = 1;
         wcscpy(thumb_buttons[1].szTip, L"Play");
     }
-    else if(strcmp(command.c_str(), "play"))
+    else if(strcmp(command.c_str(), "pause") == 0)
     {
         thumb_buttons[1].iBitmap = 3;
         wcscpy(thumb_buttons[1].szTip, L"Pause");

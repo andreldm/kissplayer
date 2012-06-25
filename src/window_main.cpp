@@ -37,6 +37,7 @@ string windowTitle;
 int windowTitlePosition;
 int musicIndex;
 int musicIndexRandom;
+string lastSearch;
 
 //LOCAL FUNCTIONS
 void play_music();
@@ -368,7 +369,8 @@ void cb_slider_music(Fl_Widget* widget, void*)
 
 void cb_search(Fl_Widget* widget, void*)
 {
-    update_playlist(searchMusics(input_search->value()));
+    lastSearch = input_search->value();
+    update_playlist(searchMusics(lastSearch.c_str()));
     browser_music->color(0xFCFFCF00); //LIGHT YELLOW
 }
 
@@ -586,6 +588,16 @@ void save_config()
 
     setKey("volume_level", floatToString(dial_volume->value()));
 
+    setKey("random_button", intToString(FLAG_RANDOM));
+
+    setKey("search_input", lastSearch);
+
+    setKey("search_type", intToString(FLAG_SEARCH_TYPE));
+
+    setKey("music_index", intToString(musicIndex));
+
+    setKey("music_index_random", intToString(musicIndexRandom));
+
     closeDB();
 }
 
@@ -606,7 +618,41 @@ void load_config()
     if(height != -1) window_main->size(window_main->w(), height);
 
     float volume = stringToFloat(getKey("volume_level"));
-    if(volume != -1) dial_volume->value(volume);
+    if(volume != -1)
+    {
+        dial_volume->value(volume);
+        sound->setVolume(dial_volume->value());
+    }
+
+    int random = stringToInt(getKey("random_button"));
+    if(random != -1)
+    {
+        FLAG_RANDOM = !random;
+        cb_random(NULL, 0);
+    }
+
+    string search_input = getKey("search_input");
+    if(!search_input.empty())
+    {
+        input_search->value(search_input.c_str());
+    }
+
+    int search_type = stringToInt(getKey("search_type"));
+    if(search_type != -1)
+    {
+        FLAG_SEARCH_TYPE = search_type;
+        choice_search_type->value(FLAG_SEARCH_TYPE);
+        cb_search(NULL, 0);
+        browser_music->color(0xDDEEFF00);
+    }
+
+    int mi = stringToInt(getKey("music_index"));
+    if(mi != -1) musicIndex = mi;
+
+    int mir = stringToInt(getKey("music_index_random"));
+    if(mir != -1) musicIndexRandom = mir;
+
+    browser_music->value(musicIndex+1);
 
     /*int browser_music_width = stringToInt(getKey("browser_music_width"));
     if(browser_music_width != -1) browser_music->size(browser_music_width, browser_music->h());*/
