@@ -8,7 +8,7 @@ void set_app_icon(Fl_Window *window)
 {
     fl_open_display();
     Pixmap p;
-    XpmCreatePixmapFromData(fl_display, DefaultRootWindow(fl_display), icon_xpm, &p, &mask, NULL);
+    XpmCreatePixmapFromData(fl_display, DefaultRootWindow(fl_display), const_cast<char**>(icon_xpm), &p, &mask, NULL);
     window->icon((char *)p);
 }
 

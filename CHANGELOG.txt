@@ -1,3 +1,8 @@
+v 0.5.4 - 08/07/2012:
+- New Settings Window
+- Fixed some minor coding flaws
+- Created a makefile
+
 v 0.5.3 - 24/06/2012:
 - Windows: Thumbnail Toolbar Buttons
 - Windows and Linux specific codes separated

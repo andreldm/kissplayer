@@ -13,6 +13,7 @@ Fl_Button *button_wnd_dir_mgr;
 Fl_Button *button_sync;
 Fl_Button *button_search;
 Fl_Button *button_clear;
+Fl_Button *button_settings;
 Fl_Toggle_Button *button_random;
 Fl_Dial *dial_volume;
 Fl_Select_Browser *browser_music;
@@ -74,6 +75,7 @@ Fl_PNG_Image *icon_search;
 Fl_PNG_Image *icon_clear;
 Fl_PNG_Image *icon_random_enabled;
 Fl_PNG_Image *icon_random_disabled;
+Fl_PNG_Image *icon_settings;
 
 Fl_Double_Window* make_window_main()
 {
@@ -100,6 +102,7 @@ Fl_Double_Window* make_window_main()
     icon_clear = new Fl_PNG_Image("img/icon_clear.png");
     icon_random_enabled = new Fl_PNG_Image("img/icon_random_enabled.png");
     icon_random_disabled = new Fl_PNG_Image("img/icon_random_disabled.png");
+    icon_settings = new Fl_PNG_Image("img/icon_settings.png");
 
     //SEARCH GROUP AND ITS WIDGETS
     group_search = new Fl_Group(5, 5, 410, 30);
@@ -202,12 +205,17 @@ Fl_Double_Window* make_window_main()
     button_random->callback(cb_random);
     button_random->image(icon_random_disabled);
 
+    button_settings = new Fl_Button(288, 330, 25, 25);
+    button_settings->clear_visible_focus();
+    button_settings->callback();
+    button_settings->image(icon_settings);
+
     dial_volume = new Fl_Dial(370, 321, 38, 38, NULL);
     dial_volume->value(INITIAL_VOLUME);
     dial_volume->callback(cb_volume);
 
     //It won't be visible, it's just for the resize work nicely
-    Fl_Button *scape_goat = new Fl_Button(300, 330, 10, 10);
+    Fl_Button *scape_goat = new Fl_Button(330, 330, 10, 10);
     scape_goat->hide();
 
     group_controls->resizable(scape_goat);
@@ -453,8 +461,8 @@ int main_handler(int e, Fl_Window *w)
             return 0;
         }
     }
-#if not defined WIN32 //FOR LINUX! On Windows we use the GetAsyncKeyState for handling
-    //MULTIMIDIA KEYS
+	//FOR LINUX! On Windows we use the GetAsyncKeyState for handling
+#ifdef __linux__
     if(e == FL_KEYUP)
     {
         if(Fl::event_original_key() == FL_Media_Play)
@@ -469,26 +477,34 @@ int main_handler(int e, Fl_Window *w)
         return 0;
     }
 #endif
+	
+	//TO IMPROVE, IT'S BUGGY
+    if(e == FL_KEYDOWN && Fl::event_original_key() == FL_Right)
+	{
+		int pos = sound->getPosition();
+		if(pos < sound->getLength() + 5000)
+			sound->setPosition(pos+5000);
+		return 1;
+	}
 
-    //MOUSEWHEEL HANDLER FOR VOLUME DIAL
-    if(e != FL_MOUSEWHEEL)
-        return Fl::handle_(e, w);
-    if(Fl::belowmouse() == browser_music)
-        return Fl::handle_(e, w);
-    if(Fl::belowmouse() == lyrics_pane)
-        return Fl::handle_(e, w);
-    if(Fl::belowmouse() != NULL && Fl::belowmouse()->parent() == browser_music)
-        return Fl::handle_(e, w);
-    if(Fl_Window::current() != window_main)
-        return Fl::handle_(e, w);
+	 //MOUSEWHEEL HANDLER FOR VOLUME DIAL
+	if(e == FL_MOUSEWHEEL &&
+		Fl::belowmouse() != NULL &&
+		Fl::belowmouse() != browser_music &&
+		Fl::belowmouse() != lyrics_pane &&
+		Fl::belowmouse()->parent() != browser_music &&
+		Fl_Window::current() == window_main)
+	{
+		float valor = 0.1 * Fl::event_dy();
+		valor = dial_volume->value()-valor;
+		if(valor < 0) valor = 0;
+		if(valor > 1) valor = 1;
+		dial_volume->value(valor);
+		sound->setVolume(valor);
+		return 0;
+	}
 
-    float valor = 0.1 * Fl::event_dy();
-    valor = dial_volume->value()-valor;
-    if(valor < 0) valor = 0;
-    if(valor > 1) valor = 1;
-    dial_volume->value(valor);
-    sound->setVolume(valor);
-    return 0;
+	return Fl::handle_(e, w);
 }
 
 void play_music()

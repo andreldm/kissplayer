@@ -33,6 +33,9 @@ CURL *curl;
     url = url.append(title);
     url = url.append("?action=edit");
 
+	//To remove, using while debugging
+	cout << url << endl;
+
     curl = curl_easy_init();
     if(curl)
     {

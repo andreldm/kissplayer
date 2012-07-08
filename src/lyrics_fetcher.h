@@ -5,6 +5,7 @@
 #include <FL/Fl_Text_Buffer.H>
 #include <curl/curl.h>
 #include <string>
+#include <iostream>
 
 using namespace std;
 

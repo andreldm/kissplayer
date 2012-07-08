@@ -1,6 +1,6 @@
 #define KISS_MAJOR_VERSION 0
 #define KISS_MINOR_VERSION 5
-#define KISS_PATCH_VERSION 3
+#define KISS_PATCH_VERSION 4
 
 #include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>

@@ -75,6 +75,8 @@
 		<Unit filename="src\window_loading.h" />
 		<Unit filename="src\window_main.cpp" />
 		<Unit filename="src\window_main.h" />
+		<Unit filename="src\window_settings.cpp" />
+		<Unit filename="src\window_settings.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
