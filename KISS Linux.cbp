@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/KISS Player" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/kissplayer" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -16,7 +16,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/KISS Player" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/kissplayer" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -37,12 +37,13 @@
 			<Add option="-lsqlite3" />
 			<Add option="-lfltk_images" />
 			<Add option="-lpng" />
-			<Add option="-lfmodexL" />
+			<Add option="-lfmodex" />
 		</Linker>
 		<Unit filename="src/dao.cpp" />
 		<Unit filename="src/dao.h" />
 		<Unit filename="src/dir_tools.cpp" />
 		<Unit filename="src/dir_tools.h" />
+		<Unit filename="src/fl_slider_music.h" />
 		<Unit filename="src/linux/icon.xpm" />
 		<Unit filename="src/linux/linux_specific.cpp" />
 		<Unit filename="src/linux/linux_specific.h" />
