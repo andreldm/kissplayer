@@ -8,12 +8,12 @@
 README
 
   KISS Player is a simple and light music player with the KISS principle
-  in mind. Study the LICENSE file for distribution terms and similar.
+  in mind. Study the LICENSE file for distribution terms and usage conditions.
 
 CONTACT
 
   If you have problems, questions, ideas or suggestions, please contact me
-  at https://sourceforge.net/users/andre-ldm
+  andre_ldm_1989[at]g_mail[dot]com - Remove all underscores [_]
 
 WEB SITE
 
@@ -21,11 +21,13 @@ WEB SITE
     https://sourceforge.net/projects/kissplayer/
 		
 BUILDING
-  As of now, there is no makefile. If you want to build it from source
-  you have two options:
-  1. Use the CodeBlocks IDE
-  2. Make your own makefile based on the .cbp files contents.
-  Take a look at https://sourceforge.net/p/kissplayer/wiki/Dependencies/
+  Firstly, take a look at https://sourceforge.net/p/kissplayer/wiki/Dependencies/
+  Once you have all the dependecies properly installed, you have two options:
+  1. Use the Code::Blocks IDE
+  2. Use the Makefiles
+    2a. On Linux: make -f makefile.linux
+    2b. On Windows(MinGW): mingw32-make -f makefile.win 
+  
 
 MERCURIAL
 

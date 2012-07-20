@@ -58,12 +58,12 @@
 		<Unit filename="src/name_cod.h" />
 		<Unit filename="src/sound.cpp" />
 		<Unit filename="src/sound.h" />
-		<Unit filename="src/window_dir_mgr.cpp" />
-		<Unit filename="src/window_dir_mgr.h" />
 		<Unit filename="src/window_loading.cpp" />
 		<Unit filename="src/window_loading.h" />
 		<Unit filename="src/window_main.cpp" />
 		<Unit filename="src/window_main.h" />
+		<Unit filename="src/window_settings.cpp" />
+		<Unit filename="src/window_settings.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

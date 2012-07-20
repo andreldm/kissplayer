@@ -2,7 +2,6 @@
 #define fl_slider_music_h
 
 #include <FL/Fl_Slider.H>
-#include <iostream>
 
 class Fl_Slider_Music : public Fl_Slider
 {

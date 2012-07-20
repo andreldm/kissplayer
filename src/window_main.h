@@ -21,12 +21,13 @@
 #include "fl_slider_music.h"
 #include "sound.h"
 #include "lyrics_fetcher.h"
-#include "window_dir_mgr.h"
+#include "window_settings.h"
+#include "window_about.h"
 #include "dao.h"
 #include "misc.h"
 
-#if defined WIN32
-#include "win/windows_specific.h"
+#ifdef WIN32
+    #include "win/windows_specific.h"
 #endif
 
 //GLOBALS

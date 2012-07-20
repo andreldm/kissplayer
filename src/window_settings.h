@@ -1,7 +1,6 @@
 #ifndef window_settings_h
 #define window_settings_h
 
-#include <iostream>
 #include <vector>
 #include <string>
 

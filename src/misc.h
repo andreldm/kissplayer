@@ -42,6 +42,10 @@
 #define SEARCH_TYPE_ALBUM   3
 #endif
 
+#define KISS_MAJOR_VERSION 0
+#define KISS_MINOR_VERSION 5
+#define KISS_PATCH_VERSION 4
+
 using namespace std;
 
 void trim(string &str);

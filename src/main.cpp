@@ -1,16 +1,14 @@
-#define KISS_MAJOR_VERSION 0
-#define KISS_MINOR_VERSION 5
-#define KISS_PATCH_VERSION 4
-
 #include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
 #include <FL/fl_draw.H>
 #include "sound.h"
 #include "window_main.h"
 
-#if defined WIN32
+#ifdef WIN32
 #include "win/windows_specific.h"
-#else
+#endif
+
+#ifdef __linux__
 #include "linux/linux_specific.h"
 #endif
 
@@ -23,7 +21,6 @@ bool                FLAG_CANCEL_SYNC;
 bool                FLAG_LIST_CHANGED;
 bool                FLAG_RANDOM;
 int                 FLAG_SEARCH_TYPE;
-float               INITIAL_VOLUME = 0.8;
 
 int main(int argc, char **argv)
 {

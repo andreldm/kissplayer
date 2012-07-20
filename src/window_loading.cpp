@@ -10,7 +10,7 @@ Fl_Progress *progress_bar_file;
 Fl_Button *button_cancel;
 
 //LOCAL CALLBACKS
-void cb_cancel_loading(Fl_Widget*, void*);
+void cb_loading_cancel(Fl_Widget*, void*);
 
 Fl_Window* make_window_loading()
 {
@@ -32,7 +32,7 @@ Fl_Window* make_window_loading()
     progress_bar_file->selection_color(FL_BLUE);
 
     button_cancel = new Fl_Button(280, 110, 60, 25, "Cancel");
-    button_cancel->callback(cb_cancel_loading);
+    button_cancel->callback(cb_loading_cancel);
 
     window->set_modal();
     window->end();
@@ -40,7 +40,7 @@ Fl_Window* make_window_loading()
     return window;
 }
 
-void cb_cancel_loading(Fl_Widget*, void*)
+void cb_loading_cancel(Fl_Widget*, void*)
 {
     FLAG_CANCEL_SYNC = true;
 }

@@ -9,11 +9,11 @@ Fl_Button *button_play;
 Fl_Button *button_stop;
 Fl_Button *button_previous;
 Fl_Button *button_next;
-Fl_Button *button_wnd_dir_mgr;
 Fl_Button *button_sync;
 Fl_Button *button_search;
 Fl_Button *button_clear;
 Fl_Button *button_settings;
+Fl_Button *button_about;
 Fl_Button *button_random;
 Fl_Dial *dial_volume;
 Fl_Select_Browser *browser_music;
@@ -28,12 +28,10 @@ Fl_Group *group_controls;
 Fl_Tile *tile_center;
 
 //LOCAL VARIABLES
+extern Fl_Double_Window *window_main;
 vector<Music> *listMusic;
 vector<int> *listRandom; // we use this when randomization is activated
-extern Fl_Double_Window *window_main;
 Fl_Window *window_loading;
-Fl_Window *window_lyrics;
-Fl_Window *window_dir_mgr;
 string windowTitle;
 int windowTitlePosition;
 int musicIndex;
@@ -55,7 +53,6 @@ void cb_toggle_play(Fl_Widget*, void*);
 void cb_previous(Fl_Widget*, void*);
 void cb_stop(Fl_Widget*, void*);
 void cb_next(Fl_Widget*, void*);
-void cb_wnd_dir_mgr(Fl_Widget*, void*);
 void cb_volume(Fl_Widget*, void*);
 void cb_music_browser(Fl_Widget*, void*);
 void cb_sync(Fl_Widget*, void*);
@@ -63,6 +60,7 @@ void cb_search(Fl_Widget*, void*);
 void cb_search_type(Fl_Widget*, void*);
 void cb_random(Fl_Widget*, void*);
 void cb_settings(Fl_Widget*, void*);
+void cb_about(Fl_Widget*, void*);
 void cb_clear(Fl_Widget*, void*);
 void cb_slider_music(Fl_Widget*, void*);
 
@@ -78,6 +76,7 @@ Fl_PNG_Image *icon_clear;
 Fl_PNG_Image *icon_random_enabled;
 Fl_PNG_Image *icon_random_disabled;
 Fl_PNG_Image *icon_settings;
+Fl_PNG_Image *icon_about;
 
 Fl_Double_Window* make_window_main()
 {
@@ -167,7 +166,6 @@ Fl_Double_Window* make_window_main()
     group_controls->begin();
 
     slider_music = new Fl_Slider_Music(10, 280, 403, 20, "00:00");
-    //slider_music->clear_visible_focus();
     slider_music->callback(cb_slider_music);
     slider_music->color2(0x018BFD00);
     slider_music->align(FL_ALIGN_BOTTOM_RIGHT);
@@ -198,34 +196,34 @@ Fl_Double_Window* make_window_main()
     button_next->tooltip("Next");
     button_next->callback(cb_next);
 
-    button_wnd_dir_mgr = new Fl_Button(150, 330, 58, 25, "Directory\nManager");
-    button_wnd_dir_mgr->clear_visible_focus();
-    button_wnd_dir_mgr->labelsize(10);
-    button_wnd_dir_mgr->callback(cb_wnd_dir_mgr);
-
-    button_sync = new Fl_Button(218, 330, 25, 25);
+    button_sync = new Fl_Button(160, 330, 25, 25);
     button_sync->clear_visible_focus();
     button_sync->callback(cb_sync);
     button_sync->image(icon_sync);
 
-    button_random = new Fl_Button(253, 330, 25, 25);
+    button_random = new Fl_Button(195, 330, 25, 25);
     button_random->clear_visible_focus();
     button_random->tooltip("Randomize");
     button_random->image(icon_random_disabled);
     button_random->callback(cb_random);
 
-    button_settings = new Fl_Button(288, 330, 25, 25);
+    button_settings = new Fl_Button(230, 330, 25, 25);
     button_settings->clear_visible_focus();
     button_settings->callback(cb_settings);
     button_settings->image(icon_settings);
 
-    dial_volume = new Fl_Dial(370, 321, 38, 38, NULL);
-    dial_volume->value(INITIAL_VOLUME);
-    dial_volume->callback(cb_volume);
+    button_about = new Fl_Button(265, 330, 25, 25, "I");
+    button_about->clear_visible_focus();
+    button_about->callback(cb_about);
+    //button_about->image(icon_about);
 
     //It won't be visible, it's just for the resize work nicely
     Fl_Button *scape_goat = new Fl_Button(330, 330, 10, 10);
     scape_goat->hide();
+
+    dial_volume = new Fl_Dial(370, 321, 38, 38, NULL);
+    dial_volume->value(0.8);
+    dial_volume->callback(cb_volume);
 
     group_controls->resizable(scape_goat);
     group_controls->end();
@@ -369,12 +367,6 @@ void cb_music_browser(Fl_Widget* widget, void*)
     }
 }
 
-void cb_wnd_dir_mgr(Fl_Widget* widget, void*)
-{
-    window_dir_mgr = make_window_dir_mgr();
-    window_dir_mgr->show();
-}
-
 void cb_volume(Fl_Widget* widget, void*)
 {
     Fl_Dial *dial = (Fl_Dial*) widget;
@@ -431,7 +423,14 @@ void cb_random(Fl_Widget* widget, void*)
 
 void cb_settings(Fl_Widget* widget, void*)
 {
+    window_settings = make_window_settings();
+    window_settings->show();
+}
 
+void cb_about(Fl_Widget* widget, void*)
+{
+    window_about = make_window_about();
+    window_about->show();
 }
 
 void cb_sync(Fl_Widget* widget, void*)
