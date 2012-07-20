@@ -6,6 +6,7 @@
 #include <curl/curl.h>
 #include <string>
 #include <iostream>
+#include <cctype>
 
 using namespace std;
 

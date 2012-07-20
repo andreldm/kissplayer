@@ -14,10 +14,10 @@ Fl_Button *button_sync;
 Fl_Button *button_search;
 Fl_Button *button_clear;
 Fl_Button *button_settings;
-Fl_Toggle_Button *button_random;
+Fl_Button *button_random;
 Fl_Dial *dial_volume;
 Fl_Select_Browser *browser_music;
-Fl_Hor_Nice_Slider *slider_music;
+Fl_Slider_Music *slider_music;
 Fl_Box *box_current_time;
 Fl_Input *input_search;
 Fl_Choice *choice_search_type;
@@ -45,6 +45,7 @@ void play_music();
 void update_playlist(vector<Music> * l);
 void timer_title_scrolling(void*);
 void timer_check_music(void*);
+void save_config();
 void load_config();
 int main_handler(int, Fl_Window *);
 
@@ -61,6 +62,7 @@ void cb_sync(Fl_Widget*, void*);
 void cb_search(Fl_Widget*, void*);
 void cb_search_type(Fl_Widget*, void*);
 void cb_random(Fl_Widget*, void*);
+void cb_settings(Fl_Widget*, void*);
 void cb_clear(Fl_Widget*, void*);
 void cb_slider_music(Fl_Widget*, void*);
 
@@ -153,6 +155,7 @@ Fl_Double_Window* make_window_main()
     lyrics_pane->wrap_mode(Fl_Text_Display::WRAP_AT_BOUNDS, 0);
     lyrics_pane->scrollbar_width(15);
     lyrics_pane->color(0xDDEEFF00);
+    lyrics_pane->callback(cb_slider_music);
     lyrics_pane->scrollbar_align(FL_ALIGN_RIGHT);
 
     tile_center->box(FL_DOWN_BOX);
@@ -163,32 +166,37 @@ Fl_Double_Window* make_window_main()
     group_controls->box(FL_UP_FRAME);
     group_controls->begin();
 
-    slider_music = new Fl_Hor_Nice_Slider(10, 280, 403, 20, "00:00");
+    slider_music = new Fl_Slider_Music(10, 280, 403, 20, "00:00");
+    //slider_music->clear_visible_focus();
+    slider_music->callback(cb_slider_music);
     slider_music->color2(0x018BFD00);
     slider_music->align(FL_ALIGN_BOTTOM_RIGHT);
-    slider_music->callback(cb_slider_music);
 
     box_current_time = new Fl_Box(10, 300, 40, 15, "00:00");
 
     button_play = new Fl_Button(10, 330, 25, 25);
     button_play->clear_visible_focus();
     button_play->image(icon_play);
+    button_play->tooltip("Play");
     button_play->callback(cb_toggle_play);
 
     button_stop = new Fl_Button(45, 330, 25, 25);
     button_stop->clear_visible_focus();
     button_stop->image(icon_stop);
+    button_stop->tooltip("Stop");
     button_stop->callback(cb_stop);
 
     button_previous = new Fl_Button(80, 330, 25, 25);
     button_previous->clear_visible_focus();
-    button_previous->callback(cb_previous);
     button_previous->image(icon_previous);
+    button_previous->tooltip("Previous");
+    button_previous->callback(cb_previous);
 
     button_next = new Fl_Button(115, 330, 25, 25);
     button_next->clear_visible_focus();
-    button_next->callback(cb_next);
     button_next->image(icon_next);
+    button_next->tooltip("Next");
+    button_next->callback(cb_next);
 
     button_wnd_dir_mgr = new Fl_Button(150, 330, 58, 25, "Directory\nManager");
     button_wnd_dir_mgr->clear_visible_focus();
@@ -200,14 +208,15 @@ Fl_Double_Window* make_window_main()
     button_sync->callback(cb_sync);
     button_sync->image(icon_sync);
 
-    button_random = new Fl_Toggle_Button(253, 330, 25, 25);
+    button_random = new Fl_Button(253, 330, 25, 25);
     button_random->clear_visible_focus();
-    button_random->callback(cb_random);
+    button_random->tooltip("Randomize");
     button_random->image(icon_random_disabled);
+    button_random->callback(cb_random);
 
     button_settings = new Fl_Button(288, 330, 25, 25);
     button_settings->clear_visible_focus();
-    button_settings->callback();
+    button_settings->callback(cb_settings);
     button_settings->image(icon_settings);
 
     dial_volume = new Fl_Dial(370, 321, 38, 38, NULL);
@@ -247,6 +256,8 @@ void cb_close_window(Fl_Widget* widget, void*)
 
     sound->unload();
 
+    save_config();
+
     window_main->~Fl_Window();
 }
 
@@ -260,17 +271,17 @@ void cb_toggle_play(Fl_Widget* widget, void*)
             window_main->label("Kiss Player - Paused");
             button_play->image(icon_play);
             button_play->redraw();
-            #if defined WIN32
+#ifdef WIN32
             update_thumbnail_toolbar("play");
-            #endif
+#endif
         }
         else
         {
             button_play->image(icon_pause);
             button_play->redraw();
-            #if defined WIN32
+#ifdef WIN32
             update_thumbnail_toolbar("pause");
-            #endif
+#endif
         }
 
         sound->togglePause();
@@ -284,6 +295,8 @@ void cb_toggle_play(Fl_Widget* widget, void*)
 
 void cb_stop(Fl_Widget* widget, void*)
 {
+    if(!sound->isPlaying()) return;
+
     sound->setSound(false);
     window_main->label("Kiss Player");
     button_play->image(icon_play);
@@ -341,6 +354,10 @@ void cb_next(Fl_Widget* widget, void*)
         //cout << "musicIndexRandom = "<< musicIndexRandom<< endl;
         play_music();
     }
+    else if(widget == 0) //widget == 0, means it wasn't activated by the user.
+    {
+        cb_stop(0, 0);
+    }
 }
 
 void cb_music_browser(Fl_Widget* widget, void*)
@@ -379,7 +396,7 @@ void cb_search(Fl_Widget* widget, void*)
 {
     lastSearch = input_search->value();
     update_playlist(searchMusics(lastSearch.c_str()));
-    browser_music->color(0xFCFFCF00); //LIGHT YELLOW
+    //browser_music->color(0xFCFFCF00); //LIGHT YELLOW
 }
 
 void cb_search_type(Fl_Widget* widget, void*)
@@ -412,6 +429,11 @@ void cb_random(Fl_Widget* widget, void*)
     button_random->redraw();
 }
 
+void cb_settings(Fl_Widget* widget, void*)
+{
+
+}
+
 void cb_sync(Fl_Widget* widget, void*)
 {
     button_stop->do_callback();
@@ -426,7 +448,7 @@ int main_handler(int e, Fl_Window *w)
     {
         box_current_time->label(formatTime(slider_music->value())); //IN ORDER TO UPDATE WITHOUT DELAY
 
-        // We need to store the volume, because whe we play it again, the FMOD will reset this value
+        // We need to store the volume, because when we play it again, the FMOD will reset this value
         float volume = sound->getVolume();
 
         //If the user is holding the slider and the music reaches its end
@@ -435,7 +457,6 @@ int main_handler(int e, Fl_Window *w)
         //OBS: This isPlaying evalution seems crazy, but it's related to FMOD_BOOL :(
         if(sound->isPlaying())
             sound->play();
-
 
         sound->setPosition(slider_music->value());
         sound->setVolume(volume);
@@ -461,10 +482,11 @@ int main_handler(int e, Fl_Window *w)
             return 0;
         }
     }
-	//FOR LINUX! On Windows we use the GetAsyncKeyState for handling
-#ifdef __linux__
+
     if(e == FL_KEYUP)
     {
+        //FOR LINUX! On Windows we use the GetAsyncKeyState for handling
+#ifdef __linux__
         if(Fl::event_original_key() == FL_Media_Play)
             button_play->do_callback();
         else if(Fl::event_original_key() == FL_Media_Stop)
@@ -473,19 +495,40 @@ int main_handler(int e, Fl_Window *w)
             button_previous->do_callback();
         else if(Fl::event_original_key() == FL_Media_Next)
             button_next->do_callback();
+#endif
+        if(Fl::event_original_key() == FL_Right)
+        {
+            if(Fl::belowmouse() != NULL && Fl::belowmouse() == input_search)
+            {
+                Fl::focus (input_search);
+                return Fl::handle_(e, w);
+            }
+            Fl::focus(slider_music);
 
+            int pos = sound->getPosition();
+            if(pos < sound->getLength() + 5000)
+                sound->setPosition(pos + 5000);
+
+            return 1;
+        }
+        else if(Fl::event_original_key() == FL_Left)
+        {
+            if(Fl::belowmouse() != NULL && Fl::belowmouse() == input_search)
+            {
+                Fl::focus (input_search);
+                return Fl::handle_(e, w);
+            }
+            Fl::focus(slider_music);
+
+            int pos = sound->getPosition();
+            if(sound->getLength() - 5000 > 0)
+                sound->setPosition(pos - 5000);
+
+            return 1;
+        }
         return 0;
     }
-#endif
-	
-	//TO IMPROVE, IT'S BUGGY
-    if(e == FL_KEYDOWN && Fl::event_original_key() == FL_Right)
-	{
-		int pos = sound->getPosition();
-		if(pos < sound->getLength() + 5000)
-			sound->setPosition(pos+5000);
-		return 1;
-	}
+
 
 	 //MOUSEWHEEL HANDLER FOR VOLUME DIAL
 	if(e == FL_MOUSEWHEEL &&
@@ -517,21 +560,20 @@ void play_music()
     sound->play();
     sound->setVolume(dial_volume->value());
 
-    windowTitle = "Kiss Player :: ";
+    windowTitle = "KISS Player :: ";
     windowTitle.append(browser_music->text(musicIndex+1));
     windowTitlePosition = 0;
 
     button_play->image(icon_pause);
     button_play->redraw();
-    #if defined WIN32
+#ifdef WIN32
     update_thumbnail_toolbar("pause");
-    #endif
+#endif
 
     box_current_time->label("00:00");
     slider_music->copy_label(formatTime(sound->getLength()));
     slider_music->maximum(sound->getLength());
     slider_music->value(0);
-
     fetch_lyrics(lyrics_text_buffer, listMusic->at(musicIndex).artist, listMusic->at(musicIndex).title);
     lyrics_pane->scroll(0,0);
 }
@@ -555,7 +597,7 @@ void timer_title_scrolling(void*)
 void timer_check_music(void*)
 {
     Fl::repeat_timeout(0.25, timer_check_music);
-#if defined WIN32
+#ifdef WIN32
     if(GetAsyncKeyState(0xB3)) // VK_MEDIA_PLAY_PAUSE
         button_play->do_callback();
     if(GetAsyncKeyState(0xB2)) // VK_MEDIA_STOP
@@ -573,7 +615,7 @@ void timer_check_music(void*)
     //is dragging the slider it won't advance the music.
     if(slider_music->value() == slider_music->maximum() && !Fl::event_buttons())
     {
-        button_next->do_callback();
+        cb_next(0, 0);
         return;
     }
 
@@ -587,7 +629,7 @@ void timer_check_music(void*)
 
 void save_config()
 {
-    openDB();
+    beginTransaction();
 
     // TODO: On Windows, when the window is minimized its location becomes -32000, -32000.
     //       We need to save the location before it becomes minimized.
@@ -614,7 +656,7 @@ void save_config()
 
     setKey("music_index_random", intToString(musicIndexRandom));
 
-    closeDB();
+    commitTransaction();
 }
 
 void load_config()
@@ -670,8 +712,16 @@ void load_config()
 
     browser_music->value(musicIndex+1);
 
-    /*int browser_music_width = stringToInt(getKey("browser_music_width"));
-    if(browser_music_width != -1) browser_music->size(browser_music_width, browser_music->h());*/
+    int browser_music_width = stringToInt(getKey("browser_music_width"));
+
+    if(browser_music_width > 0)
+    {
+        browser_music->size(browser_music_width, browser_music->h());
+        lyrics_pane->resize(tile_center->x() + browser_music_width,
+                            tile_center->y(),
+                            tile_center->w() - browser_music_width,
+                            lyrics_pane->h());
+    }
 
     closeDB();
 }

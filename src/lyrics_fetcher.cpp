@@ -1,20 +1,17 @@
 #include "lyrics_fetcher.h"
 
 size_t writeToString(void *ptr, size_t size, size_t count, void *stream);
-void replaceAll(string& str, const string& from, const string& to);
+void replaceAll(string &str, const string &from, const string &to);
+void upperCaseInitials(string &str);
 
 void fetch_lyrics(Fl_Text_Buffer *lyrics_text_buffer, string artist, string title)
 {
-CURL *curl;
+    CURL *curl;
     string data;
 
     //Yeah, lyricswikia, it pretty reliable.
     //Maybe we can upgrade this code to support
     //several sites, if one fail, try the next.
-    //I was wondering to user Google Cache so even
-    //at work behind a firewall(Google services are the only exceptions)
-    //it would be possible to fetch the lyrics. But suddendly
-    //Google has started to use a Hash on the url :(
     string url = "http://lyrics.wikia.com/";
 
     //As of May 2012, these regex are valid.
@@ -33,8 +30,10 @@ CURL *curl;
     url = url.append(title);
     url = url.append("?action=edit");
 
+    upperCaseInitials(url);
+
 	//To remove, using while debugging
-	cout << url << endl;
+	cout <<"URL: " << url << endl;
 
     curl = curl_easy_init();
     if(curl)
@@ -43,13 +42,23 @@ CURL *curl;
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeToString);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 5);
         CURLcode res = curl_easy_perform(curl);
+
+        //Check if timed out
+        if(res == CURLE_OPERATION_TIMEDOUT)
+        {
+            curl_easy_cleanup(curl);
+            lyrics_text_buffer->text("Connection time out!");
+            return;
+        }
 
         //Check if there was any problem
         if(res != CURLE_OK)
         {
             curl_easy_cleanup(curl);
             lyrics_text_buffer->text("Connection failure!");
+            cout << "CURL Error: " << res << endl;
             return;
         }
 
@@ -107,12 +116,29 @@ size_t writeToString(void *ptr, size_t size, size_t count, void *stream)
     return size* count;
 }
 
-void replaceAll(string& str, const string& from, const string& to)
+void replaceAll(string &str, const string &from, const string &to)
 {
     size_t start_pos = 0;
     while((start_pos = str.find(from, start_pos)) != string::npos)
     {
         str.replace(start_pos, from.length(), to);
         start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
+    }
+}
+
+void upperCaseInitials(string &str)
+{
+    for(int i = 0; i < str.length(); i++)
+    {
+        if(i == 0 && islower(str[i]))
+        {
+            str[i] = toupper(str[i]);
+            continue;
+        }
+        if(str[i-1] && str[i-1] == '_' && islower(str[i]))
+        {
+            str[i] = toupper(str[i]);
+            continue;
+        }
     }
 }

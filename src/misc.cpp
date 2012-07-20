@@ -136,7 +136,7 @@ string floatToString(float value)
 /**
 * WINDOWS ONLY
 */
-#if defined WIN32
+#ifdef WIN32
 /**
 * Converts a string from a given encoding to UTF-8
 * UTF-8 is code page: 65001

@@ -22,7 +22,7 @@ void Sound::initialise (void)
     result = FMOD_System_Create(&fmodsystem);
     if (result != FMOD_OK) possible = false;
     //if initialise the sound system. If fails, sound is set to impossible
-    if (possible) result = FMOD_System_Init(fmodsystem,2, FMOD_INIT_NORMAL, 0);
+    if (possible) result = FMOD_System_Init(fmodsystem,2, FMOD_INIT_NORMAL | FMOD_IGNORETAGS, 0);
     if (result != FMOD_OK) possible = false;
     //sets initial sound volume (mute)
     if (possible) FMOD_Channel_SetVolume(channel,0.0f);

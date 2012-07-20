@@ -1,5 +1,5 @@
 /**
- *Here lives the windows specific code.
+ *Here lives the Windows specific code.
  */
 
 #ifndef windows_specific_h

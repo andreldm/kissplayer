@@ -8,7 +8,6 @@
 #include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Select_Browser.H>
-#include <FL/Fl_Hor_Nice_Slider.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Dial.H>
 #include <FL/Fl_Choice.H>
@@ -19,6 +18,7 @@
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
 
+#include "fl_slider_music.h"
 #include "sound.h"
 #include "lyrics_fetcher.h"
 #include "window_dir_mgr.h"
@@ -41,6 +41,5 @@ Fl_Double_Window* make_window_main();
 void cb_next(Fl_Widget*, void*);
 void cb_previous(Fl_Widget*, void*);
 void cb_toggle_play(Fl_Widget*, void*);
-void save_config();
 
 #endif

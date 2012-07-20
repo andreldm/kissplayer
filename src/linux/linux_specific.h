@@ -1,5 +1,5 @@
 /**
-Here lives the linux specific code.
+Here lives the Linux specific code.
 **/
 
 #ifndef linux_specific_h

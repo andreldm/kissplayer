@@ -65,7 +65,6 @@ void travelDirectoryRecursive(string directory, vector<string> *fullList)
                     strstr((*i).c_str(), ".flac") != NULL)
                 fullList->push_back(fullname.str());
 
-
             travelDirectoryRecursive(fullname.str(), fullList);
         }
     }
