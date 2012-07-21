@@ -44,7 +44,9 @@
 
 #define KISS_MAJOR_VERSION 0
 #define KISS_MINOR_VERSION 5
-#define KISS_PATCH_VERSION 4
+#define KISS_PATCH_VERSION 5
+
+#define DEFAULT_BACKGROUND_COLOR 0xDDEEFF00
 
 using namespace std;
 

@@ -1,3 +1,7 @@
+v 0.5.5 - 20/07/2012:
+- Customizable Colors
+- Small fixes
+
 v 0.5.4 - 19/07/2012:
 - New Settings Window(It'll superseed the Directory Manager)
 - New About Window

@@ -101,6 +101,7 @@ void setKey(string key, string value)
 void insertMusic(string title, string artist, string album, string filepath)
 {
     string temp;
+    string temp2; // If I use the same variable strange thinks will happen
     size_t foundSlash;
     size_t foundDot;
     size_t foundHyphen;
@@ -132,15 +133,15 @@ void insertMusic(string title, string artist, string album, string filepath)
     else
     {
         foundSlash = filepath.find_last_of("/\\");
-        temp = filepath.substr(foundSlash+1);
+        temp2 = filepath.substr(foundSlash+1);
 
-        foundDot = temp.find_last_of(".");
-        temp = temp.substr(0, foundDot);
+        foundDot = temp2.find_last_of(".");
+        temp2 = temp2.substr(0, foundDot);
 
-        foundHyphen = temp.find_last_of("-");
-        temp = temp.substr(0, foundHyphen);
-        trim(temp);
-        sqlite3_bind_text(stmt, 2, temp.c_str(), -1, SQLITE_STATIC);
+        foundHyphen = temp2.find_last_of("-");
+        temp2 = temp2.substr(0, foundHyphen);
+        trim(temp2);
+        sqlite3_bind_text(stmt, 2, temp2.c_str(), -1, SQLITE_STATIC);
     }
 
 

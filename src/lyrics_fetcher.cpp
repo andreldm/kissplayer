@@ -23,7 +23,9 @@ void fetch_lyrics(Fl_Text_Buffer *lyrics_text_buffer, string artist, string titl
     string conditionEnd = "&lt;/lyrics>";
 
     replaceAll(artist, " ", "_");
+    replaceAll(artist, "?", "%3F");
     replaceAll(title, " ", "_");
+    replaceAll(title, "?", "%3F");
 
     url = url.append(artist);
     url = url.append(":");
@@ -49,7 +51,7 @@ void fetch_lyrics(Fl_Text_Buffer *lyrics_text_buffer, string artist, string titl
         if(res == CURLE_OPERATION_TIMEDOUT)
         {
             curl_easy_cleanup(curl);
-            lyrics_text_buffer->text("Connection time out!");
+            lyrics_text_buffer->text("Connection timed out!");
             return;
         }
 
@@ -94,14 +96,16 @@ void fetch_lyrics(Fl_Text_Buffer *lyrics_text_buffer, string artist, string titl
 
         curl_easy_cleanup(curl);
 
-        //It's necessary as a workaround for FLTK Fl_Help_View widget.
-        //As of version 1.3.0, multiple <br> tags are handled as only
+        //It's necessary as a workaround for Fl_Help_View widget.
+        //As of FLTK 1.3.0, multiple <br> tags are handled as only
         //one, so we use to use the <p> tag.
         replaceAll(data, "<br /><br />", "</p><p>");
     }
 
     replaceAll(artist, "_", " ");
+    replaceAll(artist, "%3F", "?");
     replaceAll(title, "_", " ");
+    replaceAll(title, "%3F", "?");
 
     string result = artist+"\n"+title+"\n"+data;
     replaceAll(result, "\n\n\n", "\n\n");

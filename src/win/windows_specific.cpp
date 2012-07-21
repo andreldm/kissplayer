@@ -79,25 +79,26 @@ void create_thumbnail_toolbar(HWND hwnd)
 		if (SUCCEEDED(result))
 		{
 			thumb_buttons[0].dwMask = (THUMBBUTTONMASK)(THB_BITMAP | THB_TOOLTIP | THB_FLAGS);
-			thumb_buttons[0].dwFlags = (THUMBBUTTONFLAGS)(THBF_ENABLED | THBF_DISMISSONCLICK);
+			thumb_buttons[0].dwFlags = (THUMBBUTTONFLAGS)(THBF_ENABLED);
 			thumb_buttons[0].iId = ID_THUMBNAIL_BUTTON1;
 			thumb_buttons[0].iBitmap = 0;
 			wcscpy(thumb_buttons[0].szTip, L"Previous");
 
 			thumb_buttons[1].dwMask = (THUMBBUTTONMASK)(THB_BITMAP | THB_TOOLTIP | THB_FLAGS);
-			thumb_buttons[1].dwFlags = (THUMBBUTTONFLAGS)(THBF_ENABLED | THBF_DISMISSONCLICK);
+			thumb_buttons[1].dwFlags = (THUMBBUTTONFLAGS)(THBF_ENABLED);
 			thumb_buttons[1].iId = ID_THUMBNAIL_BUTTON2;
 			thumb_buttons[1].iBitmap = 1;
 			wcscpy(thumb_buttons[1].szTip, L"Play");
 
 			thumb_buttons[2].dwMask = (THUMBBUTTONMASK)(THB_BITMAP | THB_TOOLTIP | THB_FLAGS);
-			thumb_buttons[2].dwFlags = (THUMBBUTTONFLAGS)(THBF_ENABLED | THBF_DISMISSONCLICK);
+			thumb_buttons[2].dwFlags = (THUMBBUTTONFLAGS)(THBF_ENABLED);
 			thumb_buttons[2].iId = ID_THUMBNAIL_BUTTON3;
 			thumb_buttons[2].iBitmap = 2;
 			wcscpy(thumb_buttons[2].szTip, L"Next");
 
 			taskbarList->ThumbBarAddButtons(__hwnd, ARRAYSIZE(thumb_buttons), thumb_buttons);
 		}
+
 		ImageList_Destroy(imageList);
 	}
 }

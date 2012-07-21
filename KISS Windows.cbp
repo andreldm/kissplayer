@@ -52,6 +52,7 @@
 		<Unit filename="src\dao.h" />
 		<Unit filename="src\dir_tools.cpp" />
 		<Unit filename="src\dir_tools.h" />
+		<Unit filename="src\fl_slider_music.h" />
 		<Unit filename="src\lyrics_fetcher.cpp" />
 		<Unit filename="src\lyrics_fetcher.h" />
 		<Unit filename="src\main.cpp" />

@@ -3,6 +3,10 @@
 
 #include <FL/Fl_Slider.H>
 
+/**
+* A modified version of the Fl_Slider that ignores the Left and Right key events.
+*/
+
 class Fl_Slider_Music : public Fl_Slider
 {
 private:
@@ -54,7 +58,6 @@ private:
             }
             else
             {
-
                 S = int(slider_size_*ww+.5);
                 if (S >= ww) return 0;
                 int T = (horizontal() ? H : W)/2+1;
@@ -149,7 +152,6 @@ private:
     }
 
 public:
-
     int handle(int event)
     {
         if (event == FL_PUSH && Fl::visible_focus())

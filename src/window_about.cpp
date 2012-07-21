@@ -23,7 +23,7 @@ Fl_Window* make_window_about()
     int window_x = (screen_w/2)-(window_w/2);
     int window_y = (screen_h/2)-(window_h/2);
 
-    Fl_Window *window = new Fl_Window(window_x, window_y, window_w, window_h, "About");
+    Fl_Window *window = new Fl_Window(window_x, window_y, window_w, window_h, "About...");
 
     stringstream title;
     title << "KISS Player v" << KISS_MAJOR_VERSION << "." << KISS_MINOR_VERSION << "." << KISS_PATCH_VERSION;
@@ -33,7 +33,7 @@ Fl_Window* make_window_about()
     box_about_title->labelfont(FL_BOLD);
     box_about_title->labelsize(22);
     box_about_title->labeltype(FL_SHADOW_LABEL);
-    box_about_title->labelcolor(0xDDEEFF00);
+    box_about_title->labelcolor(0x0179ff00);
     box_about_title->align(FL_ALIGN_TOP_LEFT | FL_ALIGN_INSIDE);
 
     browser_about_info = new Fl_Help_View (5, 40, window_w-10, 185);
@@ -47,7 +47,7 @@ Fl_Window* make_window_about()
         Available online under:<br>\
         <u>http://gnu.org/licenses/gpl-2.0.html</u></p>");
 
-    button_about_close = new Fl_Button(window_w-65, window_h-30, 60, 25, "Close");
+    button_about_close = new Fl_Button((window_w/2)-30, window_h-32, 60, 25, "Close");
     button_about_close->callback((Fl_Callback*)cb_about_close);
 
     window->set_modal();

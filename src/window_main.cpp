@@ -104,6 +104,7 @@ Fl_Double_Window* make_window_main()
     icon_random_enabled = new Fl_PNG_Image("img/icon_random_enabled.png");
     icon_random_disabled = new Fl_PNG_Image("img/icon_random_disabled.png");
     icon_settings = new Fl_PNG_Image("img/icon_settings.png");
+    icon_about = new Fl_PNG_Image("img/icon_about.png");
 
     //SEARCH GROUP AND ITS WIDGETS
     group_search = new Fl_Group(5, 5, 410, 30);
@@ -140,7 +141,7 @@ Fl_Double_Window* make_window_main()
     tile_center->begin();
 
     browser_music = new Fl_Select_Browser(5, 40, 205, 230, NULL);
-    browser_music->color(0xDDEEFF00);
+    browser_music->color(DEFAULT_BACKGROUND_COLOR);
     browser_music->box(FL_DOWN_BOX);
     browser_music->type(FL_HOLD_BROWSER);
     browser_music->callback(cb_music_browser);
@@ -153,7 +154,7 @@ Fl_Double_Window* make_window_main()
     lyrics_pane->textfont(FL_HELVETICA);
     lyrics_pane->wrap_mode(Fl_Text_Display::WRAP_AT_BOUNDS, 0);
     lyrics_pane->scrollbar_width(15);
-    lyrics_pane->color(0xDDEEFF00);
+    lyrics_pane->color(DEFAULT_BACKGROUND_COLOR);
     lyrics_pane->callback(cb_slider_music);
     lyrics_pane->scrollbar_align(FL_ALIGN_RIGHT);
 
@@ -175,7 +176,7 @@ Fl_Double_Window* make_window_main()
     button_play = new Fl_Button(10, 330, 25, 25);
     button_play->clear_visible_focus();
     button_play->image(icon_play);
-    button_play->tooltip("Play");
+    button_play->tooltip("Play/Pause");
     button_play->callback(cb_toggle_play);
 
     button_stop = new Fl_Button(45, 330, 25, 25);
@@ -196,26 +197,32 @@ Fl_Double_Window* make_window_main()
     button_next->tooltip("Next");
     button_next->callback(cb_next);
 
+    Fl_Box *separator = new Fl_Box(FL_FLAT_BOX, 150, 330, 1, 25,"");
+    separator->color(FL_DARK3);
+
     button_sync = new Fl_Button(160, 330, 25, 25);
     button_sync->clear_visible_focus();
     button_sync->callback(cb_sync);
+    button_sync->tooltip("Synchronize Music Library");
     button_sync->image(icon_sync);
 
     button_random = new Fl_Button(195, 330, 25, 25);
     button_random->clear_visible_focus();
-    button_random->tooltip("Randomize");
     button_random->image(icon_random_disabled);
+    button_random->tooltip("Randomize");
     button_random->callback(cb_random);
 
     button_settings = new Fl_Button(230, 330, 25, 25);
     button_settings->clear_visible_focus();
-    button_settings->callback(cb_settings);
     button_settings->image(icon_settings);
+    button_settings->callback(cb_settings);
+    button_settings->tooltip("Settings");
 
-    button_about = new Fl_Button(265, 330, 25, 25, "I");
+    button_about = new Fl_Button(265, 330, 25, 25);
     button_about->clear_visible_focus();
+    button_about->image(icon_about);
+    button_about->tooltip("About");
     button_about->callback(cb_about);
-    //button_about->image(icon_about);
 
     //It won't be visible, it's just for the resize work nicely
     Fl_Button *scape_goat = new Fl_Button(330, 330, 10, 10);
@@ -296,7 +303,7 @@ void cb_stop(Fl_Widget* widget, void*)
     if(!sound->isPlaying()) return;
 
     sound->setSound(false);
-    window_main->label("Kiss Player");
+    window_main->label("KISS Player");
     button_play->image(icon_play);
     button_play->redraw();
 
@@ -388,7 +395,6 @@ void cb_search(Fl_Widget* widget, void*)
 {
     lastSearch = input_search->value();
     update_playlist(searchMusics(lastSearch.c_str()));
-    //browser_music->color(0xFCFFCF00); //LIGHT YELLOW
 }
 
 void cb_search_type(Fl_Widget* widget, void*)
@@ -552,7 +558,6 @@ int main_handler(int e, Fl_Window *w)
 void play_music()
 {
     browser_music->value(musicIndex+1);
-    browser_music->color(0xDDEEFF00);
     browser_music->redraw();
 
     sound->load(listMusic->at(musicIndex).filepath);
@@ -655,6 +660,12 @@ void save_config()
 
     setKey("music_index_random", intToString(musicIndexRandom));
 
+    setKey("color_background", intToString(browser_music->color()));
+
+    setKey("color_selection", intToString(browser_music->color2()));
+
+    setKey("color_text", intToString(browser_music->textcolor()));
+
     commitTransaction();
 }
 
@@ -662,18 +673,21 @@ void load_config()
 {
     openDB();
 
+    // SET WINDOW POSITION
     int x = stringToInt(getKey("window_main_x"));
     if(x != -1) window_main->position(x, window_main->y());
 
     int y = stringToInt(getKey("window_main_y"));
     if(y != -1) window_main->position(window_main->x(), y);
 
+    // SET WINDOW SIZE
     int width = stringToInt(getKey("window_main_width"));
     if(width != -1) window_main->size(width, window_main->h());
 
     int height = stringToInt(getKey("window_main_height"));
     if(height != -1) window_main->size(window_main->w(), height);
 
+    // SET VOLUME
     float volume = stringToFloat(getKey("volume_level"));
     if(volume != -1)
     {
@@ -681,6 +695,7 @@ void load_config()
         sound->setVolume(dial_volume->value());
     }
 
+    // TOGGLE RANDOMIZE
     int random = stringToInt(getKey("random_button"));
     if(random != -1)
     {
@@ -688,21 +703,23 @@ void load_config()
         cb_random(NULL, 0);
     }
 
+    // SET SEARCH STRING
     string search_input = getKey("search_input");
     if(!search_input.empty())
     {
         input_search->value(search_input.c_str());
     }
 
+    // SET SEARCH TYPE
     int search_type = stringToInt(getKey("search_type"));
     if(search_type != -1)
     {
         FLAG_SEARCH_TYPE = search_type;
         choice_search_type->value(FLAG_SEARCH_TYPE);
         cb_search(NULL, 0);
-        browser_music->color(0xDDEEFF00);
     }
 
+    // SET MUSIC INDEX
     int mi = stringToInt(getKey("music_index"));
     if(mi != -1) musicIndex = mi;
 
@@ -711,6 +728,7 @@ void load_config()
 
     browser_music->value(musicIndex+1);
 
+    // SET MUSIC BROWSER WIDTH
     int browser_music_width = stringToInt(getKey("browser_music_width"));
 
     if(browser_music_width > 0)
@@ -721,6 +739,25 @@ void load_config()
                             tile_center->w() - browser_music_width,
                             lyrics_pane->h());
     }
+
+    // SET WIDGETS COLORS
+    int color_background = stringToInt(getKey("color_background"));
+    int color_selection = stringToInt(getKey("color_selection"));
+    int color_text = stringToInt(getKey("color_text"));
+
+    browser_music->color(color_background);
+    browser_music->color2(color_selection);
+    lyrics_pane->color(color_background);
+    lyrics_pane->color2(color_selection);
+    input_search->color2(color_selection);
+    choice_search_type->color2(color_selection);
+    browser_music->textcolor(color_text);
+    lyrics_pane->textcolor(color_text);
+
+    browser_music->redraw();
+    lyrics_pane->redraw();
+    input_search->redraw();
+    choice_search_type->redraw();
 
     closeDB();
 }

@@ -58,6 +58,8 @@
 		<Unit filename="src/name_cod.h" />
 		<Unit filename="src/sound.cpp" />
 		<Unit filename="src/sound.h" />
+		<Unit filename="src/window_about.cpp" />
+		<Unit filename="src/window_about.h" />
 		<Unit filename="src/window_loading.cpp" />
 		<Unit filename="src/window_loading.h" />
 		<Unit filename="src/window_main.cpp" />
