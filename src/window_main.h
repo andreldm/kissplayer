@@ -15,6 +15,7 @@
 #include <FL/Fl_Toggle_Button.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_PNG_Image.H>
+#include <FL/Fl_Image.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
 

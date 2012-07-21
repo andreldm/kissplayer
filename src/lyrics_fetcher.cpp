@@ -35,7 +35,7 @@ void fetch_lyrics(Fl_Text_Buffer *lyrics_text_buffer, string artist, string titl
     upperCaseInitials(url);
 
 	//To remove, using while debugging
-	cout <<"URL: " << url << endl;
+	//cout <<"URL: " << url << endl;
 
     curl = curl_easy_init();
     if(curl)

@@ -45,6 +45,7 @@ void timer_title_scrolling(void*);
 void timer_check_music(void*);
 void save_config();
 void load_config();
+void load_icons();
 int main_handler(int, Fl_Window *);
 
 //LOCAL CALLBACKS
@@ -65,18 +66,18 @@ void cb_clear(Fl_Widget*, void*);
 void cb_slider_music(Fl_Widget*, void*);
 
 //ICONS
-Fl_PNG_Image *icon_play;
-Fl_PNG_Image *icon_pause;
-Fl_PNG_Image *icon_stop;
-Fl_PNG_Image *icon_next;
-Fl_PNG_Image *icon_previous;
-Fl_PNG_Image *icon_sync;
-Fl_PNG_Image *icon_search;
-Fl_PNG_Image *icon_clear;
-Fl_PNG_Image *icon_random_enabled;
-Fl_PNG_Image *icon_random_disabled;
-Fl_PNG_Image *icon_settings;
-Fl_PNG_Image *icon_about;
+Fl_Image *icon_play;
+Fl_Image *icon_pause;
+Fl_Image *icon_stop;
+Fl_Image *icon_next;
+Fl_Image *icon_previous;
+Fl_Image *icon_sync;
+Fl_Image *icon_search;
+Fl_Image *icon_clear;
+Fl_Image *icon_random_enabled;
+Fl_Image *icon_random_disabled;
+Fl_Image *icon_settings;
+Fl_Image *icon_about;
 
 Fl_Double_Window* make_window_main()
 {
@@ -93,18 +94,7 @@ Fl_Double_Window* make_window_main()
     window_main->callback((Fl_Callback*)cb_close_window);
 
     //LOAD ICONS FOR BUTTONS
-    icon_play = new Fl_PNG_Image("img/icon_play.png");
-    icon_pause = new Fl_PNG_Image("img/icon_pause.png");
-    icon_stop = new Fl_PNG_Image("img/icon_stop.png");
-    icon_next = new Fl_PNG_Image("img/icon_next.png");
-    icon_previous = new Fl_PNG_Image("img/icon_previous.png");
-    icon_sync = new Fl_PNG_Image("img/icon_sync.png");
-    icon_search = new Fl_PNG_Image("img/icon_search.png");
-    icon_clear = new Fl_PNG_Image("img/icon_clear.png");
-    icon_random_enabled = new Fl_PNG_Image("img/icon_random_enabled.png");
-    icon_random_disabled = new Fl_PNG_Image("img/icon_random_disabled.png");
-    icon_settings = new Fl_PNG_Image("img/icon_settings.png");
-    icon_about = new Fl_PNG_Image("img/icon_about.png");
+    load_icons();
 
     //SEARCH GROUP AND ITS WIDGETS
     group_search = new Fl_Group(5, 5, 410, 30);
@@ -345,24 +335,23 @@ void cb_next(Fl_Widget* widget, void*)
         if(musicIndexRandom == -1 || musicIndexRandom + 2 <= listRandom->size())
         {
             musicIndex = listRandom->at(++musicIndexRandom);
-            //cout << "\nmusicIndex = "<< musicIndex<< endl;
-            //cout << "listMusic->size() = "<< listMusic->size()<< endl;
-            //cout << "musicIndexRandom = "<< musicIndexRandom<< endl;
             play_music();
         }
     }
     else if(musicIndex + 2 <= listMusic->size())
     {
         musicIndex++;
-        //cout << "\nmusicIndex = "<< musicIndex<< endl;
-        //cout << "listMusic->size() = "<< listMusic->size()<< endl;
-        //cout << "musicIndexRandom = "<< musicIndexRandom<< endl;
         play_music();
     }
     else if(widget == 0) //widget == 0, means it wasn't activated by the user.
     {
         cb_stop(0, 0);
     }
+
+    //cout << "\n\nmusicIndex = "<< musicIndex;
+    //cout << "\nmusicIndexRandom = "<< musicIndexRandom;
+    //cout << "\nlistMusic->size() = "<< listMusic->size();
+    //cout << "\nFLAG_RANDOM = "<< FLAG_RANDOM;
 }
 
 void cb_music_browser(Fl_Widget* widget, void*)
@@ -534,7 +523,6 @@ int main_handler(int e, Fl_Window *w)
         return 0;
     }
 
-
 	 //MOUSEWHEEL HANDLER FOR VOLUME DIAL
 	if(e == FL_MOUSEWHEEL &&
 		Fl::belowmouse() != NULL &&
@@ -612,12 +600,15 @@ void timer_check_music(void*)
         button_next->do_callback();
 #endif
 
-    if(sound->getSound() == false) return; //If there's no music playing, do not continue
+    //If there's no music playing, do not continue
+    if(sound->getSound() == false)
+        return;
 
-    //If the music reached its end, so advance to the next one.
-    //Note that we check if any mouse button is pressed, so if the user
-    //is dragging the slider it won't advance the music.
-    if(slider_music->value() == slider_music->maximum() && !Fl::event_buttons())
+    /* If the music reached its end, so advance to the next one.
+       Note that we check if any mouse button is pressed, so if the user
+       is dragging the slider it won't advance the music.
+       OBS: In rare cases, the music stucks at the maximum - 1 ms. */
+    if(slider_music->value() >= slider_music->maximum()-1 && Fl::pushed() != slider_music)
     {
         cb_next(0, 0);
         return;
@@ -626,9 +617,8 @@ void timer_check_music(void*)
     box_current_time->copy_label(formatTime(sound->getPosition()));
     box_current_time->redraw();
 
-    if(Fl::event_buttons()) return;
-
-    slider_music->value(sound->getPosition());
+    if(Fl::pushed() != slider_music)
+        slider_music->value(sound->getPosition());
 }
 
 void save_config()
@@ -760,6 +750,23 @@ void load_config()
     choice_search_type->redraw();
 
     closeDB();
+}
+
+void load_icons()
+{
+    //TODO : IN CASE OF FAIL(!img->w()), LOAD A XPM
+    icon_play = new Fl_PNG_Image("img/icon_play.png");
+    icon_pause = new Fl_PNG_Image("img/icon_pause.png");
+    icon_stop = new Fl_PNG_Image("img/icon_stop.png");
+    icon_next = new Fl_PNG_Image("img/icon_next.png");
+    icon_previous = new Fl_PNG_Image("img/icon_previous.png");
+    icon_sync = new Fl_PNG_Image("img/icon_sync.png");
+    icon_search = new Fl_PNG_Image("img/icon_search.png");
+    icon_clear = new Fl_PNG_Image("img/icon_clear.png");
+    icon_random_enabled = new Fl_PNG_Image("img/icon_random_enabled.png");
+    icon_random_disabled = new Fl_PNG_Image("img/icon_random_disabled.png");
+    icon_settings = new Fl_PNG_Image("img/icon_settings.png");
+    icon_about = new Fl_PNG_Image("img/icon_about.png");
 }
 
 void update_playlist(vector<Music> * l)
