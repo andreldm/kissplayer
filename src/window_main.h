@@ -37,6 +37,7 @@ extern Sound *sound;
 
 extern bool     FLAG_RANDOM;
 extern int      FLAG_SEARCH_TYPE;
+extern bool      FLAG_NO_LYRICS;
 extern float    INITIAL_VOLUME;
 
 // EXPORTEDS

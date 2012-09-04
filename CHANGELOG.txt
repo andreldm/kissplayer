@@ -1,5 +1,6 @@
 v 0.5.6 - 03/09/2012:
 - Native Directory Chooser for Windows
+- Option to turn off lyrics fetch
 - Some code refactoring
 
 v 0.5.5 - 20/07/2012:

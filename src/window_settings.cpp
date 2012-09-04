@@ -6,6 +6,7 @@
 
 //LOCAL WIDGETS
 Fl_Window *window_settings;
+Fl_Check_Button *button_settings_no_lyrics;
 Fl_Button *button_settings_background_color;
 Fl_Button *button_settings_selection_color;
 Fl_Button *button_settings_text_color;
@@ -14,6 +15,7 @@ Fl_Button *button_settings_close;
 Fl_Button *button_settings_add;
 Fl_Button *button_settings_remove;
 Fl_Select_Browser *browser_settings_directories;
+Fl_Group *group_settings_appearance;
 Fl_Group *group_settings_general;
 Fl_Group *group_settings_directories;
 
@@ -32,12 +34,13 @@ void cb_settings_background_color(Fl_Widget*, void*);
 void cb_settings_selection_color(Fl_Widget*, void*);
 void cb_settings_text_color(Fl_Widget*, void*);
 void cb_settings_default_colors(Fl_Widget*, void*);
+void cb_settings_no_lyrics(Fl_Widget*, void*);
 
 Fl_Window* make_window_settings()
 {
     //To place the window at the center of the screen
     int window_w = 450;
-    int window_h = 325;
+    int window_h = 340;
     int screen_w = Fl::w();
     int screen_h = Fl::h();
     int window_x = (screen_w/2)-(window_w/2);
@@ -47,10 +50,26 @@ Fl_Window* make_window_settings()
 
     //GENERAL GROUP AND ITS WIDGETS
     int group_offset = 22;
-    group_settings_general = new Fl_Group(5, group_offset, window_w - 10, 70, "General");
+
+    group_settings_general = new Fl_Group(5, group_offset, window_w - 10, 30, "General");
     group_settings_general->align(FL_ALIGN_TOP_LEFT);
     group_settings_general->box(FL_UP_FRAME);
     group_settings_general->begin();
+
+    button_settings_no_lyrics = new Fl_Check_Button(15, group_offset, 32, 32, "No Lyrics");
+    button_settings_no_lyrics->value(FLAG_NO_LYRICS);
+    button_settings_no_lyrics->clear_visible_focus();
+    button_settings_no_lyrics->callback((Fl_Callback*)cb_settings_no_lyrics);
+
+    group_settings_general->end();
+
+    //APPEARANCE GROUP AND ITS WIDGETS
+    group_offset = 75;
+
+    group_settings_appearance = new Fl_Group(5, group_offset, window_w - 10, 30, "Appearance");
+    group_settings_appearance->align(FL_ALIGN_TOP_LEFT);
+    group_settings_appearance->box(FL_UP_FRAME);
+    group_settings_appearance->begin();
 
     button_settings_background_color = new Fl_Button(115, group_offset + 5, 16, 16, "Background Color:");
     button_settings_background_color->box(FL_DOWN_BOX);
@@ -81,10 +100,10 @@ Fl_Window* make_window_settings()
     button_settings_default_colors->clear_visible_focus();
     button_settings_default_colors->callback((Fl_Callback*)cb_settings_default_colors);
 
-    group_settings_general->end();
+    group_settings_appearance->end();
 
     //DIRECTORIES GROUP AND ITS WIDGETS
-    group_offset = 120;
+    group_offset = 135;
     group_settings_directories = new Fl_Group(5, group_offset, window_w - 10, 162, "Directories");
     group_settings_directories->align(FL_ALIGN_TOP_LEFT);
     group_settings_directories->box(FL_UP_FRAME);
@@ -206,6 +225,10 @@ void cb_settings_default_colors(Fl_Widget* widget, void*)
     lyrics_pane->redraw();
     input_search->redraw();
     choice_search_type->redraw();
+}
+void cb_settings_no_lyrics(Fl_Widget* widget, void*)
+{
+    FLAG_NO_LYRICS = !FLAG_NO_LYRICS;
 }
 
 Fl_Color edit_color(Fl_Color val)

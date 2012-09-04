@@ -566,8 +566,11 @@ void play_music()
     slider_music->copy_label(formatTime(sound->getLength()));
     slider_music->maximum(sound->getLength());
     slider_music->value(0);
-    fetch_lyrics(lyrics_text_buffer, listMusic->at(musicIndex).artist, listMusic->at(musicIndex).title);
-    lyrics_pane->scroll(0,0);
+    if(!FLAG_NO_LYRICS)
+    {
+        fetch_lyrics(lyrics_text_buffer, listMusic->at(musicIndex).artist, listMusic->at(musicIndex).title);
+        lyrics_pane->scroll(0,0);
+    }
 }
 
 void timer_title_scrolling(void*)
@@ -627,7 +630,7 @@ void save_config()
 
     // TODO: On Windows, when the window is minimized its location becomes -32000, -32000.
     //       We need to save the location before it becomes minimized.
-    if(window_main->x() > 0)
+    if(window_main->x() >= 0)
     {
         setKey("window_main_x", intToString(window_main->x()));
         setKey("window_main_y", intToString(window_main->y()));
@@ -655,6 +658,8 @@ void save_config()
     setKey("color_selection", intToString(browser_music->color2()));
 
     setKey("color_text", intToString(browser_music->textcolor()));
+
+    setKey("no_lyrics", intToString(FLAG_NO_LYRICS));
 
     commitTransaction();
 }
@@ -689,7 +694,9 @@ void load_config()
     int random = stringToInt(getKey("random_button"));
     if(random != -1)
     {
+        // It should be inverted, because
         FLAG_RANDOM = !random;
+        // here we toggle the Random Button :D
         cb_random(NULL, 0);
     }
 
@@ -707,6 +714,13 @@ void load_config()
         FLAG_SEARCH_TYPE = search_type;
         choice_search_type->value(FLAG_SEARCH_TYPE);
         cb_search(NULL, 0);
+    }
+
+    // SET NO LYRICS FLAG
+    int no_lyrics = stringToInt(getKey("no_lyrics"));
+    if(no_lyrics != -1)
+    {
+        FLAG_NO_LYRICS = no_lyrics;
     }
 
     // SET MUSIC INDEX

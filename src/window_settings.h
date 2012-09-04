@@ -8,6 +8,7 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Select_Browser.H>
 #include <FL/Fl_Button.H>
+#include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Color_Chooser.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Input.H>

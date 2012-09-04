@@ -20,6 +20,7 @@ Fl_Double_Window*   window_main;
 bool                FLAG_CANCEL_SYNC;
 bool                FLAG_LIST_CHANGED;
 bool                FLAG_RANDOM;
+bool                FLAG_NO_LYRICS;
 int                 FLAG_SEARCH_TYPE;
 
 int main(int argc, char **argv)
