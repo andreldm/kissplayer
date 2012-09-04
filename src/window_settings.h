@@ -6,7 +6,6 @@
 
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
-#include <FL/Fl_File_Chooser.H>
 #include <FL/Fl_Select_Browser.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Color_Chooser.H>
@@ -17,6 +16,14 @@
 #include "dao.h"
 #include "name_cod.h"
 #include "misc.h"
+
+#ifdef WIN32
+#include "win/windows_specific.h"
+#endif
+
+#ifdef __linux__
+#include "linux/linux_specific.h"
+#endif
 
 //GLOBALS
 extern Fl_Window *window_settings;

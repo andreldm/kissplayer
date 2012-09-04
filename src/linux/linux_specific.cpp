@@ -25,3 +25,10 @@ void init_os_specific(Fl_Window *window)
 }
 
 void end_os_specific(){ }
+
+char * native_dir_chooser()
+{
+    // For now, use the FLTK directory chooser
+	// TODO: Use GTK+ native.
+	return fl_dir_chooser("Select a folder", NULL);
+}

@@ -12,6 +12,9 @@
 #include "mingw_fix.h"
 #include "../window_main.h"
 
+#define _WIN32_IE	0x0500
+#include <shlobj.h>
+
 #define     APP_ICON					0
 #define     ID_THUMBNAIL_BUTTON1		40002
 #define     ID_THUMBNAIL_BUTTON2        40003
@@ -21,6 +24,10 @@
 void set_app_icon(Fl_Window *window);
 void init_os_specific(Fl_Window *window);
 void end_os_specific();
+TCHAR *native_dir_chooser();
+
+wchar_t *CodePageToUnicode(int codePage, const char *src);
+char *UnicodeToCodePage(int codePage, const wchar_t *src);
 
 int windows_event_handler(int e);
 

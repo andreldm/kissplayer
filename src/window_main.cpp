@@ -263,7 +263,7 @@ void cb_toggle_play(Fl_Widget* widget, void*)
         //It has to be done before the togglePause
         if(sound->isPlaying())
         {
-            window_main->label("Kiss Player - Paused");
+            window_main->label("KISS Player - Paused");
             button_play->image(icon_play);
             button_play->redraw();
 #ifdef WIN32
@@ -735,6 +735,13 @@ void load_config()
     int color_selection = stringToInt(getKey("color_selection"));
     int color_text = stringToInt(getKey("color_text"));
 
+    if(color_background == -1)
+        color_background = DEFAULT_BACKGROUND_COLOR;
+    if(color_selection == -1)
+        color_selection = FL_SELECTION_COLOR;
+    if(color_text == -1)
+        color_text = FL_FOREGROUND_COLOR;
+
     browser_music->color(color_background);
     browser_music->color2(color_selection);
     lyrics_pane->color(color_background);
@@ -754,7 +761,7 @@ void load_config()
 
 void load_icons()
 {
-    //TODO : IN CASE OF FAIL(!img->w()), LOAD A XPM
+    //TODO : IN CASE OF FAILURE(!img->w()), LOAD A XPM
     icon_play = new Fl_PNG_Image("img/icon_play.png");
     icon_pause = new Fl_PNG_Image("img/icon_pause.png");
     icon_stop = new Fl_PNG_Image("img/icon_stop.png");

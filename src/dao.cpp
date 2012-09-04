@@ -321,9 +321,6 @@ vector<Music> *searchMusics(const char *text)
     return listMusics;
 }
 
-/**
-* On Windows, we have to convert from SQLite's Encoding (UTF-8, 65001) to CP-1252
-*/
 vector<NameCod *> *getAllDirectories()
 {
     openDB();
@@ -337,13 +334,8 @@ vector<NameCod *> *getAllDirectories()
         NameCod *nc = new NameCod();
         nc->cod = cod;
 
-#if defined WIN32
-        wchar_t *wText = CodePageToUnicode(65001, dir);
-        char *ansiText = UnicodeToCodePage(1252, wText);
-        nc->name = ansiText;
-#else
         nc->name = dir;
-#endif
+
         listDiretorios->push_back(nc);
     }
 

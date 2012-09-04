@@ -62,12 +62,4 @@ string floatToString(float value);
 
 extern bool     FLAG_CANCEL_SYNC;
 
-#if defined WIN32
-
-#include <windows.h>
-wchar_t *CodePageToUnicode(int codePage, const char *src);
-char *UnicodeToCodePage(int codePage, const wchar_t *src);
-
-#endif //WIN32
-
 #endif //misc_h

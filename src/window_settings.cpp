@@ -26,8 +26,8 @@ Fl_Color edit_color(Fl_Color val);
 
 //LOCAL CALLBACKS
 void cb_settings_close(Fl_Widget*, void*);
-void cb_settings_add(Fl_Widget*, void*);
-void cb_settings_remove(Fl_Widget*, void*);
+void cb_settings_add_dir(Fl_Widget*, void*);
+void cb_settings_remove_dir(Fl_Widget*, void*);
 void cb_settings_background_color(Fl_Widget*, void*);
 void cb_settings_selection_color(Fl_Widget*, void*);
 void cb_settings_text_color(Fl_Widget*, void*);
@@ -95,10 +95,10 @@ Fl_Window* make_window_settings()
     browser_settings_directories->type(FL_HOLD_BROWSER);
 
     button_settings_add = new Fl_Button(10, group_offset + 130, 40, 25, "Add");
-    button_settings_add->callback((Fl_Callback*)cb_settings_add);
+    button_settings_add->callback((Fl_Callback*)cb_settings_add_dir);
 
     button_settings_remove = new Fl_Button(55, group_offset + 130, 65, 25, "Remove");
-    button_settings_remove->callback((Fl_Callback*)cb_settings_remove);
+    button_settings_remove->callback((Fl_Callback*)cb_settings_remove_dir);
 
     group_settings_directories->end();
 
@@ -121,17 +121,18 @@ void cb_settings_close(Fl_Widget* widget, void*)
     window_settings->~Fl_Window();
 }
 
-void cb_settings_add(Fl_Widget* widget, void*)
+void cb_settings_add_dir(Fl_Widget* widget, void*)
 {
-    char * dir = fl_dir_chooser("Choose a directory", NULL);
+    const char *dir = native_dir_chooser();
     if(dir != NULL)//If the user didn't cancel;
     {
         insertDirectory(dir);
         update_dir_list();
     }
+    delete[] dir;
 }
 
-void cb_settings_remove(Fl_Widget* widget, void*)
+void cb_settings_remove_dir(Fl_Widget* widget, void*)
 {
     int index = browser_settings_directories->value();
     if(index <= 0) return;

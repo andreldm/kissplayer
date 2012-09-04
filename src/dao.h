@@ -11,6 +11,9 @@
 #include "music.h"
 #include "name_cod.h"
 #include "misc.h"
+#ifdef WIN32
+    #include "win/windows_specific.h"
+#endif
 
 using namespace std;
 

@@ -11,6 +11,7 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Dial.H>
 #include <FL/Fl_Choice.H>
+#include <FL/Fl_Tile.H>
 #include <FL/Fl_Menu_Item.H>
 #include <FL/Fl_Toggle_Button.H>
 #include <FL/Fl_Button.H>
