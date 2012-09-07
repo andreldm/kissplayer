@@ -1,8 +1,8 @@
 #define APP_ICON 0
 #define ID_THUMBNAIL_BUTTONS_IMG 41001
 
-APP_ICON                    ICON DISCARDABLE    "img/kiss.ico"
-ID_THUMBNAIL_BUTTONS_IMG    BITMAP		        "img/img_thumb_buttons.bmp"
+APP_ICON                    ICON DISCARDABLE    "../../img/kiss.ico"
+ID_THUMBNAIL_BUTTONS_IMG    BITMAP		        "../../img/img_thumb_buttons.bmp"
 
 1       VERSIONINFO
 FILEVERSION     1,0,0,0

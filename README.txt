@@ -19,15 +19,23 @@ WEB SITE
 
   Visit the KISS Player project web site for the latest news and downloads:
     https://sourceforge.net/projects/kissplayer/
-		
+
+HOW TO USE
+
+	First you should have your songs on one or more directories.
+	Open KISS Player and click the settings button(with the gear icon).
+	Add your directory(ies) and close the settings window.
+	On the main window, click the synchronize button.
+	Now you can play your songs which are avaliable on the left panel.
+	
 BUILDING
+
   Firstly, take a look at https://sourceforge.net/p/kissplayer/wiki/Dependencies/
   Once you have all the dependecies properly installed, you have two options:
   1. Use the Code::Blocks IDE
   2. Use the Makefiles
     2a. On Linux: make -f makefile.linux
-    2b. On Windows(MinGW): mingw32-make -f makefile.win 
-  
+    2b. On Windows(MinGW): mingw32-make -f makefile.win
 
 MERCURIAL
 
@@ -36,7 +44,7 @@ MERCURIAL
 	
 COPYRIGHT
 	KISS Player
-    Copyright (C) 2012  André Miranda
+    Copyright (C) 2012 by André Miranda
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

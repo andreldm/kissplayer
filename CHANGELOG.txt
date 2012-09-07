@@ -1,3 +1,8 @@
+v 0.5.7 - 07/09/2012:
+- Add 'HOW TO USE' on README.txt
+- Fixed Bug #1
+- Fixed Windows Makefile
+
 v 0.5.6 - 03/09/2012:
 - Native Directory Chooser for Windows
 - Option to turn off lyrics fetch

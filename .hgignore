@@ -3,6 +3,7 @@ obj/
 bin/
 
 syntax: glob
+NOTES.txt
 *.exe
 *.s3db
 *.dll
