@@ -358,8 +358,8 @@ void cb_music_browser(Fl_Widget* widget, void*)
 {
     if(Fl::event_clicks() > 0 && Fl::event_button() == FL_LEFT_MOUSE)
     {
-        if(browser_music->size() == 0) return;
-        musicIndex = browser_music->value()-1;
+        if(browser_music->value() == 0) return;
+        musicIndex = browser_music->value() - 1;
         play_music();
     }
 }
