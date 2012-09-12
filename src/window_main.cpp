@@ -46,6 +46,7 @@ void timer_check_music(void*);
 void save_config();
 void load_config();
 void load_icons();
+bool hasNextMusic();
 int main_handler(int, Fl_Window *);
 
 //LOCAL CALLBACKS
@@ -312,8 +313,6 @@ void cb_previous(Fl_Widget* widget, void*)
         if(musicIndexRandom >= 1)
         {
             musicIndex = listRandom->at(--musicIndexRandom);
-            cout << "musicIndex = "<< musicIndex<< endl;
-            cout << "musicIndexRandom = "<< musicIndexRandom<< endl;
             play_music();
         }
     }
@@ -322,36 +321,25 @@ void cb_previous(Fl_Widget* widget, void*)
         musicIndex--;
         play_music();
     }
+    cout << "musicIndex = "<< musicIndex<< endl;
+    cout << "musicIndexRandom = "<< musicIndexRandom<< endl;
 }
 
 void cb_next(Fl_Widget* widget, void*)
 {
-    if(listMusic->empty()) return; //If there's no music on the list, do not continue
-    if(sound->getSound() == false) return; //If there's no music playing, do not continue
-
-    if(FLAG_RANDOM)
+    if(hasNextMusic())
     {
-        // '-1' is the beginning of the playlist
-        if(musicIndexRandom == -1 || musicIndexRandom + 2 <= listRandom->size())
-        {
+        if(FLAG_RANDOM)
             musicIndex = listRandom->at(++musicIndexRandom);
-            play_music();
-        }
-    }
-    else if(musicIndex + 2 <= listMusic->size())
-    {
-        musicIndex++;
+        else
+            musicIndex++;
+
         play_music();
     }
-    else if(widget == 0) //widget == 0, means it wasn't activated by the user.
-    {
-        cb_stop(0, 0);
-    }
-
-    //cout << "\n\nmusicIndex = "<< musicIndex;
-    //cout << "\nmusicIndexRandom = "<< musicIndexRandom;
-    //cout << "\nlistMusic->size() = "<< listMusic->size();
-    //cout << "\nFLAG_RANDOM = "<< FLAG_RANDOM;
+    cout << "\n\nmusicIndex = "<< musicIndex;
+    cout << "\nmusicIndexRandom = "<< musicIndexRandom;
+    cout << "\nlistMusic->size() = "<< listMusic->size();
+    cout << "\nFLAG_RANDOM = "<< FLAG_RANDOM;
 }
 
 void cb_music_browser(Fl_Widget* widget, void*)
@@ -457,9 +445,9 @@ int main_handler(int e, Fl_Window *w)
         sound->setVolume(volume);
     }
 
-    //MULTIMIDIA/VOLUME KEYS
     if(e == FL_KEYDOWN)
     {
+        // Increase Volume
         if(Fl::event_original_key() == FL_Volume_Down)
         {
             float v = dial_volume->value() - 0.05f;
@@ -468,6 +456,8 @@ int main_handler(int e, Fl_Window *w)
             sound->setVolume(v);
             return 0;
         }
+
+        // Decrease Volume
         else if(Fl::event_original_key() == FL_Volume_Up)
         {
             float v = dial_volume->value() + 0.05f;
@@ -491,6 +481,7 @@ int main_handler(int e, Fl_Window *w)
         else if(Fl::event_original_key() == FL_Media_Next)
             button_next->do_callback();
 #endif
+        // Go 5s foward
         if(Fl::event_original_key() == FL_Right)
         {
             if(Fl::belowmouse() != NULL && Fl::belowmouse() == input_search)
@@ -506,6 +497,8 @@ int main_handler(int e, Fl_Window *w)
 
             return 1;
         }
+
+        // Go 5s backward
         else if(Fl::event_original_key() == FL_Left)
         {
             if(Fl::belowmouse() != NULL && Fl::belowmouse() == input_search)
@@ -604,7 +597,10 @@ void timer_check_music(void*)
        OBS: In rare cases, the music stucks at the maximum - 1 ms. */
     if(slider_music->value() >= slider_music->maximum()-1 && Fl::pushed() != slider_music)
     {
-        cb_next(0, 0);
+        if(hasNextMusic())
+            cb_next(NULL, 0);
+        else
+            cb_stop(NULL, 0);
         return;
     }
 
@@ -779,6 +775,27 @@ void load_icons()
     icon_random_disabled = new Fl_PNG_Image("img/icon_random_disabled.png");
     icon_settings = new Fl_PNG_Image("img/icon_settings.png");
     icon_about = new Fl_PNG_Image("img/icon_about.png");
+}
+
+bool hasNextMusic()
+{
+    // There's no music on the list or no music playing
+    if(listMusic->empty() || !sound->getSound())
+        return false;
+
+    // Randomize is ON
+    // '-1' is the beginning of the playlist
+    if(FLAG_RANDOM)
+    {
+        if(musicIndexRandom == -1 || musicIndexRandom + 2 <= listRandom->size())
+            return true;
+    }
+
+    // Randomize is OFF
+    else if(musicIndex + 2 <= listMusic->size())
+        return true;
+
+    return false;
 }
 
 void update_playlist(vector<Music> * l)
