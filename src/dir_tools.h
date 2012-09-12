@@ -1,7 +1,6 @@
 #ifndef dir_tools_h
 #define dir_tools_h
 
-#include <string>
 #include <stdio.h>
 #include <string.h>
 #include <sstream>
@@ -17,6 +16,5 @@ using namespace std;
 string getCurrentDirectory();
 vector<string> travelDirectory(string directory);
 void travelDirectoryRecursive(string directory, vector<string> *fullList);
-
 
 #endif

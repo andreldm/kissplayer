@@ -28,22 +28,19 @@
 #include "dao.h"
 #include "misc.h"
 
-#ifdef WIN32
-    #include "win/windows_specific.h"
-#endif
-
 //GLOBALS
 extern Sound *sound;
 
 extern bool     FLAG_RANDOM;
 extern int      FLAG_SEARCH_TYPE;
-extern bool      FLAG_NO_LYRICS;
+extern bool     FLAG_NO_LYRICS;
 extern float    INITIAL_VOLUME;
 
 // EXPORTEDS
 Fl_Double_Window* make_window_main();
+void cb_toggle_play(Fl_Widget*, void*);
+void cb_stop(Fl_Widget*, void*);
 void cb_next(Fl_Widget*, void*);
 void cb_previous(Fl_Widget*, void*);
-void cb_toggle_play(Fl_Widget*, void*);
 
 #endif

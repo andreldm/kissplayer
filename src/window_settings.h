@@ -35,5 +35,6 @@ extern Fl_Select_Browser *browser_music;
 extern Fl_Text_Display *lyrics_pane;
 extern Fl_Input *input_search;
 extern Fl_Choice *choice_search_type;
+extern bool FLAG_NO_LYRICS;
 
 #endif

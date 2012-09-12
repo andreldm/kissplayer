@@ -56,7 +56,7 @@ void synchronizeLibrary()
     {
         fl_beep();
         fl_message_title("Warning");
-        fl_message("Please, add at least one directory on the Directory Manager.");
+        fl_message("Please, add at least one directory on the Settings Window.");
         delete listDir;
         return;
     }

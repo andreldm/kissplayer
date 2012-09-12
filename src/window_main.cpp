@@ -480,7 +480,7 @@ int main_handler(int e, Fl_Window *w)
 
     if(e == FL_KEYUP)
     {
-        //FOR LINUX! On Windows we use the GetAsyncKeyState for handling
+        //FOR LINUX! On Windows we use keyboard hook
 #ifdef __linux__
         if(Fl::event_original_key() == FL_Media_Play)
             button_play->do_callback();
@@ -593,16 +593,6 @@ void timer_title_scrolling(void*)
 void timer_check_music(void*)
 {
     Fl::repeat_timeout(0.25, timer_check_music);
-#ifdef WIN32
-    if(GetAsyncKeyState(0xB3)) // VK_MEDIA_PLAY_PAUSE
-        button_play->do_callback();
-    if(GetAsyncKeyState(0xB2)) // VK_MEDIA_STOP
-        button_stop->do_callback();
-    if(GetAsyncKeyState(0xB1)) // VK_MEDIA_PREV_TRACK
-        button_previous->do_callback();
-    if(GetAsyncKeyState(0xB0)) // VK_MEDIA_NEXT_TRACK
-        button_next->do_callback();
-#endif
 
     //If there's no music playing, do not continue
     if(sound->getSound() == false)
@@ -632,10 +622,10 @@ void save_config()
     // TODO: On Windows, when the window is minimized its location becomes -32000, -32000.
     //       We need to save the location before it becomes minimized.
     if(window_main->x() >= 0)
-    {
         setKey("window_main_x", intToString(window_main->x()));
+
+    if(window_main->y() >= 0)
         setKey("window_main_y", intToString(window_main->y()));
-    }
 
     setKey("window_main_width", intToString(window_main->w()));
     setKey("window_main_height", intToString(window_main->h()));

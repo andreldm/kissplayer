@@ -21,6 +21,22 @@
 #define     ID_THUMBNAIL_BUTTON3        40004
 #define     ID_THUMBNAIL_BUTTONS_IMG	41001
 
+#ifndef VK_MEDIA_PLAY_PAUSE
+    #define VK_MEDIA_PLAY_PAUSE     0xB3
+#endif
+
+#ifndef VK_MEDIA_STOP
+    #define VK_MEDIA_STOP           0xB2
+#endif
+
+#ifndef VK_MEDIA_PREV_TRACK
+    #define VK_MEDIA_PREV_TRACK     0xB1
+#endif
+
+#ifndef VK_MEDIA_NEXT_TRACK
+    #define VK_MEDIA_NEXT_TRACK     0xB0
+#endif
+
 void set_app_icon(Fl_Window *window);
 void init_os_specific(Fl_Window *window);
 void end_os_specific();
