@@ -37,6 +37,7 @@ int windowTitlePosition;
 int musicIndex;
 int musicIndexRandom;
 string lastSearch;
+bool doNotLoadLastSearch;
 
 //LOCAL FUNCTIONS
 void play_music();
@@ -80,9 +81,9 @@ Fl_Image *icon_random_disabled;
 Fl_Image *icon_settings;
 Fl_Image *icon_about;
 
-Fl_Double_Window* make_window_main()
+Fl_Double_Window* make_window_main(int argc, char **argv)
 {
-    //To place the window at the center of the screen
+    // To place the window at the center of the screen
     int window_w = 420;
     int window_h = 370;
     int screen_w = Fl::w();
@@ -94,10 +95,10 @@ Fl_Double_Window* make_window_main()
     window_main->size_range(window_w, window_h);
     window_main->callback((Fl_Callback*)cb_close_window);
 
-    //LOAD ICONS FOR BUTTONS
+    // LOAD ICONS FOR BUTTONS
     load_icons();
 
-    //SEARCH GROUP AND ITS WIDGETS
+    // SEARCH GROUP AND ITS WIDGETS
     group_search = new Fl_Group(5, 5, 410, 30);
     group_search->box(FL_UP_FRAME);
     group_search->begin();
@@ -127,7 +128,7 @@ Fl_Double_Window* make_window_main()
     group_search->resizable(input_search);
     group_search->end();
 
-    //CENTER TILE AND ITS WIDGETS
+    // CENTER TILE AND ITS WIDGETS
     tile_center = new Fl_Tile(5, 40, 410, 230);
     tile_center->begin();
 
@@ -152,7 +153,7 @@ Fl_Double_Window* make_window_main()
     tile_center->box(FL_DOWN_BOX);
     tile_center->end();
 
-    //CONTROLS GROUP AND ITS WIDGETS
+    // CONTROLS GROUP AND ITS WIDGETS
     group_controls = new Fl_Group(5, 275, 410, 90);
     group_controls->box(FL_UP_FRAME);
     group_controls->begin();
@@ -215,7 +216,7 @@ Fl_Double_Window* make_window_main()
     button_about->tooltip("About");
     button_about->callback(cb_about);
 
-    //It won't be visible, it's just for the resize work nicely
+    // It won't be visible, it's just for the resize work nicely
     Fl_Button *scape_goat = new Fl_Button(330, 330, 10, 10);
     scape_goat->hide();
 
@@ -226,9 +227,22 @@ Fl_Double_Window* make_window_main()
     group_controls->resizable(scape_goat);
     group_controls->end();
 
-    //END OF WIDGET'S SETUP
+    // END OF WIDGET'S SETUP
 
-    update_playlist(getAllMusics());
+    // Check for music files on arguments
+    listMusic = parseArgs(argc, argv);
+
+    // If there is one or more on music files as argument, display it/them
+    if(listMusic != NULL && listMusic->size() > 0)
+    {
+        for(int i = 0; i < listMusic->size(); i++)
+        {
+            Music m = listMusic->at(i);
+            browser_music->add(m.getDesc().c_str());
+        }
+        doNotLoadLastSearch = true;
+        randomize(&listRandom, listMusic->size());
+    }
 
     Fl::event_dispatch(main_handler);
 
@@ -560,10 +574,14 @@ void play_music()
     slider_music->copy_label(formatTime(sound->getLength()));
     slider_music->maximum(sound->getLength());
     slider_music->value(0);
-    if(!FLAG_NO_LYRICS)
+    if(FLAG_LYRICS)
     {
         fetch_lyrics(lyrics_text_buffer, listMusic->at(musicIndex).artist, listMusic->at(musicIndex).title);
         lyrics_pane->scroll(0,0);
+    }
+    else
+    {
+        lyrics_text_buffer->text("");
     }
 }
 
@@ -646,7 +664,7 @@ void save_config()
 
     setKey("color_text", intToString(browser_music->textcolor()));
 
-    setKey("no_lyrics", intToString(FLAG_NO_LYRICS));
+    setKey("lyrics", intToString(FLAG_LYRICS));
 
     commitTransaction();
 }
@@ -687,27 +705,38 @@ void load_config()
         cb_random(NULL, 0);
     }
 
-    // SET SEARCH STRING
-    string search_input = getKey("search_input");
-    if(!search_input.empty())
-    {
-        input_search->value(search_input.c_str());
-    }
-
     // SET SEARCH TYPE
     int search_type = stringToInt(getKey("search_type"));
     if(search_type != -1)
     {
         FLAG_SEARCH_TYPE = search_type;
         choice_search_type->value(FLAG_SEARCH_TYPE);
-        cb_search(NULL, 0);
     }
 
-    // SET NO LYRICS FLAG
-    int no_lyrics = stringToInt(getKey("no_lyrics"));
-    if(no_lyrics != -1)
+    // SET SEARCH STRING
+    string search_input = getKey("search_input");
+    if(!search_input.empty())
     {
-        FLAG_NO_LYRICS = no_lyrics;
+        input_search->value(search_input.c_str());
+        if(!doNotLoadLastSearch)
+            cb_search(NULL, 0);
+    }
+    // If the search string is empty, load all the musics
+    else if(!doNotLoadLastSearch)
+    {
+        update_playlist(getAllMusics());
+    }
+
+
+    // SET LYRICS FLAG
+    int lyrics = stringToInt(getKey("lyrics"));
+    if(lyrics != -1)
+    {
+        FLAG_LYRICS = lyrics;
+    }
+    else
+    {
+        FLAG_LYRICS = true;
     }
 
     // SET MUSIC INDEX
@@ -762,19 +791,28 @@ void load_config()
 
 void load_icons()
 {
+    #define _loadIcon(icon, file) fullpath = path+"img"+FILE_SEPARATOR+file; \
+    icon = new Fl_PNG_Image(fullpath.c_str());
+
+    string path = getWorkingDirectory();
+    string fullpath;
+
     //TODO : IN CASE OF FAILURE(!img->w()), LOAD A XPM
-    icon_play = new Fl_PNG_Image("img/icon_play.png");
-    icon_pause = new Fl_PNG_Image("img/icon_pause.png");
-    icon_stop = new Fl_PNG_Image("img/icon_stop.png");
-    icon_next = new Fl_PNG_Image("img/icon_next.png");
-    icon_previous = new Fl_PNG_Image("img/icon_previous.png");
-    icon_sync = new Fl_PNG_Image("img/icon_sync.png");
-    icon_search = new Fl_PNG_Image("img/icon_search.png");
-    icon_clear = new Fl_PNG_Image("img/icon_clear.png");
-    icon_random_enabled = new Fl_PNG_Image("img/icon_random_enabled.png");
-    icon_random_disabled = new Fl_PNG_Image("img/icon_random_disabled.png");
-    icon_settings = new Fl_PNG_Image("img/icon_settings.png");
-    icon_about = new Fl_PNG_Image("img/icon_about.png");
+
+    _loadIcon(icon_play, "icon_play.png");
+    _loadIcon(icon_pause, "icon_pause.png");
+    _loadIcon(icon_stop, "icon_stop.png");
+    _loadIcon(icon_next, "icon_next.png");
+    _loadIcon(icon_previous, "icon_previous.png");
+    _loadIcon(icon_sync, "icon_sync.png");
+    _loadIcon(icon_search, "icon_search.png");
+    _loadIcon(icon_clear, "icon_clear.png");
+    _loadIcon(icon_random_enabled, "icon_random_enabled.png");
+    _loadIcon(icon_random_disabled, "icon_random_disabled.png");
+    _loadIcon(icon_settings, "icon_settings.png");
+    _loadIcon(icon_about, "icon_about.png");
+
+    #undef _loadIcon
 }
 
 bool hasNextMusic()

@@ -1,3 +1,10 @@
+v 0.5.8 - 14/09/2012:
+- On Windows, the database and image folder are now fixed to the executable path, not the execution path
+- On Linux, the database and image are now fixed to "$HOME/.kissplayer/"
+- Changed the "No Lyrics" option to "Display Lyrics"
+- Now the program parse the arguments in order to play music files
+- Small fixes 
+
 v 0.5.7 - 07/09/2012:
 - Add 'HOW TO USE' on README.txt
 - Fixed Bug #1

@@ -44,12 +44,13 @@
 
 #define KISS_MAJOR_VERSION 0
 #define KISS_MINOR_VERSION 5
-#define KISS_PATCH_VERSION 7
+#define KISS_PATCH_VERSION 8
 
 #define DEFAULT_BACKGROUND_COLOR 0xDDEEFF00
 
 using namespace std;
 
+vector<Music> *parseArgs(int argc, char **argv);
 void trim(string &str);
 const char *formatTime(int secs);
 void randomize(vector<int> **, int);

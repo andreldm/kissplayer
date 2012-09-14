@@ -26,6 +26,14 @@ void init_os_specific(Fl_Window *window)
 
 void end_os_specific(){ }
 
+string getWorkingDirectory()
+{
+	struct passwd *pw = getpwuid(getuid());
+    string path = pw->pw_dir;
+    path.append("/.kissplayer/");
+	return path;
+}
+
 char * native_dir_chooser()
 {
     // For now, use the FLTK directory chooser

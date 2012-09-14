@@ -15,6 +15,8 @@
 #define _WIN32_IE	0x0500
 #include <shlobj.h>
 
+#define FILE_SEPARATOR "\\"
+
 #define     APP_ICON					0
 #define     ID_THUMBNAIL_BUTTON1		40002
 #define     ID_THUMBNAIL_BUTTON2        40003
@@ -40,6 +42,7 @@
 void set_app_icon(Fl_Window *window);
 void init_os_specific(Fl_Window *window);
 void end_os_specific();
+string getWorkingDirectory();
 TCHAR *native_dir_chooser();
 
 wchar_t *CodePageToUnicode(int codePage, const char *src);

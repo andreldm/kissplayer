@@ -1,8 +1,6 @@
 #ifndef dao_h
 #define dao_h
 
-#define DB_NAME "db.s3db"
-
 #include <sqlite3.h>
 #include <string>
 #include <iostream>
@@ -11,8 +9,13 @@
 #include "music.h"
 #include "name_cod.h"
 #include "misc.h"
+
 #ifdef WIN32
-    #include "win/windows_specific.h"
+#include "win/windows_specific.h"
+#endif
+
+#ifdef __linux__
+#include "linux/linux_specific.h"
 #endif
 
 using namespace std;

@@ -1,5 +1,7 @@
 #include "dao.h"
 
+string DB_NAME = "db.s3db";
+
 sqlite3 *db;
 char *ErrMsg = 0;
 sqlite3_stmt *stmt;
@@ -14,7 +16,7 @@ void print_errors()
 
 void openDB()
 {
-    sqlite3_open(DB_NAME, &db);
+    sqlite3_open(DB_NAME.c_str(), &db);
 }
 
 void closeDB()
@@ -39,6 +41,9 @@ void commitTransaction()
 
 void startDB()
 {
+    DB_NAME = getWorkingDirectory();
+    DB_NAME.append("db.s3db");
+
     openDB();
     const char *query;
 

@@ -6,7 +6,7 @@
 
 //LOCAL WIDGETS
 Fl_Window *window_settings;
-Fl_Check_Button *button_settings_no_lyrics;
+Fl_Check_Button *button_settings_lyrics;
 Fl_Button *button_settings_background_color;
 Fl_Button *button_settings_selection_color;
 Fl_Button *button_settings_text_color;
@@ -34,7 +34,7 @@ void cb_settings_background_color(Fl_Widget*, void*);
 void cb_settings_selection_color(Fl_Widget*, void*);
 void cb_settings_text_color(Fl_Widget*, void*);
 void cb_settings_default_colors(Fl_Widget*, void*);
-void cb_settings_no_lyrics(Fl_Widget*, void*);
+void cb_settings_lyrics(Fl_Widget*, void*);
 
 Fl_Window* make_window_settings()
 {
@@ -56,10 +56,10 @@ Fl_Window* make_window_settings()
     group_settings_general->box(FL_UP_FRAME);
     group_settings_general->begin();
 
-    button_settings_no_lyrics = new Fl_Check_Button(15, group_offset, 32, 32, "No Lyrics");
-    button_settings_no_lyrics->value(FLAG_NO_LYRICS);
-    button_settings_no_lyrics->clear_visible_focus();
-    button_settings_no_lyrics->callback((Fl_Callback*)cb_settings_no_lyrics);
+    button_settings_lyrics = new Fl_Check_Button(15, group_offset, 32, 32, "Display Lyrics");
+    button_settings_lyrics->value(FLAG_LYRICS);
+    button_settings_lyrics->clear_visible_focus();
+    button_settings_lyrics->callback((Fl_Callback*)cb_settings_lyrics);
 
     group_settings_general->end();
 
@@ -221,14 +221,21 @@ void cb_settings_default_colors(Fl_Widget* widget, void*)
     browser_music->textcolor(FL_FOREGROUND_COLOR);
     lyrics_pane->textcolor(FL_FOREGROUND_COLOR);
 
+    button_settings_text_color->color(FL_FOREGROUND_COLOR);
+    button_settings_background_color->color(DEFAULT_BACKGROUND_COLOR);
+    button_settings_selection_color->color(FL_SELECTION_COLOR);
+
     browser_music->redraw();
     lyrics_pane->redraw();
     input_search->redraw();
     choice_search_type->redraw();
+    button_settings_text_color->redraw();
+    button_settings_background_color->redraw();
+    button_settings_selection_color->redraw();
 }
-void cb_settings_no_lyrics(Fl_Widget* widget, void*)
+void cb_settings_lyrics(Fl_Widget* widget, void*)
 {
-    FLAG_NO_LYRICS = !FLAG_NO_LYRICS;
+    FLAG_LYRICS = !FLAG_LYRICS;
 }
 
 Fl_Color edit_color(Fl_Color val)

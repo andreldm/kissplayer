@@ -45,6 +45,20 @@ void end_os_specific()
     // Unhook the low level keyboard hook
     UnhookWindowsHookEx(handleKeyboardHook);
 }
+/**
+* Get the executable directory
+*/
+string getWorkingDirectory()
+{
+    TCHAR szpath[FILENAME_MAX];
+    GetModuleFileName (NULL, szpath, FILENAME_MAX);
+    string path(szpath);
+
+    size_t lastSlash = path.find_last_of("/\\");
+    path = path.substr(0,lastSlash+1); //include slash
+
+    return path;
+}
 
 /**
 * Calls native directory chooser.

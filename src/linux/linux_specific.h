@@ -10,11 +10,16 @@ Here lives the Linux specific code.
 #include <FL/Fl_File_Chooser.H>
 #include <FL/x.H>
 #include <X11/xpm.h>
+#include <pwd.h>
 #include "icon.xpm"
+
+
+#define FILE_SEPARATOR "/"
 
 void set_app_icon(Fl_Window *window);
 void init_os_specific(Fl_Window *window);
 void end_os_specific();
+string getWorkingDirectory();
 char * native_dir_chooser();
 
 static Pixmap mask;

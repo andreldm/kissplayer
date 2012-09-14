@@ -5,6 +5,37 @@
 */
 
 /**
+* Parses the arguments to check if there are music files to play
+*/
+vector<Music> *parseArgs(int argc, char **argv)
+{
+    vector<Music> *list = new vector<Music>();
+    for(int i = 1; i < argc; i++)
+    {
+        string arg(argv[i]);
+
+        //List of supported file formats
+        if(strstr(arg.c_str(), ".mp3") != NULL ||
+                strstr(arg.c_str(), ".wma") != NULL ||
+                strstr(arg.c_str(), ".ogg") != NULL ||
+                strstr(arg.c_str(), ".wav") != NULL ||
+                strstr(arg.c_str(), ".flac") != NULL)
+        {
+            Music m;
+            TagLib::FileRef *f = new TagLib::FileRef(arg.c_str());
+            m.title = f->tag()->title().to8Bit();
+            m.artist = f->tag()->artist().to8Bit();
+            m.album = f->tag()->album().to8Bit();
+            m.filepath = arg;
+            delete(f);
+            list->push_back(m);
+        }
+    }
+
+    return list;
+}
+
+/**
 * Removes whitespaces at the beginning and end of a string
 */
 void trim(string &str)
@@ -34,9 +65,14 @@ const char *formatTime (int time)
     return stream.str().c_str();
 }
 
-// random generator function:
+/**
+* Generates random numbers
+*/
 ptrdiff_t myrandom (ptrdiff_t i) { return rand()%i;}
 
+/**
+* Generates a vector filled with unique random numbers
+*/
 void randomize(vector<int> **listRandom, int max)
 {
     ptrdiff_t (*p_myrandom)(ptrdiff_t) = myrandom;
@@ -48,6 +84,9 @@ void randomize(vector<int> **listRandom, int max)
     random_shuffle((*listRandom)->begin(), (*listRandom)->end(), p_myrandom);
 }
 
+/**
+* Seeks directories for music files and add them to the DB.
+*/
 void synchronizeLibrary()
 {
     vector<NameCod *> *listDir = getAllDirectories();

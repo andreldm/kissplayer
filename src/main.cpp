@@ -20,18 +20,18 @@ Fl_Double_Window*   window_main;
 bool                FLAG_CANCEL_SYNC;
 bool                FLAG_LIST_CHANGED;
 bool                FLAG_RANDOM;
-bool                FLAG_NO_LYRICS;
+bool                FLAG_LYRICS;
 int                 FLAG_SEARCH_TYPE;
 
 int main(int argc, char **argv)
 {
     startDB();
 
-    window_main = make_window_main();
+    window_main = make_window_main(argc, argv);
 
     set_app_icon(window_main);
 
-    window_main->show(argc, argv);
+    window_main->show(0, NULL);
 
     init_os_specific(window_main);
 
