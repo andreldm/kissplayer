@@ -1,126 +1,81 @@
 #include "sound.h"
-
 /**
 * OBS: This source was gaffled from somewhere and adapted to this program.
-* It's like a wrapper for FMOD.
+* It's a wrapper for FMOD.
 * Futher improvements are welcome.
 */
 
-bool Sound::on = false; //is sound on?
-bool Sound::possible = true; //is it possible to play sound?
-string Sound::currentSound; //currently played sound
-//FMOD-specific stuff
-FMOD_RESULT Sound::result;
-FMOD_SYSTEM * Sound::fmodsystem;
+bool Sound::loaded = false;
+bool Sound::playing = false;
+string Sound::currentFile;
+
+FMOD_SYSTEM * Sound::system;
 FMOD_SOUND * Sound::sound;
 FMOD_CHANNEL * Sound::channel;
 
-//initialises sound
 void Sound::initialise (void)
 {
-    //create the sound system. If fails, sound is set to impossible
-    result = FMOD_System_Create(&fmodsystem);
-    if (result != FMOD_OK) possible = false;
-    //if initialise the sound system. If fails, sound is set to impossible
-    if (possible) result = FMOD_System_Init(fmodsystem,2, FMOD_INIT_NORMAL | FMOD_IGNORETAGS, 0);
-    if (result != FMOD_OK) possible = false;
-    //sets initial sound volume (mute)
-    if (possible) FMOD_Channel_SetVolume(channel,0.0f);
+    if (FMOD_System_Create(&system) != FMOD_OK) return;
+    if (FMOD_System_Init(system, 2, FMOD_INIT_NORMAL | FMOD_IGNORETAGS, 0) != FMOD_OK) return;
+    // sets initial sound volume (mute)
+    if (FMOD_Channel_SetVolume(channel, 0.0f) != FMOD_OK) return;
 }
 
-//sets the actual playing sound's volume
-void Sound::setVolume (float v)
-{
-    if (possible && on && v >= 0.0f && v <= 1.0f)
-    {
-        FMOD_Channel_SetVolume(channel,v);
-    }
-}
-
-//gets the actual playing sound's volume
-float Sound::getVolume ()
-{
-    float v = 0;
-    if (possible && on && v >= 0.0f && v <= 1.0f)
-    {
-        FMOD_Channel_GetVolume(channel,&v);
-    }
-    return v;
-}
-
-//loads a soundfile
 void Sound::load (string filename)
 {
-    currentSound = filename;
-    if (possible)
-    {
-        on = true;
-        result = FMOD_Sound_Release(sound);
-        result = FMOD_System_CreateStream(fmodsystem,currentSound.c_str(), FMOD_SOFTWARE, 0, &sound);
-        if (result != FMOD_OK) possible = false;
-    }
+    currentFile = filename;
+    if (FMOD_System_CreateStream(system,currentFile.c_str(), FMOD_DEFAULT, 0, &sound) != FMOD_OK) return;
+    loaded = true;
 }
 
 //frees the sound object
 void Sound::unload (void)
 {
-    if (possible)
-    {
-        on = false;
-        result = FMOD_Sound_Release(sound);
+    if(loaded) {
+        FMOD_Channel_Stop(channel);
+        FMOD_Sound_Release(sound);
+        loaded = false;
     }
 }
 
-//plays a sound (no argument to leave pause as default)
+//plays a sound (pause = false by default)
 void Sound::play (bool pause)
 {
-    if (possible && on)
-    {
-        result = FMOD_System_PlaySound(fmodsystem,FMOD_CHANNEL_FREE, sound, pause, &channel);
-        FMOD_Channel_SetMode(channel,FMOD_LOOP_OFF);
-    }
+    FMOD_System_PlaySound(system, FMOD_CHANNEL_REUSE, sound, pause, &channel);
+    FMOD_Channel_SetMode(channel,FMOD_LOOP_OFF);
 }
 
 //toggles sound on and off
 void Sound::toggleSound (void)
 {
-    on = !on;
-    if (on == true)
-    {
-        load(currentSound);
-        play();
-    }
-    if (on == false)
-    {
-        unload();
-    }
-}
-
-//pause or unpause the sound
-void Sound::setPause (bool pause)
-{
-    FMOD_Channel_SetPaused (channel, pause);
+    setSound(!loaded);
 }
 
 //turn sound on or off
 void Sound::setSound (bool s)
 {
-    on = s;
-    if (on == true)
-    {
-        load(currentSound);
+    if (s) {
+        load(currentFile);
         play();
-    }
-    if (on == false)
-    {
+    } else {
         unload();
     }
 }
 
-//toggle pause on and off
+//tells whether the sound is on or off
+bool Sound::getSound (void)
+{
+    return loaded;
+}
+
+void Sound::setPause (bool pause)
+{
+    FMOD_Channel_SetPaused (channel, pause);
+}
+
 void Sound::togglePause (void)
 {
-    if (possible && on)
+    if (loaded)
     {
         FMOD_BOOL p;
         FMOD_Channel_GetPaused(channel,&p);
@@ -128,49 +83,56 @@ void Sound::togglePause (void)
     }
 }
 
-//tells whether the sound is playing or not
 bool Sound::isPlaying(void)
 {
     FMOD_BOOL p;
     FMOD_Channel_GetPaused(channel, &p);
-    return (bool)!p; // Dunno, but seems like the FMOD_BOOL is the inverse of C's bool
+    return (bool)!p;
 }
 
-//tells whether the sound is on or off
-bool Sound::getSound (void)
-{
-    return on;
-}
-
-//get the sound's length in miliseconds
+// get sound length in miliseconds
 int Sound::getLength (void)
 {
-    if (possible && on)
-    {
+    if (loaded) {
         unsigned int mili;
         FMOD_Sound_GetLength(sound, &mili, FMOD_TIMEUNIT_MS);
-        return (int) (mili);
+        return (int) mili;
     }
-    else return 0;
+    return 0;
 }
 
-//get the current sound's position within the length in miliseconds
+// get current sound position in miliseconds
 int Sound::getPosition (void)
 {
-    if (possible && on)
-    {
+    if (loaded) {
         unsigned int mili;
         FMOD_Channel_GetPosition(channel, &mili, FMOD_TIMEUNIT_MS);
-        return (int) (mili);
+        return (int) mili;
     }
-    else return 0;
+    return 0;
 }
 
-//set the current sound's position within the length in miliseconds
+// set current sound position in miliseconds
 void Sound::setPosition (int mili)
 {
-    if (possible && on)
+    if (loaded)
     {
         FMOD_Channel_SetPosition(channel, (unsigned int) (mili), FMOD_TIMEUNIT_MS);
     }
+}
+
+void Sound::setVolume (float v)
+{
+    if (loaded && v >= 0.0f && v <= 1.0f) {
+        FMOD_Channel_SetVolume(channel,v);
+    }
+}
+
+float Sound::getVolume ()
+{
+    float v = 0;
+    if (loaded) {
+        FMOD_Channel_GetVolume(channel, &v);
+    }
+    return v;
 }

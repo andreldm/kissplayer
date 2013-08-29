@@ -12,6 +12,7 @@ Here lives the Linux specific code.
 #include <X11/xpm.h>
 #include <pwd.h>
 #include "icon.xpm"
+#include "../window_main.h"
 
 
 #define FILE_SEPARATOR "/"

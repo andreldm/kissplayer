@@ -16,12 +16,10 @@ using namespace std;
 class Sound
 {
 private:
-    static bool on; //is sound on?
-    static bool possible; //is it possible to play sound?
-    static string currentSound; //currently played sound
-    //FMOD-specific stuff
-    static FMOD_RESULT result;
-    static FMOD_SYSTEM * fmodsystem;
+    static bool loaded;
+    static bool playing;
+    static string currentFile;
+    static FMOD_SYSTEM * system;
     static FMOD_SOUND * sound;
     static FMOD_CHANNEL * channel;
 

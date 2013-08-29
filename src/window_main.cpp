@@ -322,16 +322,14 @@ void cb_previous(Fl_Widget* widget, void*)
     if(listMusic->empty()) return; //If there's no music on the list, do not continue
     if(sound->getSound() == false) return; //If there's no music playing, do not continue
 
-    if(FLAG_RANDOM)
-    {
-        if(musicIndexRandom >= 1)
-        {
+    sound->unload();
+
+    if(FLAG_RANDOM) {
+        if(musicIndexRandom >= 1) {
             musicIndex = listRandom->at(--musicIndexRandom);
             play_music();
         }
-    }
-    else if(musicIndex > 0)
-    {
+    } else if(musicIndex > 0) {
         musicIndex--;
         play_music();
     }
@@ -343,11 +341,12 @@ void cb_next(Fl_Widget* widget, void*)
 {
     if(hasNextMusic())
     {
-        if(FLAG_RANDOM)
+        if(FLAG_RANDOM) {
             musicIndex = listRandom->at(++musicIndexRandom);
-        else
+        } else {
             musicIndex++;
-
+        }
+        sound->unload();
         play_music();
     }
     cout << "\n\nmusicIndex = "<< musicIndex;
@@ -484,23 +483,11 @@ int main_handler(int e, Fl_Window *w)
 
     if(e == FL_KEYUP)
     {
-        //FOR LINUX! On Windows we use keyboard hook
-#ifdef __linux__
-        if(Fl::event_original_key() == FL_Media_Play)
-            button_play->do_callback();
-        else if(Fl::event_original_key() == FL_Media_Stop)
-            button_stop->do_callback();
-        else if(Fl::event_original_key() == FL_Media_Prev)
-            button_previous->do_callback();
-        else if(Fl::event_original_key() == FL_Media_Next)
-            button_next->do_callback();
-#endif
         // Go 5s foward
         if(Fl::event_original_key() == FL_Right)
         {
-            if(Fl::belowmouse() != NULL && Fl::belowmouse() == input_search)
+            if(input_search == Fl::focus())
             {
-                Fl::focus (input_search);
                 return Fl::handle_(e, w);
             }
             Fl::focus(slider_music);
@@ -515,9 +502,8 @@ int main_handler(int e, Fl_Window *w)
         // Go 5s backward
         else if(Fl::event_original_key() == FL_Left)
         {
-            if(Fl::belowmouse() != NULL && Fl::belowmouse() == input_search)
+            if(input_search == Fl::focus())
             {
-                Fl::focus (input_search);
                 return Fl::handle_(e, w);
             }
             Fl::focus(slider_music);
@@ -528,6 +514,7 @@ int main_handler(int e, Fl_Window *w)
 
             return 1;
         }
+
         return 0;
     }
 
