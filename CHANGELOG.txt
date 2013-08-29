@@ -1,3 +1,8 @@
+v 0.5.9 - 29/08/2013:
+- Linux global shortcuts
+- Fixed segfault after stop->play
+- Search bar arrow keys now work correctly
+
 v 0.5.8 - 14/09/2012:
 - On Windows, the database and image folder are now fixed to the executable path, not the execution path
 - On Linux, the database and image are now fixed to "$HOME/.kissplayer/"
