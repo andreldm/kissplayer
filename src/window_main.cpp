@@ -1,4 +1,5 @@
 #include "window_main.h"
+#include "images.h"
 
 /**
 * The Program's main window(And due my lousy architecture, the program's core)
@@ -46,7 +47,6 @@ void timer_title_scrolling(void*);
 void timer_check_music(void*);
 void save_config();
 void load_config();
-void load_icons();
 bool hasNextMusic();
 int main_handler(int, Fl_Window *);
 
@@ -67,20 +67,6 @@ void cb_about(Fl_Widget*, void*);
 void cb_clear(Fl_Widget*, void*);
 void cb_slider_music(Fl_Widget*, void*);
 
-//ICONS
-Fl_Image *icon_play;
-Fl_Image *icon_pause;
-Fl_Image *icon_stop;
-Fl_Image *icon_next;
-Fl_Image *icon_previous;
-Fl_Image *icon_sync;
-Fl_Image *icon_search;
-Fl_Image *icon_clear;
-Fl_Image *icon_random_enabled;
-Fl_Image *icon_random_disabled;
-Fl_Image *icon_settings;
-Fl_Image *icon_about;
-
 Fl_Double_Window* make_window_main(int argc, char **argv)
 {
     // To place the window at the center of the screen
@@ -94,9 +80,6 @@ Fl_Double_Window* make_window_main(int argc, char **argv)
     window_main = new Fl_Double_Window(window_x, window_y, window_w, window_h, "KISS Player");
     window_main->size_range(window_w, window_h);
     window_main->callback((Fl_Callback*)cb_close_window);
-
-    // LOAD ICONS FOR BUTTONS
-    load_icons();
 
     // SEARCH GROUP AND ITS WIDGETS
     group_search = new Fl_Group(5, 5, 410, 30);
@@ -774,32 +757,6 @@ void load_config()
     choice_search_type->redraw();
 
     closeDB();
-}
-
-void load_icons()
-{
-    #define _loadIcon(icon, file) fullpath = path+"img"+FILE_SEPARATOR+file; \
-    icon = new Fl_PNG_Image(fullpath.c_str());
-
-    string path = getWorkingDirectory();
-    string fullpath;
-
-    //TODO : IN CASE OF FAILURE(!img->w()), LOAD A XPM
-
-    _loadIcon(icon_play, "icon_play.png");
-    _loadIcon(icon_pause, "icon_pause.png");
-    _loadIcon(icon_stop, "icon_stop.png");
-    _loadIcon(icon_next, "icon_next.png");
-    _loadIcon(icon_previous, "icon_previous.png");
-    _loadIcon(icon_sync, "icon_sync.png");
-    _loadIcon(icon_search, "icon_search.png");
-    _loadIcon(icon_clear, "icon_clear.png");
-    _loadIcon(icon_random_enabled, "icon_random_enabled.png");
-    _loadIcon(icon_random_disabled, "icon_random_disabled.png");
-    _loadIcon(icon_settings, "icon_settings.png");
-    _loadIcon(icon_about, "icon_about.png");
-
-    #undef _loadIcon
 }
 
 bool hasNextMusic()
