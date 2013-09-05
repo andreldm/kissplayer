@@ -1,4 +1,5 @@
 #include "dao.h"
+#include "os_specific.h"
 
 string DB_NAME = "db.s3db";
 

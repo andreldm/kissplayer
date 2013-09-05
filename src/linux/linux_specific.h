@@ -22,6 +22,8 @@ void init_os_specific(Fl_Window *window);
 void end_os_specific();
 string getWorkingDirectory();
 char * native_dir_chooser();
+bool isWindowMaximized(Fl_Window *window);
+void maximizeWindow(Fl_Window *window);
 
 static Pixmap mask;
 

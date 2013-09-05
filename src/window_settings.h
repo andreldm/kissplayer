@@ -14,18 +14,6 @@
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Choice.H>
 
-#include "dao.h"
-#include "name_cod.h"
-#include "misc.h"
-
-#ifdef WIN32
-#include "win/windows_specific.h"
-#endif
-
-#ifdef __linux__
-#include "linux/linux_specific.h"
-#endif
-
 //GLOBALS
 extern Fl_Window *window_settings;
 Fl_Window* make_window_settings();

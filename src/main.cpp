@@ -3,14 +3,7 @@
 #include <FL/fl_draw.H>
 #include "sound.h"
 #include "window_main.h"
-
-#ifdef WIN32
-#include "win/windows_specific.h"
-#endif
-
-#ifdef __linux__
-#include "linux/linux_specific.h"
-#endif
+#include "os_specific.h"
 
 /**
  * GLOBALS

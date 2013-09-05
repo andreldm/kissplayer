@@ -28,7 +28,7 @@
 #include "dao.h"
 #include "misc.h"
 
-//GLOBALS
+// GLOBAL
 extern Sound *sound;
 
 extern bool     FLAG_RANDOM;
@@ -36,7 +36,7 @@ extern int      FLAG_SEARCH_TYPE;
 extern bool     FLAG_LYRICS;
 extern float    INITIAL_VOLUME;
 
-// EXPORTEDS
+// EXPORTED
 Fl_Double_Window* make_window_main(int argc, char **argv);
 void cb_toggle_play(Fl_Widget*, void*);
 void cb_stop(Fl_Widget*, void*);

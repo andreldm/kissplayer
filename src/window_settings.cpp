@@ -1,4 +1,6 @@
 #include "window_settings.h"
+#include "os_specific.h"
+#include "dao.h"
 
 /**
  * A Window where the user sets the app configuration.

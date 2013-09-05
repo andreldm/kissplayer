@@ -1,5 +1,6 @@
 #include "window_main.h"
 #include "images.h"
+#include "os_specific.h"
 
 /**
 * The Program's main window(And due my lousy architecture, the program's core)
@@ -613,6 +614,8 @@ void save_config()
 
     setKey("window_main_width", intToString(window_main->w()));
     setKey("window_main_height", intToString(window_main->h()));
+    
+    setKey("window_maximized", intToString(isWindowMaximized(window_main)));
 
     setKey("browser_music_width", intToString(browser_music->w()));
 
@@ -656,6 +659,13 @@ void load_config()
 
     int height = stringToInt(getKey("window_main_height"));
     if(height != -1) window_main->size(window_main->w(), height);
+    
+    // SET WINDOW MAXIMIZED STATE
+    int maximized = stringToInt(getKey("window_maximized"));
+    if(maximized)
+    {
+        maximizeWindow(window_main);
+    }
 
     // SET VOLUME
     float volume = stringToFloat(getKey("volume_level"));
