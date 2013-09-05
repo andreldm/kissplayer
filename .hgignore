@@ -13,3 +13,4 @@ png2img
 *.cscope_file_list
 *.depend
 *.layout
+*.res

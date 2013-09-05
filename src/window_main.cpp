@@ -664,7 +664,7 @@ void load_config()
     int maximized = stringToInt(getKey("window_maximized"));
     if(maximized)
     {
-        maximizeWindow(window_main);
+        shouldMaximizeWindow = true;
     }
 
     // SET VOLUME
@@ -706,7 +706,6 @@ void load_config()
     {
         update_playlist(getAllMusics());
     }
-
 
     // SET LYRICS FLAG
     int lyrics = stringToInt(getKey("lyrics"));

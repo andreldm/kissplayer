@@ -3,6 +3,7 @@
  */
 
 #include "windows_specific.h"
+#include <FL/x.H>
 
 // Keyboard hook handler
 HHOOK handleKeyboardHook = NULL;
@@ -71,6 +72,23 @@ TCHAR * native_dir_chooser()
     LPITEMIDLIST pidl = SHBrowseForFolder (&bi);
 	SHGetPathFromIDList(pidl, path);
 	return path;
+}
+
+/**
+ * Set the window to maximized state.
+ */
+void maximizeWindow(Fl_Window *window)
+{
+	SendMessage(fl_xid(window), WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+	//UpdateWindow(fl_xid(window));
+}
+
+/**
+ * Check if the window is maximized.
+ */
+bool isWindowMaximized(Fl_Window *window)
+{
+	return IsZoomed(fl_xid(window));
 }
 
 /**

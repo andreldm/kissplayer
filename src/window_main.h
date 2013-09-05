@@ -29,11 +29,11 @@
 #include "misc.h"
 
 // GLOBAL
-extern Sound *sound;
-
+extern Sound*	sound;
+extern bool 	shouldMaximizeWindow;
 extern bool     FLAG_RANDOM;
-extern int      FLAG_SEARCH_TYPE;
 extern bool     FLAG_LYRICS;
+extern int      FLAG_SEARCH_TYPE;
 extern float    INITIAL_VOLUME;
 
 // EXPORTED

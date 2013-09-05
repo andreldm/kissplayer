@@ -5,11 +5,10 @@
 #include "window_main.h"
 #include "os_specific.h"
 
-/**
- * GLOBALS
- */
+// GLOBAL
 Sound*              sound;
 Fl_Double_Window*   window_main;
+bool				shouldMaximizeWindow;
 bool                FLAG_CANCEL_SYNC;
 bool                FLAG_LIST_CHANGED;
 bool                FLAG_RANDOM;
@@ -25,6 +24,10 @@ int main(int argc, char **argv)
     set_app_icon(window_main);
 
     window_main->show(0, NULL);
+	
+	if(shouldMaximizeWindow) {
+        maximizeWindow(window_main);
+	}
 
     init_os_specific(window_main);
 

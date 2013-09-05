@@ -44,6 +44,8 @@ void init_os_specific(Fl_Window *window);
 void end_os_specific();
 string getWorkingDirectory();
 TCHAR *native_dir_chooser();
+bool isWindowMaximized(Fl_Window *window);
+void maximizeWindow(Fl_Window *window);
 
 wchar_t *CodePageToUnicode(int codePage, const char *src);
 char *UnicodeToCodePage(int codePage, const wchar_t *src);
