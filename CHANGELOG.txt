@@ -1,4 +1,6 @@
-v 0.5.9 - 29/08/2013:
+v 0.5.9 - 19/09/2013:
+- Note: delete the db.s3db file and sync
+- Improved Unicode Support
 - Linux global shortcuts
 - Fixed segfault after stop->play
 - Search bar arrow keys now work correctly
