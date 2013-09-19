@@ -1,6 +1,6 @@
 CC = g++
 LIBS = -lfltk -lole32 -luuid -lcomctl32 -lwsock32 -lgdi32 -lcomdlg32 -lfltk_images -lfltk_png -lz -lcurl -ltag -lfmodex -lsqlite3
-CFLAGS = -O2 -mwindows
+CFLAGS = -O2 -mwindows -static-libgcc -static-libstdc++
 OUTPUT_NAME = "$(CURDIR)/KISS Player.exe"
 
 all: src/win/kiss.res

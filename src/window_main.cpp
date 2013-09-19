@@ -668,7 +668,7 @@ void load_config()
 
     // SET WINDOW MAXIMIZED STATE
     int maximized = stringToInt(getKey("window_maximized"));
-    if(maximized) {
+    if(maximized == 1) {
         shouldMaximizeWindow = true;
     }
 
