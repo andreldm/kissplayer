@@ -6,7 +6,6 @@
 #include "os_specific.h"
 
 // GLOBAL
-Sound*              sound;
 Fl_Double_Window*   window_main;
 bool				shouldMaximizeWindow;
 bool                FLAG_CANCEL_SYNC;
@@ -24,15 +23,15 @@ int main(int argc, char **argv)
     set_app_icon(window_main);
 
     window_main->show(0, NULL);
-	
+
 	if(shouldMaximizeWindow) {
         maximizeWindow(window_main);
 	}
 
     init_os_specific(window_main);
 
-    sound = new Sound();
-    sound->initialise();
+    // TODO: check if return is non-zero
+    sound_initialize();
 
     int fl_result = Fl::run();
 

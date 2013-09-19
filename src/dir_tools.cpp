@@ -1,71 +1,43 @@
 #include "dir_tools.h"
-#include <dirent.h> //It has to be included here in order to avoid colision with FL/filename.H
 
-/**
-* OBS: This source was gaffled from somewhere and adapted to this program.
-* Futher improvements are welcome.
-*/
+#include <FL/Fl.H>
+#include <FL/filename.H>
+#include <sys/types.h>
+#include <unistd.h>
+#include "tinydir.h"
 
 using namespace std;
 
-string getCurrentDirectory()
+void scan(const char* directory, vector<string>* filelist)
 {
-    char cCurrentPath[FILENAME_MAX];
+    tinydir_dir dir;
+    int i;
+    tinydir_open_sorted(&dir, directory);
 
-    if (!getcwd(cCurrentPath, sizeof(cCurrentPath) / sizeof(char)))
-        return "";
-
-    cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
-    return cCurrentPath;
-}
-
-vector<string> travelDirectory(string directory)
-{
-    //Travel thru a directory gathering all the file and directory names
-    vector<string> fileList;
-    DIR *dir;
-    struct dirent *ent;
-
-    //Open a directory
-    if ((dir=opendir(directory.c_str())) != NULL)
+    for (i = 0; i < dir.n_files; i++)
     {
-        while((ent=readdir(dir)) != NULL) // loop until the directory is traveled thru
-        {
-            //Push directory or filename to the list
-            fileList.push_back(ent->d_name);
+        tinydir_file file;
+        tinydir_readfile_n(&dir, &file, i);
+        
+        if(file.name[0] == '.') {
+            continue;
         }
-        //Close up
-        closedir(dir);
-    }
-    //Return the filelist
-    return fileList;
-}
-
-void travelDirectoryRecursive(string directory, vector<string> *fullList)
-{
-    //Get the "root" directory's directories
-    vector<string> fileList = travelDirectory(directory);
-
-    //Loop thru the list
-    for (vector<string>::iterator i=fileList.begin(); i!=fileList.end(); ++i)
-    {
-        //Test for . and .. directories (this and back)
-        if (strcmp((*i).c_str(), ".") &&
-                strcmp((*i).c_str(), ".."))
+        
+        if (file.is_dir)
         {
-            //I use stringstream here, not string = foo; string.append(bar);
-            stringstream fullname;
-            fullname << directory << "/" << (*i);
-
-            //List of supported file formats
-            if(strstr((*i).c_str(), ".mp3") != NULL ||
-                    strstr((*i).c_str(), ".wma") != NULL ||
-                    strstr((*i).c_str(), ".ogg") != NULL ||
-                    strstr((*i).c_str(), ".wav") != NULL ||
-                    strstr((*i).c_str(), ".flac") != NULL)
-                fullList->push_back(fullname.str());
-
-            travelDirectoryRecursive(fullname.str(), fullList);
+            scan(file.path, filelist);
+            continue;
+        }
+        
+        const char* ext = fl_filename_ext(file.name);
+        if(strcmp(ext, ".mp3") == 0 ||
+            strcmp(ext, ".wma") == 0 ||
+            strcmp(ext, ".ogg") == 0 ||
+            strcmp(ext, ".wav") == 0 ||
+            strcmp(ext, ".flac") == 0) {
+            filelist->push_back(file.path);
         }
     }
+    
+    tinydir_close(&dir);
 }

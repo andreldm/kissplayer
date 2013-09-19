@@ -8,6 +8,7 @@ Here lives the Linux specific code.
 #include <X11/XKBlib.h>
 #include <X11/XF86keysym.h>
 #include <X11/extensions/record.h>
+#include <unistd.h>
 
 static Display* disp_data;
 static XRecordContext context;
@@ -183,4 +184,38 @@ void keyHookCallback(XPointer pointer, XRecordInterceptData * hook) {
     }
 
     XRecordFreeData(hook);
+}
+
+void os_specific_scanfolder(const char* dir, deque<string>& filelist)
+{
+    dirent** list;
+    int fileQty = fl_filename_list(dir, &list);
+    
+    for (int i = 0; i < fileQty; i++) {
+        const char* filename = list[i]->d_name;
+        
+        if(filename[0] == '.') {
+            continue;
+        }
+        
+        char buffer[4096];
+        sprintf(buffer, "%s/%s", dir, filename);
+        
+        if(fl_filename_isdir(buffer)) {
+            os_specific_scanfolder(buffer, filelist);
+            continue;
+        }
+        
+        const char* ext = fl_filename_ext(filename);
+        
+        if(strcmp(ext, ".mp3") == 0 ||
+           strcmp(ext, ".wma") == 0 ||
+           strcmp(ext, ".ogg") == 0 ||
+           strcmp(ext, ".wav") == 0 ||
+           strcmp(ext, ".flac") == 0) {
+               filelist.push_back(buffer);
+        }
+    }
+    
+    fl_filename_free_list(&list, fileQty);
 }

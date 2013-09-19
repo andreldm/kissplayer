@@ -251,7 +251,8 @@ vector<Music> *searchMusics(const char *text)
     openDB();
     vector<Music> *listMusics = new vector<Music>();
 
-    //On Windows we need to convert from CP-1252 to UTF-8
+    // On Windows we need to convert from CP-1252 to UTF-8
+    // TODO: Use fltk unicode functions
 #if defined WIN32
     wchar_t *wText = CodePageToUnicode(65001, text);
     text = UnicodeToCodePage(1252, wText);

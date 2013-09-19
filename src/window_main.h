@@ -29,7 +29,6 @@
 #include "misc.h"
 
 // GLOBAL
-extern Sound*	sound;
 extern bool 	shouldMaximizeWindow;
 extern bool     FLAG_RANDOM;
 extern bool     FLAG_LYRICS;

@@ -248,8 +248,7 @@ void cb_close_window(Fl_Widget* widget, void*)
     if (Fl::event()==FL_SHORTCUT && Fl::event_key()==FL_Escape)
         return;
 
-    sound->unload();
-
+    sound_unload();
     save_config();
 
     window_main->~Fl_Window();
@@ -257,10 +256,10 @@ void cb_close_window(Fl_Widget* widget, void*)
 
 void cb_toggle_play(Fl_Widget* widget, void*)
 {
-    if(sound->getSound())
+    if(sound_check())
     {
         //It has to be done before the togglePause
-        if(sound->isPlaying())
+        if(sound_is_playing())
         {
             window_main->label("KISS Player - Paused");
             button_play->image(icon_play);
@@ -278,7 +277,7 @@ void cb_toggle_play(Fl_Widget* widget, void*)
 #endif
         }
 
-        sound->togglePause();
+        sound_toggle_pause();
     }
     else if(!listMusic->empty())
     {
@@ -289,9 +288,9 @@ void cb_toggle_play(Fl_Widget* widget, void*)
 
 void cb_stop(Fl_Widget* widget, void*)
 {
-    if(!sound->isPlaying()) return;
+    if(!sound_is_playing()) return;
 
-    sound->setSound(false);
+    sound_active(false);
     window_main->label("KISS Player");
     button_play->image(icon_play);
     button_play->redraw();
@@ -304,9 +303,9 @@ void cb_stop(Fl_Widget* widget, void*)
 void cb_previous(Fl_Widget* widget, void*)
 {
     if(listMusic->empty()) return; //If there's no music on the list, do not continue
-    if(sound->getSound() == false) return; //If there's no music playing, do not continue
+    if(!sound_check()) return; //If there's no music playing, do not continue
 
-    sound->unload();
+    sound_unload();
 
     if(FLAG_RANDOM) {
         if(musicIndexRandom >= 1) {
@@ -330,7 +329,7 @@ void cb_next(Fl_Widget* widget, void*)
         } else {
             musicIndex++;
         }
-        sound->unload();
+        sound_unload();
         play_music();
     }
     cout << "\n\nmusicIndex = "<< musicIndex;
@@ -352,14 +351,14 @@ void cb_music_browser(Fl_Widget* widget, void*)
 void cb_volume(Fl_Widget* widget, void*)
 {
     Fl_Dial *dial = (Fl_Dial*) widget;
-    sound->setVolume(dial->value());
+    sound_volume(dial->value());
 }
 
 void cb_slider_music(Fl_Widget* widget, void*)
 {
     //If there's no music playing, do not change
     //The slider's changes are handled at timer_check_music and my_handler
-    if(sound->getSound() == false)
+    if(!sound_check())
     {
         slider_music->value(0);
         return;
@@ -417,7 +416,7 @@ void cb_about(Fl_Widget* widget, void*)
 void cb_sync(Fl_Widget* widget, void*)
 {
     button_stop->do_callback();
-    synchronizeLibrary();
+    misc_sync_library();
     update_playlist(getAllMusics());
 }
 
@@ -429,17 +428,17 @@ int main_handler(int e, Fl_Window *w)
         box_current_time->label(formatTime(slider_music->value())); //IN ORDER TO UPDATE WITHOUT DELAY
 
         // We need to store the volume, because when we play it again, the FMOD will reset this value
-        float volume = sound->getVolume();
+        float volume = sound_volume();
 
         //If the user is holding the slider and the music reaches its end
         //we need to play the sound, otherwise we get a strange sound loop.
         //Remove these two lines and see it for yourself :)
         //OBS: This isPlaying evalution seems crazy, but it's related to FMOD_BOOL :(
-        if(sound->isPlaying())
-            sound->play();
+        if(sound_is_playing())
+            sound_play();
 
-        sound->setPosition(slider_music->value());
-        sound->setVolume(volume);
+        sound_position(slider_music->value());
+        sound_volume(volume);
     }
 
     if(e == FL_KEYDOWN)
@@ -450,7 +449,7 @@ int main_handler(int e, Fl_Window *w)
             float v = dial_volume->value() - 0.05f;
             if (v < 0) v = 0;
             dial_volume->value(v);
-            sound->setVolume(v);
+            sound_volume(v);
             return 0;
         }
 
@@ -460,7 +459,7 @@ int main_handler(int e, Fl_Window *w)
             float v = dial_volume->value() + 0.05f;
             if (v > 1) v = 1;
             dial_volume->value(v);
-            sound->setVolume(v);
+            sound_volume(v);
             return 0;
         }
     }
@@ -476,9 +475,9 @@ int main_handler(int e, Fl_Window *w)
             }
             Fl::focus(slider_music);
 
-            int pos = sound->getPosition();
-            if(pos < sound->getLength() + 5000)
-                sound->setPosition(pos + 5000);
+            int pos = sound_position();
+            if(pos < sound_length() + 5000)
+                sound_position(pos + 5000);
 
             return 1;
         }
@@ -492,9 +491,9 @@ int main_handler(int e, Fl_Window *w)
             }
             Fl::focus(slider_music);
 
-            int pos = sound->getPosition();
-            if(sound->getLength() - 5000 > 0)
-                sound->setPosition(pos - 5000);
+            int pos = sound_position();
+            if(sound_length() - 5000 > 0)
+                sound_position(pos - 5000);
 
             return 1;
         }
@@ -515,7 +514,7 @@ int main_handler(int e, Fl_Window *w)
 		if(valor < 0) valor = 0;
 		if(valor > 1) valor = 1;
 		dial_volume->value(valor);
-		sound->setVolume(valor);
+		sound_volume(valor);
 		return 0;
 	}
 
@@ -527,9 +526,9 @@ void play_music()
     browser_music->value(musicIndex+1);
     browser_music->redraw();
 
-    sound->load(listMusic->at(musicIndex).filepath);
-    sound->play();
-    sound->setVolume(dial_volume->value());
+    sound_load(listMusic->at(musicIndex).filepath.c_str());
+    sound_play();
+    sound_volume(dial_volume->value());
 
     windowTitle = "KISS Player :: ";
     windowTitle.append(browser_music->text(musicIndex+1));
@@ -542,16 +541,14 @@ void play_music()
 #endif
 
     box_current_time->label("00:00");
-    slider_music->copy_label(formatTime(sound->getLength()));
-    slider_music->maximum(sound->getLength());
+    slider_music->copy_label(formatTime(sound_length()));
+    slider_music->maximum(sound_length());
     slider_music->value(0);
-    if(FLAG_LYRICS)
-    {
+    if(FLAG_LYRICS) {
         fetch_lyrics(lyrics_text_buffer, listMusic->at(musicIndex).artist, listMusic->at(musicIndex).title);
         lyrics_pane->scroll(0,0);
     }
-    else
-    {
+    else {
         lyrics_text_buffer->text("");
     }
 }
@@ -559,11 +556,15 @@ void play_music()
 void timer_title_scrolling(void*)
 {
     Fl::repeat_timeout(0.2, timer_title_scrolling);
-    if (!sound->getSound()) return;
-    if (!sound->isPlaying()) return;
+    if (!sound_check() || !sound_is_playing()) {
+        return;
+    }
 
-    if (windowTitlePosition == windowTitle.size()) windowTitlePosition = 0;
-    else windowTitlePosition++;
+    if (windowTitlePosition == windowTitle.size()) {
+        windowTitlePosition = 0;
+    } else {
+        windowTitlePosition++;
+    }
 
     string title = windowTitle.substr(windowTitlePosition, windowTitle.size());
     title.append(" - ");
@@ -577,27 +578,30 @@ void timer_check_music(void*)
     Fl::repeat_timeout(0.25, timer_check_music);
 
     //If there's no music playing, do not continue
-    if(sound->getSound() == false)
+    if(!sound_check()) {
         return;
+    }
 
     /* If the music reached its end, so advance to the next one.
        Note that we check if any mouse button is pressed, so if the user
        is dragging the slider it won't advance the music.
        OBS: In rare cases, the music stucks at the maximum - 1 ms. */
-    if(slider_music->value() >= slider_music->maximum()-1 && Fl::pushed() != slider_music)
-    {
-        if(hasNextMusic())
+    if(slider_music->value() >= (slider_music->maximum() - 1) &&
+       Fl::pushed() != slider_music) {
+        if(hasNextMusic()) {
             cb_next(NULL, 0);
-        else
+        } else {
             cb_stop(NULL, 0);
+        }
         return;
     }
 
-    box_current_time->copy_label(formatTime(sound->getPosition()));
+    box_current_time->copy_label(formatTime(sound_position()));
     box_current_time->redraw();
 
-    if(Fl::pushed() != slider_music)
-        slider_music->value(sound->getPosition());
+    if(Fl::pushed() != slider_music) {
+        slider_music->value(sound_position());
+    }
 }
 
 void save_config()
@@ -606,15 +610,17 @@ void save_config()
 
     // TODO: On Windows, when the window is minimized its location becomes -32000, -32000.
     //       We need to save the location before it becomes minimized.
-    if(window_main->x() >= 0)
+    if(window_main->x() >= 0) {
         setKey("window_main_x", intToString(window_main->x()));
+    }
 
-    if(window_main->y() >= 0)
+    if(window_main->y() >= 0) {
         setKey("window_main_y", intToString(window_main->y()));
+    }
 
     setKey("window_main_width", intToString(window_main->w()));
     setKey("window_main_height", intToString(window_main->h()));
-    
+
     setKey("window_maximized", intToString(isWindowMaximized(window_main)));
 
     setKey("browser_music_width", intToString(browser_music->w()));
@@ -659,62 +665,54 @@ void load_config()
 
     int height = stringToInt(getKey("window_main_height"));
     if(height != -1) window_main->size(window_main->w(), height);
-    
+
     // SET WINDOW MAXIMIZED STATE
     int maximized = stringToInt(getKey("window_maximized"));
-    if(maximized)
-    {
+    if(maximized) {
         shouldMaximizeWindow = true;
     }
 
     // SET VOLUME
     float volume = stringToFloat(getKey("volume_level"));
-    if(volume != -1)
-    {
+    if(volume != -1) {
         dial_volume->value(volume);
-        sound->setVolume(dial_volume->value());
+        sound_volume(dial_volume->value());
     }
 
     // TOGGLE RANDOMIZE
     int random = stringToInt(getKey("random_button"));
-    if(random != -1)
-    {
-        // It should be inverted, because
+    if(random != -1) {
+        // It should be inverted, because...
         FLAG_RANDOM = !random;
-        // here we toggle the Random Button :D
+        // ...here toggle the Random Button
         cb_random(NULL, 0);
     }
 
     // SET SEARCH TYPE
     int search_type = stringToInt(getKey("search_type"));
-    if(search_type != -1)
-    {
+    if(search_type != -1) {
         FLAG_SEARCH_TYPE = search_type;
         choice_search_type->value(FLAG_SEARCH_TYPE);
     }
 
     // SET SEARCH STRING
     string search_input = getKey("search_input");
-    if(!search_input.empty())
-    {
+    if(!search_input.empty()) {
         input_search->value(search_input.c_str());
         if(!doNotLoadLastSearch)
             cb_search(NULL, 0);
     }
     // If the search string is empty, load all the musics
-    else if(!doNotLoadLastSearch)
-    {
+    else if(!doNotLoadLastSearch) {
         update_playlist(getAllMusics());
     }
 
     // SET LYRICS FLAG
     int lyrics = stringToInt(getKey("lyrics"));
-    if(lyrics != -1)
-    {
+    if(lyrics != -1) {
         FLAG_LYRICS = lyrics;
     }
-    else
-    {
+    else {
         FLAG_LYRICS = true;
     }
 
@@ -730,8 +728,7 @@ void load_config()
     // SET MUSIC BROWSER WIDTH
     int browser_music_width = stringToInt(getKey("browser_music_width"));
 
-    if(browser_music_width > 0)
-    {
+    if(browser_music_width > 0) {
         browser_music->size(browser_music_width, browser_music->h());
         lyrics_pane->resize(tile_center->x() + browser_music_width,
                             tile_center->y(),
@@ -771,28 +768,24 @@ void load_config()
 bool hasNextMusic()
 {
     // There's no music on the list or no music playing
-    if(listMusic->empty() || !sound->getSound())
+    if(listMusic->empty() || !sound_check()) {
         return false;
-
-    // Randomize is ON
-    // '-1' is the beginning of the playlist
-    if(FLAG_RANDOM)
-    {
-        if(musicIndexRandom == -1 || musicIndexRandom + 2 <= listRandom->size())
-            return true;
     }
 
-    // Randomize is OFF
-    else if(musicIndex + 2 <= listMusic->size())
+    // '-1' is the beginning of the playlist
+    if(FLAG_RANDOM) {
+        if(musicIndexRandom == -1 || musicIndexRandom + 2 <= listRandom->size())
+            return true;
+    } else if(musicIndex + 2 <= listMusic->size()) {
         return true;
+    }
 
     return false;
 }
 
 void update_playlist(vector<Music> * l)
 {
-    if(listMusic != 0)
-    {
+    if(listMusic != 0) {
         listMusic->clear();
         delete listMusic;
     }
@@ -800,8 +793,7 @@ void update_playlist(vector<Music> * l)
     listMusic = l;
     browser_music->clear();
 
-    for(int i = 0; i < listMusic->size(); i++)
-    {
+    for(int i = 0; i < listMusic->size(); i++) {
         Music m = listMusic->at(i);
         browser_music->add(m.getDesc().c_str());
     }

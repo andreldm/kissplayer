@@ -248,6 +248,50 @@ LRESULT CALLBACK KeyboardHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
     return CallNextHookEx(handleKeyboardHook, nCode, wParam, lParam);
 }
 
+void os_specific_scanfolder(const wchar_t* dir, deque<wstring>& filelist)
+{
+    WIN32_FIND_DATAW filedata;
+    HANDLE hFind = NULL;
+    wchar_t path[4096];
+    wchar_t ext[50];
+
+    wsprintfW(path, L"%s\\*.*", dir);
+
+	// Check if it's a valid path
+    if((hFind = FindFirstFileW(path, &filedata)) == INVALID_HANDLE_VALUE) {
+        return;
+    }
+
+    do {
+        // Ignore "." and ".."
+        if(wcscmp(filedata.cFileName, L".") == 0 || wcscmp(filedata.cFileName, L"..") == 0) {
+			continue;
+		}
+
+		// Join path & filename
+		wsprintfW(path, L"%s\\%s", dir, filedata.cFileName);
+
+		// If it's a folder, search it too
+		if(filedata.dwFileAttributes &FILE_ATTRIBUTE_DIRECTORY) {
+			os_specific_scanfolder(path, filelist);
+			continue;
+		}
+        _wsplitpath(path, NULL, NULL, NULL, ext);
+
+        if(wcscmp(ext, L".mp3") == 0 ||
+            wcscmp(ext, L".wma") == 0 ||
+            wcscmp(ext, L".ogg") == 0 ||
+            wcscmp(ext, L".wav") == 0 ||
+            wcscmp(ext, L".flac") == 0) {
+                filelist.push_back(path);
+        }
+    }
+    while(FindNextFileW(hFind, &filedata));
+
+    FindClose(hFind);
+    return;
+}
+
 /**
 * Converts a string from a given encoding to UTF-8
 * UTF-8 is code page: 65001

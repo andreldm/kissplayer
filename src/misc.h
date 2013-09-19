@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 #include <map>
-#include <vector>
+#include <deque>
 #include <stdlib.h>
 
 #include <FL/Fl.H>
@@ -16,8 +16,8 @@
 #include <taglib/tag.h>
 
 #include "name_cod.h"
-#include "dir_tools.h"
 #include "dao.h"
+#include "os_specific.h"
 #include "window_loading.h"
 
 #if defined WIN32
@@ -54,7 +54,7 @@ vector<Music> *parseArgs(int argc, char **argv);
 void trim(string &str);
 const char *formatTime(int secs);
 void randomize(vector<int> **, int);
-void synchronizeLibrary();
+void misc_sync_library();
 
 int stringToInt(string value);
 string intToString(int value);

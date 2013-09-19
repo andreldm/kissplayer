@@ -85,14 +85,13 @@ void randomize(vector<int> **listRandom, int max)
 }
 
 /**
-* Seeks directories for music files and add them to the DB.
+* Seeks directories for music files and adds them to the DB.
 */
-void synchronizeLibrary()
+void misc_sync_library()
 {
     vector<NameCod *> *listDir = getAllDirectories();
 
-    if(listDir->size() == 0)
-    {
+    if(listDir->size() == 0) {
         fl_beep();
         fl_message_title("Warning");
         fl_message("Please, add at least one directory on the Settings Window.");
@@ -109,31 +108,53 @@ void synchronizeLibrary()
 
     for(int i = 0; i < listDir->size(); i++)
     {
-        vector<string> *listFiles = new vector<string>();
         Fl::check();
-        travelDirectoryRecursive(listDir->at(i)->name, listFiles);
-        progress_bar_file->maximum(listFiles->size());
-        for(int j = 0; j < listFiles->size(); j++)
+#ifdef WIN32
+        deque<wstring> listFiles;
+        wchar_t dir[4096];
+        fl_utf8towc(listDir->at(i)->name.c_str(), listDir->at(i)->name.size(), dir, 4096);
+#else
+        deque<string> listFiles;
+        const char* dir = listDir->at(i)->name.c_str();
+#endif
+
+        os_specific_scanfolder(dir, listFiles);
+
+        progress_bar_file->maximum(listFiles.size());
+        for(int j = 0; j < listFiles.size(); j++)
         {
-            //cout<<"Dir: "<<i+1<<"/"<<listDir->size()<<" - File: "<<j+1<<"/"<<listFiles->size()<< endl;
+            //cout<<"Dir: "<<i+1<<"/"<<listDir->size()<<" - File: "<<j+1<<"/"<<listFiles.size()<< endl;
             if(FLAG_CANCEL_SYNC) break;
-            string filepath = listFiles->at(j).c_str();
+
+#ifdef WIN32
+            const wchar_t* filepath = listFiles.at(j).c_str();
+#else
+            const char* filepath = listFiles.at(j).c_str();
+#endif
+
             string title = "";
             string artist = "";
             string album = "";
 
-            TagLib::FileRef *f = new TagLib::FileRef(filepath.c_str());
-            title = f->tag()->title().to8Bit();
-            artist = f->tag()->artist().to8Bit();
-            album = f->tag()->album().to8Bit();
+            TagLib::FileRef* f = new TagLib::FileRef(filepath);
+
+            title = f->tag()->title().toCString(true);
+            artist = f->tag()->artist().toCString(true);
+            album = f->tag()->album().toCString(true);
             delete(f);
 
-            insertMusic(title, artist, album, filepath);
+#ifdef WIN32
+            char path[4096];
+            fl_utf8fromwc(path, 4096, filepath, lstrlenW(filepath));
+#else
+            const char* path = filepath;
+#endif
+
+            insertMusic(title, artist, album, path);
             progress_bar_file->value(j+1);
             Fl::check();
         }
-        listFiles->clear();
-        delete listFiles;
+        listFiles.clear();
         if(FLAG_CANCEL_SYNC) break;
 
         progress_bar_dir->value(i+1);

@@ -1,20 +1,12 @@
 #ifndef dir_tools_h
 #define dir_tools_h
 
-#include <stdio.h>
-#include <string.h>
-#include <sstream>
-#include <sys/types.h>
+#include <string>
 #include <vector>
-#include <unistd.h>
-
-using namespace std;
 
 /**
- *  Funções usadas para acessar diretórios
+ *  Functions for directory handling
  */
-string getCurrentDirectory();
-vector<string> travelDirectory(string directory);
-void travelDirectoryRecursive(string directory, vector<string> *fullList);
+void scan(const char*, std::vector<std::string>*);
 
 #endif

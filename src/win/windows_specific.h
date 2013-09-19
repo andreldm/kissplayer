@@ -9,6 +9,8 @@
 #include <FL/Fl_Window.H>
 #include <windows.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "mingw_fix.h"
 #include "../window_main.h"
 
@@ -46,6 +48,8 @@ string getWorkingDirectory();
 TCHAR *native_dir_chooser();
 bool isWindowMaximized(Fl_Window *window);
 void maximizeWindow(Fl_Window *window);
+
+void os_specific_scanfolder(const wchar_t* dir, std::deque<std::wstring>& filelist);
 
 wchar_t *CodePageToUnicode(int codePage, const char *src);
 char *UnicodeToCodePage(int codePage, const wchar_t *src);
