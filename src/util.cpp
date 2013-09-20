@@ -137,7 +137,7 @@ void misc_sync_library()
         fl_utf8towc(listDir.at(i).value.c_str(), listDir.at(i).value.size(), dir, 4096);
 #else
         deque<string> listFiles;
-        const char* dir = listDir.at(i.value.c_str();
+        const char* dir = listDir.at(i).value.c_str();
 #endif
 
         os_specific_scanfolder(dir, listFiles);
