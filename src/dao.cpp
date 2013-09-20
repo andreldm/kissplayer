@@ -1,51 +1,59 @@
 #include "dao.h"
+
+#include <sqlite3.h>
+#include <iostream>
+#include <stdlib.h>
+#include "util.h"
 #include "os_specific.h"
+
+using namespace std;
 
 string DB_NAME = "db.s3db";
 
-sqlite3 *db;
-char *ErrMsg = 0;
-sqlite3_stmt *stmt;
+static sqlite3* db;
+static char* ErrMsg;
+static sqlite3_stmt *stmt;
 
 void print_errors()
 {
-    if(ErrMsg != 0)
-        cout<<"SQL Error: "<<ErrMsg<<endl;
-
-    ErrMsg = 0;
+    if(ErrMsg) {
+        cout << "SQL Error: " << ErrMsg << endl;
+        sqlite3_free(&ErrMsg);
+    }
 }
 
-void openDB()
+void dao_open_db()
 {
     sqlite3_open(DB_NAME.c_str(), &db);
 }
 
-void closeDB()
+void dao_close_db()
 {
     sqlite3_close(db);
 }
 
-void beginTransaction()
+void dao_begin_transaction()
 {
-    openDB();
+    dao_open_db();
 
     sqlite3_exec(db,"BEGIN;", 0, 0, &ErrMsg);
     print_errors();
 }
 
-void commitTransaction()
+void dao_commit_transaction()
 {
     sqlite3_exec(db,"COMMIT;", 0, 0, &ErrMsg);
     print_errors();
-    closeDB();
+
+    dao_close_db();
 }
 
-void startDB()
+void dao_start_db()
 {
     DB_NAME = getWorkingDirectory();
     DB_NAME.append("db.s3db");
 
-    openDB();
+    dao_open_db();
     const char *query;
 
     query = "CREATE TABLE IF NOT EXISTS [TB_MUSIC] ( [cod] INTEGER PRIMARY KEY ON CONFLICT ABORT AUTOINCREMENT, [title] VARCHAR(255), [artist] VARCHAR(255), [album] VARCHAR(255), [filepath] VARCHAR UNIQUE ON CONFLICT IGNORE NOT NULL)";
@@ -60,10 +68,10 @@ void startDB()
     sqlite3_exec(db, query, 0, 0, &ErrMsg);
     print_errors();
 
-    closeDB();
+    dao_close_db();
 }
 
-string getKey(string key)
+string dao_get_key(string key)
 {
     string value;
 
@@ -87,7 +95,7 @@ string getKey(string key)
     return value;
 }
 
-void setKey(string key, string value)
+void dao_set_key(string key, string value)
 {
     sqlite3_prepare_v2(db, "INSERT INTO TB_CONFIG VALUES(?,?);", -1, &stmt, NULL);
     sqlite3_bind_text(stmt, 1, key.c_str(), -1, SQLITE_STATIC);
@@ -100,11 +108,9 @@ void setKey(string key, string value)
     }
 
     sqlite3_finalize(stmt);
-
-    return;
 }
 
-void insertMusic(string title, string artist, string album, string filepath)
+void dao_insert_music(string title, string artist, string album, string filepath)
 {
     string temp;
     string temp2; // If I use the same variable strange thinks will happen
@@ -153,103 +159,96 @@ void insertMusic(string title, string artist, string album, string filepath)
 
     sqlite3_bind_text(stmt, 3, album.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 4, filepath.c_str(), -1, SQLITE_STATIC);
-    int rc = sqlite3_step(stmt);
-    if(rc == SQLITE_ERROR)
-    {
+
+    if(sqlite3_step(stmt) == SQLITE_ERROR) {
         cout << sqlite3_errmsg(db)<< endl;
     }
 
     sqlite3_finalize(stmt);
-    return;
 }
 
-void deleteAllMusics()
+void dao_clear_all_music()
 {
     sqlite3_exec(db,"DELETE FROM TB_MUSIC;", 0, 0, &ErrMsg);
     print_errors();
+
     sqlite3_exec(db,"VACUUM;", 0, 0, &ErrMsg);
     print_errors();
-    closeDB();
+
+    dao_close_db();
 }
 
-void insertDirectory(const char * directory)
+void dao_insert_directory(const char * directory)
 {
-    openDB();
+    dao_open_db();
     sqlite3_prepare_v2(db, "INSERT INTO TB_DIRECTORY(directory) VALUES(?);", -1, &stmt, NULL);
     sqlite3_bind_text(stmt, 1, directory, -1, SQLITE_STATIC);
-    int rc = sqlite3_step(stmt);
-    if(rc == SQLITE_ERROR)
-    {
+
+    if(sqlite3_step(stmt) == SQLITE_ERROR) {
         cout << sqlite3_errmsg(db)<< endl;
     }
-    closeDB();
+
     sqlite3_finalize(stmt);
-    return;
+    dao_close_db();
 }
 
-void deleteDirectory(int cod)
+void dao_delete_directory(int cod)
 {
-    openDB();
+    dao_open_db();
     sqlite3_prepare_v2(db, "DELETE FROM TB_DIRECTORY WHERE cod = ?;", -1, &stmt, NULL);
     sqlite3_bind_int(stmt, 1, cod);
-    int rc = sqlite3_step(stmt);
-    if(rc == SQLITE_ERROR)
-    {
-        cout << sqlite3_errmsg(db)<< endl;
+
+    if(sqlite3_step(stmt) == SQLITE_ERROR) {
+        cout << sqlite3_errmsg(db) << endl;
     }
-    closeDB();
+
     sqlite3_finalize(stmt);
-    return;
+    dao_close_db();
 }
 
-vector<Music> *getAllMusics()
+void dao_get_all_music(deque<Music>& listMusic)
 {
-    openDB();
-    vector<Music> *listMusics = new vector<Music>();
+    listMusic.clear();
+
+    dao_open_db();
     sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC ORDER BY artist, title;", -1, &stmt, NULL);
-    while(sqlite3_step(stmt) == SQLITE_ROW)
-    {
+    while(sqlite3_step(stmt) == SQLITE_ROW) {
         Music m;
         for(int i = 0; i < sqlite3_column_count(stmt); i++)
         {
             string col = sqlite3_column_name(stmt, i);
-            if(col.compare("cod") == 0)
-            {
+            if(col.compare("cod") == 0) {
                 m.cod = sqlite3_column_int(stmt, i);
                 continue;
             }
-            if(col.compare("title") == 0)
-            {
+            if(col.compare("title") == 0) {
                 m.title = (char *)sqlite3_column_text(stmt, i);
                 continue;
             }
-            if(col.compare("artist") == 0)
-            {
+            if(col.compare("artist") == 0) {
                 m.artist = (char *)sqlite3_column_text(stmt, i);
                 continue;
             }
-            if(col.compare("album") == 0)
-            {
+            if(col.compare("album") == 0) {
                 m.album = (char *)sqlite3_column_text(stmt, i);
                 continue;
             }
-            if(col.compare("filepath") == 0)
-            {
+            if(col.compare("filepath") == 0) {
                 m.filepath = (char *)sqlite3_column_text(stmt, i);
                 continue;
             }
         }
-        listMusics->push_back(m);
+        listMusic.push_back(m);
     }
-    closeDB();
     sqlite3_finalize(stmt);
-    return listMusics;
+    dao_close_db();
 }
 
-vector<Music> *searchMusics(const char *text)
+void dao_search_music(const char *text, deque<Music>& listMusic)
 {
-    openDB();
-    vector<Music> *listMusics = new vector<Music>();
+    listMusic.clear();
+
+    dao_open_db();
 
     // On Windows we need to convert from CP-1252 to UTF-8
     // TODO: Use fltk unicode functions
@@ -321,32 +320,25 @@ vector<Music> *searchMusics(const char *text)
                 continue;
             }
         }
-        listMusics->push_back(m);
+        listMusic.push_back(m);
     }
-    closeDB();
     sqlite3_finalize(stmt);
-    return listMusics;
+    dao_close_db();
 }
 
-vector<NameCod *> *getAllDirectories()
+void dao_get_directories(deque<COD_VALUE>& dirList)
 {
-    openDB();
-    vector<NameCod *> *listDiretorios = new vector<NameCod *>();
+    dao_open_db();
     sqlite3_prepare_v2(db, "SELECT * FROM TB_DIRECTORY", -1, &stmt, NULL);
 
-    while(sqlite3_step(stmt) == SQLITE_ROW)
-    {
-        int cod = sqlite3_column_int(stmt, 0);
-        const char *dir = (const char *)sqlite3_column_text(stmt, 1);
-        NameCod *nc = new NameCod();
-        nc->cod = cod;
+    while(sqlite3_step(stmt) == SQLITE_ROW) {
+        COD_VALUE cv;
+        cv.cod = sqlite3_column_int(stmt, 0);
+        cv.value = (const char *)sqlite3_column_text(stmt, 1);
 
-        nc->name = dir;
-
-        listDiretorios->push_back(nc);
+        dirList.push_back(cv);
     }
 
-    closeDB();
-
-    return listDiretorios;
+    sqlite3_finalize(stmt);
+    dao_close_db();
 }

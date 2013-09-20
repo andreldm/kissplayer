@@ -1,14 +1,9 @@
 #ifndef lyrics_fetcher_h
 #define lyrics_fetcher_h
 
-#include <FL/Fl.H>
 #include <FL/Fl_Text_Buffer.H>
-#include <curl/curl.h>
 #include <string>
-#include <iostream>
-#include <cctype>
 
-using namespace std;
+void    lyrics_fetcher_run    (Fl_Text_Buffer* lyrics_text_buffer, std::string artist, std::string title);
 
-void fetch_lyrics(Fl_Text_Buffer *lyrics_text_buffer, string artist, string title);
 #endif

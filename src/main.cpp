@@ -16,7 +16,7 @@ int                 FLAG_SEARCH_TYPE;
 
 int main(int argc, char **argv)
 {
-    startDB();
+    dao_start_db();
 
     window_main = make_window_main(argc, argv);
 

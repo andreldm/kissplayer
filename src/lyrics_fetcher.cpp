@@ -1,10 +1,16 @@
 #include "lyrics_fetcher.h"
 
+#include <curl/curl.h>
+#include <iostream>
+#include <cctype>
+
+using namespace std;
+
 size_t writeToString(void *ptr, size_t size, size_t count, void *stream);
 void replaceAll(string &str, const string &from, const string &to);
 void upperCaseInitials(string &str);
 
-void fetch_lyrics(Fl_Text_Buffer *lyrics_text_buffer, string artist, string title)
+void lyrics_fetcher_run(Fl_Text_Buffer *lyrics_text_buffer, string artist, string title)
 {
     CURL *curl;
     string data;

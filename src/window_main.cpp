@@ -2,10 +2,19 @@
 #include "images.h"
 #include "os_specific.h"
 
-/**
-* The Program's main window(And due my lousy architecture, the program's core)
-*/
-
+#include <FL/Fl_Select_Browser.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl_Dial.H>
+#include <FL/Fl_Choice.H>
+#include <FL/Fl_Input.H>
+#include <FL/Fl_Tile.H>
+#include <FL/Fl_Menu_Item.H>
+#include <FL/Fl_Toggle_Button.H>
+#include <FL/Fl_Button.H>
+#include <FL/Fl_PNG_Image.H>
+#include <FL/Fl_Image.H>
+#include <FL/Fl_Text_Display.H>
+#include <FL/Fl_Text_Buffer.H>
 //LOCAL WIDGETS
 Fl_Button *button_play;
 Fl_Button *button_stop;
@@ -31,9 +40,8 @@ Fl_Tile *tile_center;
 
 //LOCAL VARIABLES
 extern Fl_Double_Window *window_main;
-vector<Music> *listMusic;
+static deque<Music> listMusic;
 vector<int> *listRandom; // we use this when randomization is activated
-Fl_Window *window_loading;
 string windowTitle;
 int windowTitlePosition;
 int musicIndex;
@@ -43,7 +51,7 @@ bool doNotLoadLastSearch;
 
 //LOCAL FUNCTIONS
 void play_music();
-void update_playlist(vector<Music> * l);
+static void update_playlist();
 void timer_title_scrolling(void*);
 void timer_check_music(void*);
 void save_config();
@@ -102,11 +110,11 @@ Fl_Double_Window* make_window_main(int argc, char **argv)
     FLAG_SEARCH_TYPE = SEARCH_TYPE_ALL;
 
     button_clear = new Fl_Button(361, 10, 22, 22);
-    button_clear->image(icon_clear);
+    button_clear->image(img_icon_clear);
     button_clear->callback(cb_clear);
 
     button_search = new Fl_Button(388, 10, 22, 22);
-    button_search->image(icon_search);
+    button_search->image(img_icon_search);
     button_search->callback(cb_search);
 
     group_search->resizable(input_search);
@@ -151,25 +159,25 @@ Fl_Double_Window* make_window_main(int argc, char **argv)
 
     button_play = new Fl_Button(10, 330, 25, 25);
     button_play->clear_visible_focus();
-    button_play->image(icon_play);
+    button_play->image(img_icon_play);
     button_play->tooltip("Play/Pause");
     button_play->callback(cb_toggle_play);
 
     button_stop = new Fl_Button(45, 330, 25, 25);
     button_stop->clear_visible_focus();
-    button_stop->image(icon_stop);
+    button_stop->image(img_icon_stop);
     button_stop->tooltip("Stop");
     button_stop->callback(cb_stop);
 
     button_previous = new Fl_Button(80, 330, 25, 25);
     button_previous->clear_visible_focus();
-    button_previous->image(icon_previous);
+    button_previous->image(img_icon_previous);
     button_previous->tooltip("Previous");
     button_previous->callback(cb_previous);
 
     button_next = new Fl_Button(115, 330, 25, 25);
     button_next->clear_visible_focus();
-    button_next->image(icon_next);
+    button_next->image(img_icon_next);
     button_next->tooltip("Next");
     button_next->callback(cb_next);
 
@@ -180,52 +188,52 @@ Fl_Double_Window* make_window_main(int argc, char **argv)
     button_sync->clear_visible_focus();
     button_sync->callback(cb_sync);
     button_sync->tooltip("Synchronize Music Library");
-    button_sync->image(icon_sync);
+    button_sync->image(img_icon_sync);
 
     button_random = new Fl_Button(195, 330, 25, 25);
     button_random->clear_visible_focus();
-    button_random->image(icon_random_disabled);
+    button_random->image(img_icon_random_off);
     button_random->tooltip("Randomize");
     button_random->callback(cb_random);
 
     button_settings = new Fl_Button(230, 330, 25, 25);
     button_settings->clear_visible_focus();
-    button_settings->image(icon_settings);
+    button_settings->image(img_icon_settings);
     button_settings->callback(cb_settings);
     button_settings->tooltip("Settings");
 
     button_about = new Fl_Button(265, 330, 25, 25);
     button_about->clear_visible_focus();
-    button_about->image(icon_about);
+    button_about->image(img_icon_about);
     button_about->tooltip("About");
     button_about->callback(cb_about);
 
     // It won't be visible, it's just for the resize work nicely
-    Fl_Button *scape_goat = new Fl_Button(330, 330, 10, 10);
-    scape_goat->hide();
+    Fl_Button* spacer = new Fl_Button(330, 330, 10, 10);
+    spacer->hide();
 
     dial_volume = new Fl_Dial(370, 321, 38, 38, NULL);
     dial_volume->value(0.8);
     dial_volume->callback(cb_volume);
 
-    group_controls->resizable(scape_goat);
+    group_controls->resizable(spacer);
     group_controls->end();
 
     // END OF WIDGET'S SETUP
 
     // Check for music files on arguments
-    listMusic = parseArgs(argc, argv);
+    parseArgs(argc, argv, listMusic);
 
     // If there is one or more on music files as argument, display it/them
-    if(listMusic != NULL && listMusic->size() > 0)
+    if(listMusic.size() > 0)
     {
-        for(int i = 0; i < listMusic->size(); i++)
+        for(int i = 0; i < listMusic.size(); i++)
         {
-            Music m = listMusic->at(i);
+            Music m = listMusic.at(i);
             browser_music->add(m.getDesc().c_str());
         }
         doNotLoadLastSearch = true;
-        randomize(&listRandom, listMusic->size());
+        randomize(&listRandom, listMusic.size());
     }
 
     Fl::event_dispatch(main_handler);
@@ -262,7 +270,7 @@ void cb_toggle_play(Fl_Widget* widget, void*)
         if(sound_is_playing())
         {
             window_main->label("KISS Player - Paused");
-            button_play->image(icon_play);
+            button_play->image(img_icon_play);
             button_play->redraw();
 #ifdef WIN32
             update_thumbnail_toolbar("play");
@@ -270,7 +278,7 @@ void cb_toggle_play(Fl_Widget* widget, void*)
         }
         else
         {
-            button_play->image(icon_pause);
+            button_play->image(img_icon_pause);
             button_play->redraw();
 #ifdef WIN32
             update_thumbnail_toolbar("pause");
@@ -279,7 +287,7 @@ void cb_toggle_play(Fl_Widget* widget, void*)
 
         sound_toggle_pause();
     }
-    else if(!listMusic->empty())
+    else if(!listMusic.empty())
     {
         musicIndex = (browser_music->value()==0)? 0 : browser_music->value()-1;
         play_music();
@@ -292,7 +300,7 @@ void cb_stop(Fl_Widget* widget, void*)
 
     sound_active(false);
     window_main->label("KISS Player");
-    button_play->image(icon_play);
+    button_play->image(img_icon_play);
     button_play->redraw();
 
     box_current_time->label("00:00");
@@ -302,7 +310,7 @@ void cb_stop(Fl_Widget* widget, void*)
 
 void cb_previous(Fl_Widget* widget, void*)
 {
-    if(listMusic->empty()) return; //If there's no music on the list, do not continue
+    if(listMusic.empty()) return; //If there's no music on the list, do not continue
     if(!sound_check()) return; //If there's no music playing, do not continue
 
     sound_unload();
@@ -334,7 +342,7 @@ void cb_next(Fl_Widget* widget, void*)
     }
     cout << "\n\nmusicIndex = "<< musicIndex;
     cout << "\nmusicIndexRandom = "<< musicIndexRandom;
-    cout << "\nlistMusic->size() = "<< listMusic->size();
+    cout << "\nlistMusic->size() = "<< listMusic.size();
     cout << "\nFLAG_RANDOM = "<< FLAG_RANDOM;
 }
 
@@ -368,7 +376,8 @@ void cb_slider_music(Fl_Widget* widget, void*)
 void cb_search(Fl_Widget* widget, void*)
 {
     lastSearch = input_search->value();
-    update_playlist(searchMusics(lastSearch.c_str()));
+    dao_search_music(lastSearch.c_str(), listMusic);
+    update_playlist();
 }
 
 void cb_search_type(Fl_Widget* widget, void*)
@@ -394,30 +403,29 @@ void cb_random(Fl_Widget* widget, void*)
     FLAG_RANDOM = !FLAG_RANDOM;
 
     if(FLAG_RANDOM)
-        button_random->image(icon_random_enabled);
+        button_random->image(img_icon_random_on);
     else
-        button_random->image(icon_random_disabled);
+        button_random->image(img_icon_random_off);
 
     button_random->redraw();
 }
 
 void cb_settings(Fl_Widget* widget, void*)
 {
-    window_settings = make_window_settings();
-    window_settings->show();
+    window_settings_show();
 }
 
 void cb_about(Fl_Widget* widget, void*)
 {
-    window_about = make_window_about();
-    window_about->show();
+    window_about_show();
 }
 
 void cb_sync(Fl_Widget* widget, void*)
 {
     button_stop->do_callback();
     misc_sync_library();
-    update_playlist(getAllMusics());
+    dao_get_all_music(listMusic);
+    update_playlist();
 }
 
 int main_handler(int e, Fl_Window *w)
@@ -526,7 +534,7 @@ void play_music()
     browser_music->value(musicIndex+1);
     browser_music->redraw();
 
-    sound_load(listMusic->at(musicIndex).filepath.c_str());
+    sound_load(listMusic.at(musicIndex).filepath.c_str());
     sound_play();
     sound_volume(dial_volume->value());
 
@@ -534,7 +542,7 @@ void play_music()
     windowTitle.append(browser_music->text(musicIndex+1));
     windowTitlePosition = 0;
 
-    button_play->image(icon_pause);
+    button_play->image(img_icon_pause);
     button_play->redraw();
 #ifdef WIN32
     update_thumbnail_toolbar("pause");
@@ -545,7 +553,7 @@ void play_music()
     slider_music->maximum(sound_length());
     slider_music->value(0);
     if(FLAG_LYRICS) {
-        fetch_lyrics(lyrics_text_buffer, listMusic->at(musicIndex).artist, listMusic->at(musicIndex).title);
+        lyrics_fetcher_run(lyrics_text_buffer, listMusic.at(musicIndex).artist, listMusic.at(musicIndex).title);
         lyrics_pane->scroll(0,0);
     }
     else {
@@ -606,81 +614,81 @@ void timer_check_music(void*)
 
 void save_config()
 {
-    beginTransaction();
+    dao_begin_transaction();
 
     // TODO: On Windows, when the window is minimized its location becomes -32000, -32000.
     //       We need to save the location before it becomes minimized.
     if(window_main->x() >= 0) {
-        setKey("window_main_x", intToString(window_main->x()));
+        dao_set_key("window_main_x", intToString(window_main->x()));
     }
 
     if(window_main->y() >= 0) {
-        setKey("window_main_y", intToString(window_main->y()));
+        dao_set_key("window_main_y", intToString(window_main->y()));
     }
 
-    setKey("window_main_width", intToString(window_main->w()));
-    setKey("window_main_height", intToString(window_main->h()));
+    dao_set_key("window_main_width", intToString(window_main->w()));
+    dao_set_key("window_main_height", intToString(window_main->h()));
 
-    setKey("window_maximized", intToString(isWindowMaximized(window_main)));
+    dao_set_key("window_maximized", intToString(isWindowMaximized(window_main)));
 
-    setKey("browser_music_width", intToString(browser_music->w()));
+    dao_set_key("browser_music_width", intToString(browser_music->w()));
 
-    setKey("volume_level", floatToString(dial_volume->value()));
+    dao_set_key("volume_level", floatToString(dial_volume->value()));
 
-    setKey("random_button", intToString(FLAG_RANDOM));
+    dao_set_key("random_button", intToString(FLAG_RANDOM));
 
-    setKey("search_input", lastSearch);
+    dao_set_key("search_input", lastSearch);
 
-    setKey("search_type", intToString(FLAG_SEARCH_TYPE));
+    dao_set_key("search_type", intToString(FLAG_SEARCH_TYPE));
 
-    setKey("music_index", intToString(musicIndex));
+    dao_set_key("music_index", intToString(musicIndex));
 
-    setKey("music_index_random", intToString(musicIndexRandom));
+    dao_set_key("music_index_random", intToString(musicIndexRandom));
 
-    setKey("color_background", intToString(browser_music->color()));
+    dao_set_key("color_background", intToString(browser_music->color()));
 
-    setKey("color_selection", intToString(browser_music->color2()));
+    dao_set_key("color_selection", intToString(browser_music->color2()));
 
-    setKey("color_text", intToString(browser_music->textcolor()));
+    dao_set_key("color_text", intToString(browser_music->textcolor()));
 
-    setKey("lyrics", intToString(FLAG_LYRICS));
+    dao_set_key("lyrics", intToString(FLAG_LYRICS));
 
-    commitTransaction();
+    dao_commit_transaction();
 }
 
 void load_config()
 {
-    openDB();
+    dao_open_db();
 
     // SET WINDOW POSITION
-    int x = stringToInt(getKey("window_main_x"));
+    int x = stringToInt(dao_get_key("window_main_x"));
     if(x != -1) window_main->position(x, window_main->y());
 
-    int y = stringToInt(getKey("window_main_y"));
+    int y = stringToInt(dao_get_key("window_main_y"));
     if(y != -1) window_main->position(window_main->x(), y);
 
     // SET WINDOW SIZE
-    int width = stringToInt(getKey("window_main_width"));
+    int width = stringToInt(dao_get_key("window_main_width"));
     if(width != -1) window_main->size(width, window_main->h());
 
-    int height = stringToInt(getKey("window_main_height"));
+    int height = stringToInt(dao_get_key("window_main_height"));
     if(height != -1) window_main->size(window_main->w(), height);
 
     // SET WINDOW MAXIMIZED STATE
-    int maximized = stringToInt(getKey("window_maximized"));
+    int maximized = stringToInt(dao_get_key("window_maximized"));
     if(maximized == 1) {
         shouldMaximizeWindow = true;
     }
 
     // SET VOLUME
-    float volume = stringToFloat(getKey("volume_level"));
+    float volume = stringToFloat(dao_get_key("volume_level"));
     if(volume != -1) {
         dial_volume->value(volume);
         sound_volume(dial_volume->value());
     }
 
     // TOGGLE RANDOMIZE
-    int random = stringToInt(getKey("random_button"));
+    int random = stringToInt(dao_get_key("random_button"));
     if(random != -1) {
         // It should be inverted, because...
         FLAG_RANDOM = !random;
@@ -689,14 +697,14 @@ void load_config()
     }
 
     // SET SEARCH TYPE
-    int search_type = stringToInt(getKey("search_type"));
+    int search_type = stringToInt(dao_get_key("search_type"));
     if(search_type != -1) {
         FLAG_SEARCH_TYPE = search_type;
         choice_search_type->value(FLAG_SEARCH_TYPE);
     }
 
     // SET SEARCH STRING
-    string search_input = getKey("search_input");
+    string search_input = dao_get_key("search_input");
     if(!search_input.empty()) {
         input_search->value(search_input.c_str());
         if(!doNotLoadLastSearch)
@@ -704,11 +712,12 @@ void load_config()
     }
     // If the search string is empty, load all the musics
     else if(!doNotLoadLastSearch) {
-        update_playlist(getAllMusics());
+        dao_get_all_music(listMusic);
+        update_playlist();
     }
 
     // SET LYRICS FLAG
-    int lyrics = stringToInt(getKey("lyrics"));
+    int lyrics = stringToInt(dao_get_key("lyrics"));
     if(lyrics != -1) {
         FLAG_LYRICS = lyrics;
     }
@@ -717,16 +726,16 @@ void load_config()
     }
 
     // SET MUSIC INDEX
-    int mi = stringToInt(getKey("music_index"));
+    int mi = stringToInt(dao_get_key("music_index"));
     if(mi != -1) musicIndex = mi;
 
-    int mir = stringToInt(getKey("music_index_random"));
+    int mir = stringToInt(dao_get_key("music_index_random"));
     if(mir != -1) musicIndexRandom = mir;
 
     browser_music->value(musicIndex+1);
 
     // SET MUSIC BROWSER WIDTH
-    int browser_music_width = stringToInt(getKey("browser_music_width"));
+    int browser_music_width = stringToInt(dao_get_key("browser_music_width"));
 
     if(browser_music_width > 0) {
         browser_music->size(browser_music_width, browser_music->h());
@@ -737,9 +746,9 @@ void load_config()
     }
 
     // SET WIDGETS COLORS
-    int color_background = stringToInt(getKey("color_background"));
-    int color_selection = stringToInt(getKey("color_selection"));
-    int color_text = stringToInt(getKey("color_text"));
+    int color_background = stringToInt(dao_get_key("color_background"));
+    int color_selection = stringToInt(dao_get_key("color_selection"));
+    int color_text = stringToInt(dao_get_key("color_text"));
 
     if(color_background == -1)
         color_background = DEFAULT_BACKGROUND_COLOR;
@@ -762,13 +771,13 @@ void load_config()
     input_search->redraw();
     choice_search_type->redraw();
 
-    closeDB();
+    dao_close_db();
 }
 
 bool hasNextMusic()
 {
     // There's no music on the list or no music playing
-    if(listMusic->empty() || !sound_check()) {
+    if(listMusic.empty() || !sound_check()) {
         return false;
     }
 
@@ -776,28 +785,64 @@ bool hasNextMusic()
     if(FLAG_RANDOM) {
         if(musicIndexRandom == -1 || musicIndexRandom + 2 <= listRandom->size())
             return true;
-    } else if(musicIndex + 2 <= listMusic->size()) {
+    } else if(musicIndex + 2 <= listMusic.size()) {
         return true;
     }
 
     return false;
 }
 
-void update_playlist(vector<Music> * l)
+void update_playlist()
 {
-    if(listMusic != 0) {
-        listMusic->clear();
-        delete listMusic;
-    }
-
-    listMusic = l;
     browser_music->clear();
 
-    for(int i = 0; i < listMusic->size(); i++) {
-        Music m = listMusic->at(i);
+    for(int i = 0; i < listMusic.size(); i++) {
+        Music m = listMusic.at(i);
         browser_music->add(m.getDesc().c_str());
     }
 
     musicIndexRandom = -1;
-    randomize(&listRandom, listMusic->size());
+    randomize(&listRandom, listMusic.size());
+}
+
+void window_main_set_choice_search_type_color(Fl_Color c)
+{
+    if(c != -1) choice_search_type->color2(c);
+    choice_search_type->redraw();
+}
+
+void window_main_set_input_search_type_color(Fl_Color c)
+{
+    if(c != -1) input_search->color2(c);
+    input_search->redraw();
+}
+
+void window_main_set_lyrics_pane_color(Fl_Color c1, Fl_Color c2, Fl_Color t)
+{
+    if(c1 != -1) lyrics_pane->color(c1);
+    if(c2 != -1) lyrics_pane->color2(c2);
+    if(t != -1) lyrics_pane->textcolor(t);
+    lyrics_pane->redraw();
+}
+
+void window_main_set_browser_music_color(Fl_Color c1, Fl_Color c2, Fl_Color t)
+{
+    if(c1 != -1) browser_music->color(c1);
+    if(c2 != -1) browser_music->color2(c2);
+    if(t != -1) browser_music->textcolor(t);
+    browser_music->redraw();
+}
+
+Fl_Color window_main_get_browser_music_color(int c)
+{
+    switch(c) {
+    case 1:
+        return browser_music->color();
+    case 2:
+        return browser_music->color2();
+    case 3:
+        return browser_music->textcolor();
+    }
+
+    return 0;
 }

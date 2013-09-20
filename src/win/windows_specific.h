@@ -10,6 +10,7 @@
 #include <windows.h>
 #include <string.h>
 #include <stdio.h>
+#include <deque>
 #include <stdlib.h>
 #include "mingw_fix.h"
 #include "../window_main.h"

@@ -1,4 +1,29 @@
-#include "misc.h"
+#include "util.h"
+
+#include <sstream>
+#include <map>
+#include <deque>
+#include <stdlib.h>
+
+#include <FL/Fl.H>
+#include <FL/fl_ask.H>
+
+#include <taglib/taglib.h>
+#include <taglib/fileref.h>
+#include <taglib/tstring.h>
+#include <taglib/tag.h>
+
+#include "dao.h"
+#include "os_specific.h"
+#include "window_loading.h"
+
+#if defined WIN32
+    #include <time.h>
+#else
+    #include <stdlib.h>
+#endif
+
+using namespace std;
 
 /**
 * This is a place for general purpose functions.
@@ -7,9 +32,8 @@
 /**
 * Parses the arguments to check if there are music files to play
 */
-vector<Music> *parseArgs(int argc, char **argv)
+void parseArgs(int argc, char **argv, deque<Music>& listMusic)
 {
-    vector<Music> *list = new vector<Music>();
     for(int i = 1; i < argc; i++)
     {
         string arg(argv[i]);
@@ -28,11 +52,9 @@ vector<Music> *parseArgs(int argc, char **argv)
             m.album = f->tag()->album().to8Bit();
             m.filepath = arg;
             delete(f);
-            list->push_back(m);
+            listMusic.push_back(m);
         }
     }
-
-    return list;
 }
 
 /**
@@ -89,41 +111,41 @@ void randomize(vector<int> **listRandom, int max)
 */
 void misc_sync_library()
 {
-    vector<NameCod *> *listDir = getAllDirectories();
+    deque<COD_VALUE> listDir;
+    dao_get_directories(listDir);
 
-    if(listDir->size() == 0) {
+    if(listDir.size() == 0) {
         fl_beep();
         fl_message_title("Warning");
         fl_message("Please, add at least one directory on the Settings Window.");
-        delete listDir;
+        listDir.clear();
         return;
     }
 
-    Fl_Window *window = make_window_loading();
-    progress_bar_dir->maximum(listDir->size());
-    window->show();
+    window_loading_show();
+    window_loading_set_dir_max(listDir.size());
 
-    deleteAllMusics();
-    beginTransaction();
+    dao_clear_all_music();
+    dao_begin_transaction();
 
-    for(int i = 0; i < listDir->size(); i++)
+    for(int i = 0; i < listDir.size(); i++)
     {
         Fl::check();
 #ifdef WIN32
         deque<wstring> listFiles;
         wchar_t dir[4096];
-        fl_utf8towc(listDir->at(i)->name.c_str(), listDir->at(i)->name.size(), dir, 4096);
+        fl_utf8towc(listDir.at(i).value.c_str(), listDir.at(i).value.size(), dir, 4096);
 #else
         deque<string> listFiles;
-        const char* dir = listDir->at(i)->name.c_str();
+        const char* dir = listDir.at(i.value.c_str();
 #endif
 
         os_specific_scanfolder(dir, listFiles);
+        window_loading_set_file_max(listFiles.size());
 
-        progress_bar_file->maximum(listFiles.size());
         for(int j = 0; j < listFiles.size(); j++)
         {
-            //cout<<"Dir: "<<i+1<<"/"<<listDir->size()<<" - File: "<<j+1<<"/"<<listFiles.size()<< endl;
+            //cout<<"Dir: "<<i+1<<"/"<<listDir.size()<<" - File: "<<j+1<<"/"<<listFiles.size()<< endl;
             if(FLAG_CANCEL_SYNC) break;
 
 #ifdef WIN32
@@ -150,19 +172,18 @@ void misc_sync_library()
             const char* path = filepath;
 #endif
 
-            insertMusic(title, artist, album, path);
-            progress_bar_file->value(j+1);
+            dao_insert_music(title, artist, album, path);
+            window_loading_set_file_value(j+1);
             Fl::check();
         }
         listFiles.clear();
         if(FLAG_CANCEL_SYNC) break;
 
-        progress_bar_dir->value(i+1);
+        window_loading_set_dir_value(i+1);
     }
-    delete listDir;
-    Fl::delete_widget(window);
+    window_loading_close();
 
-    commitTransaction();
+    dao_commit_transaction();
     FLAG_CANCEL_SYNC = false;
 }
 
