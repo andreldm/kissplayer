@@ -8,7 +8,7 @@
 
 using namespace std;
 
-string DB_NAME = "db.s3db";
+static string DB_NAME = "db.s3db";
 
 static sqlite3* db;
 static char* ErrMsg;
@@ -56,15 +56,24 @@ void dao_start_db()
     dao_open_db();
     const char *query;
 
-    query = "CREATE TABLE IF NOT EXISTS [TB_MUSIC] ( [cod] INTEGER PRIMARY KEY ON CONFLICT ABORT AUTOINCREMENT, [title] VARCHAR(255), [artist] VARCHAR(255), [album] VARCHAR(255), [filepath] VARCHAR UNIQUE ON CONFLICT IGNORE NOT NULL)";
+    query = "CREATE TABLE IF NOT EXISTS [TB_MUSIC] ( \
+                [cod] INTEGER PRIMARY KEY ON CONFLICT ABORT AUTOINCREMENT, \
+                [title] VARCHAR(255), \
+                [artist] VARCHAR(255), \
+                [album] VARCHAR(255), \
+                [filepath] VARCHAR UNIQUE ON CONFLICT IGNORE NOT NULL)";
     sqlite3_exec(db, query, 0, 0, &ErrMsg);
     print_errors();
 
-    query = "CREATE TABLE IF NOT EXISTS [TB_DIRECTORY] ( [cod] INTEGER PRIMARY KEY ON CONFLICT ABORT AUTOINCREMENT, [directory] VARCHAR UNIQUE ON CONFLICT IGNORE NOT NULL)";
+    query = "CREATE TABLE IF NOT EXISTS [TB_DIRECTORY] ( \
+                [cod] INTEGER PRIMARY KEY ON CONFLICT ABORT AUTOINCREMENT, \
+                [directory] VARCHAR UNIQUE ON CONFLICT IGNORE NOT NULL)";
     sqlite3_exec(db, query, 0, 0, &ErrMsg);
     print_errors();
 
-    query = "CREATE TABLE IF NOT EXISTS [TB_CONFIG] ( [key] VARCHAR UNIQUE ON CONFLICT REPLACE NOT NULL, [value] VARCHAR)";
+    query = "CREATE TABLE IF NOT EXISTS [TB_CONFIG] ( \
+                [key] VARCHAR UNIQUE ON CONFLICT REPLACE NOT NULL, \
+                [value] VARCHAR)";
     sqlite3_exec(db, query, 0, 0, &ErrMsg);
     print_errors();
 
@@ -77,14 +86,12 @@ string dao_get_key(string key)
 
     sqlite3_prepare_v2(db, "SELECT * FROM TB_CONFIG WHERE key = ?;", -1, &stmt, NULL);
     sqlite3_bind_text(stmt, 1, key.c_str(), -1, SQLITE_STATIC);
-    if(sqlite3_step(stmt) == SQLITE_ROW)
-    {
-        for(int i = 0; i < sqlite3_column_count(stmt); i++)
-        {
+
+    if(sqlite3_step(stmt) == SQLITE_ROW) {
+        for(int i = 0; i < sqlite3_column_count(stmt); i++) {
             string col = sqlite3_column_name(stmt, i);
-            if(col.compare("value") == 0)
-            {
-                value = (char *)sqlite3_column_text(stmt, i);
+            if(col.compare("value") == 0) {
+                value = col;
                 break;
             }
         }
@@ -97,13 +104,11 @@ string dao_get_key(string key)
 
 void dao_set_key(string key, string value)
 {
-    sqlite3_prepare_v2(db, "INSERT INTO TB_CONFIG VALUES(?,?);", -1, &stmt, NULL);
+    sqlite3_prepare_v2(db, "INSERT INTO TB_CONFIG VALUES(?, ?);", -1, &stmt, NULL);
     sqlite3_bind_text(stmt, 1, key.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 2, value.c_str(), -1, SQLITE_STATIC);
 
-    int rc = sqlite3_step(stmt);
-    if(rc == SQLITE_ERROR)
-    {
+    if(sqlite3_step(stmt) == SQLITE_ERROR) {
         cout << sqlite3_errmsg(db)<< endl;
     }
 
@@ -113,19 +118,16 @@ void dao_set_key(string key, string value)
 void dao_insert_music(string title, string artist, string album, string filepath)
 {
     string temp;
-    string temp2; // If I use the same variable strange thinks will happen
-    size_t foundSlash;
-    size_t foundDot;
-    size_t foundHyphen;
+    string temp2;
+    int foundSlash;
+    int foundDot;
+    int foundHyphen;
 
-    sqlite3_prepare_v2(db, "INSERT INTO TB_MUSIC(title, artist, album, filepath) VALUES(?,?,?,?);", -1, &stmt, NULL);
+    sqlite3_prepare_v2(db, "INSERT INTO TB_MUSIC(title, artist, album, filepath) VALUES(?, ?, ?, ?);", -1, &stmt, NULL);
 
-    if(!title.empty())
-    {
+    if(!title.empty()) {
         sqlite3_bind_text(stmt, 1, title.c_str(), -1, SQLITE_STATIC);
-    }
-    else
-    {
+    } else {
         foundSlash = filepath.find_last_of("/\\");
         temp = filepath.substr(foundSlash+1);
 
@@ -138,12 +140,9 @@ void dao_insert_music(string title, string artist, string album, string filepath
         sqlite3_bind_text(stmt, 1, temp.c_str(), -1, SQLITE_STATIC);
     }
 
-    if(!artist.empty())
-    {
+    if(!artist.empty()) {
         sqlite3_bind_text(stmt, 2, artist.c_str(), -1, SQLITE_STATIC);
-    }
-    else
-    {
+    } else {
         foundSlash = filepath.find_last_of("/\\");
         temp2 = filepath.substr(foundSlash+1);
 
@@ -178,7 +177,7 @@ void dao_clear_all_music()
     dao_close_db();
 }
 
-void dao_insert_directory(const char * directory)
+void dao_insert_directory(const char* directory)
 {
     dao_open_db();
     sqlite3_prepare_v2(db, "INSERT INTO TB_DIRECTORY(directory) VALUES(?);", -1, &stmt, NULL);
@@ -214,9 +213,80 @@ void dao_get_all_music(deque<Music>& listMusic)
     sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC ORDER BY artist, title;", -1, &stmt, NULL);
     while(sqlite3_step(stmt) == SQLITE_ROW) {
         Music m;
-        for(int i = 0; i < sqlite3_column_count(stmt); i++)
-        {
+        for(int i = 0; i < sqlite3_column_count(stmt); i++) {
             string col = sqlite3_column_name(stmt, i);
+
+            if(col.compare("cod") == 0) {
+                m.cod = sqlite3_column_int(stmt, i);
+                continue;
+            }
+            if(col.compare("title") == 0) {
+                m.title = (char*)sqlite3_column_text(stmt, i);
+                continue;
+            }
+            if(col.compare("artist") == 0) {
+                m.artist = (char*)sqlite3_column_text(stmt, i);
+                continue;
+            }
+            if(col.compare("album") == 0) {
+                m.album = (char*)sqlite3_column_text(stmt, i);
+                continue;
+            }
+            if(col.compare("filepath") == 0) {
+                m.filepath = (char*)sqlite3_column_text(stmt, i);
+                continue;
+            }
+        }
+        listMusic.push_back(m);
+    }
+    sqlite3_finalize(stmt);
+    dao_close_db();
+}
+
+void dao_search_music(const char* text, deque<Music>& listMusic)
+{
+    listMusic.clear();
+
+    dao_open_db();
+
+    // On Windows we need to convert from CP-1252 to UTF-8
+    // TODO: Use fltk unicode functions
+#if defined WIN32
+    wchar_t *wText = CodePageToUnicode(65001, text);
+    text = UnicodeToCodePage(1252, wText);
+#endif
+
+    string text_prepared = "%";
+    text_prepared.append(text);
+    text_prepared.append("%");
+
+    switch(FLAG_SEARCH_TYPE) {
+    case SEARCH_TYPE_ALL:
+        sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE title LIKE ? OR artist LIKE ? OR album LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
+        sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, text_prepared.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 3, text_prepared.c_str(), -1, SQLITE_STATIC);
+        break;
+    case SEARCH_TYPE_TITLE:
+        sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE title LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
+        sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
+        break;
+    case SEARCH_TYPE_ARTIST:
+        sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE artist LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
+        sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
+        break;
+    case SEARCH_TYPE_ALBUM:
+        sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE album LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
+        sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
+    default:
+         sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC ORDER BY artist, title;", -1, &stmt, NULL);
+    }
+
+    while(sqlite3_step(stmt) == SQLITE_ROW) {
+        Music m;
+        for(int i = 0; i < sqlite3_column_count(stmt); i++) {
+            string col = sqlite3_column_name(stmt, i);
+
             if(col.compare("cod") == 0) {
                 m.cod = sqlite3_column_int(stmt, i);
                 continue;
@@ -234,88 +304,6 @@ void dao_get_all_music(deque<Music>& listMusic)
                 continue;
             }
             if(col.compare("filepath") == 0) {
-                m.filepath = (char *)sqlite3_column_text(stmt, i);
-                continue;
-            }
-        }
-        listMusic.push_back(m);
-    }
-    sqlite3_finalize(stmt);
-    dao_close_db();
-}
-
-void dao_search_music(const char *text, deque<Music>& listMusic)
-{
-    listMusic.clear();
-
-    dao_open_db();
-
-    // On Windows we need to convert from CP-1252 to UTF-8
-    // TODO: Use fltk unicode functions
-#if defined WIN32
-    wchar_t *wText = CodePageToUnicode(65001, text);
-    text = UnicodeToCodePage(1252, wText);
-#endif
-
-    string text_prepared = "%";
-    text_prepared.append(text);
-    text_prepared.append("%");
-
-    if(FLAG_SEARCH_TYPE == SEARCH_TYPE_ALL)
-    {
-        sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE title LIKE ? OR artist LIKE ? OR album LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
-        sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 2, text_prepared.c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 3, text_prepared.c_str(), -1, SQLITE_STATIC);
-    }
-    else if(FLAG_SEARCH_TYPE == SEARCH_TYPE_TITLE)
-    {
-        sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE title LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
-        sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
-    }
-    else if(FLAG_SEARCH_TYPE == SEARCH_TYPE_ARTIST)
-    {
-        sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE artist LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
-        sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
-    }
-    else if(FLAG_SEARCH_TYPE == SEARCH_TYPE_ALBUM)
-    {
-        sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE album LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
-        sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
-    }
-    else
-    {
-         sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC ORDER BY artist, title;", -1, &stmt, NULL);
-    }
-
-    while(sqlite3_step(stmt) == SQLITE_ROW)
-    {
-        Music m;
-        for(int i = 0; i < sqlite3_column_count(stmt); i++)
-        {
-            string col = sqlite3_column_name(stmt, i);
-            if(col.compare("cod") == 0)
-            {
-                m.cod = sqlite3_column_int(stmt, i);
-                continue;
-            }
-            if(col.compare("title") == 0)
-            {
-                m.title = (char *)sqlite3_column_text(stmt, i);
-                continue;
-            }
-            if(col.compare("artist") == 0)
-            {
-                m.artist = (char *)sqlite3_column_text(stmt, i);
-                continue;
-            }
-            if(col.compare("album") == 0)
-            {
-                m.album = (char *)sqlite3_column_text(stmt, i);
-                continue;
-            }
-            if(col.compare("filepath") == 0)
-            {
                 m.filepath = (char *)sqlite3_column_text(stmt, i);
                 continue;
             }
