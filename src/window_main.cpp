@@ -716,6 +716,9 @@ void load_config()
         update_playlist();
     }
 
+    // Open DB again, update_playlist and cb_search close it
+    dao_open_db();
+
     // SET LYRICS FLAG
     int lyrics = stringToInt(dao_get_key("lyrics"));
     if(lyrics != -1) {

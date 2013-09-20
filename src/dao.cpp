@@ -91,7 +91,7 @@ string dao_get_key(string key)
         for(int i = 0; i < sqlite3_column_count(stmt); i++) {
             string col = sqlite3_column_name(stmt, i);
             if(col.compare("value") == 0) {
-                value = col;
+                value = (char *)sqlite3_column_text(stmt, i);
                 break;
             }
         }

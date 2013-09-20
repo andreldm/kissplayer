@@ -38,26 +38,25 @@
 			<Add option="-lfltk_images" />
 			<Add option="-lpng" />
 			<Add option="-lfmodex" />
+			<Add option="-lXtst" />
 		</Linker>
 		<Unit filename="src/dao.cpp" />
 		<Unit filename="src/dao.h" />
-		<Unit filename="src/dir_tools.cpp" />
-		<Unit filename="src/dir_tools.h" />
 		<Unit filename="src/fl_slider_music.h" />
+		<Unit filename="src/images.cpp" />
+		<Unit filename="src/images.h" />
 		<Unit filename="src/linux/icon.xpm" />
 		<Unit filename="src/linux/linux_specific.cpp" />
 		<Unit filename="src/linux/linux_specific.h" />
 		<Unit filename="src/lyrics_fetcher.cpp" />
 		<Unit filename="src/lyrics_fetcher.h" />
 		<Unit filename="src/main.cpp" />
-		<Unit filename="src/misc.cpp" />
-		<Unit filename="src/misc.h" />
 		<Unit filename="src/music.cpp" />
 		<Unit filename="src/music.h" />
-		<Unit filename="src/name_cod.cpp" />
-		<Unit filename="src/name_cod.h" />
 		<Unit filename="src/sound.cpp" />
 		<Unit filename="src/sound.h" />
+		<Unit filename="src/util.cpp" />
+		<Unit filename="src/util.h" />
 		<Unit filename="src/window_about.cpp" />
 		<Unit filename="src/window_about.h" />
 		<Unit filename="src/window_loading.cpp" />
@@ -69,6 +68,7 @@
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

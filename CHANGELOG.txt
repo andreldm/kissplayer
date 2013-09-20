@@ -1,4 +1,7 @@
 v 0.5.9 - 20/09/2013:
+- Fixed regressions
+
+v 0.5.9 - 20/09/2013:
 - Note: delete the db.s3db file and sync
 - A lot of code refactoring
 - Fix some memory leaks
