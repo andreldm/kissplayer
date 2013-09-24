@@ -1,32 +1,21 @@
-/**
-Here lives the Linux specific code.
-**/
-
 #ifndef linux_specific_h
 #define linux_specific_h
 
-#include <FL/Fl.H>
-#include <FL/Fl_Window.H>
-#include <FL/Fl_File_Chooser.H>
-#include <FL/x.H>
-#include <X11/xpm.h>
-#include <pwd.h>
-#include "icon.xpm"
-#include "../window_main.h"
+#include <deque>
+#include <string>
 
+#include <FL/Fl_Window.H>
 
 #define FILE_SEPARATOR "/"
 
-void set_app_icon(Fl_Window *window);
-void init_os_specific(Fl_Window *window);
-void end_os_specific();
-string getWorkingDirectory();
-char * native_dir_chooser();
-bool isWindowMaximized(Fl_Window *window);
-void maximizeWindow(Fl_Window *window);
+void    os_specific_set_app_icon            (Fl_Window* window);
+int     os_specific_init                    (Fl_Window* window);
+void    os_specific_end                     (void);
+void    os_specific_get_working_dir         (std::string& dir);
+void    os_specific_dir_chooser             (char* dir);
+void    os_specific_maximize_window         (Fl_Window* window);
+bool    os_specific_is_window_maximized     (Fl_Window* window);
 
-void os_specific_scanfolder(const char* dir, deque<string>& filelist);
-
-static Pixmap mask;
+void    os_specific_scanfolder              (const char* dir, std::deque<std::string>& filelist);
 
 #endif

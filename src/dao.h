@@ -3,9 +3,8 @@
 
 #include <string>
 #include <deque>
-#include "music.h"
 
-extern int FLAG_SEARCH_TYPE;
+#include "music.h"
 
 class COD_VALUE
 {
@@ -31,5 +30,8 @@ void                    dao_search_music        (const char* text, std::deque<Mu
 void                    dao_insert_directory    (const char* directory);
 void                    dao_delete_directory    (int cod);
 void                    dao_get_directories     (std::deque<COD_VALUE>& dirList);
+
+// GLOBAL IMPORT
+extern int FLAG_SEARCH_TYPE;
 
 #endif

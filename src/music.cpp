@@ -1,5 +1,7 @@
 #include "music.h"
 
+using namespace std;
+
 Music::Music (void)
 {
     cod = 0;
@@ -15,8 +17,7 @@ Music::Music (void)
 string Music::getDesc()
 {
     string temp = "";
-    if(artist.empty())
-    {
+    if(artist.empty()) {
         size_t foundSlash;
         size_t foundDot;
         foundSlash = filepath.find_last_of("/\\");
@@ -24,9 +25,7 @@ string Music::getDesc()
 
         foundDot = temp.find_last_of(".");
         temp = temp.substr(0,foundDot);
-    }
-    else
-    {
+    } else {
         temp.append(artist);
         temp.append(" - ");
         temp.append(title);

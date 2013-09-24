@@ -1,4 +1,5 @@
 #include "sound.h"
+
 #include <stdio.h>
 #include <FL/fl_utf8.h>
 
@@ -8,7 +9,7 @@
     #include <fmodex/fmod.h>
 #endif
 
-#define PATH_LENGTH 4096
+#define PATH_LENGTH 8192
 
 char current_file[PATH_LENGTH];
 bool loaded = false;
@@ -71,7 +72,7 @@ void sound_active(bool s)
     }
 }
 
-bool sound_check(void)
+bool sound_is_loaded(void)
 {
     return loaded;
 }

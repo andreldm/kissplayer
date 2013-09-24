@@ -12,7 +12,7 @@ static string DB_NAME = "db.s3db";
 
 static sqlite3* db;
 static char* ErrMsg;
-static sqlite3_stmt *stmt;
+static sqlite3_stmt* stmt;
 
 void print_errors()
 {
@@ -50,11 +50,11 @@ void dao_commit_transaction()
 
 void dao_start_db()
 {
-    DB_NAME = getWorkingDirectory();
+    os_specific_get_working_dir(DB_NAME);
     DB_NAME.append("db.s3db");
 
     dao_open_db();
-    const char *query;
+    const char* query;
 
     query = "CREATE TABLE IF NOT EXISTS [TB_MUSIC] ( \
                 [cod] INTEGER PRIMARY KEY ON CONFLICT ABORT AUTOINCREMENT, \
@@ -91,7 +91,7 @@ string dao_get_key(string key)
         for(int i = 0; i < sqlite3_column_count(stmt); i++) {
             string col = sqlite3_column_name(stmt, i);
             if(col.compare("value") == 0) {
-                value = (char *)sqlite3_column_text(stmt, i);
+                value = (char*)sqlite3_column_text(stmt, i);
                 break;
             }
         }
@@ -136,7 +136,7 @@ void dao_insert_music(string title, string artist, string album, string filepath
 
         foundHyphen = temp.find_last_of("-");
         temp = temp.substr(foundHyphen+1);
-        trim(temp);
+        util_trim(temp);
         sqlite3_bind_text(stmt, 1, temp.c_str(), -1, SQLITE_STATIC);
     }
 
@@ -151,7 +151,7 @@ void dao_insert_music(string title, string artist, string album, string filepath
 
         foundHyphen = temp2.find_last_of("-");
         temp2 = temp2.substr(0, foundHyphen);
-        trim(temp2);
+        util_trim(temp2);
         sqlite3_bind_text(stmt, 2, temp2.c_str(), -1, SQLITE_STATIC);
     }
 
@@ -211,6 +211,7 @@ void dao_get_all_music(deque<Music>& listMusic)
 
     dao_open_db();
     sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC ORDER BY artist, title;", -1, &stmt, NULL);
+
     while(sqlite3_step(stmt) == SQLITE_ROW) {
         Music m;
         for(int i = 0; i < sqlite3_column_count(stmt); i++) {
@@ -239,22 +240,19 @@ void dao_get_all_music(deque<Music>& listMusic)
         }
         listMusic.push_back(m);
     }
+
     sqlite3_finalize(stmt);
     dao_close_db();
 }
+
+#include <FL/fl_utf8.h>
+#include <string.h>
 
 void dao_search_music(const char* text, deque<Music>& listMusic)
 {
     listMusic.clear();
 
     dao_open_db();
-
-    // On Windows we need to convert from CP-1252 to UTF-8
-    // TODO: Use fltk unicode functions
-#if defined WIN32
-    wchar_t *wText = CodePageToUnicode(65001, text);
-    text = UnicodeToCodePage(1252, wText);
-#endif
 
     string text_prepared = "%";
     text_prepared.append(text);
@@ -292,19 +290,19 @@ void dao_search_music(const char* text, deque<Music>& listMusic)
                 continue;
             }
             if(col.compare("title") == 0) {
-                m.title = (char *)sqlite3_column_text(stmt, i);
+                m.title = (char*)sqlite3_column_text(stmt, i);
                 continue;
             }
             if(col.compare("artist") == 0) {
-                m.artist = (char *)sqlite3_column_text(stmt, i);
+                m.artist = (char*)sqlite3_column_text(stmt, i);
                 continue;
             }
             if(col.compare("album") == 0) {
-                m.album = (char *)sqlite3_column_text(stmt, i);
+                m.album = (char*)sqlite3_column_text(stmt, i);
                 continue;
             }
             if(col.compare("filepath") == 0) {
-                m.filepath = (char *)sqlite3_column_text(stmt, i);
+                m.filepath = (char*)sqlite3_column_text(stmt, i);
                 continue;
             }
         }
@@ -322,7 +320,7 @@ void dao_get_directories(deque<COD_VALUE>& dirList)
     while(sqlite3_step(stmt) == SQLITE_ROW) {
         COD_VALUE cv;
         cv.cod = sqlite3_column_int(stmt, 0);
-        cv.value = (const char *)sqlite3_column_text(stmt, 1);
+        cv.value = (const char*)sqlite3_column_text(stmt, 1);
 
         dirList.push_back(cv);
     }

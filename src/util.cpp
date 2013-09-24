@@ -26,16 +26,11 @@
 using namespace std;
 
 /**
-* This is a place for general purpose functions.
-*/
-
-/**
 * Parses the arguments to check if there are music files to play
 */
-void parseArgs(int argc, char **argv, deque<Music>& listMusic)
+void util_parse_args(int argc, char** argv, deque<Music>& listMusic)
 {
-    for(int i = 1; i < argc; i++)
-    {
+    for(int i = 1; i < argc; i++) {
         string arg(argv[i]);
 
         //List of supported file formats
@@ -43,10 +38,9 @@ void parseArgs(int argc, char **argv, deque<Music>& listMusic)
                 strstr(arg.c_str(), ".wma") != NULL ||
                 strstr(arg.c_str(), ".ogg") != NULL ||
                 strstr(arg.c_str(), ".wav") != NULL ||
-                strstr(arg.c_str(), ".flac") != NULL)
-        {
+                strstr(arg.c_str(), ".flac") != NULL) {
             Music m;
-            TagLib::FileRef *f = new TagLib::FileRef(arg.c_str());
+            TagLib::FileRef* f = new TagLib::FileRef(arg.c_str());
             m.title = f->tag()->title().to8Bit();
             m.artist = f->tag()->artist().to8Bit();
             m.album = f->tag()->album().to8Bit();
@@ -60,7 +54,7 @@ void parseArgs(int argc, char **argv, deque<Music>& listMusic)
 /**
 * Removes whitespaces at the beginning and end of a string
 */
-void trim(string &str)
+void util_trim(string &str)
 {
     string::size_type pos = str.find_last_not_of(" \f\n\r\t\v");
     str.erase(pos + 1);
@@ -73,7 +67,7 @@ void trim(string &str)
 * Takes a time value in miliseconds and returns formated in mm:ss.
 * Ex: 123 secs -> 02:03 |  799 secs -> 13:19
 */
-const char *formatTime (int time)
+const char* util_format_time (int time)
 {
     stringstream stream;
 
@@ -90,26 +84,31 @@ const char *formatTime (int time)
 /**
 * Generates random numbers
 */
-ptrdiff_t myrandom (ptrdiff_t i) { return rand()%i;}
+ptrdiff_t myrandom (ptrdiff_t i)
+{
+    return rand()%i;
+}
 
 /**
 * Generates a vector filled with unique random numbers
 */
-void randomize(vector<int> **listRandom, int max)
+void util_randomize(deque<int>& listRandom, int max)
 {
+    listRandom.clear();
+
     ptrdiff_t (*p_myrandom)(ptrdiff_t) = myrandom;
     srand((int)time(NULL));
-    *listRandom = new vector<int>();
-    for(int i = 0; i < max; i++)
-        (*listRandom)->push_back(i);
+    for(int i = 0; i < max; i++) {
+        listRandom.push_back(i);
+    }
 
-    random_shuffle((*listRandom)->begin(), (*listRandom)->end(), p_myrandom);
+    random_shuffle(listRandom.begin(), listRandom.end(), p_myrandom);
 }
 
 /**
 * Seeks directories for music files and adds them to the DB.
 */
-void misc_sync_library()
+void util_sync_library()
 {
     deque<COD_VALUE> listDir;
     dao_get_directories(listDir);
@@ -128,8 +127,7 @@ void misc_sync_library()
     dao_clear_all_music();
     dao_begin_transaction();
 
-    for(int i = 0; i < listDir.size(); i++)
-    {
+    for(int i = 0; i < listDir.size(); i++) {
         Fl::check();
 #ifdef WIN32
         deque<wstring> listFiles;
@@ -143,8 +141,7 @@ void misc_sync_library()
         os_specific_scanfolder(dir, listFiles);
         window_loading_set_file_max(listFiles.size());
 
-        for(int j = 0; j < listFiles.size(); j++)
-        {
+        for(int j = 0; j < listFiles.size(); j++) {
             //cout<<"Dir: "<<i+1<<"/"<<listDir.size()<<" - File: "<<j+1<<"/"<<listFiles.size()<< endl;
             if(FLAG_CANCEL_SYNC) break;
 
@@ -187,26 +184,30 @@ void misc_sync_library()
     FLAG_CANCEL_SYNC = false;
 }
 
-int stringToInt(string value)
+int util_s2i(string value)
 {
-    if(value.empty()) return -1;
+    if(value.empty()) {
+        return -1;
+    }
     return atoi (value.c_str());
 }
 
-string intToString(int value)
+string util_i2s(int value)
 {
     stringstream out;
     out << value;
     return out.str();
 }
 
-float stringToFloat(string value)
+float util_s2f(string value)
 {
-    if(value.empty()) return -1;
+    if(value.empty()) {
+        return -1;
+    }
     return atof (value.c_str());
 }
 
-string floatToString(float value)
+string util_f2s(float value)
 {
     stringstream out;
     out << value;

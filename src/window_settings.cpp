@@ -1,6 +1,4 @@
 #include "window_settings.h"
-#include "os_specific.h"
-#include "dao.h"
 
 #include <deque>
 #include <string>
@@ -11,6 +9,13 @@
 #include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Color_Chooser.H>
 #include <FL/Fl_Select_Browser.H>
+
+#include "os_specific.h"
+#include "window_main.h"
+#include "dao.h"
+#include "util.h"
+
+using namespace std;
 
 static Fl_Window* window;
 static Fl_Button* button_background_color;
@@ -35,7 +40,7 @@ static void cb_lyrics(Fl_Widget*, void*);
 
 void window_settings_show(void)
 {
-    //To place the window at the center of the screen
+    // To place the window at the center of the screen
     int window_w = 450;
     int window_h = 340;
     int screen_w = Fl::w();
@@ -45,7 +50,7 @@ void window_settings_show(void)
 
     window = new Fl_Window(window_x, window_y, window_w, window_h, "Settings");
 
-    //GENERAL GROUP AND ITS WIDGETS
+    // GENERAL GROUP AND ITS WIDGETS
     int group_offset = 22;
 
     Fl_Group* group_general = new Fl_Group(5, group_offset, window_w - 10, 30, "General");
@@ -60,7 +65,7 @@ void window_settings_show(void)
 
     group_general->end();
 
-    //APPEARANCE GROUP AND ITS WIDGETS
+    // APPEARANCE GROUP AND ITS WIDGETS
     group_offset = 75;
 
     Fl_Group* group_appearance = new Fl_Group(5, group_offset, window_w - 10, 30, "Appearance");
@@ -99,7 +104,7 @@ void window_settings_show(void)
 
     group_appearance->end();
 
-    //DIRECTORIES GROUP AND ITS WIDGETS
+    // DIRECTORIES GROUP AND ITS WIDGETS
     group_offset = 135;
 
     Fl_Group* group_directories = new Fl_Group(5, group_offset, window_w - 10, 162, "Directories");
@@ -119,7 +124,7 @@ void window_settings_show(void)
 
     group_directories->end();
 
-    //CLOSE BUTTON
+    // CLOSE BUTTON
     Fl_Button* button_close = new Fl_Button((window_w/2)-30, window_h-32, 60, 25, "Close");
     button_close->callback((Fl_Callback*)cb_close);
 
@@ -138,14 +143,14 @@ void cb_close(Fl_Widget* widget, void*)
 
 void cb_add_dir(Fl_Widget* widget, void*)
 {
-    const char *dir = native_dir_chooser();
-    Fl::check();
-    if(dir != NULL)// If the user didn't cancel;
-    {
+    char dir[8196]; // Seems enough
+    os_specific_dir_chooser(dir);
+    Fl::redraw();
+
+    if(dir != NULL && strlen(dir) > 0) { // If the user didn't cancel;
         dao_insert_directory(dir);
         update_dir_list();
     }
-    delete[] dir;
 }
 
 void cb_remove_dir(Fl_Widget* widget, void*)
@@ -154,10 +159,8 @@ void cb_remove_dir(Fl_Widget* widget, void*)
     if(index <= 0) return;
 
     string dir = browser_directories->text(index);
-    for(int i = 0; i < listDir.size(); i++)
-    {
-        if(listDir.at(i).value == dir)
-        {
+    for(int i = 0; i < listDir.size(); i++) {
+        if(listDir.at(i).value == dir) {
             dao_delete_directory(listDir.at(i).cod);
             update_dir_list();
         }
@@ -214,6 +217,7 @@ void cb_default_colors(Fl_Widget* widget, void*)
     button_background_color->redraw();
     button_selection_color->redraw();
 }
+
 void cb_lyrics(Fl_Widget* widget, void*)
 {
     FLAG_LYRICS = !FLAG_LYRICS;
@@ -221,13 +225,12 @@ void cb_lyrics(Fl_Widget* widget, void*)
 
 Fl_Color edit_color(Fl_Color val)
 {
-  uchar r,g,b;
+  uchar r, g, b;
+  Fl::get_color(val, r, g, b);
 
-  Fl::get_color(val,r,g,b);
+  fl_color_chooser("Choose Color", r, g, b);
 
-  fl_color_chooser("Choose Color",r,g,b);
-
-  return(fl_rgb_color(r,g,b));
+  return(fl_rgb_color(r, g, b));
 }
 
 void update_dir_list()
@@ -236,8 +239,7 @@ void update_dir_list()
     listDir.clear();
     dao_get_directories(listDir);
 
-    for(int i = 0; i < listDir.size(); i++)
-    {
+    for(int i = 0; i < listDir.size(); i++) {
         string s = listDir.at(i).value;
         browser_directories->add(s.c_str());
     }

@@ -62,6 +62,7 @@
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/music.cpp" />
 		<Unit filename="src/music.h" />
+		<Unit filename="src/os_specific.h" />
 		<Unit filename="src/sound.cpp" />
 		<Unit filename="src/sound.h" />
 		<Unit filename="src/util.cpp" />

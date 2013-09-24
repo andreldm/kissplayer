@@ -3,19 +3,18 @@
 
 #include <string>
 
-using namespace std;
-
 class Music
 {
 
 public:
     int cod;
-    string title;
-    string artist;
-    string album;
-    string filepath;
+    std::string title;
+    std::string artist;
+    std::string album;
+    std::string filepath;
 
     Music (void);
-    string getDesc();
+    std::string getDesc();
 };
+
 #endif

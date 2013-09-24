@@ -1,12 +1,15 @@
 #include "window_about.h"
 
 #include <sstream>
-#include "util.h"
 
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Help_View.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
+
+#include "util.h"
+
+using namespace std;
 
 static Fl_Window* window;
 

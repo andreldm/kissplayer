@@ -15,8 +15,7 @@ private:
     int handle(int event, int X, int Y, int W, int H)
     {
         // Fl_Widget_Tracker wp(this);
-        switch (event)
-        {
+        switch (event) {
         case FL_PUSH:
         {
             Fl_Widget_Tracker wp(this);
@@ -29,11 +28,10 @@ private:
         {
 
             double val;
-            if (minimum() == maximum())
+            if (minimum() == maximum()) {
                 val = 0.5;
-            else
-            {
-                val = (value()-minimum())/(maximum()-minimum());
+            } else {
+                val = (value() - minimum()) / (maximum() - minimum());
                 if (val > 1.0) val = 1.0;
                 else if (val < 0.0) val = 0.0;
             }
@@ -43,30 +41,25 @@ private:
             int S;
             static int offcenter;
 
-            if (type() == FL_HOR_FILL_SLIDER || type() == FL_VERT_FILL_SLIDER)
-            {
+            if (type() == FL_HOR_FILL_SLIDER || type() == FL_VERT_FILL_SLIDER) {
 
                 S = 0;
-                if (event == FL_PUSH)
-                {
-                    int xx = int(val*ww+.5);
-                    offcenter = mx-xx;
+                if (event == FL_PUSH) {
+                    int xx = int(val * ww + .5);
+                    offcenter = mx - xx;
                     if (offcenter < -10 || offcenter > 10) offcenter = 0;
                     else return 1;
                 }
 
-            }
-            else
-            {
-                S = int(slider_size_*ww+.5);
+            } else {
+                S = int(slider_size_ * ww + .5);
                 if (S >= ww) return 0;
-                int T = (horizontal() ? H : W)/2+1;
-                if (type()==FL_VERT_NICE_SLIDER || type()==FL_HOR_NICE_SLIDER) T += 4;
+                int T = (horizontal() ? H : W) / 2 + 1;
+                if (type() == FL_VERT_NICE_SLIDER || type() == FL_HOR_NICE_SLIDER) T += 4;
                 if (S < T) S = T;
-                if (event == FL_PUSH)
-                {
-                    int xx = int(val*(ww-S)+.5);
-                    offcenter = mx-xx;
+                if (event == FL_PUSH) {
+                    int xx = int(val * (ww - S) + .5);
+                    offcenter = mx - xx;
                     if (offcenter < 0) offcenter = 0;
                     else if (offcenter > S) offcenter = S;
                     else return 1;
@@ -76,26 +69,22 @@ private:
             int xx = mx-offcenter;
             double v;
             char tryAgain = 1;
-            while (tryAgain)
-            {
+            while (tryAgain) {
                 tryAgain = 0;
-                if (xx < 0)
-                {
+                if (xx < 0) {
                     xx = 0;
                     offcenter = mx;
                     if (offcenter < 0) offcenter = 0;
                 }
-                else if (xx > (ww-S))
-                {
+                else if (xx > (ww-S)) {
                     xx = ww-S;
                     offcenter = mx-xx;
                     if (offcenter > S) offcenter = S;
                 }
-                v = round(xx*(maximum()-minimum())/(ww-S) + minimum());
+                v = round(xx * (maximum() - minimum()) / (ww - S) + minimum());
                 // make sure a click outside the sliderbar moves it:
-                if (event == FL_PUSH && v == value())
-                {
-                    offcenter = S/2;
+                if (event == FL_PUSH && v == value()) {
+                    offcenter = S / 2;
                     event = FL_DRAG;
                     tryAgain = 1;
                 }
@@ -115,7 +104,7 @@ private:
                 if (horizontal()) return 0;
                 handle_push();
                 if (wp.deleted()) return 1;
-                handle_drag(clamp(increment(value(),-1)));
+                handle_drag(clamp(increment(value(), -1)));
                 if (wp.deleted()) return 1;
                 handle_release();
                 return 1;
@@ -123,7 +112,7 @@ private:
                 if (horizontal()) return 0;
                 handle_push();
                 if (wp.deleted()) return 1;
-                handle_drag(clamp(increment(value(),1)));
+                handle_drag(clamp(increment(value(), 1)));
                 if (wp.deleted()) return 1;
                 handle_release();
                 return 1;
@@ -134,15 +123,13 @@ private:
                 return 0;
             }
         }
-        // break not required because of switch...
         case FL_FOCUS :
         case FL_UNFOCUS :
-            if (Fl::visible_focus())
-            {
+            if (Fl::visible_focus()) {
                 redraw();
                 return 1;
             }
-            else return 0;
+            return 0;
         case FL_ENTER :
         case FL_LEAVE :
             return 1;
@@ -154,8 +141,7 @@ private:
 public:
     int handle(int event)
     {
-        if (event == FL_PUSH && Fl::visible_focus())
-        {
+        if (event == FL_PUSH && Fl::visible_focus()) {
             Fl::focus(this);
             redraw();
         }
@@ -167,7 +153,7 @@ public:
                       h()-Fl::box_dh(box()));
     }
 
-    Fl_Slider_Music(int x,int y,int w,int h,const char *l=0)
+    Fl_Slider_Music(int x,int y,int w,int h,const char* l = NULL)
         : Fl_Slider(x,y,w,h,l)
     {
         type(FL_HOR_NICE_SLIDER);
