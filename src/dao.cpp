@@ -173,8 +173,6 @@ void dao_clear_all_music()
 
     sqlite3_exec(db,"VACUUM;", 0, 0, &ErrMsg);
     print_errors();
-
-    dao_close_db();
 }
 
 void dao_insert_directory(const char* directory)

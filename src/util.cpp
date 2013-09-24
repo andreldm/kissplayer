@@ -124,7 +124,10 @@ void util_sync_library()
     window_loading_show();
     window_loading_set_dir_max(listDir.size());
 
+    dao_open_db();
     dao_clear_all_music();
+    dao_close_db();
+
     dao_begin_transaction();
 
     for(int i = 0; i < listDir.size(); i++) {

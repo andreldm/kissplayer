@@ -499,8 +499,19 @@ int main_handler(int e, Fl_Window* w)
                 sound_position(pos - 5000);
 
             return 1;
+        case 'k':
+            if(Fl::event_ctrl()) {
+                Fl::focus(input_search);
+                input_search->position(0,input_search->size());
+                input_search->redraw();
+            }
+            return 0;
+        case FL_F + 6:
+            Fl::focus(input_search);
+            input_search->position(0,input_search->size());
+            input_search->redraw();
+            return 0;
         }
-
         return 0;
     }
 
@@ -525,6 +536,25 @@ int main_handler(int e, Fl_Window* w)
 
 void play_music()
 {
+    const char* filepath = listMusic.at(musicIndex).filepath.c_str();
+
+    /*while(fl_access(filepath, 0)) { // 0 = F_OK
+        if(!hasNextMusic()) {
+            cb_stop(NULL, NULL);
+            return;
+        }
+
+        if(FLAG_RANDOM) {
+            musicIndex = listRandom.at(++musicIndexRandom);
+        } else {
+            musicIndex++;
+        }
+
+        filepath = listMusic.at(musicIndex).filepath.c_str();
+        browser_music->value(musicIndex+1);
+        browser_music->redraw();
+    }*/
+
     browser_music->value(musicIndex+1);
     browser_music->redraw();
 
@@ -677,7 +707,7 @@ void load_config()
     // SET WINDOW MAXIMIZED STATE
     int maximized = util_s2i(dao_get_key("window_maximized"));
     if(maximized == 1) {
-        shouldMaximizeWindow = true;
+        FLAG_MAXIMIZE_WINDOW = true;
     }
 
     // SET VOLUME

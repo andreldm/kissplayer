@@ -16,7 +16,7 @@ Fl_Color            window_main_get_browser_music_color         (int c);
 Fl_Double_Window*   make_window_main                            (int argc, char** argv);
 
 // GLOBAL IMPORT
-extern bool     shouldMaximizeWindow;
+extern bool     FLAG_MAXIMIZE_WINDOW;
 extern bool     FLAG_RANDOM;
 extern bool     FLAG_LYRICS;
 extern int      FLAG_SEARCH_TYPE;

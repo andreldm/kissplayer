@@ -8,12 +8,12 @@
 #include "dao.h"
 
 // GLOBAL
-bool                shouldMaximizeWindow;
-bool                FLAG_CANCEL_SYNC;
-bool                FLAG_LIST_CHANGED;
-bool                FLAG_RANDOM;
-bool                FLAG_LYRICS;
-int                 FLAG_SEARCH_TYPE;
+bool    FLAG_MAXIMIZE_WINDOW;
+bool    FLAG_CANCEL_SYNC;
+bool    FLAG_LIST_CHANGED;
+bool    FLAG_RANDOM;
+bool    FLAG_LYRICS;
+int     FLAG_SEARCH_TYPE;
 
 int main(int argc, char** argv)
 {
@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 
     window_main->show(0, NULL);
 
-    if(shouldMaximizeWindow) {
+    if(FLAG_MAXIMIZE_WINDOW) {
         os_specific_maximize_window(window_main);
     }
 
