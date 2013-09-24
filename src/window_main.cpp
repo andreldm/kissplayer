@@ -17,6 +17,7 @@
 #include "images.h"
 #include "os_specific.h"
 #include "fl_slider_music.h"
+#include "fl_browser_music.h"
 #include "sound.h"
 #include "lyrics_fetcher.h"
 #include "window_settings.h"
@@ -38,7 +39,7 @@ static Fl_Button* button_settings;
 static Fl_Button* button_about;
 static Fl_Button* button_random;
 static Fl_Dial* dial_volume;
-static Fl_Select_Browser* browser_music;
+static Fl_Browser_Music* browser_music;
 static Fl_Slider_Music* slider_music;
 static Fl_Box* box_current_time;
 static Fl_Input* input_search;
@@ -135,10 +136,7 @@ Fl_Double_Window* make_window_main(int argc, char** argv)
     tile_center = new Fl_Tile(5, 40, 410, 230);
     tile_center->begin();
 
-    browser_music = new Fl_Select_Browser(5, 40, 205, 230, NULL);
-    browser_music->color(DEFAULT_BACKGROUND_COLOR);
-    browser_music->box(FL_DOWN_BOX);
-    browser_music->type(FL_HOLD_BROWSER);
+    browser_music = new Fl_Browser_Music(5, 40, 205, 230);
     browser_music->callback(cb_music_browser);
 
     lyrics_text_buffer = new Fl_Text_Buffer();
@@ -311,6 +309,9 @@ void cb_stop(Fl_Widget* widget, void*)
     box_current_time->label("00:00");
     slider_music->label("00:00");
     slider_music->value(0);
+
+    browser_music->clearHighlighted();
+    browser_music->redraw();
 }
 
 void cb_previous(Fl_Widget* widget, void*)
@@ -556,6 +557,7 @@ void play_music()
     }*/
 
     browser_music->value(musicIndex+1);
+    browser_music->setHighlighted(musicIndex+1);
     browser_music->redraw();
 
     sound_load(listMusic.at(musicIndex).filepath.c_str());
