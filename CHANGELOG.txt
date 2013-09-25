@@ -1,7 +1,9 @@
-v 0.6.0 - 23/09/2013:
+v 0.6.0 - 24/09/2013:
 - Lots of code refactoring, restructuring and polishing
 - Fixed small unicode-related glitches
 - CTRL+K or F6 turns the search bar focusable
+- Current music is now highlighted(bold font)
+- The playlist now grows/shrinks with the window resize
 
 v 0.5.9 - 20/09/2013:
 - Fixed regressions

@@ -56,6 +56,7 @@
 		<Unit filename="src/dao.h" />
 		<Unit filename="src/fl_browser_music.h" />
 		<Unit filename="src/fl_slider_music.h" />
+		<Unit filename="src/fl_tile_music.h" />
 		<Unit filename="src/images.cpp" />
 		<Unit filename="src/images.h" />
 		<Unit filename="src/lyrics_fetcher.cpp" />

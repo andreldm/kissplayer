@@ -18,6 +18,7 @@
 #include "os_specific.h"
 #include "fl_slider_music.h"
 #include "fl_browser_music.h"
+#include "fl_tile_music.h"
 #include "sound.h"
 #include "lyrics_fetcher.h"
 #include "window_settings.h"
@@ -48,7 +49,7 @@ static Fl_Text_Display* lyrics_pane;
 static Fl_Text_Buffer* lyrics_text_buffer;
 static Fl_Group* group_search;
 static Fl_Group* group_controls;
-static Fl_Tile* tile_center;
+static Fl_Tile_Music* tile_center;
 
 // VARIABLES
 static Fl_Double_Window* window;
@@ -91,28 +92,28 @@ static void cb_slider_music(Fl_Widget*, void*);
 Fl_Double_Window* make_window_main(int argc, char** argv)
 {
     // To place the window at the center of the screen
-    int window_w = 420;
-    int window_h = 370;
+    int window_w = 770;
+    int window_h = 500;
     int screen_w = Fl::w();
     int screen_h = Fl::h();
     int window_x = (screen_w/2)-(window_w/2);
     int window_y = (screen_h/2)-(window_h/2);
 
     window = new Fl_Double_Window(window_x, window_y, window_w, window_h, "KISS Player");
-    window->size_range(window_w, window_h);
+    window->size_range(420, 370);
     window->callback((Fl_Callback*)cb_close_window);
 
     // SEARCH GROUP AND ITS WIDGETS
-    group_search = new Fl_Group(5, 5, 410, 30);
+    group_search = new Fl_Group(5, 5, 760, 30);
     group_search->box(FL_UP_FRAME);
     group_search->begin();
 
-    input_search = new Fl_Input(67, 10, 205, 22,"Search:");
+    input_search = new Fl_Input(67, 10, 555, 22,"Search:");
     input_search->maximum_size(50);
     input_search->when(FL_WHEN_ENTER_KEY|FL_WHEN_NOT_CHANGED);
     input_search->callback(cb_search);
 
-    choice_search_type = new Fl_Choice(275, 10, 80, 22);
+    choice_search_type = new Fl_Choice(625, 10, 80, 22);
     choice_search_type->add("All");
     choice_search_type->add("Title");
     choice_search_type->add("Artist");
@@ -121,11 +122,11 @@ Fl_Double_Window* make_window_main(int argc, char** argv)
     choice_search_type->callback(cb_search_type);
     FLAG_SEARCH_TYPE = SEARCH_TYPE_ALL;
 
-    button_clear = new Fl_Button(361, 10, 22, 22);
+    button_clear = new Fl_Button(711, 10, 22, 22);
     button_clear->image(img_icon_clear);
     button_clear->callback(cb_clear);
 
-    button_search = new Fl_Button(388, 10, 22, 22);
+    button_search = new Fl_Button(738, 10, 22, 22);
     button_search->image(img_icon_search);
     button_search->callback(cb_search);
 
@@ -133,15 +134,15 @@ Fl_Double_Window* make_window_main(int argc, char** argv)
     group_search->end();
 
     // CENTER TILE AND ITS WIDGETS
-    tile_center = new Fl_Tile(5, 40, 410, 230);
+    tile_center = new Fl_Tile_Music(5, 40, 760, 360);
     tile_center->begin();
 
-    browser_music = new Fl_Browser_Music(5, 40, 205, 230);
+    browser_music = new Fl_Browser_Music(5, 40, 555, 360);
     browser_music->callback(cb_music_browser);
 
     lyrics_text_buffer = new Fl_Text_Buffer();
 
-    lyrics_pane = new Fl_Text_Display (210, 40, 205, 230, NULL);
+    lyrics_pane = new Fl_Text_Display (560, 40, 205, 360, NULL);
     lyrics_pane->buffer(lyrics_text_buffer);
     lyrics_pane->box(FL_DOWN_BOX);
     lyrics_pane->textfont(FL_HELVETICA);
@@ -155,73 +156,73 @@ Fl_Double_Window* make_window_main(int argc, char** argv)
     tile_center->end();
 
     // CONTROLS GROUP AND ITS WIDGETS
-    group_controls = new Fl_Group(5, 275, 410, 90);
+    group_controls = new Fl_Group(5, 405, 760, 90);
     group_controls->box(FL_UP_FRAME);
     group_controls->begin();
 
-    slider_music = new Fl_Slider_Music(10, 280, 403, 20, "00:00");
+    slider_music = new Fl_Slider_Music(10, 410, 753, 20, "00:00");
     slider_music->callback(cb_slider_music);
     slider_music->color2(0x018BFD00);
     slider_music->align(FL_ALIGN_BOTTOM_RIGHT);
 
-    box_current_time = new Fl_Box(10, 300, 40, 15, "00:00");
+    box_current_time = new Fl_Box(10, 430, 40, 15, "00:00");
 
-    button_play = new Fl_Button(10, 330, 25, 25);
+    button_play = new Fl_Button(10, 460, 25, 25);
     button_play->clear_visible_focus();
     button_play->image(img_icon_play);
     button_play->tooltip("Play/Pause");
     button_play->callback(cb_toggle_play);
 
-    button_stop = new Fl_Button(45, 330, 25, 25);
+    button_stop = new Fl_Button(45, 460, 25, 25);
     button_stop->clear_visible_focus();
     button_stop->image(img_icon_stop);
     button_stop->tooltip("Stop");
     button_stop->callback(cb_stop);
 
-    button_previous = new Fl_Button(80, 330, 25, 25);
+    button_previous = new Fl_Button(80, 460, 25, 25);
     button_previous->clear_visible_focus();
     button_previous->image(img_icon_previous);
     button_previous->tooltip("Previous");
     button_previous->callback(cb_previous);
 
-    button_next = new Fl_Button(115, 330, 25, 25);
+    button_next = new Fl_Button(115, 460, 25, 25);
     button_next->clear_visible_focus();
     button_next->image(img_icon_next);
     button_next->tooltip("Next");
     button_next->callback(cb_next);
 
-    Fl_Box* separator = new Fl_Box(FL_FLAT_BOX, 150, 330, 1, 25,"");
+    Fl_Box* separator = new Fl_Box(FL_FLAT_BOX, 150, 460, 1, 25,"");
     separator->color(FL_DARK3);
 
-    button_sync = new Fl_Button(160, 330, 25, 25);
+    button_sync = new Fl_Button(160, 460, 25, 25);
     button_sync->clear_visible_focus();
     button_sync->callback(cb_sync);
     button_sync->tooltip("Synchronize Music Library");
     button_sync->image(img_icon_sync);
 
-    button_random = new Fl_Button(195, 330, 25, 25);
+    button_random = new Fl_Button(195, 460, 25, 25);
     button_random->clear_visible_focus();
     button_random->image(img_icon_random_off);
     button_random->tooltip("Randomize");
     button_random->callback(cb_random);
 
-    button_settings = new Fl_Button(230, 330, 25, 25);
+    button_settings = new Fl_Button(230, 460, 25, 25);
     button_settings->clear_visible_focus();
     button_settings->image(img_icon_settings);
     button_settings->callback(cb_settings);
     button_settings->tooltip("Settings");
 
-    button_about = new Fl_Button(265, 330, 25, 25);
+    button_about = new Fl_Button(265, 460, 25, 25);
     button_about->clear_visible_focus();
     button_about->image(img_icon_about);
     button_about->tooltip("About");
     button_about->callback(cb_about);
 
     // It won't be visible, it's just for the resize work nicely
-    Fl_Button* spacer = new Fl_Button(330, 330, 10, 10);
+    Fl_Button* spacer = new Fl_Button(330, 460, 10, 10);
     spacer->hide();
 
-    dial_volume = new Fl_Dial(370, 321, 38, 38, NULL);
+    dial_volume = new Fl_Dial(720, 451, 38, 38, NULL);
     dial_volume->value(0.8);
     dial_volume->callback(cb_volume);
 

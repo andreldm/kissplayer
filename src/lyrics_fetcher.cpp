@@ -112,6 +112,9 @@ void lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
         result = result.substr(0, result.size()-1);
     }
 
+    replaceAll(result, "{{", "");
+    replaceAll(result, "}}", "");
+
     lyrics_text_buffer->text(result.c_str());
 }
 
