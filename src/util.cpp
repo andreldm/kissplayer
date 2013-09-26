@@ -3,7 +3,6 @@
 #include <sstream>
 #include <map>
 #include <deque>
-#include <stdlib.h>
 
 #include <FL/Fl.H>
 #include <FL/fl_ask.H>
@@ -19,6 +18,7 @@
 
 #if defined WIN32
     #include <time.h>
+    #include <windows.h>
 #else
     #include <stdlib.h>
 #endif

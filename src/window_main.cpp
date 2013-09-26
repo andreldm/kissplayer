@@ -138,6 +138,7 @@ Fl_Double_Window* make_window_main(int argc, char** argv)
     tile_center->begin();
 
     browser_music = new Fl_Browser_Music(5, 40, 555, 360);
+    browser_music->color(DEFAULT_BACKGROUND_COLOR);
     browser_music->callback(cb_music_browser);
 
     lyrics_text_buffer = new Fl_Text_Buffer();

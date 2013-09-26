@@ -1,11 +1,3 @@
-#CC = g++
-#LIBS = -lfltk -lXext -lXft -lfontconfig -lXinerama -lpthread -ldl -lm -lX11 -lcurl -ltag -lXpm -lsqlite3 -lfltk_images -lpng -lfmodex -lXtst
-#CFLAGS = -O2
-#OUTPUT_NAME = "kissplayer"
-
-#all:
-#	$(CC) src/*.cpp src/linux/*.cpp -o $(OUTPUT_NAME) $(LIBS) $(CFLAGS) 
-
 SRC = $(shell find . -name *.cpp | grep "/src/" | grep -v "/win/")
 OBJ = $(SRC:%.cpp=%.o)
 LD_FLAGS = -lfltk -lXext -lXft -lfontconfig -lXinerama -lpthread -ldl -lm -lX11 -lcurl -ltag -lXpm -lsqlite3 -lfltk_images -lpng -lfmodex -lXtst

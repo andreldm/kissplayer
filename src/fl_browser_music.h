@@ -89,8 +89,7 @@ public:
     Fl_Browser_Music(int x, int y, int w, int h)
         : Fl_Select_Browser(x, y, w, h, NULL)
     {
-        color(FL_GRAY);
-        type(FL_HOR_NICE_SLIDER);
+        type(FL_HOLD_BROWSER);
         box(FL_DOWN_BOX);
     }
 };
