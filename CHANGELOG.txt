@@ -4,6 +4,7 @@ v 0.6.0 - 24/09/2013:
 - CTRL+K or F6 turns the search bar focusable
 - Current music is now highlighted(bold font)
 - The playlist now grows/shrinks with the window resize
+- Drag and Drop support
 
 v 0.5.9 - 20/09/2013:
 - Fixed regressions
