@@ -6,6 +6,7 @@
 
 #include <FL/Fl.H>
 #include <FL/fl_ask.H>
+#include <FL/filename.H>
 
 #include <taglib/taglib.h>
 #include <taglib/fileref.h>
@@ -25,6 +26,13 @@
 
 using namespace std;
 
+#ifndef WIN32
+#include <curl/curl.h>
+static CURL* curl = curl_easy_init();
+#endif
+
+#define PATH_LENGTH 8192
+
 /**
 * Parses the arguments to check if there are music files to play
 */
@@ -33,22 +41,74 @@ void util_parse_args(int argc, char** argv, deque<Music>& listMusic)
     for(int i = 1; i < argc; i++) {
         string arg(argv[i]);
 
-        //List of supported file formats
-        if(strstr(arg.c_str(), ".mp3") != NULL ||
-                strstr(arg.c_str(), ".wma") != NULL ||
-                strstr(arg.c_str(), ".ogg") != NULL ||
-                strstr(arg.c_str(), ".wav") != NULL ||
-                strstr(arg.c_str(), ".flac") != NULL) {
+        if(util_is_ext_supported(arg)) {
             Music m;
             TagLib::FileRef* f = new TagLib::FileRef(arg.c_str());
-            m.title = f->tag()->title().to8Bit();
-            m.artist = f->tag()->artist().to8Bit();
-            m.album = f->tag()->album().to8Bit();
-            m.filepath = arg;
+            if(!f->isNull()) {
+                m.title = f->tag()->title().toCString();
+                m.artist = f->tag()->artist().toCString();
+                m.album = f->tag()->album().toCString();
+                m.filepath = arg;
+                listMusic.push_back(m);
+            }
             delete(f);
-            listMusic.push_back(m);
         }
     }
+}
+
+/**
+* Parses the drag and drop url list
+*/
+bool util_parse_dnd(string urls, deque<Music>& listMusic)
+{
+    istringstream lines(urls);
+    string url;
+    bool list_changed = false;
+
+    while (getline(lines, url)) {
+        if(util_is_ext_supported(url)) {
+#ifdef WIN32
+            wchar_t filepath[PATH_LENGTH];
+            fl_utf8towc(url.c_str(), url.size(), filepath, PATH_LENGTH);
+#else
+            char* url_unescaped = curl_easy_unescape(curl , url.c_str(), 0, NULL);
+            url = url_unescaped;
+            util_replace_all(url, "file://", "");
+            curl_free(url_unescaped);
+            const char* filepath = url.c_str();
+#endif
+            Music m;
+            TagLib::FileRef* f = new TagLib::FileRef(filepath);
+            if(!f->isNull()) {
+                m.title = f->tag()->title().toCString();
+                m.artist = f->tag()->artist().toCString();
+                m.album = f->tag()->album().toCString();
+                m.filepath = url;
+
+                if(!list_changed) {
+                    listMusic.clear();
+                    list_changed = true;
+                }
+                listMusic.push_back(m);
+            }
+            delete(f);
+        }
+    }
+
+    return list_changed;
+}
+
+bool util_is_ext_supported(string filename)
+{
+    const char* ext = fl_filename_ext(filename.c_str());
+
+    if(strcmp(ext, ".mp3") == 0) return true;
+    if(strcmp(ext, ".wma") == 0) return true;
+    if(strcmp(ext, ".ogg") == 0) return true;
+    if(strcmp(ext, ".wav") == 0) return true;
+    if(strcmp(ext, ".flac") == 0) return true;
+
+    return false;
 }
 
 /**
@@ -134,8 +194,8 @@ void util_sync_library()
         Fl::check();
 #ifdef WIN32
         deque<wstring> listFiles;
-        wchar_t dir[4096];
-        fl_utf8towc(listDir.at(i).value.c_str(), listDir.at(i).value.size(), dir, 4096);
+        wchar_t dir[PATH_LENGTH];
+        fl_utf8towc(listDir.at(i).value.c_str(), listDir.at(i).value.size(), dir, PATH_LENGTH);
 #else
         deque<string> listFiles;
         const char* dir = listDir.at(i).value.c_str();
@@ -159,15 +219,16 @@ void util_sync_library()
             string album = "";
 
             TagLib::FileRef* f = new TagLib::FileRef(filepath);
-
-            title = f->tag()->title().toCString(true);
-            artist = f->tag()->artist().toCString(true);
-            album = f->tag()->album().toCString(true);
+            if(!f->isNull()) {
+                title = f->tag()->title().toCString(true);
+                artist = f->tag()->artist().toCString(true);
+                album = f->tag()->album().toCString(true);
+            }
             delete(f);
 
 #ifdef WIN32
-            char path[4096];
-            fl_utf8fromwc(path, 4096, filepath, lstrlenW(filepath));
+            char path[PATH_LENGTH];
+            fl_utf8fromwc(path, PATH_LENGTH, filepath, lstrlenW(filepath));
 #else
             const char* path = filepath;
 #endif
@@ -185,6 +246,15 @@ void util_sync_library()
 
     dao_commit_transaction();
     FLAG_CANCEL_SYNC = false;
+}
+
+void util_replace_all(string& str, const string& from, const string& to)
+{
+    size_t start_pos = 0;
+    while((start_pos = str.find(from, start_pos)) != string::npos) {
+        str.replace(start_pos, from.length(), to);
+        start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
+    }
 }
 
 int util_s2i(string value)

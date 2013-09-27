@@ -13,6 +13,7 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
+#include <FL/filename.H>
 
 #include "images.h"
 #include "os_specific.h"
@@ -314,7 +315,7 @@ void cb_stop(Fl_Widget* widget, void*)
     slider_music->label("00:00");
     slider_music->value(0);
 
-    browser_music->clearHighlighted();
+    browser_music->clear_highlighted();
     browser_music->redraw();
 }
 
@@ -354,6 +355,15 @@ void cb_next(Fl_Widget* widget, void*)
 
 void cb_music_browser(Fl_Widget* widget, void*)
 {
+    if(browser_music->dnd_evt) {
+        browser_music->dnd_evt = false;
+        bool list_changed = util_parse_dnd(browser_music->evt_txt, listMusic);
+        if(list_changed) {
+            update_playlist();
+        }
+        return;
+    }
+
     if(Fl::event_clicks() > 0 && Fl::event_button() == FL_LEFT_MOUSE) {
         if(browser_music->value() == 0) {
             return;
@@ -563,7 +573,7 @@ void play_music()
     }*/
 
     browser_music->value(musicIndex+1);
-    browser_music->setHighlighted(musicIndex+1);
+    browser_music->set_highlighted(musicIndex+1);
     browser_music->redraw();
 
     sound_load(filepath);
@@ -730,7 +740,7 @@ void load_config()
     if(random != -1) {
         // It should be inverted, because...
         FLAG_RANDOM = !random;
-        // ...here toggle the Random Button
+        // ...here we toggle the Random Button
         cb_random(NULL, 0);
     }
 
@@ -838,13 +848,13 @@ bool hasNextMusic()
 void update_playlist()
 {
     browser_music->clear();
-    browser_music->clearHighlighted();
+    browser_music->clear_highlighted();
 
     for(int i = 0; i < listMusic.size(); i++) {
         Music m = listMusic.at(i);
         browser_music->add(m.getDesc().c_str());
-        if(m.cod == musicPlayingCod) {
-            browser_music->setHighlighted(i + 1);
+        if(m.cod != 0 && m.cod == musicPlayingCod) {
+            browser_music->set_highlighted(i + 1);
         }
     }
 

@@ -1,10 +1,14 @@
 #ifndef fl_browser_music_h
 #define fl_browser_music_h
 
+#include <string>
 #include <FL/Fl_Select_Browser.H>
+
+using namespace std;
 
 /**
 * A modified version of the Fl_Select_Browser that highlights one specific line.
+* Also reacts to Drag and Drop.
 */
 
 struct FL_BLINE {
@@ -27,7 +31,7 @@ private:
     /**
     Based on FL_Browser.
     What changes is that the highlighted line has a bold font.
-    Also some code not used by the player is removed.
+    Also some code not used by the player was removed.
     */
     void item_draw(void* item, int X, int Y, int W, int H) const
     {
@@ -72,8 +76,42 @@ private:
         }
     }
 
+    static void callback_deferred(void *v)
+    {
+        Fl_Browser_Music *w = (Fl_Browser_Music*)v;
+        w->do_callback();
+    }
+
 public:
-    void setHighlighted(int line)
+    string evt_txt;
+    bool dnd_evt;
+
+    int handle(int e)
+    {
+        switch(e) {
+        case FL_DND_ENTER:
+        case FL_DND_RELEASE:
+        case FL_DND_LEAVE:
+        case FL_DND_DRAG:
+            return 1;
+
+        case FL_PASTE:
+            dnd_evt = true;
+
+            // make a copy of the DND payload
+            evt_txt.clear();
+            evt_txt += Fl::event_text();
+
+            if(callback() && ((when() & FL_WHEN_RELEASE) || (when() & FL_WHEN_CHANGED))) {
+                Fl::add_timeout(0.0, callback_deferred, (void*)this);
+            }
+            return 1;
+        }
+
+        return Fl_Select_Browser::handle(e);
+    }
+
+    void set_highlighted(int line)
     {
         FL_BLINE* item = find_line(line);
         if(item == NULL) return;
@@ -81,7 +119,7 @@ public:
         highlighted_line = item;
     }
 
-    void clearHighlighted()
+    void clear_highlighted()
     {
         highlighted_line = NULL;
     }

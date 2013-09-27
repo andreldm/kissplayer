@@ -35,6 +35,8 @@ using namespace std;
     #define VK_MEDIA_NEXT_TRACK     0xB0
 #endif
 
+#define PATH_LENGTH 8192
+
 // Keyboard hook handler
 static HHOOK handlerKeyboardHook = NULL;
 
@@ -94,13 +96,13 @@ void os_specific_end()
 */
 void os_specific_get_working_dir(string& dir)
 {
-    wchar_t wpath[FILENAME_MAX];
-    GetModuleFileNameW(NULL, wpath, FILENAME_MAX);
-    wchar_t wdir[FILENAME_MAX];
+    wchar_t wpath[PATH_LENGTH];
+    GetModuleFileNameW(NULL, wpath, PATH_LENGTH);
+    wchar_t wdir[PATH_LENGTH];
     _wsplitpath(wpath, NULL, wdir, NULL, NULL);
 
-    char path[FILENAME_MAX];
-    fl_utf8fromwc(path, FILENAME_MAX, wdir, lstrlenW(wdir));
+    char path[PATH_LENGTH];
+    fl_utf8fromwc(path, PATH_LENGTH, wdir, lstrlenW(wdir));
 
     dir.replace(0, strlen(path), path);
 }
@@ -112,12 +114,12 @@ void os_specific_dir_chooser(char* dir)
 {
     BROWSEINFOW bi = { 0 };
     bi.lpszTitle = L"Select a folder:";
-    wchar_t wpath[FILENAME_MAX];
+    wchar_t wpath[PATH_LENGTH];
     LPITEMIDLIST pidl = SHBrowseForFolderW (&bi);
     SHGetPathFromIDListW(pidl, wpath);
 
-    char path[FILENAME_MAX];
-    fl_utf8fromwc(path, FILENAME_MAX, wpath, lstrlenW(wpath));
+    char path[PATH_LENGTH];
+    fl_utf8fromwc(path, PATH_LENGTH, wpath, lstrlenW(wpath));
 
     strcpy(dir, path);
 }
@@ -289,7 +291,7 @@ void os_specific_scanfolder(const wchar_t* dir, deque<wstring>& filelist)
 {
     WIN32_FIND_DATAW filedata;
     HANDLE hFind = NULL;
-    wchar_t path[4096];
+    wchar_t path[PATH_LENGTH];
     wchar_t ext[50];
 
     wsprintfW(path, L"%s\\*.*", dir);

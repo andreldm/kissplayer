@@ -4,10 +4,11 @@
 #include <iostream>
 #include <cctype>
 
+#include "util.h"
+
 using namespace std;
 
 size_t writeToString(void* ptr, size_t size, size_t count, void* stream);
-void replaceAll(string& str, const string& from, const string& to);
 void upperCaseInitials(string& str);
 
 void lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, string title)
@@ -28,10 +29,10 @@ void lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
     string conditionStart = "lyrics>";
     string conditionEnd = "&lt;/lyrics>";
 
-    replaceAll(artist, " ", "_");
-    replaceAll(artist, "?", "%3F");
-    replaceAll(title, " ", "_");
-    replaceAll(title, "?", "%3F");
+    util_replace_all(artist, " ", "_");
+    util_replace_all(artist, "?", "%3F");
+    util_replace_all(title, " ", "_");
+    util_replace_all(title, "?", "%3F");
 
     url = url.append(artist);
     url = url.append(":");
@@ -98,22 +99,22 @@ void lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
         // It's necessary as a workaround for Fl_Help_View widget.
         // As of FLTK 1.3.0, multiple <br> tags are handled as only
         // one, so we use to use the <p> tag.
-        replaceAll(data, "<br /><br />", "</p><p>");
+        util_replace_all(data, "<br /><br />", "</p><p>");
     }
 
-    replaceAll(artist, "_", " ");
-    replaceAll(artist, "%3F", "?");
-    replaceAll(title, "_", " ");
-    replaceAll(title, "%3F", "?");
+    util_replace_all(artist, "_", " ");
+    util_replace_all(artist, "%3F", "?");
+    util_replace_all(title, "_", " ");
+    util_replace_all(title, "%3F", "?");
 
     string result = artist + "\n" + title + "\n" + data;
-    replaceAll(result, "\n\n\n", "\n\n");
+    util_replace_all(result, "\n\n\n", "\n\n");
     while(result.at(result.size()-1) == '\n') {
         result = result.substr(0, result.size()-1);
     }
 
-    replaceAll(result, "{{", "");
-    replaceAll(result, "}}", "");
+    util_replace_all(result, "{{", "");
+    util_replace_all(result, "}}", "");
 
     lyrics_text_buffer->text(result.c_str());
 }
@@ -122,15 +123,6 @@ size_t writeToString(void* ptr, size_t size, size_t count, void *stream)
 {
     ((string*)stream)->append((char*)ptr, 0, size* count);
     return size* count;
-}
-
-void replaceAll(string& str, const string& from, const string& to)
-{
-    size_t start_pos = 0;
-    while((start_pos = str.find(from, start_pos)) != string::npos) {
-        str.replace(start_pos, from.length(), to);
-        start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
-    }
 }
 
 void upperCaseInitials(string& str)

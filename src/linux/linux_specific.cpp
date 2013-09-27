@@ -14,6 +14,7 @@
 
 #include "icon.xpm"
 #include "../window_main.h"
+#include "../util.h"
 
 
 using namespace std;
@@ -218,13 +219,9 @@ void os_specific_scanfolder(const char* dir, deque<string>& filelist)
             continue;
         }
 
-        const char* ext = fl_filename_ext(filename);
+        string fn = filename;
 
-        if(strcmp(ext, ".mp3") == 0 ||
-           strcmp(ext, ".wma") == 0 ||
-           strcmp(ext, ".ogg") == 0 ||
-           strcmp(ext, ".wav") == 0 ||
-           strcmp(ext, ".flac") == 0) {
+        if(util_is_ext_supported(fn)) {
                filelist.push_back(buffer);
         }
     }
