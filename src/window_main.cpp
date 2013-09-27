@@ -59,6 +59,7 @@ static string windowTitle;
 static int windowTitlePosition;
 static int musicIndex;
 static int musicIndexRandom;
+static int musicPlayingCod;
 static string lastSearch;
 static bool doNotLoadLastSearch;
 
@@ -303,6 +304,7 @@ void cb_stop(Fl_Widget* widget, void*)
         return;
     }
 
+    musicPlayingCod = 0;
     sound_active(false);
     window->label("KISS Player");
     button_play->image(img_icon_play);
@@ -539,7 +541,9 @@ int main_handler(int e, Fl_Window* w)
 
 void play_music()
 {
-    const char* filepath = listMusic.at(musicIndex).filepath.c_str();
+    Music music = listMusic.at(musicIndex);
+    musicPlayingCod = music.cod;
+    const char* filepath = music.filepath.c_str();
 
     /*while(fl_access(filepath, 0)) { // 0 = F_OK
         if(!hasNextMusic()) {
@@ -562,7 +566,7 @@ void play_music()
     browser_music->setHighlighted(musicIndex+1);
     browser_music->redraw();
 
-    sound_load(listMusic.at(musicIndex).filepath.c_str());
+    sound_load(filepath);
     sound_play();
     sound_volume(dial_volume->value());
 
@@ -581,7 +585,7 @@ void play_music()
     slider_music->maximum(sound_length());
     slider_music->value(0);
     if(FLAG_LYRICS) {
-        lyrics_fetcher_run(lyrics_text_buffer, listMusic.at(musicIndex).artist, listMusic.at(musicIndex).title);
+        lyrics_fetcher_run(lyrics_text_buffer, music.artist, music.title);
         lyrics_pane->scroll(0,0);
     }
     else {
@@ -834,10 +838,14 @@ bool hasNextMusic()
 void update_playlist()
 {
     browser_music->clear();
+    browser_music->clearHighlighted();
 
     for(int i = 0; i < listMusic.size(); i++) {
         Music m = listMusic.at(i);
         browser_music->add(m.getDesc().c_str());
+        if(m.cod == musicPlayingCod) {
+            browser_music->setHighlighted(i + 1);
+        }
     }
 
     musicIndexRandom = -1;
