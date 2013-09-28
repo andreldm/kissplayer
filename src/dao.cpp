@@ -61,7 +61,8 @@ void dao_start_db()
                 [title] VARCHAR(255), \
                 [artist] VARCHAR(255), \
                 [album] VARCHAR(255), \
-                [filepath] VARCHAR UNIQUE ON CONFLICT IGNORE NOT NULL)";
+                [filepath] VARCHAR UNIQUE ON CONFLICT FAIL NOT NULL, \
+                [not_found] BOOLEAN NOT NULL DEFAULT (0))";
     sqlite3_exec(db, query, 0, 0, &ErrMsg);
     print_errors();
 
@@ -114,11 +115,13 @@ void dao_set_key(string key, string value)
 
     sqlite3_finalize(stmt);
 }
-
+/**
+* Tries to insert a row, in case of constraint(filepath is unique, updates the row.
+*/
 void dao_insert_music(string title, string artist, string album, string filepath)
 {
-    string temp;
-    string temp2;
+    string title2;
+    string artist2;
     int foundSlash;
     int foundDot;
     int foundHyphen;
@@ -126,53 +129,75 @@ void dao_insert_music(string title, string artist, string album, string filepath
     sqlite3_prepare_v2(db, "INSERT INTO TB_MUSIC(title, artist, album, filepath) VALUES(?, ?, ?, ?);", -1, &stmt, NULL);
 
     if(!title.empty()) {
-        sqlite3_bind_text(stmt, 1, title.c_str(), -1, SQLITE_STATIC);
+        title2 = title;
     } else {
         foundSlash = filepath.find_last_of("/\\");
-        temp = filepath.substr(foundSlash+1);
+        title2 = filepath.substr(foundSlash+1);
 
-        foundDot = temp.find_last_of(".");
-        temp = temp.substr(0, foundDot);
+        foundDot = title2.find_last_of(".");
+        title2 = title2.substr(0, foundDot);
 
-        foundHyphen = temp.find_last_of("-");
-        temp = temp.substr(foundHyphen+1);
-        util_trim(temp);
-        sqlite3_bind_text(stmt, 1, temp.c_str(), -1, SQLITE_STATIC);
+        foundHyphen = title2.find_last_of("-");
+        title2 = title2.substr(foundHyphen+1);
+        util_trim(title2);
     }
 
     if(!artist.empty()) {
-        sqlite3_bind_text(stmt, 2, artist.c_str(), -1, SQLITE_STATIC);
+        artist2 = artist;
     } else {
         foundSlash = filepath.find_last_of("/\\");
-        temp2 = filepath.substr(foundSlash+1);
+        artist2 = filepath.substr(foundSlash+1);
 
-        foundDot = temp2.find_last_of(".");
-        temp2 = temp2.substr(0, foundDot);
+        foundDot = artist2.find_last_of(".");
+        artist2 = artist2.substr(0, foundDot);
 
-        foundHyphen = temp2.find_last_of("-");
-        temp2 = temp2.substr(0, foundHyphen);
-        util_trim(temp2);
-        sqlite3_bind_text(stmt, 2, temp2.c_str(), -1, SQLITE_STATIC);
+        foundHyphen = artist2.find_last_of("-");
+        artist2 = artist2.substr(0, foundHyphen);
+        util_trim(artist2);
     }
 
-
+    sqlite3_bind_text(stmt, 1, title2.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, artist2.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 3, album.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 4, filepath.c_str(), -1, SQLITE_STATIC);
 
-    if(sqlite3_step(stmt) == SQLITE_ERROR) {
-        cout << sqlite3_errmsg(db)<< endl;
-    }
-
+    int result = sqlite3_step(stmt);
     sqlite3_finalize(stmt);
+
+    if(result == SQLITE_ERROR) {
+        cout << sqlite3_errmsg(db) << endl;
+    } else if (result == SQLITE_CONSTRAINT) {
+        sqlite3_prepare_v2(db, "UPDATE TB_MUSIC SET title = ?, artist = ?, album = ?, not_found = 0 WHERE filepath = ?;", -1, &stmt, NULL);
+        sqlite3_bind_text(stmt, 1, title2.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, artist2.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 3, album.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 4, filepath.c_str(), -1, SQLITE_STATIC);
+        result = sqlite3_step(stmt);
+        sqlite3_finalize(stmt);
+
+        if(result == SQLITE_ERROR) {
+            cout << sqlite3_errmsg(db) << endl;
+        }
+    }
 }
 
-void dao_clear_all_music()
+void dao_mark_music_not_found()
 {
-    sqlite3_exec(db,"DELETE FROM TB_MUSIC;", 0, 0, &ErrMsg);
+    dao_open_db();
+    sqlite3_exec(db,"UPDATE TB_MUSIC SET not_found = 1;", 0, 0, &ErrMsg);
+    print_errors();
+    dao_close_db();
+}
+
+void dao_delete_music_not_found()
+{
+    dao_open_db();
+    sqlite3_exec(db,"DELETE FROM TB_MUSIC WHERE not_found = 1;", 0, 0, &ErrMsg);
     print_errors();
 
     sqlite3_exec(db,"VACUUM;", 0, 0, &ErrMsg);
     print_errors();
+    dao_close_db();
 }
 
 void dao_insert_directory(const char* directory)

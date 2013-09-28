@@ -184,9 +184,7 @@ void util_sync_library()
     window_loading_show();
     window_loading_set_dir_max(listDir.size());
 
-    dao_open_db();
-    dao_clear_all_music();
-    dao_close_db();
+    dao_mark_music_not_found();
 
     dao_begin_transaction();
 
@@ -234,17 +232,20 @@ void util_sync_library()
 #endif
 
             dao_insert_music(title, artist, album, path);
-            window_loading_set_file_value(j+1);
+            window_loading_set_file_value(j + 1);
             Fl::check();
         }
         listFiles.clear();
         if(FLAG_CANCEL_SYNC) break;
 
-        window_loading_set_dir_value(i+1);
+        window_loading_set_dir_value(i + 1);
     }
     window_loading_close();
 
     dao_commit_transaction();
+
+    dao_delete_music_not_found();
+
     FLAG_CANCEL_SYNC = false;
 }
 
