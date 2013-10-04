@@ -25,6 +25,7 @@ const char*     util_format_time        (int secs);
 void            util_randomize          (std::deque<int>&, int);
 void            util_sync_library       (void);
 void            util_replace_all        (std::string& str, const std::string& from, const std::string& to);
+void            util_erease_between     (std::string& str, const std::string& start, const std::string& end);
 
 int             util_s2i                (std::string value);
 std::string     util_i2s                (int value);

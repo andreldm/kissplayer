@@ -1,10 +1,13 @@
-v 0.6.0 - 24/09/2013:
+v 0.6.0 - 04/10/2013:
 - Lots of code refactoring, restructuring and polishing
 - Fixed small unicode-related glitches
-- CTRL+K or F6 turns the search bar focusable
+- CTRL+K sets the search bar focusable
+- F6 toggles the search bar focus
 - Current music is now highlighted(bold font)
 - The playlist now grows/shrinks with the window resize
 - Drag and Drop support
+- Sync now keeps the music ids
+- Improved the Lyrics Fetcher
 
 v 0.5.9 - 20/09/2013:
 - Fixed regressions

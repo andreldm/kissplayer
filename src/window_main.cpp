@@ -69,6 +69,7 @@ static void play_music();
 static void update_playlist();
 static void timer_title_scrolling(void*);
 static void timer_check_music(void*);
+static void timer_play_at_start(void*);
 static void save_config();
 static void load_config();
 static bool hasNextMusic();
@@ -102,6 +103,7 @@ Fl_Double_Window* make_window_main(int argc, char** argv)
     int window_y = (screen_h/2)-(window_h/2);
 
     window = new Fl_Double_Window(window_x, window_y, window_w, window_h, "KISS Player");
+    window->xclass("KISS Player");
     window->size_range(420, 370);
     window->callback((Fl_Callback*)cb_close_window);
 
@@ -245,6 +247,7 @@ Fl_Double_Window* make_window_main(int argc, char** argv)
         }
         doNotLoadLastSearch = true;
         util_randomize(listRandom, listMusic.size());
+        Fl::add_timeout(0.1, timer_play_at_start);
     }
 
     Fl::event_dispatch(main_handler);
@@ -326,15 +329,15 @@ void cb_previous(Fl_Widget* widget, void*)
         return;
     }
 
-    sound_unload();
-
     if(FLAG_RANDOM) {
         if(musicIndexRandom >= 1) {
             musicIndex = listRandom.at(--musicIndexRandom);
+            sound_unload();
             play_music();
         }
     } else if(musicIndex > 0) {
         musicIndex--;
+        sound_unload();
         play_music();
     }
 }
@@ -514,17 +517,21 @@ int main_handler(int e, Fl_Window* w)
                 sound_position(pos - 5000);
 
             return 1;
-        case 'k':
+        case 'k': // Search bar gets focused
             if(Fl::event_ctrl()) {
-                Fl::focus(input_search);
+                input_search->take_focus();
                 input_search->position(0,input_search->size());
                 input_search->redraw();
             }
             return 0;
-        case FL_F + 6:
-            Fl::focus(input_search);
-            input_search->position(0,input_search->size());
-            input_search->redraw();
+        case FL_F + 6: // Toggles seach bar focus
+            if(input_search == Fl::focus()) {
+                browser_music->take_focus();
+            } else {
+                input_search->take_focus();
+                input_search->position(0,input_search->size());
+                input_search->redraw();
+            }
             return 0;
         }
         return 0;
@@ -660,6 +667,20 @@ void timer_check_music(void*)
     }
 }
 
+void timer_play_at_start(void*)
+{
+    musicIndex = -1;
+    musicIndexRandom = 0;
+
+    if(FLAG_RANDOM) {
+        musicIndex = listRandom.at(musicIndexRandom++);
+    } else {
+        musicIndex++;
+    }
+
+    play_music();
+}
+
 void save_config()
 {
     dao_begin_transaction();
@@ -752,16 +773,15 @@ void load_config()
     }
 
     // SET SEARCH STRING
-    string search_input = dao_get_key("search_input");
-    if(!search_input.empty()) {
-        input_search->value(search_input.c_str());
-        if(!doNotLoadLastSearch)
+    if(!doNotLoadLastSearch) {
+        string search_input = dao_get_key("search_input");
+        if(search_input.empty()) {
+            dao_get_all_music(listMusic);
+            update_playlist();
+        } else {
+            input_search->value(search_input.c_str());
             cb_search(NULL, 0);
-    }
-    // If the search string is empty, load all the musics
-    else if(!doNotLoadLastSearch) {
-        dao_get_all_music(listMusic);
-        update_playlist();
+        }
     }
 
     // Open DB again, update_playlist and cb_search close it

@@ -45,10 +45,11 @@ void util_parse_args(int argc, char** argv, deque<Music>& listMusic)
             Music m;
             TagLib::FileRef* f = new TagLib::FileRef(arg.c_str());
             if(!f->isNull()) {
-                m.title = f->tag()->title().toCString();
-                m.artist = f->tag()->artist().toCString();
-                m.album = f->tag()->album().toCString();
+                m.title = f->tag()->title().toCString(true);
+                m.artist = f->tag()->artist().toCString(true);
+                m.album = f->tag()->album().toCString(true);
                 m.filepath = arg;
+                m.resolveNames();
                 listMusic.push_back(m);
             }
             delete(f);
@@ -80,10 +81,11 @@ bool util_parse_dnd(string urls, deque<Music>& listMusic)
             Music m;
             TagLib::FileRef* f = new TagLib::FileRef(filepath);
             if(!f->isNull()) {
-                m.title = f->tag()->title().toCString();
-                m.artist = f->tag()->artist().toCString();
-                m.album = f->tag()->album().toCString();
+                m.title = f->tag()->title().toCString(true);
+                m.artist = f->tag()->artist().toCString(true);
+                m.album = f->tag()->album().toCString(true);
                 m.filepath = url;
+                m.resolveNames();
 
                 if(!list_changed) {
                     listMusic.clear();
@@ -212,15 +214,12 @@ void util_sync_library()
             const char* filepath = listFiles.at(j).c_str();
 #endif
 
-            string title = "";
-            string artist = "";
-            string album = "";
-
+            Music m;
             TagLib::FileRef* f = new TagLib::FileRef(filepath);
             if(!f->isNull()) {
-                title = f->tag()->title().toCString(true);
-                artist = f->tag()->artist().toCString(true);
-                album = f->tag()->album().toCString(true);
+                m.title = f->tag()->title().toCString(true);
+                m.artist = f->tag()->artist().toCString(true);
+                m.album = f->tag()->album().toCString(true);
             }
             delete(f);
 
@@ -230,8 +229,10 @@ void util_sync_library()
 #else
             const char* path = filepath;
 #endif
+            m.filepath = path;
+            m.resolveNames();
 
-            dao_insert_music(title, artist, album, path);
+            dao_insert_music(m);
             window_loading_set_file_value(j + 1);
             Fl::check();
         }
@@ -255,6 +256,20 @@ void util_replace_all(string& str, const string& from, const string& to)
     while((start_pos = str.find(from, start_pos)) != string::npos) {
         str.replace(start_pos, from.length(), to);
         start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
+    }
+}
+
+void util_erease_between(string& str, const string& start, const string& end)
+{
+    size_t start_pos = 0;
+    size_t end_pos = 0;
+    while((start_pos = str.find(start, start_pos)) != string::npos) {
+        end_pos = str.find(end, start_pos);
+        if(end_pos != string::npos) {
+            str.erase(start_pos, end_pos - start_pos + 1);
+        } else {
+            str.replace(start_pos, start.length(), "");
+        }
     }
 }
 

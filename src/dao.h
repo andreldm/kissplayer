@@ -22,7 +22,7 @@ void            dao_commit_transaction          (void);
 void            dao_set_key                     (std::string key, std::string value);
 std::string     dao_get_key                     (std::string key);
 
-void            dao_insert_music                (std::string title, std::string artist, std::string album, std::string filepath);
+void            dao_insert_music                (Music& music);
 void            dao_mark_music_not_found        (void);
 void            dao_delete_music_not_found      (void);
 void            dao_get_all_music               (std::deque<Music>& listMusic);

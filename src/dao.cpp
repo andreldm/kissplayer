@@ -17,8 +17,10 @@ static sqlite3_stmt* stmt;
 void print_errors()
 {
     if(ErrMsg) {
-        cout << "SQL Error: " << ErrMsg << endl;
-        sqlite3_free(&ErrMsg);
+        cerr << "SQL Error: " << ErrMsg << endl;
+        if(ErrMsg) {
+            sqlite3_free(&ErrMsg);
+        }
     }
 }
 
@@ -116,50 +118,16 @@ void dao_set_key(string key, string value)
     sqlite3_finalize(stmt);
 }
 /**
-* Tries to insert a row, in case of constraint(filepath is unique, updates the row.
+* Tries to insert a row, in case of constraint(filepath is unique) updates the row.
 */
-void dao_insert_music(string title, string artist, string album, string filepath)
+void dao_insert_music(Music& music)
 {
-    string title2;
-    string artist2;
-    int foundSlash;
-    int foundDot;
-    int foundHyphen;
-
     sqlite3_prepare_v2(db, "INSERT INTO TB_MUSIC(title, artist, album, filepath) VALUES(?, ?, ?, ?);", -1, &stmt, NULL);
 
-    if(!title.empty()) {
-        title2 = title;
-    } else {
-        foundSlash = filepath.find_last_of("/\\");
-        title2 = filepath.substr(foundSlash+1);
-
-        foundDot = title2.find_last_of(".");
-        title2 = title2.substr(0, foundDot);
-
-        foundHyphen = title2.find_last_of("-");
-        title2 = title2.substr(foundHyphen+1);
-        util_trim(title2);
-    }
-
-    if(!artist.empty()) {
-        artist2 = artist;
-    } else {
-        foundSlash = filepath.find_last_of("/\\");
-        artist2 = filepath.substr(foundSlash+1);
-
-        foundDot = artist2.find_last_of(".");
-        artist2 = artist2.substr(0, foundDot);
-
-        foundHyphen = artist2.find_last_of("-");
-        artist2 = artist2.substr(0, foundHyphen);
-        util_trim(artist2);
-    }
-
-    sqlite3_bind_text(stmt, 1, title2.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, artist2.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, album.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 4, filepath.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, music.title.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, music.artist.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, music.album.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 4, music.filepath.c_str(), -1, SQLITE_STATIC);
 
     int result = sqlite3_step(stmt);
     sqlite3_finalize(stmt);
@@ -168,10 +136,10 @@ void dao_insert_music(string title, string artist, string album, string filepath
         cout << sqlite3_errmsg(db) << endl;
     } else if (result == SQLITE_CONSTRAINT) {
         sqlite3_prepare_v2(db, "UPDATE TB_MUSIC SET title = ?, artist = ?, album = ?, not_found = 0 WHERE filepath = ?;", -1, &stmt, NULL);
-        sqlite3_bind_text(stmt, 1, title2.c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 2, artist2.c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 3, album.c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 4, filepath.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 1, music.title.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, music.artist.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 3, music.album.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 4, music.filepath.c_str(), -1, SQLITE_STATIC);
         result = sqlite3_step(stmt);
         sqlite3_finalize(stmt);
 

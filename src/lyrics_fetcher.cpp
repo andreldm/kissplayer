@@ -8,10 +8,11 @@
 
 using namespace std;
 
+void try_again(Fl_Text_Buffer* lyrics_text_buffer, string artist, string title);
 size_t writeToString(void* ptr, size_t size, size_t count, void* stream);
 void upperCaseInitials(string& str);
 
-void lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, string title)
+bool lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, string title, bool firstTry)
 {
     CURL* curl;
     string data;
@@ -21,25 +22,32 @@ void lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
     // several sites, if one fail, try the next.
     string url = "http://lyrics.wikia.com/";
 
+    char msgNotFound[] = "Not found!\nPlease add these lyrics at lyrics.wikia.com";
+    char* url_unescaped;
+    int findResult;
+
     // As of May 2012, these regex are valid.
     // If they change the site layout, this fetcher
     // might not work properly or not work at all!
     string conditionNotFound = "This page needs content.";
     string conditionNotFound2 = "PUT LYRICS HERE";
+    string conditionNotFound3 = "You have followed a link to a page that doesn't exist yet";
+    string conditionRedirect = "#REDIRECT [[";
+    string conditionRedirect2 = "#redirect [[";
     string conditionStart = "lyrics>";
     string conditionEnd = "&lt;/lyrics>";
 
     util_replace_all(artist, " ", "_");
-    util_replace_all(artist, "?", "%3F");
     util_replace_all(title, " ", "_");
+    util_replace_all(artist, "?", "%3F");
     util_replace_all(title, "?", "%3F");
+    upperCaseInitials(artist);
+    upperCaseInitials(title);
 
     url = url.append(artist);
     url = url.append(":");
     url = url.append(title);
     url = url.append("?action=edit");
-
-    upperCaseInitials(url);
 
     //cout <<"URL: " << url << endl;
     curl = curl_easy_init();
@@ -56,7 +64,7 @@ void lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
         if(res == CURLE_OPERATION_TIMEDOUT) {
             curl_easy_cleanup(curl);
             lyrics_text_buffer->text("Connection timed out!");
-            return;
+            return false;
         }
 
         // Check if there was any problem
@@ -64,35 +72,66 @@ void lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
             curl_easy_cleanup(curl);
             lyrics_text_buffer->text("Connection failure!");
             //cout << "CURL Error: " << res << endl;
-            return;
+            return false;
         }
 
-        // Check if the Lyrics was found
-        // if not, the string conditionNotFound will be at the page
-        int a = data.find(conditionNotFound);
-        if(a != string::npos) {
+        // Check if it's a redirect page
+        findResult = data.find(conditionRedirect);
+        if(findResult == string::npos) {
+            findResult = data.find(conditionRedirect2);
+        }
+        if(findResult != string::npos) {
+            data.erase(0, findResult + conditionRedirect.size()); // luckily both conditions have the same size
+            findResult = data.find("]]");
+            data.erase(findResult);
+
+            findResult = data.find(":");
+            if(findResult == string::npos) {
+                lyrics_text_buffer->text("Error while redirecting.");
+                return false;
+            }
+
+            artist = data.substr(0, findResult);
+            title = data.substr(findResult + 1, data.length());
+
+            // Don't use try_again because it tries to clean the strings
+            return lyrics_fetcher_run(lyrics_text_buffer, artist, title, firstTry);
+        }
+
+        // Check if the Lyrics doesn't exist
+        findResult = data.find(conditionNotFound);
+        if(findResult == string::npos) {
+            findResult = data.find(conditionNotFound2);
+        }
+        if(findResult == string::npos) {
+            findResult = data.find(conditionNotFound3);
+        }
+
+        if(findResult != string::npos) {
             curl_easy_cleanup(curl);
-            lyrics_text_buffer->text("Not found!");
-            return;
+            lyrics_text_buffer->text(msgNotFound);
+
+            if(firstTry) {
+                try_again(lyrics_text_buffer, artist, title);
+            }
+            return false;
         }
 
-        a = data.find(conditionNotFound2);
-        if(a != string::npos) {
-            curl_easy_cleanup(curl);
-            lyrics_text_buffer->text("Not found!");
-            return;
-        }
-
-        int b = data.find(conditionStart);
-        if(b == -1) {
+        // Check if the lyrics were really found
+        findResult = data.find(conditionStart);
+        if(findResult == -1) {
             curl_easy_cleanup(curl);
             lyrics_text_buffer->text("Error while fetching.");
-            return;
-        }
-        data.erase(0, b+conditionStart.size());
 
-        int c = data.find(conditionEnd);
-        data.erase(c);
+            if(firstTry) {
+                try_again(lyrics_text_buffer, artist, title);
+            }
+            return false;
+        }
+        data.erase(0, findResult + conditionStart.size());
+
+        findResult = data.find(conditionEnd);
+        data.erase(findResult);
 
         curl_easy_cleanup(curl);
 
@@ -103,9 +142,9 @@ void lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
     }
 
     util_replace_all(artist, "_", " ");
-    util_replace_all(artist, "%3F", "?");
     util_replace_all(title, "_", " ");
-    util_replace_all(title, "%3F", "?");
+    artist = curl_easy_unescape(curl , artist.c_str(), 0, NULL);
+    title = curl_easy_unescape(curl , title.c_str(), 0, NULL);
 
     string result = artist + "\n" + title + "\n" + data;
     util_replace_all(result, "\n\n\n", "\n\n");
@@ -116,7 +155,21 @@ void lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
     util_replace_all(result, "{{", "");
     util_replace_all(result, "}}", "");
 
+    result.append("\n\nLyrics provided by lyrics.wikia.com");
+
     lyrics_text_buffer->text(result.c_str());
+    data.clear();
+
+    return true;
+}
+
+void try_again(Fl_Text_Buffer* lyrics_text_buffer, string artist, string title)
+{
+    util_erease_between(title, "(", ")");
+    util_erease_between(title, "[", "]");
+    util_replace_all(title, "!", "");
+
+    lyrics_fetcher_run(lyrics_text_buffer, artist, title, false);
 }
 
 size_t writeToString(void* ptr, size_t size, size_t count, void *stream)

@@ -14,7 +14,8 @@ public:
     std::string filepath;
 
     Music (void);
-    std::string getDesc();
+    std::string getDesc(void);
+    void resolveNames(void);
 };
 
 #endif
