@@ -24,10 +24,6 @@
 					<Add option="-O2" />
 					<Add option="-s" />
 				</Compiler>
-				<Linker>
-					<Add option="-static-libgcc" />
-					<Add option="-static-libstdc++" />
-				</Linker>
 			</Target>
 		</Build>
 		<Compiler>

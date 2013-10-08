@@ -32,8 +32,9 @@ bool lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
     string conditionNotFound = "This page needs content.";
     string conditionNotFound2 = "PUT LYRICS HERE";
     string conditionNotFound3 = "You have followed a link to a page that doesn't exist yet";
-    string conditionRedirect = "#REDIRECT [[";
-    string conditionRedirect2 = "#redirect [[";
+    string conditionRedirect = "#REDIRECT";
+    string conditionRedirect2 = "#redirect";
+    string conditionRedirect3 = "#Redirect";
     string conditionStart = "lyrics>";
     string conditionEnd = "&lt;/lyrics>";
 
@@ -80,8 +81,12 @@ bool lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
         if(findResult == string::npos) {
             findResult = data.find(conditionRedirect2);
         }
+        if(findResult == string::npos) {
+            findResult = data.find(conditionRedirect3);
+        }
         if(findResult != string::npos) {
-            data.erase(0, findResult + conditionRedirect.size()); // luckily both conditions have the same size
+            findResult = data.find("[[", findResult);
+            data.erase(0, findResult + 2);
             findResult = data.find("]]");
             data.erase(findResult);
 
