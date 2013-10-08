@@ -579,8 +579,8 @@ void play_music()
         browser_music->redraw();
     }*/
 
-    browser_music->value(musicIndex+1);
-    browser_music->set_highlighted(musicIndex+1);
+    browser_music->value(musicIndex + 1);
+    browser_music->set_highlighted(musicIndex + 1);
     browser_music->redraw();
 
     sound_load(filepath);
@@ -603,9 +603,8 @@ void play_music()
     slider_music->value(0);
     if(FLAG_LYRICS) {
         lyrics_fetcher_run(lyrics_text_buffer, music.artist, music.title);
-        lyrics_pane->scroll(0,0);
-    }
-    else {
+        lyrics_pane->scroll(0, 0);
+    } else {
         lyrics_text_buffer->text("");
     }
 }
@@ -875,6 +874,7 @@ void update_playlist()
         browser_music->add(m.getDesc().c_str());
         if(m.cod != 0 && m.cod == musicPlayingCod) {
             browser_music->set_highlighted(i + 1);
+            browser_music->value(i + 1);
         }
     }
 
