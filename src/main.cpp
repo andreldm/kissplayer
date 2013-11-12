@@ -35,6 +35,8 @@ int main(int argc, char** argv)
     // TODO: Check if returns 0, else "Could not initialize sound system!"
     sound_initialize();
 
+    Fl::lock();
+
     int fl_result = Fl::run();
 
     os_specific_end();

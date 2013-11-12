@@ -332,12 +332,10 @@ void cb_previous(Fl_Widget* widget, void*)
     if(FLAG_RANDOM) {
         if(musicIndexRandom >= 1) {
             musicIndex = listRandom.at(--musicIndexRandom);
-            sound_unload();
             play_music();
         }
     } else if(musicIndex > 0) {
         musicIndex--;
-        sound_unload();
         play_music();
     }
 }
@@ -351,7 +349,6 @@ void cb_next(Fl_Widget* widget, void*)
             musicIndex++;
         }
 
-        sound_unload();
         play_music();
     }
 }

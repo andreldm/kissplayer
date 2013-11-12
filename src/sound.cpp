@@ -30,13 +30,14 @@ int sound_initialize(void)
 
 void sound_load(const char* filename)
 {
+    sound_unload();
     strcpy(current_file, filename);
 #if defined WIN32
     wchar_t wide_filename[PATH_LENGTH];
     fl_utf8towc(current_file, PATH_LENGTH, wide_filename, PATH_LENGTH);
-    if (FMOD_System_CreateStream(_system, (char*) wide_filename, FMOD_DEFAULT | FMOD_UNICODE, 0, &_sound) != FMOD_OK) return;
+    if (FMOD_System_CreateStream(_system, (char*) wide_filename, FMOD_DEFAULT | FMOD_UNICODE | FMOD_ACCURATETIME, 0, &_sound) != FMOD_OK) return;
 #else
-    if (FMOD_System_CreateStream(_system,current_file, FMOD_DEFAULT , 0, &_sound) != FMOD_OK) return;
+    if (FMOD_System_CreateStream(_system,current_file, FMOD_DEFAULT | FMOD_ACCURATETIME, 0, &_sound) != FMOD_OK) return;
 #endif
 
     loaded = true;

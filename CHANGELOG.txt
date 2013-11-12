@@ -1,3 +1,8 @@
+v 0.6.1 - 11/11/2013:
+- Fix file handler locking after DnD
+- Fix for VBR encoded files
+- Lyrics fetcher is now threaded(UI doesn't freeze anymore)
+
 v 0.6.0 - 04/10/2013:
 - Lots of code refactoring, restructuring and polishing
 - Fixed small unicode-related glitches

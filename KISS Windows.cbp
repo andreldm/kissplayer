@@ -63,6 +63,10 @@
 		<Unit filename="src/os_specific.h" />
 		<Unit filename="src/sound.cpp" />
 		<Unit filename="src/sound.h" />
+		<Unit filename="src/tinycthread.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/tinycthread.h" />
 		<Unit filename="src/util.cpp" />
 		<Unit filename="src/util.h" />
 		<Unit filename="src/win/kiss.rc">

@@ -1,19 +1,89 @@
 #include "lyrics_fetcher.h"
 
+#include <FL/Fl.H>
 #include <curl/curl.h>
 #include <iostream>
 #include <cctype>
 
 #include "util.h"
+#include <stdio.h>
+extern "C" {
+    #include "tinycthread.h"
+}
 
 using namespace std;
 
-void try_again(Fl_Text_Buffer* lyrics_text_buffer, string artist, string title);
+class LyricsData
+{
+    public:
+    Fl_Text_Buffer* lyrics_text_buffer;
+    string artist;
+    string title;
+    int ticket;
+};
+
+int ticket = 0;
+
+void try_again(LyricsData* lyrics_data);
 size_t writeToString(void* ptr, size_t size, size_t count, void* stream);
 void upperCaseInitials(string& str);
+void thread_sleep(int ms);
+int thread_run(void * arg);
+bool do_fetch(LyricsData* lyrics_data, bool firstTry = true);
 
-bool lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, string title, bool firstTry)
+void lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, string title)
 {
+    LyricsData* data = new LyricsData();
+    data->artist = artist;
+    data->title = title;
+    data->lyrics_text_buffer = lyrics_text_buffer;
+    data->ticket = ++ticket;
+
+    // Ticket reset
+    if (ticket > 10000) ticket = 0;
+
+    thrd_t t;
+    thrd_create(&t, thread_run, (void*) data);
+}
+
+void check_ticket(int thread_ticket)
+{
+    if(thread_ticket != ticket) {
+        thrd_exit(thrd_success);
+    }
+}
+
+int thread_run(void* arg)
+{
+    // This sleep is useful if the user is skipping songs
+    thread_sleep(500);
+    LyricsData* data = (LyricsData*) arg;
+    do_fetch(data);
+    return 0;
+}
+
+void thread_sleep (int ms)
+{
+    struct timespec ts;
+
+    /* Calculate current time + ms */
+    clock_gettime(TIME_UTC, &ts);
+    ts.tv_nsec += ms * 1000000;
+    if (ts.tv_nsec >= ms * 1000000) {
+        ts.tv_sec++;
+        ts.tv_nsec -= ms * 1000000;
+    }
+
+    thrd_sleep(&ts, NULL);
+}
+
+bool do_fetch(LyricsData* lyrics_data, bool firstTry)
+{
+    int thread_ticket = lyrics_data->ticket;
+    string artist = lyrics_data->artist;
+    string title = lyrics_data->title;
+    Fl_Text_Buffer* lyrics_text_buffer = lyrics_data->lyrics_text_buffer;
+
     CURL* curl;
     string data;
 
@@ -22,11 +92,10 @@ bool lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
     // several sites, if one fail, try the next.
     string url = "http://lyrics.wikia.com/";
 
-    char msgNotFound[] = "Not found!\nPlease add these lyrics at lyrics.wikia.com";
     char* url_unescaped;
     int findResult;
 
-    // As of May 2012, these regex are valid.
+    // As of November 2013, these regex are valid.
     // If they change the site layout, this fetcher
     // might not work properly or not work at all!
     string conditionNotFound = "This page needs content.";
@@ -52,6 +121,7 @@ bool lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
 
     //cout <<"URL: " << url << endl;
     curl = curl_easy_init();
+    check_ticket(thread_ticket);
 
     if(curl) {
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
@@ -60,6 +130,7 @@ bool lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_easy_setopt(curl, CURLOPT_TIMEOUT, 5);
         CURLcode res = curl_easy_perform(curl);
+        check_ticket(thread_ticket);
 
         // Check if timed out
         if(res == CURLE_OPERATION_TIMEDOUT) {
@@ -100,7 +171,7 @@ bool lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
             title = data.substr(findResult + 1, data.length());
 
             // Don't use try_again because it tries to clean the strings
-            return lyrics_fetcher_run(lyrics_text_buffer, artist, title, firstTry);
+            return do_fetch(lyrics_data, firstTry);
         }
 
         // Check if the Lyrics doesn't exist
@@ -114,10 +185,10 @@ bool lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
 
         if(findResult != string::npos) {
             curl_easy_cleanup(curl);
-            lyrics_text_buffer->text(msgNotFound);
+            lyrics_text_buffer->text("Not found :(");
 
             if(firstTry) {
-                try_again(lyrics_text_buffer, artist, title);
+                try_again(lyrics_data);
             }
             return false;
         }
@@ -126,10 +197,11 @@ bool lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
         findResult = data.find(conditionStart);
         if(findResult == -1) {
             curl_easy_cleanup(curl);
-            lyrics_text_buffer->text("Error while fetching.");
 
             if(firstTry) {
-                try_again(lyrics_text_buffer, artist, title);
+                try_again(lyrics_data);
+            } else {
+                lyrics_text_buffer->text("Error while fetching.");
             }
             return false;
         }
@@ -139,11 +211,6 @@ bool lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
         data.erase(findResult);
 
         curl_easy_cleanup(curl);
-
-        // It's necessary as a workaround for Fl_Help_View widget.
-        // As of FLTK 1.3.0, multiple <br> tags are handled as only
-        // one, so we use to use the <p> tag.
-        util_replace_all(data, "<br /><br />", "</p><p>");
     }
 
     util_replace_all(artist, "_", " ");
@@ -160,21 +227,24 @@ bool lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
     util_replace_all(result, "{{", "");
     util_replace_all(result, "}}", "");
 
-    result.append("\n\nLyrics provided by lyrics.wikia.com");
-
+    check_ticket(thread_ticket);
+    Fl::lock ();
     lyrics_text_buffer->text(result.c_str());
-    data.clear();
+    Fl::unlock ();
 
     return true;
 }
 
-void try_again(Fl_Text_Buffer* lyrics_text_buffer, string artist, string title)
+void try_again(LyricsData* lyrics_data)
 {
-    util_erease_between(title, "(", ")");
-    util_erease_between(title, "[", "]");
-    util_replace_all(title, "!", "");
+    check_ticket(lyrics_data->ticket);
+    string _title = lyrics_data->title;
+    util_erease_between(_title, "(", ")");
+    util_erease_between(_title, "[", "]");
+    util_replace_all(_title, "!", "");
+    lyrics_data->title = _title;
 
-    lyrics_fetcher_run(lyrics_text_buffer, artist, title, false);
+    do_fetch(lyrics_data, false);
 }
 
 size_t writeToString(void* ptr, size_t size, size_t count, void *stream)

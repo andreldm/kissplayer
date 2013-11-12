@@ -5,7 +5,6 @@
 
 class Music
 {
-
 public:
     int cod;
     std::string title;

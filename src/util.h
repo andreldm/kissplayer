@@ -13,7 +13,7 @@
 
 #define     KISS_MAJOR_VERSION          0
 #define     KISS_MINOR_VERSION          6
-#define     KISS_PATCH_VERSION          0
+#define     KISS_PATCH_VERSION          1
 
 #define     DEFAULT_BACKGROUND_COLOR    0xDDEEFF00
 
