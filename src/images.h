@@ -10,10 +10,6 @@ extern Fl_RGB_Image img_icon_previous;
 extern Fl_RGB_Image img_icon_next;
 extern Fl_RGB_Image img_icon_clear;
 extern Fl_RGB_Image img_icon_search;
-extern Fl_RGB_Image img_icon_sync;
-extern Fl_RGB_Image img_icon_random_on;
-extern Fl_RGB_Image img_icon_random_off;
-extern Fl_RGB_Image img_icon_settings;
-extern Fl_RGB_Image img_icon_about;
+extern Fl_RGB_Image img_icon_menu;
 
 #endif

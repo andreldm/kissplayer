@@ -13,24 +13,26 @@ bool    FLAG_CANCEL_SYNC;
 bool    FLAG_LIST_CHANGED;
 bool    FLAG_RANDOM;
 bool    FLAG_LYRICS;
+bool    FLAG_SCROLL_TITLE;
 int     FLAG_SEARCH_TYPE;
 
 int main(int argc, char** argv)
 {
     dao_start_db();
 
-    Fl_Double_Window* window_main = make_window_main(argc, argv);
+    window_main_init(argc, argv);
+    Fl_Double_Window* window_main = window_main_get_instance();
 
-    os_specific_set_app_icon(window_main);
+    os_specific_set_app_icon();
 
     window_main->show(0, NULL);
 
     if(FLAG_MAXIMIZE_WINDOW) {
-        os_specific_maximize_window(window_main);
+        os_specific_maximize_window();
     }
 
     // TODO: Check if returns 0, else "Keyboard hooker failed!";
-    os_specific_init(window_main);
+    os_specific_init();
 
     // TODO: Check if returns 0, else "Could not initialize sound system!"
     sound_initialize();

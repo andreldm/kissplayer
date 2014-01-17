@@ -267,8 +267,9 @@ void dao_search_music(const char* text, deque<Music>& listMusic)
     case SEARCH_TYPE_ALBUM:
         sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE album LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
         sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
+        break;
     default:
-         sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC ORDER BY artist, title;", -1, &stmt, NULL);
+        sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC ORDER BY artist, title;", -1, &stmt, NULL);
     }
 
     while(sqlite3_step(stmt) == SQLITE_ROW) {

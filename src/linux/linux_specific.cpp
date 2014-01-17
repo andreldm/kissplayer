@@ -32,16 +32,20 @@ typedef union {
 void keyHookCallback(XPointer pointer, XRecordInterceptData* hook);
 void keyHookTimer(void*);
 
-void os_specific_set_app_icon(Fl_Window* window)
+void os_specific_set_app_icon()
 {
+    Fl_Window* window = window_main_get_instance();
+
     fl_open_display();
     Pixmap p;
     XpmCreatePixmapFromData(fl_display, DefaultRootWindow(fl_display), const_cast<char**>(icon_xpm), &p, &mask, NULL);
     window->icon((char*)p);
 }
 
-int os_specific_init(Fl_Window* window)
+int os_specific_init()
 {
+    Fl_Window* window = window_main_get_instance();
+
     // To achieve icon transparency on Linux, we need this procedure.
     // Source: www.fltk.org/newsgroups.php?gfltk.general+v:14448
     XWMHints* hints = XGetWMHints(fl_display, fl_xid(window));
@@ -61,7 +65,7 @@ int os_specific_init(Fl_Window* window)
     // Setup XRecord range
     XRecordClientSpec clients = XRecordAllClients;
     XRecordRange* range = XRecordAllocRange();
-    if (range == NULL) {
+    if(range == NULL) {
         printf("Error: Could not allocate XRecordRange!");
         return -1;
     }
@@ -71,7 +75,7 @@ int os_specific_init(Fl_Window* window)
     range->device_events.last = MotionNotify;
     XRecordContext context = XRecordCreateContext(disp_data, 0, &clients, 1, &range, 1);
     XFree(range);
-    if (context == 0) {
+    if(context == 0) {
         printf("Error: Could not create XRecordContext!");
         return -1;
     }
@@ -101,15 +105,24 @@ void os_specific_get_working_dir(std::string& dir)
 
 void os_specific_dir_chooser(char* dir)
 {
-    strcpy(dir, fl_dir_chooser("Select a folder", NULL));
+    char* r = fl_dir_chooser("Select a folder", NULL);
+
+    if(r == NULL) {
+        dir[0] = '\0';
+        return;
+    }
+
+    strcpy(dir, r);
 }
 
 /**
  * Set the window to maximized state.
  * Source: www.mail-archive.com/xfree86@xfree86.org/msg21266.html
  */
-void os_specific_maximize_window(Fl_Window* window)
+void os_specific_maximize_window()
 {
+    Fl_Window* window = window_main_get_instance();
+
     static Atom atomState = XInternAtom(fl_display, "_NET_WM_STATE", True);
     static Atom atomMaxVert = XInternAtom(fl_display, "_NET_WM_STATE_MAXIMIZED_VERT", True);
     static Atom atomMaxHorz = XInternAtom(fl_display, "_NET_WM_STATE_MAXIMIZED_HORZ", True);
@@ -132,8 +145,10 @@ void os_specific_maximize_window(Fl_Window* window)
  * Check if the window is maximized.
  * Source: SDL_x11window.c
  */
-bool os_specific_is_window_maximized(Fl_Window* window)
+bool os_specific_is_window_maximized()
 {
+    Fl_Window* window = window_main_get_instance();
+
     static Atom atomState = XInternAtom(fl_display, "_NET_WM_STATE", True);
     static Atom atomMaxVert = XInternAtom(fl_display, "_NET_WM_STATE_MAXIMIZED_VERT", True);
     static Atom atomMaxHorz = XInternAtom(fl_display, "_NET_WM_STATE_MAXIMIZED_HORZ", True);
@@ -145,16 +160,16 @@ bool os_specific_is_window_maximized(Fl_Window* window)
     long maxLength = 1024;
     int maximized = 0;
 
-    if (Success == XGetWindowProperty(fl_display, fl_xid(window), atomState,
+    if(Success == XGetWindowProperty(fl_display, fl_xid(window), atomState,
                            0l, maxLength, False, XA_ATOM, &actualType,
                            &actualFormat, &numItems, &bytesAfter,
                            &propertyValue)) {
         Atom* atoms = (Atom*) propertyValue;
 
-        for (i = 0; i < numItems; ++i) {
-            if (atoms[i] == atomMaxVert) {
+        for(i = 0; i < numItems; ++i) {
+            if(atoms[i] == atomMaxVert) {
                 maximized |= 1;
-            } else if (atoms[i] == atomMaxHorz) {
+            } else if(atoms[i] == atomMaxHorz) {
                 maximized |= 2;
             }
         }
@@ -174,7 +189,7 @@ void keyHookCallback(XPointer pointer, XRecordInterceptData* hook)
     static int keyPressed = false;
 
     // Make sure that our data come from a legitimate source.
-    if (hook->category != XRecordFromServer && hook->category != XRecordFromClient) {
+    if(hook->category != XRecordFromServer && hook->category != XRecordFromClient) {
         XRecordFreeData(hook);
         return;
     }
@@ -204,7 +219,7 @@ void os_specific_scanfolder(const char* dir, deque<string>& filelist)
     dirent** list;
     int fileQty = fl_filename_list(dir, &list);
 
-    for (int i = 0; i < fileQty; i++) {
+    for(int i = 0; i < fileQty; i++) {
         const char* filename = list[i]->d_name;
 
         if(filename[0] == '.') {

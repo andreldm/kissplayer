@@ -1,4 +1,5 @@
 #include "window_loading.h"
+#include "util.h"
 
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
@@ -25,12 +26,13 @@ void window_loading_show(void)
     window->align(Fl_Align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE));
 
     progress_bar_dir = new Fl_Progress(20, 20, 320, 30, "Scanning directories...");
-    progress_bar_dir->selection_color(FL_BLUE);
+    progress_bar_dir->selection_color(DEFAULT_FOREGROUND_COLOR);
 
     progress_bar_file = new Fl_Progress(20, 70, 320, 30, "Loading files...");
-    progress_bar_file->selection_color(FL_BLUE);
+    progress_bar_file->selection_color(DEFAULT_FOREGROUND_COLOR);
 
     Fl_Button* button_cancel = new Fl_Button(280, 110, 60, 25, "Cancel");
+    button_cancel->clear_visible_focus();
     button_cancel->callback(cb_cancel);
 
     window->set_modal();

@@ -13,9 +13,11 @@
 
 #define     KISS_MAJOR_VERSION          0
 #define     KISS_MINOR_VERSION          6
-#define     KISS_PATCH_VERSION          1
+#define     KISS_PATCH_VERSION          2
 
-#define     DEFAULT_BACKGROUND_COLOR    0xDDEEFF00
+#define     DEFAULT_BACKGROUND_COLOR    0x5A595800
+#define     DEFAULT_SELECTION_COLOR     0xFFFFFF00
+#define     DEFAULT_FOREGROUND_COLOR    0xC8C8C800
 
 void            util_parse_args         (int argc, char** argv, std::deque<Music>& listMusic);
 bool            util_parse_dnd          (std::string urls, std::deque<Music>& listMusic);

@@ -1,3 +1,14 @@
+v 0.6.2 - 16/01/2014:
+- Fixed search by album(regresion)
+- Fix: Under Linux, if the user give up adding a folder, the app would crash.
+- Dark color theming
+- New icon set
+- Interface improvements
+- Music slider now has a hovering tip displaying the music position
+- New volume controller
+- Option to disable title scrolling
+- Lyrics fetcher improved
+
 v 0.6.1 - 11/11/2013:
 - Fix file handler locking after DnD
 - Fix for VBR encoded files

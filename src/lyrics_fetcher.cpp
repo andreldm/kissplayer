@@ -6,6 +6,7 @@
 #include <cctype>
 
 #include "util.h"
+#include "sound.h"
 #include <stdio.h>
 extern "C" {
     #include "tinycthread.h"
@@ -24,7 +25,7 @@ class LyricsData
 
 int ticket = 0;
 
-void try_again(LyricsData* lyrics_data);
+bool try_again(LyricsData* lyrics_data);
 size_t writeToString(void* ptr, size_t size, size_t count, void* stream);
 void upperCaseInitials(string& str);
 void thread_sleep(int ms);
@@ -48,7 +49,8 @@ void lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
 
 void check_ticket(int thread_ticket)
 {
-    if(thread_ticket != ticket) {
+    // If the sound is not loaded(stoped), also ignore this fetch
+    if(thread_ticket != ticket || !sound_is_loaded()) {
         thrd_exit(thrd_success);
     }
 }
@@ -87,7 +89,6 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
     CURL* curl;
     string data;
 
-    // Yeah, lyricswikia, it's pretty reliable.
     // Maybe we can upgrade this code to support
     // several sites, if one fail, try the next.
     string url = "http://lyrics.wikia.com/";
@@ -95,7 +96,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
     char* url_unescaped;
     int findResult;
 
-    // As of November 2013, these regex are valid.
+    // As of December 2013, these regex are valid.
     // If they change the site layout, this fetcher
     // might not work properly or not work at all!
     string conditionNotFound = "This page needs content.";
@@ -169,8 +170,10 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
 
             artist = data.substr(0, findResult);
             title = data.substr(findResult + 1, data.length());
+            lyrics_data->artist = artist;
+            lyrics_data->title = title;
 
-            // Don't use try_again because it tries to clean the strings
+            // Don't use try_again because it cleans the strings
             return do_fetch(lyrics_data, firstTry);
         }
 
@@ -185,11 +188,14 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
 
         if(findResult != string::npos) {
             curl_easy_cleanup(curl);
-            lyrics_text_buffer->text("Not found :(");
 
             if(firstTry) {
-                try_again(lyrics_data);
+                bool result = try_again(lyrics_data);
+                if(!result) {
+                    lyrics_text_buffer->text("Not found :(");
+                }
             }
+
             return false;
         }
 
@@ -199,10 +205,12 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
             curl_easy_cleanup(curl);
 
             if(firstTry) {
-                try_again(lyrics_data);
-            } else {
-                lyrics_text_buffer->text("Error while fetching.");
+                bool result = try_again(lyrics_data);
+                if(!result) {
+                    lyrics_text_buffer->text("Error while fetching.");
+                }
             }
+
             return false;
         }
         data.erase(0, findResult + conditionStart.size());
@@ -229,13 +237,15 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
 
     check_ticket(thread_ticket);
     Fl::lock ();
-    lyrics_text_buffer->text(result.c_str());
+    if(FLAG_LYRICS) {
+        lyrics_text_buffer->text(result.c_str());
+    }
     Fl::unlock ();
 
     return true;
 }
 
-void try_again(LyricsData* lyrics_data)
+bool try_again(LyricsData* lyrics_data)
 {
     check_ticket(lyrics_data->ticket);
     string _title = lyrics_data->title;
@@ -244,7 +254,7 @@ void try_again(LyricsData* lyrics_data)
     util_replace_all(_title, "!", "");
     lyrics_data->title = _title;
 
-    do_fetch(lyrics_data, false);
+    return do_fetch(lyrics_data, false);
 }
 
 size_t writeToString(void* ptr, size_t size, size_t count, void *stream)

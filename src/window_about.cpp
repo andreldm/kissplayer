@@ -35,10 +35,9 @@ void window_about_show(void)
     box_title->labelfont(FL_BOLD);
     box_title->labelsize(22);
     box_title->labeltype(FL_SHADOW_LABEL);
-    box_title->labelcolor(0x0179ff00);
     box_title->align(FL_ALIGN_TOP_LEFT | FL_ALIGN_INSIDE);
 
-    Fl_Help_View* browser_info = new Fl_Help_View (5, 40, window_w-10, 185);
+    Fl_Help_View* browser_info = new Fl_Help_View(5, 40, window_w-10, 185);
     browser_info->textsize(14);
     browser_info->value("<b>A Simple and Lightweight Music Player</b><br><br>\
         <p>Author: André Miranda<br>\

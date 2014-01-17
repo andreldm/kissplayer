@@ -1,16 +1,19 @@
-SRC = $(shell find . -name *.cpp | grep "/src/" | grep -v "/win/")
-OBJ = $(SRC:%.cpp=%.o)
+SRCCPP = $(shell find . -name *.cpp | grep "/src/" | grep -v "/win/")
+SRCC = $(shell find . -name *.c | grep "/src/" | grep -v "/win/")
+OBJCPP = $(SRCCPP:%.cpp=%.o)
+OBJC = $(SRCC:%.c=%.o)
 LD_FLAGS = -lfltk -lXext -lXft -lfontconfig -lXinerama -lpthread -ldl -lm -lX11 -lcurl -ltag -lXpm -lsqlite3 -lfltk_images -lpng -lfmodex -lXtst
 CC_FLAGS = -O2
 TARGET = kissplayer
 
 all: $(TARGET)
 
-$(TARGET): $(OBJ)
-	g++ $(LD_FLAGS) $(OBJ) -o $(TARGET)
+$(TARGET): $(OBJC) $(OBJCPP)
+	g++ -o $(TARGET) $(OBJC) $(OBJCPP) $(LD_FLAGS)
 
-%.o: %.cpp
+%.o: %.cpp %.c
 	g++ $(CC_FLAGS) -c $< -o $@
+
 
 clean:
 	find . -name '*.o' | xargs rm

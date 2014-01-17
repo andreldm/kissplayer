@@ -4,7 +4,6 @@ obj/
 bin/
 
 syntax: glob
-NOTES.txt
 png2img
 *.exe
 *.s3db

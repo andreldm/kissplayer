@@ -54,16 +54,19 @@ static int windows_event_handler(int e);
 /**
 * Sets the window icon.
 */
-void os_specific_set_app_icon(Fl_Window* window)
+void os_specific_set_app_icon()
 {
+    Fl_Window* window = window_main_get_instance();
     window->icon((char*)LoadIcon(fl_display, MAKEINTRESOURCE(APP_ICON)));
 }
 
 /**
 * Starts Windows specific configuration.
 */
-int os_specific_init(Fl_Window* window)
+int os_specific_init()
 {
+    Fl_Window* window = window_main_get_instance();
+
     Fl::add_handler(windows_event_handler);
     taskBarCreatedId = RegisterWindowMessage(TEXT("TaskbarButtonCreated"));
 
@@ -127,16 +130,18 @@ void os_specific_dir_chooser(char* dir)
 /**
  * Set the window to maximized state.
  */
-void os_specific_maximize_window(Fl_Window* window)
+void os_specific_maximize_window()
 {
+    Fl_Window* window = window_main_get_instance();
     SendMessage(fl_xid(window), WM_SYSCOMMAND, SC_MAXIMIZE, 0);
 }
 
 /**
  * Check if the window is maximized.
  */
-bool os_specific_is_window_maximized(Fl_Window* window)
+bool os_specific_is_window_maximized()
 {
+    Fl_Window* window = window_main_get_instance();
     return IsZoomed(fl_xid(window));
 }
 
