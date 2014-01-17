@@ -1,6 +1,5 @@
 #include "ksp_tile.h"
 
-
 KSP_Tile::KSP_Tile(int x, int y, int w, int h)
     : Fl_Tile(x, y, w, h, 0) { }
 

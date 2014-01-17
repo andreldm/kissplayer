@@ -1,7 +1,7 @@
 #include "ksp_browser.h"
 
-#include <Fl/fl.H>
-#include <Fl/fl_draw.H>
+#include <FL/Fl.H>
+#include <FL/fl_draw.H>
 
 #define SELECTED 1
 

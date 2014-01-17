@@ -1,6 +1,6 @@
 #include "ksp_check_button.h"
 
-#include <FL/fl.H>
+#include <FL/Fl.H>
 #include <FL/fl_draw.H>
 
 KSP_Check_Button::KSP_Check_Button (int X, int Y, int W, int H, const char* L)

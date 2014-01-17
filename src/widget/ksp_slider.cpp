@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include <Fl/fl.H>
-#include <Fl/fl_draw.H>
+#include <FL/Fl.H>
+#include <FL/fl_draw.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Menu_Window.H>
 

@@ -1,7 +1,7 @@
 #include "ksp_volume_controller.h"
 
 #include <FL/Fl.H>
-#include <FL/Fl_draw.H>
+#include <FL/fl_draw.H>
 
 KSP_Volume_Controller::KSP_Volume_Controller(int xx, int yy, int ww, int hh)
     : Fl_Valuator(xx, yy, ww, hh, 0)
