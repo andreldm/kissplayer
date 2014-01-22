@@ -60,11 +60,17 @@
 		<Unit filename="src/tinycthread.h" />
 		<Unit filename="src/util.cpp" />
 		<Unit filename="src/util.h" />
+		<Unit filename="src/widget/ksp_browser.cpp" />
 		<Unit filename="src/widget/ksp_browser.h" />
+		<Unit filename="src/widget/ksp_check_button.cpp" />
 		<Unit filename="src/widget/ksp_check_button.h" />
+		<Unit filename="src/widget/ksp_menu_item.cpp" />
 		<Unit filename="src/widget/ksp_menu_item.h" />
+		<Unit filename="src/widget/ksp_slider.cpp" />
 		<Unit filename="src/widget/ksp_slider.h" />
+		<Unit filename="src/widget/ksp_tile.cpp" />
 		<Unit filename="src/widget/ksp_tile.h" />
+		<Unit filename="src/widget/ksp_volume_controller.cpp" />
 		<Unit filename="src/widget/ksp_volume_controller.h" />
 		<Unit filename="src/window_about.cpp" />
 		<Unit filename="src/window_about.h" />
