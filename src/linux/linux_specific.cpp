@@ -101,6 +101,7 @@ void os_specific_get_working_dir(std::string& dir)
     string path = pw->pw_dir;
     path.append("/.kissplayer/");
     dir.assign(path);
+    mkdir(dir.c_str(), 0777);
 }
 
 void os_specific_dir_chooser(char* dir)
