@@ -1,5 +1,5 @@
 # This makefile should build the project on Linux and Windows(MinGW)
-# An autotools setup in being crafted, for now we must live with this makefile
+# An autotools setup is being crafted, for now we must live with this makefile
 
 SOURCES = src/dao.cpp \
 src/images.cpp \
@@ -29,7 +29,7 @@ ifeq ($(OS), Windows_NT)
 	DEVNULL = NUL
 	FixPath = $(subst /,\,$1)
 
-	# Configure the depencies if needed!
+	# Configure the dependencies if needed!
 	LIBS = -lfltk -lole32 -luuid -lcomctl32 -lwsock32 -lgdi32 -lcomdlg32 -lfltk_images -lfltk_png -lz -lcurl -ltag -lfmodex -lsqlite3 -lintl
 	CFLAGS = -O2 -mwindows
 	TARGET = KISS\ Player.exe
@@ -42,7 +42,7 @@ else ifeq ($(shell uname), Linux)
 	DEVNULL = /dev/null
 	FixPath = $1
 
-	# Configure the depencies if needed!
+	# Configure the dependencies if needed!
 	LIBS = -lfltk -lX11 -lXext -lXft -lXtst -lXpm -lXinerama -lfontconfig -lpthread -ldl -lm -lcurl -ltag -lsqlite3 -lfltk_images -lpng -lfmodex#64
 	CFLAGS = -O2
 	TARGET = kissplayer
