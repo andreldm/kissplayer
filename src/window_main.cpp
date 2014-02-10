@@ -704,6 +704,7 @@ void save_config()
     dao_set_key("color_selection", util_i2s(browser_music->color2()));
     dao_set_key("color_text", util_i2s(browser_music->textcolor()));
     dao_set_key("lyrics", util_i2s(FLAG_LYRICS));
+    dao_set_key("scroll_title", util_i2s(FLAG_SCROLL_TITLE));
 
     dao_commit_transaction();
 }
