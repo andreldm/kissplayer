@@ -6,7 +6,6 @@
 
 #include <FL/Fl.H>
 #include <FL/fl_ask.H>
-#include <FL/fl_draw.H>
 #include <FL/filename.H>
 
 #include <taglib/taglib.h>

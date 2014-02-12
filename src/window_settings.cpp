@@ -2,8 +2,6 @@
 
 #include <deque>
 #include <string>
-#include <map>
-#include <iostream>
 
 #include <FL/Fl.H>
 #include <FL/fl_ask.H>

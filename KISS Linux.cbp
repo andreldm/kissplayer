@@ -44,6 +44,8 @@
 		<Unit filename="src/dao.h" />
 		<Unit filename="src/images.cpp" />
 		<Unit filename="src/images.h" />
+		<Unit filename="src/locale.cpp" />
+		<Unit filename="src/locale.h" />
 		<Unit filename="src/linux/icon.xpm" />
 		<Unit filename="src/linux/linux_specific.cpp" />
 		<Unit filename="src/linux/linux_specific.h" />
