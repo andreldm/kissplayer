@@ -6,6 +6,7 @@
 
 #include <FL/Fl.H>
 #include <FL/fl_ask.H>
+#include <FL/fl_draw.H>
 #include <FL/filename.H>
 
 #include <taglib/taglib.h>
@@ -271,6 +272,13 @@ void util_erease_between(string& str, const string& start, const string& end)
             str.replace(start_pos, start.length(), "");
         }
     }
+}
+
+void util_adjust_width(Fl_Widget* w, int padding)
+{
+  int ww = 0, hh = 0;
+  w->measure_label(ww, hh);
+  w->size(ww + padding, w->h());
 }
 
 int util_s2i(string value)

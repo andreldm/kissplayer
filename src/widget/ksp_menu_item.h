@@ -10,7 +10,7 @@
 class KSP_Menu_Item : public Fl_Menu_Item
 {
 public:
-    KSP_Menu_Item(const char* labe, int shortcut1 = 0, Fl_Callback* callback = 0, void* data = 0, int flags1 = 0);
+    KSP_Menu_Item(const char* label = 0, int shortcut1 = 0, Fl_Callback* callback = 0, void* data = 0, int flags1 = 0);
 
     void draw(int x, int y, int w, int h, const Fl_Menu_*, int t=0) const;
 

@@ -8,6 +8,7 @@
 #include <FL/Fl_Button.H>
 
 #include "util.h"
+#include "locale.h"
 
 using namespace std;
 
@@ -25,7 +26,7 @@ void window_about_show(void)
     int window_x = (screen_w/2)-(window_w/2);
     int window_y = (screen_h/2)-(window_h/2);
 
-    window = new Fl_Window(window_x, window_y, window_w, window_h, "About");
+    window = new Fl_Window(window_x, window_y, window_w, window_h, _("About"));
 
     stringstream title;
     title << "KISS Player v" << KISS_MAJOR_VERSION << "." << KISS_MINOR_VERSION << "." << KISS_PATCH_VERSION;
@@ -48,7 +49,8 @@ void window_about_show(void)
         Available online under:<br>\
         <u>http://gnu.org/licenses/gpl-2.0.html</u></p>");
 
-    Fl_Button* button_close = new Fl_Button((window_w/2)-30, window_h-32, 60, 25, "Close");
+    Fl_Button* button_close = new Fl_Button((window_w/2)-30, window_h-32, 60, 25, _("Close"));
+    util_adjust_width(button_close, 10);
     button_close->callback((Fl_Callback*)cb_close);
 
     window->set_modal();

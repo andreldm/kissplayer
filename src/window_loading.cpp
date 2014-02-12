@@ -1,10 +1,12 @@
 #include "window_loading.h"
-#include "util.h"
 
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Progress.H>
+
+#include "util.h"
+#include "locale.h"
 
 static Fl_Window* window;
 static Fl_Progress* progress_bar_dir;
@@ -22,16 +24,18 @@ void window_loading_show(void)
     int window_x = (screen_w/2)-(window_w/2);
     int window_y = (screen_h/2)-(window_h/2);
 
-    window = new Fl_Window(window_x, window_y, window_w, window_h, "Please Wait");
+    window = new Fl_Window(window_x, window_y, window_w, window_h, _("Please Wait"));
     window->align(Fl_Align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE));
 
-    progress_bar_dir = new Fl_Progress(20, 20, 320, 30, "Scanning directories...");
+    progress_bar_dir = new Fl_Progress(20, 20, 320, 30, _("Scanning directories..."));
     progress_bar_dir->selection_color(DEFAULT_FOREGROUND_COLOR);
 
-    progress_bar_file = new Fl_Progress(20, 70, 320, 30, "Loading files...");
+    progress_bar_file = new Fl_Progress(20, 70, 320, 30, _("Loading files..."));
     progress_bar_file->selection_color(DEFAULT_FOREGROUND_COLOR);
 
-    Fl_Button* button_cancel = new Fl_Button(280, 110, 60, 25, "Cancel");
+    Fl_Button* button_cancel = new Fl_Button(280, 110, 70, 25, _("Cancel"));
+    util_adjust_width(button_cancel, 10);
+
     button_cancel->clear_visible_focus();
     button_cancel->callback(cb_cancel);
 

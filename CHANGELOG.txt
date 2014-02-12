@@ -1,3 +1,9 @@
+v 0.6.3 - 12/02/2014:
+- Fix ticket #17 by Maykon Silva
+- Fix ticket #29 by Herman Polloni
+- New unified makefile(Autotools or Cmake setup is being considered)
+- L10N Support
+
 v 0.6.2 - 16/01/2014:
 - Fixed search by album(regresion)
 - Fix: Under Linux, if the user give up adding a folder, the app would crash.

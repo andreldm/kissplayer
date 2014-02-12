@@ -23,19 +23,25 @@ WEB SITE
 HOW TO USE
 
     First you should have your songs on one or more directories.
-    Open KISS Player and click the settings button(with the gear icon).
+    Open KISS Player, click the menu button(with 3 lines) and select the option Settings.
     Add your directory(ies) and close the settings window.
-    On the main window, click the synchronize button.
+    On main window menu select the option Synchronize Library.
     Now you can play your songs which are avaliable on the left panel.
     
 BUILDING
 
-  Firstly, take a look at https://sourceforge.net/p/kissplayer/wiki/Dependencies/
+  First take a look at https://sourceforge.net/p/kissplayer/wiki/Dependencies/
   Once you have all the dependecies properly installed, you have two options:
   1. Use the Code::Blocks IDE
-  2. Use the Makefiles
-    2a. On Linux: make -f makefile.linux
-    2b. On Windows(MinGW): mingw32-make -f makefile.win
+  2. Use the Makefiles:
+    2a. On Linux: make && make install
+    2b. On Windows(MinGW): mingw32-make && mingw32-make install
+
+SETTING LANGUAGE
+
+  On Linux, check the activated locales with the command: locale -a
+  If you choose a language, for example pt_BR, it must be activated
+  otherwise use the command: locale-gen pt_BR.UTF-8
 
 MERCURIAL
 

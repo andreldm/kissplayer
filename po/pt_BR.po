@@ -1,0 +1,229 @@
+# Portuguese translations for PACKAGE package.
+# Copyright (C) 2014 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# mkn <maykosiqueira@gmail.com>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: KISS Player\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-12 00:53-0300\n"
+"PO-Revision-Date: 2014-02-12 01:05-0300\n"
+"Last-Translator: André Miranda <andreldm1989@gmail.com>\n"
+"Language-Team: Brazilian Portuguese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.6.4\n"
+
+#: src/window_about.cpp:29 src/window_main.cpp:242
+msgid "About"
+msgstr "Sobre"
+
+#: src/window_settings.cpp:124
+msgid "Add"
+msgstr "Adicionar"
+
+#: src/window_main.cpp:150 src/window_main.cpp:421
+msgid "Album"
+msgstr "Álbum"
+
+#: src/window_main.cpp:147 src/window_main.cpp:418
+msgid "All"
+msgstr "Todos"
+
+#: src/window_main.cpp:149 src/window_main.cpp:420
+msgid "Artist"
+msgstr "Artista"
+
+#: src/window_settings.cpp:78
+msgid "Background Color"
+msgstr "Cor de fundo"
+
+#: src/window_loading.cpp:36
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: src/window_settings.cpp:292
+msgid "Choose Color"
+msgstr "Escolha a cor"
+
+#: src/window_about.cpp:52 src/window_settings.cpp:162
+msgid "Close"
+msgstr "Fechar"
+
+#: src/lyrics_fetcher.cpp:149
+msgid "Connection failure!"
+msgstr "Falha na conexão!"
+
+#: src/lyrics_fetcher.cpp:142
+msgid "Connection timed out!"
+msgstr "Tempo esgotado!"
+
+#: src/window_settings.cpp:102
+msgid "Default Colors"
+msgstr "Cor Padrão"
+
+#: src/window_settings.cpp:113
+msgid "Directories"
+msgstr "Diretórios"
+
+#: src/window_settings.cpp:70
+msgid "Display Lyrics"
+msgstr "Mostrar Letras"
+
+#: src/lyrics_fetcher.cpp:213
+msgid "Error while fetching."
+msgstr "Erro ao buscar."
+
+#: src/lyrics_fetcher.cpp:170
+msgid "Error while redirecting."
+msgstr "Erro ao redirecionar."
+
+#: src/window_main.cpp:609
+msgid "Fetching..."
+msgstr "Pesquisando..."
+
+#: src/window_settings.cpp:65
+msgid "General & Appearance"
+msgstr "Geral & Aparência"
+
+#: src/window_main.cpp:331
+msgid "KISS Player"
+msgstr "KISS Player"
+
+#: src/window_main.cpp:299
+msgid "KISS Player - Paused"
+msgstr "KISS Player - Em Pausa"
+
+#: src/window_settings.cpp:139
+msgid "Language"
+msgstr "Idioma"
+
+#: src/window_loading.cpp:33
+msgid "Loading files..."
+msgstr "Carregando arquivos..."
+
+#: src/window_main.cpp:613
+msgid "Lyrics Disabled"
+msgstr "Letras de música desativada"
+
+#: src/window_main.cpp:223
+msgid "Next"
+msgstr "Próximo"
+
+#: src/lyrics_fetcher.cpp:198
+msgid "Not found :-("
+msgstr "Não encontrado :-("
+
+#: src/window_main.cpp:205
+msgid "Play/Pause"
+msgstr "Tocar/Pausar"
+
+#: src/window_loading.cpp:27
+msgid "Please Wait"
+msgstr "Aguarde"
+
+#: src/window_settings.cpp:315
+msgid "Please, restart the program to change the language."
+msgstr "Por favor, reinicie o programa para alterar o idioma."
+
+#: src/window_main.cpp:217
+msgid "Previous"
+msgstr "Anterior"
+
+#: src/window_main.cpp:240
+msgid "Randomize"
+msgstr "Aleatório"
+
+#: src/window_settings.cpp:129
+msgid "Remove"
+msgstr "Remover"
+
+#: src/window_loading.cpp:30
+msgid "Scanning directories..."
+msgstr "Lendo diretórios..."
+
+#: src/window_settings.cpp:74
+msgid "Scroll Title"
+msgstr "Rolar título"
+
+#: src/window_main.cpp:137
+msgid "Search:"
+msgstr "Procurar:"
+
+#: src/window_settings.cpp:86
+msgid "Selection Color"
+msgstr "Cor de Seleção"
+
+#: src/window_main.cpp:241 src/window_settings.cpp:60
+msgid "Settings"
+msgstr "Configurações"
+
+#: src/window_main.cpp:211
+msgid "Stop"
+msgstr "Parar"
+
+#: src/window_main.cpp:239
+msgid "Synchronize Library"
+msgstr "Sincronizar Biblioteca"
+
+#: src/window_settings.cpp:94
+msgid "Text Color"
+msgstr "Cor do Texto"
+
+#: src/window_main.cpp:148 src/window_main.cpp:419
+msgid "Title"
+msgstr "Título"
+
+#: src/window_main.cpp:231
+msgid "Volume"
+msgstr "Volume"
+
+#: src/window_settings.cpp:314
+msgid "Warning"
+msgstr "Aviso"
+
+#~ msgid "play"
+#~ msgstr "Tocar"
+
+#~ msgid "pause"
+#~ msgstr "Pausar"
+
+#~ msgid ""
+#~ "Music file not found.\n"
+#~ "Please re-sync!"
+#~ msgstr ""
+#~ "Música não localizada.\n"
+#~ "Favor atualize a biblioteca!"
+
+#~ msgid "KISS Player :: "
+#~ msgstr "KISS Player::"
+
+#~ msgid "Languages"
+#~ msgstr "Linguagens"
+
+#~ msgid "English"
+#~ msgstr "Inglês"
+
+#~ msgid "Portuguese"
+#~ msgstr "Português brasileiro"
+
+#~ msgid "System"
+#~ msgstr "Sistema"
+
+#~ msgid "In order to set the language you must restart the program."
+#~ msgstr ""
+#~ "Para finalizar a alteração de linguagem será necessário reiniciar o "
+#~ "programa."
+
+#~ msgid "This page needs content."
+#~ msgstr "Esta página precisa de conteúdo."
+
+#~ msgid "PUT LYRICS HERE"
+#~ msgstr "Coloque suas traduções aqui"
+
+#~ msgid "You have followed a link to a page that doesn't exist yet"
+#~ msgstr "Você está em uma página que não existe ainda."

@@ -1,13 +1,15 @@
 #include "lyrics_fetcher.h"
 
+#include <stdio.h>
+#include <cctype>
+
 #include <FL/Fl.H>
 #include <curl/curl.h>
-#include <iostream>
-#include <cctype>
 
 #include "util.h"
 #include "sound.h"
-#include <stdio.h>
+#include "locale.h"
+
 extern "C" {
     #include "tinycthread.h"
 }
@@ -99,6 +101,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
     // As of December 2013, these regex are valid.
     // If they change the site layout, this fetcher
     // might not work properly or not work at all!
+    // DO NOT TRANSLATE THESE STRINGS
     string conditionNotFound = "This page needs content.";
     string conditionNotFound2 = "PUT LYRICS HERE";
     string conditionNotFound3 = "You have followed a link to a page that doesn't exist yet";
@@ -136,14 +139,14 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
         // Check if timed out
         if(res == CURLE_OPERATION_TIMEDOUT) {
             curl_easy_cleanup(curl);
-            lyrics_text_buffer->text("Connection timed out!");
+            lyrics_text_buffer->text(_("Connection timed out!"));
             return false;
         }
 
         // Check if there was any problem
         if(res != CURLE_OK) {
             curl_easy_cleanup(curl);
-            lyrics_text_buffer->text("Connection failure!");
+            lyrics_text_buffer->text(_("Connection failure!"));
             //cout << "CURL Error: " << res << endl;
             return false;
         }
@@ -164,7 +167,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
 
             findResult = data.find(":");
             if(findResult == string::npos) {
-                lyrics_text_buffer->text("Error while redirecting.");
+                lyrics_text_buffer->text(_("Error while redirecting."));
                 return false;
             }
 
@@ -192,7 +195,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
             if(firstTry) {
                 bool result = try_again(lyrics_data);
                 if(!result) {
-                    lyrics_text_buffer->text("Not found :(");
+                    lyrics_text_buffer->text(_("Not found :-("));
                 }
             }
 
@@ -207,7 +210,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
             if(firstTry) {
                 bool result = try_again(lyrics_data);
                 if(!result) {
-                    lyrics_text_buffer->text("Error while fetching.");
+                    lyrics_text_buffer->text(_("Error while fetching."));
                 }
             }
 

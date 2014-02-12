@@ -2,6 +2,7 @@ Thumbs.db
 kissplayer
 obj/
 bin/
+locale/
 
 syntax: glob
 png2img

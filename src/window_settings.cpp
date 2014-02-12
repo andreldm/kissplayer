@@ -2,8 +2,11 @@
 
 #include <deque>
 #include <string>
+#include <map>
+#include <iostream>
 
 #include <FL/Fl.H>
+#include <FL/fl_ask.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Light_Button.H>
@@ -11,13 +14,13 @@
 #include <FL/Fl_Select_Browser.H>
 
 #include "widget/ksp_check_button.h"
+#include "locale.h"
 #include "os_specific.h"
 #include "window_main.h"
 #include "dao.h"
 #include "util.h"
 
 using namespace std;
-
 
 static Fl_Window* window;
 static Fl_Button* button_background_color;
@@ -26,6 +29,7 @@ static Fl_Button* button_text_color;
 static KSP_Check_Button* button_lyrics;
 static KSP_Check_Button* button_scroll_title;
 static Fl_Select_Browser* browser_directories;
+static Fl_Choice* lang_choice;
 
 static deque<COD_VALUE> listDir;
 
@@ -41,36 +45,37 @@ static void cb_text_color(Fl_Widget*, void*);
 static void cb_default_colors(Fl_Widget*, void*);
 static void cb_lyrics(Fl_Widget*, void*);
 static void cb_scroll_title(Fl_Widget*, void*);
+static void cb_change(Fl_Widget*, void*);
 
 void window_settings_show(void)
 {
     // To place the window at the center of the screen
     int window_w = 450;
-    int window_h = 355;
+    int window_h = 415;
     int screen_w = Fl::w();
     int screen_h = Fl::h();
     int window_x = (screen_w/2)-(window_w/2);
     int window_y = (screen_h/2)-(window_h/2);
 
-    window = new Fl_Window(window_x, window_y, window_w, window_h, "Settings");
+    window = new Fl_Window(window_x, window_y, window_w, window_h, _("Settings"));
 
     // GENERAL GROUP AND ITS WIDGETS
     int group_offset = 22;
 
-    Fl_Group* group_general = new Fl_Group(5, group_offset, window_w - 10, 105, "General & Appearance");
+    Fl_Group* group_general = new Fl_Group(5, group_offset, window_w - 10, 105, _("General & Appearance"));
     group_general->align(FL_ALIGN_TOP_LEFT);
     group_general->box(FL_UP_FRAME);
     group_general->begin();
 
-    button_lyrics = new KSP_Check_Button(15, group_offset + 5, 120, 16, "Display Lyrics");
+    button_lyrics = new KSP_Check_Button(15, group_offset + 5, 120, 16,_("Display Lyrics"));
     button_lyrics->value(FLAG_LYRICS);
     button_lyrics->callback((Fl_Callback*)cb_lyrics);
 
-    button_scroll_title = new KSP_Check_Button(15, group_offset + 30, 120, 16, "Scroll Title");
+    button_scroll_title = new KSP_Check_Button(15, group_offset + 30, 120, 16, _("Scroll Title"));
     button_scroll_title->value(FLAG_SCROLL_TITLE);
     button_scroll_title->callback((Fl_Callback*)cb_scroll_title);
 
-    button_background_color = new Fl_Button(150, group_offset + 5, 16, 16, "Background Color");
+    button_background_color = new Fl_Button(150, group_offset + 5, 16, 16, _("Background Color"));
     button_background_color->box(FL_DOWN_BOX);
     button_background_color->labelsize(12);
     button_background_color->clear_visible_focus();
@@ -78,7 +83,7 @@ void window_settings_show(void)
     button_background_color->callback((Fl_Callback*)cb_background_color);
     button_background_color->align(FL_ALIGN_RIGHT);
 
-    button_selection_color = new Fl_Button(150, group_offset + 30, 16, 16, "Selection Color");
+    button_selection_color = new Fl_Button(150, group_offset + 30, 16, 16, _("Selection Color"));
     button_selection_color->box(FL_DOWN_BOX);
     button_selection_color->labelsize(12);
     button_selection_color->clear_visible_focus();
@@ -86,7 +91,7 @@ void window_settings_show(void)
     button_selection_color->callback((Fl_Callback*)cb_selection_color);
     button_selection_color->align(FL_ALIGN_RIGHT);
 
-    button_text_color = new Fl_Button(150, group_offset + 55, 16, 16, "Text Color");
+    button_text_color = new Fl_Button(150, group_offset + 55, 16, 16, _("Text Color"));
     button_text_color->box(FL_DOWN_BOX);
     button_text_color->labelsize(12);
     button_text_color->clear_visible_focus();
@@ -94,8 +99,9 @@ void window_settings_show(void)
     button_text_color->callback((Fl_Callback*)cb_text_color);
     button_text_color->align(FL_ALIGN_RIGHT);
 
-    Fl_Button* button_default_colors = new Fl_Button(150, group_offset + 80, 95, 22, "Default Colors");
+    Fl_Button* button_default_colors = new Fl_Button(150, group_offset + 80, 0, 22, _("Default Colors"));
     button_default_colors->labelsize(12);
+    util_adjust_width(button_default_colors, 10);
     button_default_colors->clear_visible_focus();
     button_default_colors->callback((Fl_Callback*)cb_default_colors);
 
@@ -104,7 +110,7 @@ void window_settings_show(void)
     // DIRECTORIES GROUP AND ITS WIDGETS
     group_offset = 150;
 
-    Fl_Group* group_directories = new Fl_Group(5, group_offset, window_w - 10, 162, "Directories");
+    Fl_Group* group_directories = new Fl_Group(5, group_offset, window_w - 10, 162, _("Directories"));
     group_directories->align(FL_ALIGN_TOP_LEFT);
     group_directories->box(FL_UP_FRAME);
     group_directories->begin();
@@ -115,18 +121,48 @@ void window_settings_show(void)
     browser_directories->color2(window_main_get_browser_music_color(2));
     browser_directories->textcolor(window_main_get_browser_music_color(3));
 
-    Fl_Button* button_add = new Fl_Button(10, group_offset + 130, 40, 25, "Add");
+    Fl_Button* button_add = new Fl_Button(10, group_offset + 130, 70, 25, _("Add"));
+    util_adjust_width(button_add, 10);
     button_add->clear_visible_focus();
     button_add->callback((Fl_Callback*)cb_add_dir);
 
-    Fl_Button* button_remove = new Fl_Button(55, group_offset + 130, 65, 25, "Remove");
+    Fl_Button* button_remove = new Fl_Button(15 + button_add->w(), group_offset + 130, 70, 25, _("Remove"));
+    util_adjust_width(button_remove, 10);
     button_remove->clear_visible_focus();
     button_remove->callback((Fl_Callback*)cb_remove_dir);
 
     group_directories->end();
 
+    group_offset = 335;
+
+    // LANGUAGE GROUP AND ITS WIDGETS
+    Fl_Group* group_language = new Fl_Group(6, group_offset, window_w -10, 40, _("Language"));
+    group_language->align(FL_ALIGN_TOP_LEFT );
+    group_language->box(FL_UP_FRAME);
+    group_language->begin();
+
+    lang_choice = new Fl_Choice(10, group_offset + 8, 200, 25);
+    lang_choice->clear_visible_focus();
+
+    Language** languages = Locale::getDefinedLanguages();
+    for (int i = 0; languages[i]; i++) {
+        lang_choice->add(languages[i]->description.c_str());
+    }
+    lang_choice->callback(cb_change);
+
+    dao_open_db();
+    int index = util_s2i(dao_get_key("lang_index"));
+    if (index < 0) index = 0;
+    lang_choice->value(index);
+    dao_close_db();
+
+    group_language->end();
+
     // CLOSE BUTTON
-    Fl_Button* button_close = new Fl_Button((window_w/2) - 30, window_h - 32, 60, 25, "Close");
+    Fl_Button* button_close = new Fl_Button(0, window_h - 32, 60, 25, _("Close"));
+    util_adjust_width(button_close, 10);
+    button_close->position((window_w / 2) - (button_close->w() / 2), button_close->y());
+
     button_close->clear_visible_focus();
     button_close->callback((Fl_Callback*)cb_close);
 
@@ -253,7 +289,7 @@ Fl_Color edit_color(Fl_Color val)
   uchar r, g, b;
   Fl::get_color(val, r, g, b);
 
-  fl_color_chooser("Choose Color", r, g, b);
+  fl_color_chooser(_("Choose Color"), r, g, b);
 
   return(fl_rgb_color(r, g, b));
 }
@@ -268,4 +304,13 @@ void update_dir_list()
         string s = listDir.at(i).value;
         browser_directories->add(s.c_str());
     }
+}
+
+void cb_change(Fl_Widget* widget, void*)
+{
+    Locale::setLanguage(lang_choice->value());
+
+    fl_beep();
+    fl_message_title(_("Warning"));
+    fl_message(_("Please, restart the program to change the language."));
 }

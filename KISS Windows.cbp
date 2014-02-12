@@ -3,6 +3,7 @@
 	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="KISS Windows" />
+		<Option makefile="makefile" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -46,12 +47,15 @@
 			<Add option="-ltag" />
 			<Add option="-lfmodex" />
 			<Add option="-lsqlite3" />
+			<Add option="-lintl" />
 			<Add directory="C:/MinGW/lib" />
 		</Linker>
 		<Unit filename="src/dao.cpp" />
 		<Unit filename="src/dao.h" />
 		<Unit filename="src/images.cpp" />
 		<Unit filename="src/images.h" />
+		<Unit filename="src/locale.cpp" />
+		<Unit filename="src/locale.h" />
 		<Unit filename="src/lyrics_fetcher.cpp" />
 		<Unit filename="src/lyrics_fetcher.h" />
 		<Unit filename="src/main.cpp" />

@@ -3,6 +3,7 @@
 #include <sqlite3.h>
 #include <iostream>
 #include <stdlib.h>
+
 #include "util.h"
 #include "os_specific.h"
 

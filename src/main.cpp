@@ -3,6 +3,7 @@
 #include <FL/fl_draw.H>
 
 #include "sound.h"
+#include "locale.h"
 #include "window_main.h"
 #include "os_specific.h"
 #include "dao.h"
@@ -19,6 +20,8 @@ int     FLAG_SEARCH_TYPE;
 int main(int argc, char** argv)
 {
     dao_start_db();
+
+    Locale::init();
 
     window_main_init(argc, argv);
     Fl_Double_Window* window_main = window_main_get_instance();

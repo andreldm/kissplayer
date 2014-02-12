@@ -1,6 +1,5 @@
 #include "window_main.h"
 
-#include <iostream>
 #include <deque>
 #include <string>
 
@@ -16,6 +15,7 @@
 #include <FL/filename.H>
 
 #include "images.h"
+#include "locale.h"
 #include "os_specific.h"
 #include "widget/ksp_slider.h"
 #include "widget/ksp_browser.h"
@@ -96,15 +96,16 @@ enum {
     MENU_ITEM_SYNC = 0,
     MENU_ITEM_RANDOM,
     MENU_ITEM_SETTINGS,
-    MENU_ITEM_ABOUT
+    MENU_ITEM_ABOUT,
+    MENU_ITEM_NONE
 };
 
 // MENU ITEMS
 static KSP_Menu_Item menu_items[] = {
-    KSP_Menu_Item("Synchronize Library", 0, cb_sync, NULL),
-    KSP_Menu_Item("Randomize", 0, cb_random, NULL, FL_MENU_TOGGLE),
-    KSP_Menu_Item("Settings", 0, cb_settings, NULL),
-    KSP_Menu_Item("About", 0, cb_about, NULL),
+    KSP_Menu_Item(0, 0, cb_sync, NULL),
+    KSP_Menu_Item(0, 0, cb_random, NULL, FL_MENU_TOGGLE),
+    KSP_Menu_Item(0, 0, cb_settings, NULL),
+    KSP_Menu_Item(0, 0, cb_about, NULL),
     KSP_Menu_Item(0)
 };
 
@@ -133,16 +134,20 @@ void window_main_init(int argc, char** argv)
     group_search->box(FL_UP_FRAME);
     group_search->begin();
 
-    input_search = new Fl_Input(67, 10, 528, 22,"Search:");
+    Fl_Box* label_search = new Fl_Box(8, 10, 10, 22, _("Search:"));
+    label_search->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
+    util_adjust_width(label_search);
+
+    input_search = new Fl_Input(8 + label_search->w(), 10, 585 - label_search->w(), 22);
     input_search->maximum_size(50);
     input_search->when(FL_WHEN_ENTER_KEY|FL_WHEN_NOT_CHANGED);
     input_search->callback(cb_search);
 
     choice_search_type = new Fl_Choice(598, 10, 80, 22);
-    choice_search_type->add("All");
-    choice_search_type->add("Title");
-    choice_search_type->add("Artist");
-    choice_search_type->add("Album");
+    choice_search_type->add(_("All"));
+    choice_search_type->add(_("Title"));
+    choice_search_type->add(_("Artist"));
+    choice_search_type->add(_("Album"));
     choice_search_type->value(0);
     choice_search_type->callback(cb_search_type);
     choice_search_type->clear_visible_focus();
@@ -197,25 +202,25 @@ void window_main_init(int argc, char** argv)
     button_play = new Fl_Button(12, 420, 25, 25);
     button_play->clear_visible_focus();
     button_play->image(img_icon_play);
-    button_play->tooltip("Play/Pause");
+    button_play->tooltip(_("Play/Pause"));
     button_play->callback(cb_toggle_play);
 
     button_stop = new Fl_Button(47, 420, 25, 25);
     button_stop->clear_visible_focus();
     button_stop->image(img_icon_stop);
-    button_stop->tooltip("Stop");
+    button_stop->tooltip(_("Stop"));
     button_stop->callback(cb_stop);
 
     button_previous = new Fl_Button(82, 420, 25, 25);
     button_previous->clear_visible_focus();
     button_previous->image(img_icon_previous);
-    button_previous->tooltip("Previous");
+    button_previous->tooltip(_("Previous"));
     button_previous->callback(cb_previous);
 
     button_next = new Fl_Button(117, 420, 25, 25);
     button_next->clear_visible_focus();
     button_next->image(img_icon_next);
-    button_next->tooltip("Next");
+    button_next->tooltip(_("Next"));
     button_next->callback(cb_next);
 
     slider_music = new KSP_Slider(157, 424, 527, 19, "00:00");
@@ -223,13 +228,18 @@ void window_main_init(int argc, char** argv)
 
     volume_controller = new KSP_Volume_Controller(699, 418, 60, 30);
     volume_controller->value(8);
-    volume_controller->tooltip("Volume");
+    volume_controller->tooltip(_("Volume"));
     volume_controller->callback(cb_volume);
 
     group_controls->resizable(slider_music);
     group_controls->end();
 
     // END OF WIDGET'S SETUP
+
+    menu_items[MENU_ITEM_SYNC].label(_("Synchronize Library"));
+    menu_items[MENU_ITEM_RANDOM].label(_("Randomize"));
+    menu_items[MENU_ITEM_SETTINGS].label(_("Settings"));
+    menu_items[MENU_ITEM_ABOUT].label(_("About"));
 
     // Check for music files on arguments
     util_parse_args(argc, argv, listMusic);
@@ -286,7 +296,7 @@ void cb_toggle_play(Fl_Widget* widget, void*)
     if(sound_is_loaded()) {
         // It has to be done before the togglePause
         if(sound_is_playing()) {
-            window->label("KISS Player - Paused");
+            window->label(_("KISS Player - Paused"));
             button_play->image(img_icon_play);
             button_play->redraw();
 #ifdef WIN32
@@ -318,7 +328,7 @@ void cb_stop(Fl_Widget* widget, void*)
 
     musicPlayingCod = 0;
     sound_active(false);
-    window->label("KISS Player");
+    window->label(_("KISS Player"));
     lyrics_text_buffer->text("");
     button_play->image(img_icon_play);
     button_play->redraw();
@@ -405,10 +415,10 @@ void cb_search_type(Fl_Widget* widget, void*)
 {
     const char* choice = choice_search_type->text();
 
-    if(strcmp(choice, "All") == 0) FLAG_SEARCH_TYPE = SEARCH_TYPE_ALL;
-    else if(strcmp(choice, "Title") == 0) FLAG_SEARCH_TYPE = SEARCH_TYPE_TITLE;
-    else if(strcmp(choice, "Artist") == 0) FLAG_SEARCH_TYPE = SEARCH_TYPE_ARTIST;
-    else if(strcmp(choice, "Album") == 0) FLAG_SEARCH_TYPE = SEARCH_TYPE_ALBUM;
+    if(strcmp(choice, _("All")) == 0) FLAG_SEARCH_TYPE = SEARCH_TYPE_ALL;
+    else if(strcmp(choice, _("Title")) == 0) FLAG_SEARCH_TYPE = SEARCH_TYPE_TITLE;
+    else if(strcmp(choice, _("Artist")) == 0) FLAG_SEARCH_TYPE = SEARCH_TYPE_ARTIST;
+    else if(strcmp(choice, _("Album")) == 0) FLAG_SEARCH_TYPE = SEARCH_TYPE_ALBUM;
 
     input_search->take_focus();
     input_search->do_callback();
@@ -596,11 +606,11 @@ void play_music()
     slider_music->realise_new_sound();
 
     if(FLAG_LYRICS) {
-        lyrics_text_buffer->text("Fetching...");
+        lyrics_text_buffer->text(_("Fetching..."));
         lyrics_fetcher_run(lyrics_text_buffer, music.artist, music.title);
         lyrics_pane->scroll(0, 0);
     } else {
-        lyrics_text_buffer->text("Lyrics Disabled");
+        lyrics_text_buffer->text(_("Lyrics Disabled"));
     }
 }
 
