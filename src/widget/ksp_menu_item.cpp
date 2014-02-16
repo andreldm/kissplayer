@@ -798,7 +798,7 @@ void KSP_Menu_Item::set_label_icon(const char* text, Fl_Image* icon, bool prepen
     mlabel->labela = (const char*)icon;
     mlabel->typea = _FL_IMAGE_LABEL;
 
-    mlabel->labelb = text;
+    mlabel->labelb = text2;
     mlabel->typeb = FL_NORMAL_LABEL;
 
     mlabel->label(this);
