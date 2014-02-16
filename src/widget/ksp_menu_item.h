@@ -2,6 +2,7 @@
 #define ksp_menu_item_h
 
 #include <FL/Fl_Menu_.H>
+#include <FL/Fl_Image.H>
 #include <FL/Fl_Menu_Window.H>
 
 /**
@@ -16,6 +17,8 @@ public:
 
     const KSP_Menu_Item* popup(int X, int Y) const;
     const KSP_Menu_Item* pulldown(int X, int Y) const;
+
+    void set_label_icon(const char* text, Fl_Image* icon, bool prepend_space = true);
 };
 
 #endif

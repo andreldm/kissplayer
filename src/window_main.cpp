@@ -236,10 +236,11 @@ void window_main_init(int argc, char** argv)
 
     // END OF WIDGET'S SETUP
 
-    menu_items[MENU_ITEM_SYNC].label(_("Synchronize Library"));
-    menu_items[MENU_ITEM_RANDOM].label(_("Randomize"));
-    menu_items[MENU_ITEM_SETTINGS].label(_("Settings"));
-    menu_items[MENU_ITEM_ABOUT].label(_("About"));
+    // Set menu labels and icons
+    menu_items[MENU_ITEM_SYNC].set_label_icon(_("Synchronize Library"), 0, false);
+    menu_items[MENU_ITEM_RANDOM].set_label_icon(_("Randomize"), 0, false);
+    menu_items[MENU_ITEM_SETTINGS].set_label_icon(_("Settings"), 0, false);
+    menu_items[MENU_ITEM_ABOUT].set_label_icon(_("About"), 0, false);
 
     // Check for music files on arguments
     util_parse_args(argc, argv, listMusic);
@@ -286,9 +287,8 @@ void cb_close_window(Fl_Widget* widget, void*)
 
 void cb_menu(Fl_Widget* w, void*)
 {
-    Fl_Button* button = (Fl_Button*) w;
-    const KSP_Menu_Item* m = menu_items[0].popup(button->x(), button->y() + button->w());
-    if (m) m->do_callback(w, m->user_data());
+    const KSP_Menu_Item* m = menu_items[0].popup(w->x(), w->y() + w->h());
+    if (m && m->callback()) m->do_callback(w, m->user_data());
 }
 
 void cb_toggle_play(Fl_Widget* widget, void*)

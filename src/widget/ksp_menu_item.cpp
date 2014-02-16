@@ -2,11 +2,15 @@
 
 #include <FL/Fl.H>
 #include <FL/fl_draw.H>
+#include <FL/Fl_Multi_Label.H>
 
 /*
  * Lots of code had to be imported from FLTK because the way
  * it's written, so we can't just override Fl_Menu_Item::draw
  * in order to draw a white selector :(
+ *
+ * Also code from fldigi was borrowed in order to use Fl_Multi_Label correctly.
+ * Source: http://git.berlios.de/cgi-bin/gitweb.cgi?p=fldigi;a=blob;f=src/misc/icons.cxx;hb=HEAD#l65
  */
 
 #define LEADING 4
@@ -768,4 +772,38 @@ const KSP_Menu_Item* KSP_Menu_Item::pulldown(int X, int Y) const
 const KSP_Menu_Item* KSP_Menu_Item::popup(int X, int Y) const
 {
     return pulldown(X, Y);
+}
+
+void KSP_Menu_Item::set_label_icon(const char* text, Fl_Image* icon, bool prepend_space)
+{
+    if (!text) text = "";
+    char* text2;
+
+    if(prepend_space) {
+        size_t len = strlen(text);
+        text2 = new char[len + 2];
+        text2[0] = ' ';
+        memcpy(text2 + 1, text, len + 1);
+    } else {
+        text2 = (char *)text;
+    }
+
+    if(!icon) {
+        label(text2);
+        return;
+    }
+
+    // Code simplified from fldigi
+    Fl_Multi_Label* mlabel = new Fl_Multi_Label();
+    mlabel->labela = (const char*)icon;
+    mlabel->typea = _FL_IMAGE_LABEL;
+
+    mlabel->labelb = text;
+    mlabel->typeb = FL_NORMAL_LABEL;
+
+    mlabel->label(this);
+
+    image(icon);
+    label((const char*)mlabel);
+    labeltype(_FL_MULTI_LABEL);
 }
