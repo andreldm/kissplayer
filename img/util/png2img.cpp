@@ -1,7 +1,5 @@
 /*
  * Outputs a char sequence for each image found in the informed directory, suitable for FLTK.
- * Linux:   g++ png2img.cpp -o png2img -lfltk_images -lfltk -lpng -lX11 -lXext -ldl -lXft -lfontconfig -lXinerama
- * Windows: g++ png2img.cpp -o png2img.exe -lfltk_images -lfltk_png -lfltk -lz -lole32 -luuid -lcomctl32 -lgdi32 -lcomdlg32
  * 
  * Output format:
  * static unsigned char foo[] = { ... };

@@ -237,10 +237,10 @@ void window_main_init(int argc, char** argv)
     // END OF WIDGET'S SETUP
 
     // Set menu labels and icons
-    menu_items[MENU_ITEM_SYNC].set_label_icon(_("Synchronize Library"), 0, false);
-    menu_items[MENU_ITEM_RANDOM].set_label_icon(_("Randomize"), 0, false);
-    menu_items[MENU_ITEM_SETTINGS].set_label_icon(_("Settings"), 0, false);
-    menu_items[MENU_ITEM_ABOUT].set_label_icon(_("About"), 0, false);
+    menu_items[MENU_ITEM_SYNC].set_label_icon(_("Synchronize Library"), &img_icon_sync);
+    menu_items[MENU_ITEM_RANDOM].set_label_icon(_("Randomize"), 0);
+    menu_items[MENU_ITEM_SETTINGS].set_label_icon(_("Settings"), &img_icon_settings);
+    menu_items[MENU_ITEM_ABOUT].set_label_icon(_("About"), &img_icon_about);
 
     // Check for music files on arguments
     util_parse_args(argc, argv, listMusic);

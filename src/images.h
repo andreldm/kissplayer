@@ -11,5 +11,8 @@ extern Fl_RGB_Image img_icon_next;
 extern Fl_RGB_Image img_icon_clear;
 extern Fl_RGB_Image img_icon_search;
 extern Fl_RGB_Image img_icon_menu;
+extern Fl_RGB_Image img_icon_sync;
+extern Fl_RGB_Image img_icon_settings;
+extern Fl_RGB_Image img_icon_about;
 
 #endif
