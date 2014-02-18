@@ -14,6 +14,7 @@ using namespace std;
 static Language* languages[] = {
     new Language("System Default", ""),
     new Language("English (USA)", "en_US.UTF-8"),
+    new Language("Español (España)", "es_ES.UTF-8"),
     new Language("Português (Brasil)", "pt_BR.UTF-8"),
     NULL
 };
