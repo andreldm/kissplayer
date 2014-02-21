@@ -1,0 +1,185 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-12 00:53-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/window_about.cpp:29 src/window_main.cpp:242
+msgid "About"
+msgstr ""
+
+#: src/window_settings.cpp:124
+msgid "Add"
+msgstr ""
+
+#: src/window_main.cpp:150 src/window_main.cpp:421
+msgid "Album"
+msgstr ""
+
+#: src/window_main.cpp:147 src/window_main.cpp:418
+msgid "All"
+msgstr ""
+
+#: src/window_main.cpp:149 src/window_main.cpp:420
+msgid "Artist"
+msgstr ""
+
+#: src/window_settings.cpp:78
+msgid "Background Color"
+msgstr ""
+
+#: src/window_loading.cpp:36
+msgid "Cancel"
+msgstr ""
+
+#: src/window_settings.cpp:292
+msgid "Choose Color"
+msgstr ""
+
+#: src/window_about.cpp:52 src/window_settings.cpp:162
+msgid "Close"
+msgstr ""
+
+#: src/lyrics_fetcher.cpp:149
+msgid "Connection failure!"
+msgstr ""
+
+#: src/lyrics_fetcher.cpp:142
+msgid "Connection timed out!"
+msgstr ""
+
+#: src/window_settings.cpp:102
+msgid "Default Colors"
+msgstr ""
+
+#: src/window_settings.cpp:113
+msgid "Directories"
+msgstr ""
+
+#: src/window_settings.cpp:70
+msgid "Display Lyrics"
+msgstr ""
+
+#: src/lyrics_fetcher.cpp:213
+msgid "Error while fetching."
+msgstr ""
+
+#: src/lyrics_fetcher.cpp:170
+msgid "Error while redirecting."
+msgstr ""
+
+#: src/window_main.cpp:609
+msgid "Fetching..."
+msgstr ""
+
+#: src/window_settings.cpp:65
+msgid "General & Appearance"
+msgstr ""
+
+#: src/window_main.cpp:331
+msgid "KISS Player"
+msgstr ""
+
+#: src/window_main.cpp:299
+msgid "KISS Player - Paused"
+msgstr ""
+
+#: src/window_settings.cpp:139
+msgid "Language"
+msgstr ""
+
+#: src/window_loading.cpp:33
+msgid "Loading files..."
+msgstr ""
+
+#: src/window_main.cpp:613
+msgid "Lyrics Disabled"
+msgstr ""
+
+#: src/window_main.cpp:223
+msgid "Next"
+msgstr ""
+
+#: src/lyrics_fetcher.cpp:198
+msgid "Not found :-("
+msgstr ""
+
+#: src/window_main.cpp:205
+msgid "Play/Pause"
+msgstr ""
+
+#: src/window_loading.cpp:27
+msgid "Please Wait"
+msgstr ""
+
+#: src/window_settings.cpp:315
+msgid "Please, restart the program to change the language."
+msgstr ""
+
+#: src/window_main.cpp:217
+msgid "Previous"
+msgstr ""
+
+#: src/window_main.cpp:240
+msgid "Randomize"
+msgstr ""
+
+#: src/window_settings.cpp:129
+msgid "Remove"
+msgstr ""
+
+#: src/window_loading.cpp:30
+msgid "Scanning directories..."
+msgstr ""
+
+#: src/window_settings.cpp:74
+msgid "Scroll Title"
+msgstr ""
+
+#: src/window_main.cpp:137
+msgid "Search:"
+msgstr ""
+
+#: src/window_settings.cpp:86
+msgid "Selection Color"
+msgstr ""
+
+#: src/window_main.cpp:241 src/window_settings.cpp:60
+msgid "Settings"
+msgstr ""
+
+#: src/window_main.cpp:211
+msgid "Stop"
+msgstr ""
+
+#: src/window_main.cpp:239
+msgid "Synchronize Library"
+msgstr ""
+
+#: src/window_settings.cpp:94
+msgid "Text Color"
+msgstr ""
+
+#: src/window_main.cpp:148 src/window_main.cpp:419
+msgid "Title"
+msgstr ""
+
+#: src/window_main.cpp:231
+msgid "Volume"
+msgstr ""
+
+#: src/window_settings.cpp:314
+msgid "Warning"
+msgstr ""
