@@ -112,6 +112,6 @@ else ifeq ($(shell uname), Linux)
 	$(call CopyFile,$(TARGET),$(OUTPUTFOLDER))
 	$(call CreateFolder,$(OUTPUTFOLDERLOCAL))
 	$(call CopyFolder,locale,$(OUTPUTFOLDERLOCAL))
-	# Kludge!
+# Kludge!
 	@sudo chown -R `who am i | awk {'print $$1'}| xargs -IREPL echo REPL:` $(OUTPUTFOLDERLOCAL)
 endif

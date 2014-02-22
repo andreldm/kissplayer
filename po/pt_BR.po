@@ -1,14 +1,14 @@
-# Portuguese translations for PACKAGE package.
-# Copyright (C) 2014 THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# mkn <maykosiqueira@gmail.com>, 2014.
+# Brazilian Portuguese translations for KISS Player.
+# Copyright (C) 2014 THE KISS PLAYER'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the KISS Player.
+# Maykon Silva <maykosiqueira@gmail.com>, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-12 00:53-0300\n"
-"PO-Revision-Date: 2014-02-18 00:50-0300\n"
+"PO-Revision-Date: 2014-02-20 22:27-0300\n"
 "Last-Translator: André Miranda <andreldm1989@gmail.com>\n"
 "Language-Team: Brazilian Portuguese\n"
 "MIME-Version: 1.0\n"

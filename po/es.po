@@ -1,20 +1,20 @@
-# Portuguese translations for PACKAGE package.
-# Copyright (C) 2014 THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# mkn <maykosiqueira@gmail.com>, 2014.
+# Spanish translations for KISS Player.
+# Copyright (C) 2014 THE KISS PLAYER'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the KISS Player.
+# Carlos Sánchez <maykosiqueira@gmail.com>, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-12 00:53-0300\n"
-"PO-Revision-Date: 2014-02-18 00:48-0300\n"
-"Last-Translator: Carlos Sánchez <carlos1994sanchez@gmail.com>\n"
+"PO-Revision-Date: 2014-02-20 22:27-0300\n"
+"Last-Translator: André Miranda <andreldm1989@gmail.com>\n"
 "Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_ES\n"
+"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 1.6.4\n"
 "X-Poedit-SourceCharset: UTF-8\n"
