@@ -15,6 +15,7 @@ static Language* languages[] = {
     new Language("System Default", ""),
     new Language("English", "en.UTF-8"),
     new Language("Español", "es.UTF-8"),
+    new Language("Italiano", "it.UTF-8"),
     new Language("Português (Brasil)", "pt_BR.UTF-8"),
     NULL
 };
