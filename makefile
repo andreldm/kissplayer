@@ -36,7 +36,7 @@ ifeq ($(OS), Windows_NT)
 	CopyFolder = @if exist $1 xcopy $1 $2\$1 /I /E /Y /Q
 
 	# Configure the dependencies if needed!
-	LIBS = -lfltk -lole32 -luuid -lcomctl32 -lwsock32 -lgdi32 -lcomdlg32 -lfltk_images -lfltk_png -lz -lcurl -ltag -lfmodex -lsqlite3 -lintl -mwindows
+	LIBS = -lfltk -lole32 -luuid -lcomctl32 -lwsock32 -lgdi32 -lcomdlg32 -lfltk_images -lfltk_png -lz -lcurldll -ltag -lfmodex -lsqlite3 -lintl -mwindows
 	CFLAGS = -O2
 	TARGET = KISS\ Player.exe
 
