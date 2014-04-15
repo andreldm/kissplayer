@@ -43,7 +43,7 @@
 			<Add option="-lfltk_images" />
 			<Add option="-lfltk_png" />
 			<Add option="-lz" />
-			<Add option="-lcurl" />
+			<Add option="-lcurldll" />
 			<Add option="-ltag" />
 			<Add option="-lfmodex" />
 			<Add option="-lsqlite3" />
