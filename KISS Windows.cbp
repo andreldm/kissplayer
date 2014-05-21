@@ -3,7 +3,6 @@
 	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="KISS Windows" />
-		<Option makefile="makefile" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -64,6 +63,8 @@
 		<Unit filename="src/os_specific.h" />
 		<Unit filename="src/sound.cpp" />
 		<Unit filename="src/sound.h" />
+		<Unit filename="src/sync.cpp" />
+		<Unit filename="src/sync.h" />
 		<Unit filename="src/tinycthread.c">
 			<Option compilerVar="CC" />
 		</Unit>

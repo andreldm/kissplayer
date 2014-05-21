@@ -56,6 +56,8 @@
 		<Unit filename="src/music.h" />
 		<Unit filename="src/sound.cpp" />
 		<Unit filename="src/sound.h" />
+		<Unit filename="src/sync.cpp" />
+		<Unit filename="src/sync.h" />
 		<Unit filename="src/tinycthread.c">
 			<Option compilerVar="CC" />
 		</Unit>

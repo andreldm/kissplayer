@@ -28,6 +28,7 @@
 #include "window_about.h"
 #include "dao.h"
 #include "util.h"
+#include "sync.h"
 
 using namespace std;
 
@@ -453,10 +454,7 @@ void cb_about(Fl_Widget* widget, void*)
 
 void cb_sync(Fl_Widget* widget, void*)
 {
-    button_stop->do_callback();
-    util_sync_library();
-    dao_get_all_music(listMusic);
-    update_playlist();
+    sync_execute();
 }
 
 int handler(int e, Fl_Window* w)
@@ -882,6 +880,11 @@ void update_playlist()
 
     musicIndexRandom = -1;
     util_randomize(listRandom, listMusic.size());
+}
+
+void window_main_search()
+{
+    cb_search(NULL, NULL);
 }
 
 void window_main_toggle_play()

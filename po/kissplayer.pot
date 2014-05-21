@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-12 00:53-0300\n"
+"POT-Creation-Date: 2014-05-21 00:39-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,27 +16,27 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/window_about.cpp:29 src/window_main.cpp:242
+#: src/window_about.cpp:29 src/window_main.cpp:244
 msgid "About"
 msgstr ""
 
-#: src/window_settings.cpp:124
+#: src/window_settings.cpp:126
 msgid "Add"
 msgstr ""
 
-#: src/window_main.cpp:150 src/window_main.cpp:421
+#: src/window_main.cpp:151 src/window_main.cpp:422
 msgid "Album"
 msgstr ""
 
-#: src/window_main.cpp:147 src/window_main.cpp:418
+#: src/window_main.cpp:148 src/window_main.cpp:419
 msgid "All"
 msgstr ""
 
-#: src/window_main.cpp:149 src/window_main.cpp:420
+#: src/window_main.cpp:150 src/window_main.cpp:421
 msgid "Artist"
 msgstr ""
 
-#: src/window_settings.cpp:78
+#: src/window_settings.cpp:80
 msgid "Background Color"
 msgstr ""
 
@@ -44,11 +44,11 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: src/window_settings.cpp:292
+#: src/window_settings.cpp:306
 msgid "Choose Color"
 msgstr ""
 
-#: src/window_about.cpp:52 src/window_settings.cpp:162
+#: src/window_about.cpp:52 src/window_settings.cpp:164
 msgid "Close"
 msgstr ""
 
@@ -60,15 +60,15 @@ msgstr ""
 msgid "Connection timed out!"
 msgstr ""
 
-#: src/window_settings.cpp:102
+#: src/window_settings.cpp:104
 msgid "Default Colors"
 msgstr ""
 
-#: src/window_settings.cpp:113
+#: src/window_settings.cpp:115
 msgid "Directories"
 msgstr ""
 
-#: src/window_settings.cpp:70
+#: src/window_settings.cpp:72
 msgid "Display Lyrics"
 msgstr ""
 
@@ -80,23 +80,23 @@ msgstr ""
 msgid "Error while redirecting."
 msgstr ""
 
-#: src/window_main.cpp:609
+#: src/window_main.cpp:607
 msgid "Fetching..."
 msgstr ""
 
-#: src/window_settings.cpp:65
+#: src/window_settings.cpp:67
 msgid "General & Appearance"
 msgstr ""
 
-#: src/window_main.cpp:331
+#: src/window_main.cpp:332
 msgid "KISS Player"
 msgstr ""
 
-#: src/window_main.cpp:299
+#: src/window_main.cpp:300
 msgid "KISS Player - Paused"
 msgstr ""
 
-#: src/window_settings.cpp:139
+#: src/window_settings.cpp:141
 msgid "Language"
 msgstr ""
 
@@ -104,11 +104,11 @@ msgstr ""
 msgid "Loading files..."
 msgstr ""
 
-#: src/window_main.cpp:613
+#: src/window_main.cpp:611
 msgid "Lyrics Disabled"
 msgstr ""
 
-#: src/window_main.cpp:223
+#: src/window_main.cpp:224
 msgid "Next"
 msgstr ""
 
@@ -116,7 +116,7 @@ msgstr ""
 msgid "Not found :-("
 msgstr ""
 
-#: src/window_main.cpp:205
+#: src/window_main.cpp:206
 msgid "Play/Pause"
 msgstr ""
 
@@ -124,19 +124,23 @@ msgstr ""
 msgid "Please Wait"
 msgstr ""
 
-#: src/window_settings.cpp:315
+#: src/sync.cpp:29
+msgid "Please, add at least one directory on the Settings Window."
+msgstr ""
+
+#: src/window_settings.cpp:329
 msgid "Please, restart the program to change the language."
 msgstr ""
 
-#: src/window_main.cpp:217
+#: src/window_main.cpp:218
 msgid "Previous"
 msgstr ""
 
-#: src/window_main.cpp:240
+#: src/window_main.cpp:242
 msgid "Randomize"
 msgstr ""
 
-#: src/window_settings.cpp:129
+#: src/window_settings.cpp:131
 msgid "Remove"
 msgstr ""
 
@@ -144,42 +148,42 @@ msgstr ""
 msgid "Scanning directories..."
 msgstr ""
 
-#: src/window_settings.cpp:74
+#: src/window_settings.cpp:76
 msgid "Scroll Title"
 msgstr ""
 
-#: src/window_main.cpp:137
+#: src/window_main.cpp:138
 msgid "Search:"
 msgstr ""
 
-#: src/window_settings.cpp:86
+#: src/window_settings.cpp:88
 msgid "Selection Color"
 msgstr ""
 
-#: src/window_main.cpp:241 src/window_settings.cpp:60
+#: src/window_main.cpp:243 src/window_settings.cpp:62
 msgid "Settings"
 msgstr ""
 
-#: src/window_main.cpp:211
+#: src/window_main.cpp:212
 msgid "Stop"
 msgstr ""
 
-#: src/window_main.cpp:239
+#: src/window_main.cpp:241
 msgid "Synchronize Library"
 msgstr ""
 
-#: src/window_settings.cpp:94
+#: src/window_settings.cpp:96
 msgid "Text Color"
 msgstr ""
 
-#: src/window_main.cpp:148 src/window_main.cpp:419
+#: src/window_main.cpp:149 src/window_main.cpp:420
 msgid "Title"
 msgstr ""
 
-#: src/window_main.cpp:231
+#: src/window_main.cpp:232
 msgid "Volume"
 msgstr ""
 
-#: src/window_settings.cpp:314
+#: src/sync.cpp:28 src/window_settings.cpp:328
 msgid "Warning"
 msgstr ""

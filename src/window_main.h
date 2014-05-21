@@ -11,6 +11,7 @@ void                window_main_stop                            (void);
 void                window_main_next                            (void);
 void                window_main_previous                        (void);
 void                window_main_reset_title                     (void);
+void                window_main_search                          (void);
 void                window_main_set_choice_search_type_color    (Fl_Color c);
 void                window_main_set_input_search_type_color     (Fl_Color c);
 void                window_main_set_lyrics_pane_color           (Fl_Color c1, Fl_Color c2, Fl_Color t);

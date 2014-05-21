@@ -17,6 +17,7 @@
 #include "window_main.h"
 #include "dao.h"
 #include "util.h"
+#include "sync.h"
 
 using namespace std;
 
@@ -30,6 +31,7 @@ static Fl_Select_Browser* browser_directories;
 static Fl_Choice* lang_choice;
 
 static deque<COD_VALUE> listDir;
+static bool should_resync;
 
 static void update_dir_list();
 static Fl_Color edit_color(Fl_Color val);
@@ -47,6 +49,8 @@ static void cb_change(Fl_Widget*, void*);
 
 void window_settings_show(void)
 {
+    should_resync = false;
+
     // To place the window at the center of the screen
     int window_w = 450;
     int window_h = 415;
@@ -167,6 +171,7 @@ void window_settings_show(void)
     update_dir_list();
 
     window->set_modal();
+    window->callback((Fl_Callback*)cb_close);
     window->show();
 }
 
@@ -176,17 +181,26 @@ void cb_close(Fl_Widget* widget, void*)
     window->hide();
     window_main_get_instance()->show();
     delete window;
+    if(should_resync) sync_execute(true);
 }
 
 void cb_add_dir(Fl_Widget* widget, void*)
 {
-    char dir[8196]; // Seems enough
+    char dir[PATH_LENGTH];
+    int dirQty = listDir.size();
+
     os_specific_dir_chooser(dir);
     Fl::redraw();
 
-    if(dir != NULL && strlen(dir) > 0) { // If the user didn't cancel;
+    if(dir != NULL && strlen(dir) > 0) {
+        // If the user didn't cancel
         dao_insert_directory(dir);
         update_dir_list();
+    }
+
+    if(listDir.size() != dirQty) {
+        // If a directory was added
+        should_resync = true;
     }
 }
 
@@ -202,6 +216,8 @@ void cb_remove_dir(Fl_Widget* widget, void*)
             update_dir_list();
         }
     }
+
+    should_resync = true;
 }
 
 void cb_background_color(Fl_Widget* widget, void*)

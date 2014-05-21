@@ -8,6 +8,7 @@ src/lyrics_fetcher.cpp \
 src/main.cpp \
 src/music.cpp \
 src/sound.cpp \
+src/sync.cpp \
 src/util.cpp \
 src/tinycthread.c \
 src/window_about.cpp \
