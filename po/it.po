@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-21 00:39-0300\n"
+"POT-Creation-Date: 2014-05-27 01:13-0300\n"
 "PO-Revision-Date: 2014-04-10 13:10+0000\n"
 "Last-Translator: giuseppep <anubisteam01@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/kissplayer/"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/window_about.cpp:29 src/window_main.cpp:244
+#: src/window_about.cpp:29 src/window_main.cpp:248
 msgid "About"
 msgstr "Informazioni su"
 
@@ -27,15 +27,15 @@ msgstr "Informazioni su"
 msgid "Add"
 msgstr "Aggiungi"
 
-#: src/window_main.cpp:151 src/window_main.cpp:422
+#: src/window_main.cpp:154 src/window_main.cpp:445
 msgid "Album"
 msgstr "Album"
 
-#: src/window_main.cpp:148 src/window_main.cpp:419
+#: src/window_main.cpp:151 src/window_main.cpp:442
 msgid "All"
 msgstr "Tutto"
 
-#: src/window_main.cpp:150 src/window_main.cpp:421
+#: src/window_main.cpp:153 src/window_main.cpp:444
 msgid "Artist"
 msgstr "Artista"
 
@@ -83,7 +83,7 @@ msgstr "Errore durante il recupero."
 msgid "Error while redirecting."
 msgstr "Errore durante il reindirizzamento."
 
-#: src/window_main.cpp:607
+#: src/window_main.cpp:641
 msgid "Fetching..."
 msgstr "Recupero..."
 
@@ -91,11 +91,11 @@ msgstr "Recupero..."
 msgid "General & Appearance"
 msgstr "Generale & Apparenza"
 
-#: src/window_main.cpp:332
+#: src/window_main.cpp:336
 msgid "KISS Player"
 msgstr "KISS Player"
 
-#: src/window_main.cpp:300
+#: src/window_main.cpp:304
 msgid "KISS Player - Paused"
 msgstr "KISS Player - Pausa"
 
@@ -107,11 +107,11 @@ msgstr "Lingua"
 msgid "Loading files..."
 msgstr "Caricamento file..."
 
-#: src/window_main.cpp:611
+#: src/window_main.cpp:645
 msgid "Lyrics Disabled"
 msgstr "Testi disattivati"
 
-#: src/window_main.cpp:224
+#: src/window_main.cpp:227
 msgid "Next"
 msgstr "Prossimo"
 
@@ -119,7 +119,7 @@ msgstr "Prossimo"
 msgid "Not found :-("
 msgstr "Non trovato :-("
 
-#: src/window_main.cpp:206
+#: src/window_main.cpp:209
 msgid "Play/Pause"
 msgstr "Play/Pausa"
 
@@ -135,17 +135,21 @@ msgstr ""
 msgid "Please, restart the program to change the language."
 msgstr "Riavvia il programma per cambiare la lingua"
 
-#: src/window_main.cpp:218
+#: src/window_main.cpp:221
 msgid "Previous"
 msgstr "Precedente"
 
-#: src/window_main.cpp:242
+#: src/window_main.cpp:245
 msgid "Randomize"
 msgstr "Casuale"
 
 #: src/window_settings.cpp:131
 msgid "Remove"
 msgstr "Rimuovi"
+
+#: src/window_main.cpp:246
+msgid "Repeat Playlist"
+msgstr ""
 
 #: src/window_loading.cpp:30
 msgid "Scanning directories..."
@@ -155,7 +159,7 @@ msgstr "Scansione cartelle..."
 msgid "Scroll Title"
 msgstr "Scorri titolo"
 
-#: src/window_main.cpp:138
+#: src/window_main.cpp:141
 msgid "Search:"
 msgstr "Cerca:"
 
@@ -163,15 +167,15 @@ msgstr "Cerca:"
 msgid "Selection Color"
 msgstr "Selezione colore"
 
-#: src/window_main.cpp:243 src/window_settings.cpp:62
+#: src/window_main.cpp:247 src/window_settings.cpp:62
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: src/window_main.cpp:212
+#: src/window_main.cpp:215
 msgid "Stop"
 msgstr "Stop"
 
-#: src/window_main.cpp:241
+#: src/window_main.cpp:244
 msgid "Synchronize Library"
 msgstr "Sincronizza libreria"
 
@@ -179,11 +183,11 @@ msgstr "Sincronizza libreria"
 msgid "Text Color"
 msgstr "Colore testo"
 
-#: src/window_main.cpp:149 src/window_main.cpp:420
+#: src/window_main.cpp:152 src/window_main.cpp:443
 msgid "Title"
 msgstr "Titolo"
 
-#: src/window_main.cpp:232
+#: src/window_main.cpp:235
 msgid "Volume"
 msgstr "Volume"
 

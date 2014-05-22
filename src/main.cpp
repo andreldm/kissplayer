@@ -13,6 +13,7 @@ bool    FLAG_MAXIMIZE_WINDOW;
 bool    FLAG_CANCEL_SYNC;
 bool    FLAG_LIST_CHANGED;
 bool    FLAG_RANDOM;
+bool    FLAG_REPEAT;
 bool    FLAG_LYRICS;
 bool    FLAG_SCROLL_TITLE;
 int     FLAG_SEARCH_TYPE;

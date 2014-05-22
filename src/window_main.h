@@ -21,6 +21,7 @@ Fl_Color            window_main_get_browser_music_color         (int c);
 // GLOBAL IMPORT
 extern bool     FLAG_MAXIMIZE_WINDOW;
 extern bool     FLAG_RANDOM;
+extern bool     FLAG_REPEAT;
 extern bool     FLAG_LYRICS;
 extern bool     FLAG_SCROLL_TITLE;
 extern int      FLAG_SEARCH_TYPE;

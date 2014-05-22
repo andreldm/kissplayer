@@ -87,6 +87,7 @@ static void cb_sync(Fl_Widget*, void*);
 static void cb_search(Fl_Widget*, void*);
 static void cb_search_type(Fl_Widget*, void*);
 static void cb_random(Fl_Widget*, void*);
+static void cb_repeat(Fl_Widget*, void*);
 static void cb_settings(Fl_Widget*, void*);
 static void cb_about(Fl_Widget*, void*);
 static void cb_clear(Fl_Widget*, void*);
@@ -96,6 +97,7 @@ static void cb_slider_music(Fl_Widget*, void*);
 enum {
     MENU_ITEM_SYNC = 0,
     MENU_ITEM_RANDOM,
+    MENU_ITEM_REPEAT,
     MENU_ITEM_SETTINGS,
     MENU_ITEM_ABOUT,
     MENU_ITEM_NONE
@@ -105,6 +107,7 @@ enum {
 static KSP_Menu_Item menu_items[] = {
     KSP_Menu_Item(0, 0, cb_sync, NULL),
     KSP_Menu_Item(0, 0, cb_random, NULL, FL_MENU_TOGGLE),
+    KSP_Menu_Item(0,0,cb_repeat,NULL,FL_MENU_TOGGLE),
     KSP_Menu_Item(0, 0, cb_settings, NULL),
     KSP_Menu_Item(0, 0, cb_about, NULL),
     KSP_Menu_Item(0)
@@ -240,6 +243,7 @@ void window_main_init(int argc, char** argv)
     // Set menu labels and icons
     menu_items[MENU_ITEM_SYNC].set_label_icon(_("Synchronize Library"), &img_icon_sync);
     menu_items[MENU_ITEM_RANDOM].set_label_icon(_("Randomize"), 0);
+    menu_items[MENU_ITEM_REPEAT].set_label_icon(_("Repeat Playlist"),0);
     menu_items[MENU_ITEM_SETTINGS].set_label_icon(_("Settings"), &img_icon_settings);
     menu_items[MENU_ITEM_ABOUT].set_label_icon(_("About"), &img_icon_about);
 
@@ -342,33 +346,52 @@ void cb_stop(Fl_Widget* widget, void*)
 
 void cb_previous(Fl_Widget* widget, void*)
 {
-    // If there's no music on the list or there's no music playing, do not continue
-    if(listMusic.empty() || !sound_is_loaded()) {
-        return;
-    }
+    // If there's no music in the list or no music playing
+    if(listMusic.empty() || !sound_is_loaded()) return;
 
     if(FLAG_RANDOM) {
-        if(musicIndexRandom >= 1) {
-            musicIndex = listRandom.at(--musicIndexRandom);
-            play_music();
+        if(musicIndexRandom <= 0) {
+            if(!FLAG_REPEAT) return;
+            musicIndexRandom = listMusic.size() -1;
+            util_randomize(listRandom, listMusic.size());
         }
-    } else if(musicIndex > 0) {
+
+        musicIndex = listRandom.at(--musicIndexRandom);
+    } else {
+        if(musicIndex <= 0) {
+            if(!FLAG_REPEAT) return;
+            musicIndex = listMusic.size();
+        }
+
         musicIndex--;
-        play_music();
     }
+
+    play_music();
 }
 
 void cb_next(Fl_Widget* widget, void*)
 {
-    if(hasNextMusic()) {
-        if(FLAG_RANDOM) {
-            musicIndex = listRandom.at(++musicIndexRandom);
-        } else {
-            musicIndex++;
+    // If there's no music in the list or no music playing
+    if(listMusic.empty() || !sound_is_loaded()) return;
+
+    if(FLAG_RANDOM) {
+        if(musicIndexRandom + 2 > listMusic.size()) {
+            if(!FLAG_REPEAT) return;
+            musicIndexRandom = -1;
+            util_randomize(listRandom, listMusic.size());
         }
 
-        play_music();
+        musicIndex = listRandom.at(++musicIndexRandom);
+    } else {
+        if(musicIndex + 2 > listMusic.size()) {
+            if(!FLAG_REPEAT) return;
+            musicIndex = -1;
+        }
+
+        musicIndex++;
     }
+
+    play_music();
 }
 
 void cb_music_browser(Fl_Widget* widget, void*)
@@ -439,6 +462,17 @@ void cb_random(Fl_Widget* widget, void*)
         menu_items[MENU_ITEM_RANDOM].set();
     } else {
         menu_items[MENU_ITEM_RANDOM].clear();
+    }
+}
+
+void cb_repeat(Fl_Widget* widget, void*)
+{
+    FLAG_REPEAT = !FLAG_REPEAT;
+
+    if(FLAG_REPEAT) {
+        menu_items[MENU_ITEM_REPEAT].set();
+    } else {
+        menu_items[MENU_ITEM_REPEAT].clear();
     }
 }
 
@@ -704,6 +738,7 @@ void save_config()
     dao_set_key("browser_music_width", util_i2s(browser_music->w()));
     dao_set_key("volume_level", util_i2s(volume_controller->value()));
     dao_set_key("random_button", util_i2s(FLAG_RANDOM));
+    dao_set_key("repeat_button", util_i2s(FLAG_REPEAT));
     dao_set_key("search_input", lastSearch);
     dao_set_key("search_type", util_i2s(FLAG_SEARCH_TYPE));
     dao_set_key("music_index", util_i2s(musicIndex));
@@ -755,6 +790,12 @@ void load_config()
         FLAG_RANDOM = !random;
         // ...here we toggle the Random Button
         cb_random(NULL, 0);
+    }
+
+    int repeat = util_s2i(dao_get_key("repeat_button"));
+    if(repeat != -1) {
+        FLAG_REPEAT = !repeat;
+        cb_repeat(NULL, 0);
     }
 
     // SET SEARCH TYPE
@@ -848,9 +889,9 @@ void load_config()
 bool hasNextMusic()
 {
     // There's no music on the list or no music playing
-    if(listMusic.empty() || !sound_is_loaded()) {
-        return false;
-    }
+    if(listMusic.empty() || !sound_is_loaded()) return false;
+
+    if(FLAG_REPEAT) return true;
 
     // '-1' is the beginning of the playlist
     if(FLAG_RANDOM) {

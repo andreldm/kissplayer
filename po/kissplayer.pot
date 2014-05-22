@@ -8,15 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-21 00:39-0300\n"
+"POT-Creation-Date: 2014-05-27 01:13-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/window_about.cpp:29 src/window_main.cpp:244
+#: src/window_about.cpp:29 src/window_main.cpp:248
 msgid "About"
 msgstr ""
 
@@ -24,15 +25,15 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: src/window_main.cpp:151 src/window_main.cpp:422
+#: src/window_main.cpp:154 src/window_main.cpp:445
 msgid "Album"
 msgstr ""
 
-#: src/window_main.cpp:148 src/window_main.cpp:419
+#: src/window_main.cpp:151 src/window_main.cpp:442
 msgid "All"
 msgstr ""
 
-#: src/window_main.cpp:150 src/window_main.cpp:421
+#: src/window_main.cpp:153 src/window_main.cpp:444
 msgid "Artist"
 msgstr ""
 
@@ -80,7 +81,7 @@ msgstr ""
 msgid "Error while redirecting."
 msgstr ""
 
-#: src/window_main.cpp:607
+#: src/window_main.cpp:641
 msgid "Fetching..."
 msgstr ""
 
@@ -88,11 +89,11 @@ msgstr ""
 msgid "General & Appearance"
 msgstr ""
 
-#: src/window_main.cpp:332
+#: src/window_main.cpp:336
 msgid "KISS Player"
 msgstr ""
 
-#: src/window_main.cpp:300
+#: src/window_main.cpp:304
 msgid "KISS Player - Paused"
 msgstr ""
 
@@ -104,11 +105,11 @@ msgstr ""
 msgid "Loading files..."
 msgstr ""
 
-#: src/window_main.cpp:611
+#: src/window_main.cpp:645
 msgid "Lyrics Disabled"
 msgstr ""
 
-#: src/window_main.cpp:224
+#: src/window_main.cpp:227
 msgid "Next"
 msgstr ""
 
@@ -116,7 +117,7 @@ msgstr ""
 msgid "Not found :-("
 msgstr ""
 
-#: src/window_main.cpp:206
+#: src/window_main.cpp:209
 msgid "Play/Pause"
 msgstr ""
 
@@ -132,16 +133,20 @@ msgstr ""
 msgid "Please, restart the program to change the language."
 msgstr ""
 
-#: src/window_main.cpp:218
+#: src/window_main.cpp:221
 msgid "Previous"
 msgstr ""
 
-#: src/window_main.cpp:242
+#: src/window_main.cpp:245
 msgid "Randomize"
 msgstr ""
 
 #: src/window_settings.cpp:131
 msgid "Remove"
+msgstr ""
+
+#: src/window_main.cpp:246
+msgid "Repeat Playlist"
 msgstr ""
 
 #: src/window_loading.cpp:30
@@ -152,7 +157,7 @@ msgstr ""
 msgid "Scroll Title"
 msgstr ""
 
-#: src/window_main.cpp:138
+#: src/window_main.cpp:141
 msgid "Search:"
 msgstr ""
 
@@ -160,15 +165,15 @@ msgstr ""
 msgid "Selection Color"
 msgstr ""
 
-#: src/window_main.cpp:243 src/window_settings.cpp:62
+#: src/window_main.cpp:247 src/window_settings.cpp:62
 msgid "Settings"
 msgstr ""
 
-#: src/window_main.cpp:212
+#: src/window_main.cpp:215
 msgid "Stop"
 msgstr ""
 
-#: src/window_main.cpp:241
+#: src/window_main.cpp:244
 msgid "Synchronize Library"
 msgstr ""
 
@@ -176,11 +181,11 @@ msgstr ""
 msgid "Text Color"
 msgstr ""
 
-#: src/window_main.cpp:149 src/window_main.cpp:420
+#: src/window_main.cpp:152 src/window_main.cpp:443
 msgid "Title"
 msgstr ""
 
-#: src/window_main.cpp:232
+#: src/window_main.cpp:235
 msgid "Volume"
 msgstr ""
 
