@@ -87,7 +87,7 @@ locale/%.UTF-8/LC_MESSAGES/kissplayer.mo: po/%.po
 
 update-locale: 
 	xgettext -d kissplayer -s src/*.cpp src/widget/*.cpp --keyword=_ -o po/kissplayer.pot
-	msgmerge -U po/*.po po/kissplayer.pot --backup=off
+	find po -name "*.po" -exec msgmerge -U '{}' po/kissplayer.pot --backup=off \;
 
 # --- Windows Only--- #
 ifeq ($(OS), Windows_NT)
