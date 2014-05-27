@@ -1,23 +1,22 @@
-# Spanish translations for KISS Player.
-# Copyright (C) 2014 THE KISS PLAYER'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the KISS Player.
-# Carlos Sánchez <maykosiqueira@gmail.com>, 2014.
-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Carlos Sánchez <carlos1994sanchez@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-27 01:13-0300\n"
-"PO-Revision-Date: 2014-02-20 22:27-0300\n"
-"Last-Translator: André Miranda <andreldm1989@gmail.com>\n"
-"Language-Team: Spanish\n"
-"Language: es\n"
+"PO-Revision-Date: 2014-05-27 05:09+0000\n"
+"Last-Translator: AndreLDM <andreldm1989@gmail.com>\n"
+"Language-Team: Spanish (http://www.transifex.com/projects/p/kissplayer/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.4\n"
-"X-Poedit-SourceCharset: UTF-8\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/window_about.cpp:29 src/window_main.cpp:248
 msgid "About"
@@ -113,11 +112,11 @@ msgstr "Letras deshabilitadas"
 
 #: src/window_main.cpp:227
 msgid "Next"
-msgstr "Próximo"
+msgstr "Siguiente"
 
 #: src/lyrics_fetcher.cpp:198
 msgid "Not found :-("
-msgstr "No se ha encontrado :-("
+msgstr "No se encontró :-("
 
 #: src/window_main.cpp:209
 msgid "Play/Pause"
@@ -129,7 +128,7 @@ msgstr "Espere por favor"
 
 #: src/sync.cpp:29
 msgid "Please, add at least one directory on the Settings Window."
-msgstr ""
+msgstr "Por favor, añada al menos un directorio en la ventana de Ajustes."
 
 #: src/window_settings.cpp:329
 msgid "Please, restart the program to change the language."
