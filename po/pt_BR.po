@@ -1,6 +1,9 @@
 # Brazilian Portuguese translations for KISS Player.
 # Copyright (C) 2014 THE KISS PLAYER'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the KISS Player.
+
+# Translators:
+# AndreLDM <andreldm1989@gmail.com>, 2014
 # Maykon Silva <maykosiqueira@gmail.com>, 2014.
 #
 msgid ""
@@ -8,16 +11,14 @@ msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-27 01:13-0300\n"
-"PO-Revision-Date: 2014-02-20 22:27-0300\n"
-"Last-Translator: André Miranda <andreldm1989@gmail.com>\n"
-"Language-Team: Brazilian Portuguese\n"
-"Language: pt_BR\n"
+"PO-Revision-Date: 2014-05-29 01:22+0000\n"
+"Last-Translator: AndreLDM <andreldm1989@gmail.com>\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/kissplayer/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.4\n"
-"X-Poedit-SourceCharset: UTF-8\n"
 
 #: src/window_about.cpp:29 src/window_main.cpp:248
 msgid "About"
@@ -129,7 +130,7 @@ msgstr "Aguarde"
 
 #: src/sync.cpp:29
 msgid "Please, add at least one directory on the Settings Window."
-msgstr ""
+msgstr "Por favor, adicione pelo menos um diretório na Janela de Configurações."
 
 #: src/window_settings.cpp:329
 msgid "Please, restart the program to change the language."
@@ -149,7 +150,7 @@ msgstr "Remover"
 
 #: src/window_main.cpp:246
 msgid "Repeat Playlist"
-msgstr ""
+msgstr "Repetir Playlist"
 
 #: src/window_loading.cpp:30
 msgid "Scanning directories..."
