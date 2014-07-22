@@ -478,12 +478,12 @@ void cb_repeat(Fl_Widget* widget, void*)
 
 void cb_settings(Fl_Widget* widget, void*)
 {
-    window_settings_show();
+    window_settings_show(window);
 }
 
 void cb_about(Fl_Widget* widget, void*)
 {
-    window_about_show();
+    window_about_show(window);
 }
 
 void cb_sync(Fl_Widget* widget, void*)

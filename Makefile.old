@@ -1,5 +1,5 @@
-# This makefile should build the project on Linux and Windows(MinGW)
-# An autotools setup is being crafted, for now we must live with this makefile
+# Don't use this makefile, use the autotools setup
+# You've been warned :)
 
 SOURCES = src/dao.cpp \
 src/locale.cpp \
@@ -52,7 +52,6 @@ else ifeq ($(shell uname), Linux)
 	FixPath = $1
 	CreateFolder = @mkdir -p $1
 	DeleteFolder = @rm -r -f $1
-	CopyFile = @cp $1 $2
 	CopyFolder = @cp -r $1 $2
 
 	# Configure the dependencies if needed!
@@ -110,9 +109,8 @@ ifeq ($(OS), Windows_NT)
 	$(call CopyFolder,locale,$(OUTPUTFOLDER))
 	@echo Move the folder $(OUTPUTFOLDER) to anywhere you want
 else ifeq ($(shell uname), Linux)
-	$(call CopyFile,$(TARGET),$(OUTPUTFOLDER))
+	@echo Copying locale to $(OUTPUTFOLDERLOCAL)
 	$(call CreateFolder,$(OUTPUTFOLDERLOCAL))
 	$(call CopyFolder,locale,$(OUTPUTFOLDERLOCAL))
-# Kludge!
-	@sudo chown -R `who am i | awk {'print $$1'}| xargs -IREPL echo REPL:` $(OUTPUTFOLDERLOCAL)
+	@echo Please, copy $(TARGET) to $(OUTPUTFOLDER) manually
 endif

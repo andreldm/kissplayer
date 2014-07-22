@@ -22,20 +22,16 @@ static Language* languages[] = {
 
 void Locale::init()
 {
+#ifdef WIN32
     dao_open_db();
     string language = dao_get_key(KEY_LANGUAGE);
     dao_close_db();
 
-#ifdef WIN32
     language = "LC_ALL=" + language;
     putenv(language.c_str());
     bindtextdomain("kissplayer", ".\\locale");
 #elif __linux__
-    setlocale(LC_ALL, language.c_str());
-    string dirname;
-    os_specific_get_working_dir(dirname);
-    dirname.append("locale");
-    bindtextdomain("kissplayer", dirname.c_str());
+    bindtextdomain("kissplayer", LOCALEDIR);
 #endif
 
     textdomain("kissplayer");

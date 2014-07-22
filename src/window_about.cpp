@@ -2,7 +2,6 @@
 
 #include <sstream>
 
-#include <FL/Fl_Window.H>
 #include <FL/Fl_Help_View.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
@@ -16,15 +15,23 @@ static Fl_Window* window;
 
 static void cb_close(Fl_Widget*, void*);
 
-void window_about_show(void)
+void window_about_show(Fl_Window* parent)
 {
-    // To place the window at the center of the screen
     int window_w = 380;
     int window_h = 265;
-    int screen_w = Fl::w();
-    int screen_h = Fl::h();
-    int window_x = (screen_w/2)-(window_w/2);
-    int window_y = (screen_h/2)-(window_h/2);
+    int window_x = 0;
+    int window_y = 0;
+
+    // Place this window at the center of the parent window or screen
+    if(parent) {
+        window_x = parent->x() + (parent->w()/2)-(window_w/2);
+        window_y = parent->y() + (parent->h()/2)-(window_h/2);
+    } else {
+        int screen_w = Fl::w();
+        int screen_h = Fl::h();
+        window_x = (screen_w/2)-(window_w/2);
+        window_y = (screen_h/2)-(window_h/2);
+    }
 
     window = new Fl_Window(window_x, window_y, window_w, window_h, _("About"));
 

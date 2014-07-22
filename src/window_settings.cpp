@@ -5,8 +5,8 @@
 
 #include <FL/Fl.H>
 #include <FL/fl_ask.H>
-#include <FL/Fl_Window.H>
 #include <FL/Fl_Button.H>
+#include <FL/Fl_Hold_Browser.H>
 #include <FL/Fl_Light_Button.H>
 #include <FL/Fl_Color_Chooser.H>
 #include <FL/Fl_Select_Browser.H>
@@ -29,6 +29,8 @@ static KSP_Check_Button* button_lyrics;
 static KSP_Check_Button* button_scroll_title;
 static Fl_Select_Browser* browser_directories;
 static Fl_Choice* lang_choice;
+static Fl_Hold_Browser* tab_selector;
+static Fl_Group* tabs[3] = { 0,0,0 };
 
 static deque<COD_VALUE> listDir;
 static bool should_resync;
@@ -46,38 +48,56 @@ static void cb_default_colors(Fl_Widget*, void*);
 static void cb_lyrics(Fl_Widget*, void*);
 static void cb_scroll_title(Fl_Widget*, void*);
 static void cb_change(Fl_Widget*, void*);
+static void cb_tab_select(Fl_Widget*, void*);
 
-void window_settings_show(void)
+void window_settings_show(Fl_Window* parent)
 {
     should_resync = false;
 
-    // To place the window at the center of the screen
-    int window_w = 450;
+    int window_w = 650;
     int window_h = 415;
-    int screen_w = Fl::w();
-    int screen_h = Fl::h();
-    int window_x = (screen_w/2)-(window_w/2);
-    int window_y = (screen_h/2)-(window_h/2);
+    int window_x = 0;
+    int window_y = 0;
+
+    // Place this window at the center of the parent window or screen
+    if(parent) {
+        window_x = parent->x() + (parent->w()/2)-(window_w/2);
+        window_y = parent->y() + (parent->h()/2)-(window_h/2);
+    } else {
+        int screen_w = Fl::w();
+        int screen_h = Fl::h();
+        window_x = (screen_w/2)-(window_w/2);
+        window_y = (screen_h/2)-(window_h/2);
+    }
 
     window = new Fl_Window(window_x, window_y, window_w, window_h, _("Settings"));
 
-    // GENERAL GROUP AND ITS WIDGETS
-    int group_offset = 22;
+    tab_selector = new Fl_Hold_Browser(10, 10, 200, window_h - 20);
+    tab_selector->color(window_main_get_browser_music_color(1));
+    tab_selector->color2(window_main_get_browser_music_color(2));
+    tab_selector->textcolor(window_main_get_browser_music_color(3));
+    tab_selector->add("General");
+    tab_selector->add("Directories");
+#ifdef WIN32
+    tab_selector->add("Language");
+#endif
 
-    Fl_Group* group_general = new Fl_Group(5, group_offset, window_w - 10, 105, _("General & Appearance"));
-    group_general->align(FL_ALIGN_TOP_LEFT);
-    group_general->box(FL_UP_FRAME);
-    group_general->begin();
+    // TAB GENERAL
+    tabs[0] = new Fl_Group(215, 10, window_w - 225, window_h - 20, _("General"));
+    tabs[0]->labelsize(16);
+    tabs[0]->align(FL_ALIGN_INSIDE | FL_ALIGN_TOP);
+    tabs[0]->box(FL_UP_FRAME);
+    tabs[0]->begin();
 
-    button_lyrics = new KSP_Check_Button(15, group_offset + 5, 120, 16,_("Display Lyrics"));
+    button_lyrics = new KSP_Check_Button(220, 40, 120, 16,_("Display Lyrics"));
     button_lyrics->value(FLAG_LYRICS);
     button_lyrics->callback((Fl_Callback*)cb_lyrics);
 
-    button_scroll_title = new KSP_Check_Button(15, group_offset + 30, 120, 16, _("Scroll Title"));
+    button_scroll_title = new KSP_Check_Button(220, 65, 120, 16, _("Scroll Title"));
     button_scroll_title->value(FLAG_SCROLL_TITLE);
     button_scroll_title->callback((Fl_Callback*)cb_scroll_title);
 
-    button_background_color = new Fl_Button(150, group_offset + 5, 16, 16, _("Background Color"));
+    button_background_color = new Fl_Button(220, 100, 16, 16, _("Background Color"));
     button_background_color->box(FL_DOWN_BOX);
     button_background_color->labelsize(12);
     button_background_color->clear_visible_focus();
@@ -85,7 +105,7 @@ void window_settings_show(void)
     button_background_color->callback((Fl_Callback*)cb_background_color);
     button_background_color->align(FL_ALIGN_RIGHT);
 
-    button_selection_color = new Fl_Button(150, group_offset + 30, 16, 16, _("Selection Color"));
+    button_selection_color = new Fl_Button(220, 125, 16, 16, _("Selection Color"));
     button_selection_color->box(FL_DOWN_BOX);
     button_selection_color->labelsize(12);
     button_selection_color->clear_visible_focus();
@@ -93,7 +113,7 @@ void window_settings_show(void)
     button_selection_color->callback((Fl_Callback*)cb_selection_color);
     button_selection_color->align(FL_ALIGN_RIGHT);
 
-    button_text_color = new Fl_Button(150, group_offset + 55, 16, 16, _("Text Color"));
+    button_text_color = new Fl_Button(220, 150, 16, 16, _("Text Color"));
     button_text_color->box(FL_DOWN_BOX);
     button_text_color->labelsize(12);
     button_text_color->clear_visible_focus();
@@ -101,49 +121,48 @@ void window_settings_show(void)
     button_text_color->callback((Fl_Callback*)cb_text_color);
     button_text_color->align(FL_ALIGN_RIGHT);
 
-    Fl_Button* button_default_colors = new Fl_Button(150, group_offset + 80, 0, 22, _("Default Colors"));
+    Fl_Button* button_default_colors = new Fl_Button(220, 175, 0, 22, _("Default Colors"));
     button_default_colors->labelsize(12);
     util_adjust_width(button_default_colors, 10);
     button_default_colors->clear_visible_focus();
     button_default_colors->callback((Fl_Callback*)cb_default_colors);
 
-    group_general->end();
+    tabs[0]->end();
 
-    // DIRECTORIES GROUP AND ITS WIDGETS
-    group_offset = 150;
+    // TAB DIRECTORIES
+    tabs[1] = new Fl_Group(215, 10, window_w - 225, window_h - 20, _("Directories"));
+    tabs[1]->labelsize(16);
+    tabs[1]->align(FL_ALIGN_INSIDE | FL_ALIGN_TOP);
+    tabs[1]->box(FL_UP_FRAME);
+    tabs[1]->begin();
 
-    Fl_Group* group_directories = new Fl_Group(5, group_offset, window_w - 10, 162, _("Directories"));
-    group_directories->align(FL_ALIGN_TOP_LEFT);
-    group_directories->box(FL_UP_FRAME);
-    group_directories->begin();
-
-    browser_directories = new Fl_Select_Browser(10, group_offset + 5, window_w - 20, 120, 0);
+    browser_directories = new Fl_Select_Browser(220, 40, window_w - 235, 120, 0);
     browser_directories->type(FL_HOLD_BROWSER);
     browser_directories->color(window_main_get_browser_music_color(1));
     browser_directories->color2(window_main_get_browser_music_color(2));
     browser_directories->textcolor(window_main_get_browser_music_color(3));
 
-    Fl_Button* button_add = new Fl_Button(10, group_offset + 130, 70, 25, _("Add"));
+    Fl_Button* button_add = new Fl_Button(220, 165, 70, 25, _("Add"));
     util_adjust_width(button_add, 10);
     button_add->clear_visible_focus();
     button_add->callback((Fl_Callback*)cb_add_dir);
 
-    Fl_Button* button_remove = new Fl_Button(15 + button_add->w(), group_offset + 130, 70, 25, _("Remove"));
+    Fl_Button* button_remove = new Fl_Button(220 + button_add->w() + 5, 165, 70, 25, _("Remove"));
     util_adjust_width(button_remove, 10);
     button_remove->clear_visible_focus();
     button_remove->callback((Fl_Callback*)cb_remove_dir);
 
-    group_directories->end();
+    tabs[1]->end();
 
-    group_offset = 335;
+    // TAB LANGUAGE
+    tabs[2] = new Fl_Group(215, 10, window_w - 225, window_h - 20, _("Language"));
+#ifdef WIN32
+    tabs[2]->labelsize(16);
+    tabs[2]->align(FL_ALIGN_INSIDE | FL_ALIGN_TOP);
+    tabs[2]->box(FL_UP_FRAME);
+    tabs[2]->begin();
 
-    // LANGUAGE GROUP AND ITS WIDGETS
-    Fl_Group* group_language = new Fl_Group(6, group_offset, window_w -10, 40, _("Language"));
-    group_language->align(FL_ALIGN_TOP_LEFT );
-    group_language->box(FL_UP_FRAME);
-    group_language->begin();
-
-    lang_choice = new Fl_Choice(10, group_offset + 8, 200, 25);
+    lang_choice = new Fl_Choice(220, 40, 200, 25);
     lang_choice->clear_visible_focus();
 
     Language** languages = Locale::getDefinedLanguages();
@@ -154,21 +173,24 @@ void window_settings_show(void)
 
     dao_open_db();
     int index = util_s2i(dao_get_key("lang_index"));
-    if (index < 0) index = 0;
-    lang_choice->value(index);
+    lang_choice->value((index < 0 ? 0 : index));
     dao_close_db();
-
-    group_language->end();
+#endif
+    tabs[2]->end();
 
     // CLOSE BUTTON
-    Fl_Button* button_close = new Fl_Button(0, window_h - 32, 60, 25, _("Close"));
+    Fl_Button* button_close = new Fl_Button(0, window_h - 40, 60, 25, _("Close"));
     util_adjust_width(button_close, 10);
-    button_close->position((window_w / 2) - (button_close->w() / 2), button_close->y());
+    button_close->position(tabs[0]->x() + (tabs[0]->w() / 2) - (button_close->w() / 2), button_close->y());
 
     button_close->clear_visible_focus();
     button_close->callback((Fl_Callback*)cb_close);
 
     update_dir_list();
+
+    tab_selector->select(1);
+    tab_selector->callback(cb_tab_select);
+    tab_selector->do_callback();
 
     window->set_modal();
     window->callback((Fl_Callback*)cb_close);
@@ -230,6 +252,9 @@ void cb_background_color(Fl_Widget* widget, void*)
     browser_directories->color(val);
     browser_directories->redraw();
 
+    tab_selector->color(val);
+    tab_selector->redraw();
+
     window_main_set_browser_music_color(val, -1, -1);
     window_main_set_lyrics_pane_color(val, -1, -1);
 }
@@ -243,6 +268,9 @@ void cb_selection_color(Fl_Widget* widget, void*)
 
     browser_directories->color2(val);
     browser_directories->redraw();
+
+    tab_selector->color2(val);
+    tab_selector->redraw();
 
     window_main_set_input_search_type_color(val);
     window_main_set_browser_music_color(-1, val, -1);
@@ -259,6 +287,9 @@ void cb_text_color(Fl_Widget* widget, void*)
 
     browser_directories->textcolor(val);
     browser_directories->redraw();
+
+    tab_selector->textcolor(val);
+    tab_selector->redraw();
 
     window_main_set_browser_music_color(-1, -1, val);
     window_main_set_lyrics_pane_color(-1, -1, val);
@@ -277,11 +308,15 @@ void cb_default_colors(Fl_Widget* widget, void*)
     browser_directories->color(DEFAULT_BACKGROUND_COLOR);
     browser_directories->color2(DEFAULT_SELECTION_COLOR);
     browser_directories->textcolor(DEFAULT_FOREGROUND_COLOR);
+    tab_selector->color(DEFAULT_BACKGROUND_COLOR);
+    tab_selector->color2(DEFAULT_SELECTION_COLOR);
+    tab_selector->textcolor(DEFAULT_FOREGROUND_COLOR);
 
     button_text_color->redraw();
     button_background_color->redraw();
     button_selection_color->redraw();
     browser_directories->redraw();
+    tab_selector->redraw();
 }
 
 void cb_lyrics(Fl_Widget* widget, void*)
@@ -327,4 +362,18 @@ void cb_change(Fl_Widget* widget, void*)
     fl_beep();
     fl_message_title(_("Warning"));
     fl_message(_("Please, restart the program to change the language."));
+}
+
+void cb_tab_select(Fl_Widget*, void*) {
+    if(tab_selector->value() == 0) {
+        return;
+    }
+
+    for (int t = 0; t < sizeof(tabs) / sizeof(tabs[0]); t++) {
+        if (t == (tab_selector->value() - 1)) {
+            tabs[t]->show();
+        } else {
+            tabs[t]->hide();
+        }
+    }
 }
