@@ -1,11 +1,17 @@
 Thumbs.db
 kissplayer
+stamp-po
+aclocal.m4
+configure
 obj/
 bin/
 locale/
+autotools/
+autom4te.cache/
 
 syntax: glob
 png2img
+Makefile*
 *.exe
 *.s3db
 *.dll
@@ -14,3 +20,8 @@ png2img
 *.depend
 *.layout
 *.res
+*.deps
+*.dirstamp
+*.gmo
+*.status
+*.log

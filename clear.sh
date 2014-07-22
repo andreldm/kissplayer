@@ -1,36 +1,41 @@
 #!/bin/sh
 
-rm -r autom4te.cache \
-autotools \
-.deps \
-src/.deps \
-src/linux/.deps \
-src/widget/.deps \
-src/win/.deps
+echo Cleaning...
+rm -r autom4te.cache autotools locale .deps 2> /dev/null
+rm configure aclocal.m4 config.* Makefile.in Makefile stamp-h1 kissplayer.exe kissplayer ABOUT-NLS *.log 2> /dev/null
 
-rm configure \
-aclocal.m4 \
-config.h* \
-config.status \
-Makefile.in \
-Makefile \
-stamp-h1 \
-kissplayer.exe \
-kissplayer \
-ABOUT-NLS \
-*.log \
-src/.dirstamp \
-src/*.o \
-src/linux/.dirstamp \
-src/widget/.dirstamp \
-src/win/.dirstamp
+cd src
+echo src...
+rm -r .deps 2> /dev/null
+rm .dirstamp *.o 2> /dev/null
+cd ..
+
+cd src/linux
+echo src/linux...
+rm -r .deps 2> /dev/null
+rm .dirstamp *.o 2> /dev/null
+cd ../..
+
+cd src/widget
+echo src/widget...
+rm -r .deps 2> /dev/null
+rm .dirstamp *.o 2> /dev/null
+cd ../..
+
+cd src/win
+echo src/win...
+rm -r .deps 2> /dev/null
+rm .dirstamp *.o 2> /dev/null
+cd ../..
 
 cd po
-rm *.sed *.header *.gmo Rules-quot stamp-po Makefile Makefile.in Makevars.template POTFILES
+echo po...
+rm *.sed *.header *.gmo Rules-quot stamp-po Makefile Makefile.in Makevars.template POTFILES 2> /dev/null
 cd ..
 
 cd m4
-rm Makefile Makefile.in
+echo m4...
+rm Makefile Makefile.in 2> /dev/null
 cd ..
 
-find autotools/ -type f -not -name 'config.rpath' -delete
+echo Done
