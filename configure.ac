@@ -81,37 +81,23 @@ if test "x$os" = "xlinux"; then
   fi
 elif test "x$os" = "xwindows"; then
   AC_CHECK_LIB([ole32], [main], [], [echo "libole32 is required for this program"; exit -1])
-  sleep 1
   AC_CHECK_LIB([uuid], [main], [], [echo "libuuid is required for this program"; exit -1])
-  sleep 1
   AC_CHECK_LIB([comctl32], [main], [], [echo "libcomctl32 is required for this program"; exit -1])
-  sleep 1
   AC_CHECK_LIB([wsock32], [main], [], [echo "libwsock32 is required for this program"; exit -1])
-  sleep 1
   AC_CHECK_LIB([gdi32], [main], [], [echo "libgdi32 is required for this program"; exit -1])
-  sleep 1
   AC_CHECK_LIB([comdlg32], [main], [], [echo "libcomdlg32 is required for this program"; exit -1])
-  sleep 1
   AC_CHECK_LIB([intl], [main], [], [echo "libintl is required for this program"; exit -1])
-  sleep 1
   AC_CHECK_LIB([fmodex], [main], [], [echo "libfmodex required for this program"; exit -1])
-  sleep 1
   AC_CHECK_LIB([curl], [main], [], [
     AC_CHECK_LIB([curldll], [main], [], [echo "libcurl or libcurldll required for this program"; exit -1])
   ])
 fi
 
-sleep 1
 AC_CHECK_LIB([z], [main])
-sleep 1
 AC_CHECK_LIB([png], [png_sig_cmp], [], [echo "libpng is required for this program"; exit -1])
-sleep 1
 AC_CHECK_LIB([sqlite3], [sqlite3_close], [], [echo "libsqlite3 is required for this program"; exit -1])
-sleep 1
 AC_CHECK_LIB([tag], [read], [], [echo "TagLib is required for this program"; exit -1])
-sleep 1
 AC_CHECK_LIB([fltk], [main], [], [echo "FLTK is required for this program"; exit -1])
-sleep 1
 AC_CHECK_LIB([fltk_images], [main], [], [echo "libfltk_images is required for this program"; exit -1])
 
 ####################################
