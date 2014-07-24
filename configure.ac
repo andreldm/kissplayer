@@ -88,8 +88,8 @@ elif test "x$os" = "xwindows"; then
   AC_CHECK_LIB([comdlg32], [main], [], [echo "libcomdlg32 is required for this program"; exit -1])
   AC_CHECK_LIB([intl], [main], [], [echo "libintl is required for this program"; exit -1])
   AC_CHECK_LIB([fmodex], [main], [], [echo "libfmodex required for this program"; exit -1])
-  AC_CHECK_LIB([curl], [main], [], [
-    AC_CHECK_LIB([curldll], [main], [], [echo "libcurl or libcurldll required for this program"; exit -1])
+  AC_CHECK_LIB([curldll], [main], [], [
+    AC_CHECK_LIB([curl], [main], [], [echo "libcurl or libcurldll required for this program"; exit -1])
   ])
 fi
 
