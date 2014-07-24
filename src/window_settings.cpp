@@ -55,7 +55,7 @@ void window_settings_show(Fl_Window* parent)
     should_resync = false;
 
     int window_w = 650;
-    int window_h = 415;
+    int window_h = 300;
     int window_x = 0;
     int window_y = 0;
 
@@ -136,18 +136,18 @@ void window_settings_show(Fl_Window* parent)
     tabs[1]->box(FL_UP_FRAME);
     tabs[1]->begin();
 
-    browser_directories = new Fl_Select_Browser(220, 40, window_w - 235, 120, 0);
+    browser_directories = new Fl_Select_Browser(220, 40, window_w - 235, 160, 0);
     browser_directories->type(FL_HOLD_BROWSER);
     browser_directories->color(window_main_get_browser_music_color(1));
     browser_directories->color2(window_main_get_browser_music_color(2));
     browser_directories->textcolor(window_main_get_browser_music_color(3));
 
-    Fl_Button* button_add = new Fl_Button(220, 165, 70, 25, _("Add"));
+    Fl_Button* button_add = new Fl_Button(220, 205, 70, 25, _("Add"));
     util_adjust_width(button_add, 10);
     button_add->clear_visible_focus();
     button_add->callback((Fl_Callback*)cb_add_dir);
 
-    Fl_Button* button_remove = new Fl_Button(220 + button_add->w() + 5, 165, 70, 25, _("Remove"));
+    Fl_Button* button_remove = new Fl_Button(220 + button_add->w() + 5, 205, 70, 25, _("Remove"));
     util_adjust_width(button_remove, 10);
     button_remove->clear_visible_focus();
     button_remove->callback((Fl_Callback*)cb_remove_dir);
