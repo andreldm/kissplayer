@@ -30,7 +30,7 @@ cd ../..
 
 cd po
 echo po...
-rm *.sed *.header *.gmo Rules-quot stamp-po Makefile Makefile.in Makevars.template POTFILES 2> /dev/null
+rm *.sed *.header *.gmo remove-potcdate.sed Rules-quot stamp-po Makefile Makefile.in Makevars.template POTFILES 2> /dev/null
 cd ..
 
 cd m4
