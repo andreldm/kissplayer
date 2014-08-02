@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: andreldm1989@gmail.com\n"
-"POT-Creation-Date: 2014-08-02 13:37-0300\n"
-"PO-Revision-Date: 2014-07-29 20:27-0300\n"
+"POT-Creation-Date: 2014-08-02 15:40-0300\n"
+"PO-Revision-Date: 2014-08-02 15:42-0300\n"
 "Last-Translator: Andre Miranda <andreldm1989@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
 "kissplayer/language/pt_BR/)\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.5\n"
+"X-Generator: Poedit 1.6.7\n"
 
 #: src/lyrics_fetcher.cpp:142
 msgid "Connection timed out!"
@@ -60,15 +60,15 @@ msgstr "Info"
 
 #: src/window_about.cpp:61
 msgid "A Simple and Lightweight Music Player"
-msgstr ""
+msgstr "Um Tocador de Músicas Simples e Leve"
 
 #: src/window_about.cpp:63
 msgid "Contact:"
-msgstr ""
+msgstr "Contato:"
 
 #: src/window_about.cpp:64
 msgid "Website:"
-msgstr ""
+msgstr "Website:"
 
 #: src/window_about.cpp:73
 msgid "Credits"
@@ -76,35 +76,45 @@ msgstr "Créditos"
 
 #: src/window_about.cpp:77
 msgid "Developers:"
-msgstr ""
+msgstr "Desenvolvedores:"
 
 #: src/window_about.cpp:78
 msgid "Project Leader"
-msgstr ""
+msgstr "Líder do Projeto"
 
 #: src/window_about.cpp:79
 msgid "Developer"
-msgstr ""
+msgstr "Desenvolvedor"
 
 #: src/window_about.cpp:81
-msgid "Contributors:"
-msgstr ""
+msgid "Collaborators:"
+msgstr "Colaboradores:"
 
-#: src/window_about.cpp:91
+#: src/window_about.cpp:85
+msgid "<translators_credits>"
+msgstr "André Miranda <andreldm1989@gmail.com>"
+
+#: src/window_about.cpp:87
+msgid "Translators:"
+msgstr "Tradutores:"
+
+#: src/window_about.cpp:98
 msgid "License"
 msgstr "Licença"
 
-#: src/window_about.cpp:95
+#: src/window_about.cpp:102
 msgid ""
 "This program is licensed under the terms of the GNU General Public License "
 "version 2."
 msgstr ""
+"Este programa é licenciado sob os termos da GNU General Public License "
+"versão 2."
 
-#: src/window_about.cpp:96
+#: src/window_about.cpp:103
 msgid "Available online under:"
-msgstr ""
+msgstr "Disponível on-line em:"
 
-#: src/window_about.cpp:107 src/window_settings.cpp:182
+#: src/window_about.cpp:114 src/window_settings.cpp:182
 msgid "Close"
 msgstr "Fechar"
 

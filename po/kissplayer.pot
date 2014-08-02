@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kissplayer 0.6.3\n"
 "Report-Msgid-Bugs-To: andreldm1989@gmail.com\n"
-"POT-Creation-Date: 2014-08-02 13:37-0300\n"
+"POT-Creation-Date: 2014-08-02 15:40-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,24 +82,32 @@ msgid "Developer"
 msgstr ""
 
 #: src/window_about.cpp:81
-msgid "Contributors:"
+msgid "Collaborators:"
 msgstr ""
 
-#: src/window_about.cpp:91
+#: src/window_about.cpp:85
+msgid "<translators_credits>"
+msgstr ""
+
+#: src/window_about.cpp:87
+msgid "Translators:"
+msgstr ""
+
+#: src/window_about.cpp:98
 msgid "License"
 msgstr ""
 
-#: src/window_about.cpp:95
+#: src/window_about.cpp:102
 msgid ""
 "This program is licensed under the terms of the GNU General Public License "
 "version 2."
 msgstr ""
 
-#: src/window_about.cpp:96
+#: src/window_about.cpp:103
 msgid "Available online under:"
 msgstr ""
 
-#: src/window_about.cpp:107 src/window_settings.cpp:182
+#: src/window_about.cpp:114 src/window_settings.cpp:182
 msgid "Close"
 msgstr ""
 

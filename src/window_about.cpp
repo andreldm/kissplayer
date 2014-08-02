@@ -78,9 +78,15 @@ void window_about_show(Fl_Window* parent)
     sstream << "André Miranda - " << _("Project Leader") << "<br>";
     sstream << "Maykon Silva - " << _("Developer") << "<br>";
     sstream << "<p></p>";
-    sstream << "<b>" << _("Contributors:") << "</b><br>";
+    sstream << "<b>" << _("Collaborators:") << "</b><br>";
     sstream << "Carlos Sanchez<br>";
-    sstream << "Herman Polloni<br>";
+    sstream << "Herman Polloni";
+
+    std::string translators_credits = _("<translators_credits>");
+    if(translators_credits.compare("<translators_credits>") != 0) {
+        sstream << "<br><p></p><b>" << _("Translators:") << "</b><br>";
+        sstream << translators_credits;
+    }
 
     text = new Fl_Help_View(10, 65, window_w-20, 140);
     text->textsize(14);
