@@ -79,7 +79,8 @@ void window_about_show(Fl_Window* parent)
     sstream << "Maykon Silva - " << _("Developer") << "<br>";
     sstream << "<p></p>";
     sstream << "<b>" << _("Contributors:") << "</b><br>";
-    sstream << "Herman Polloni";
+    sstream << "Carlos Sanchez<br>";
+    sstream << "Herman Polloni<br>";
 
     text = new Fl_Help_View(10, 65, window_w-20, 140);
     text->textsize(14);
