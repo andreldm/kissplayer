@@ -36,7 +36,8 @@ XGETTEXT_OPTIONS = \
   --keyword=wxTRANSLATE --flag=wxTRANSLATE:1:pass-c-format \
   --keyword=wxPLURAL:1,2 --flag=wxPLURAL:1:pass-c-format --flag=wxPLURAL:2:pass-c-format \
   --keyword=_ --flag=_:1:pass-c-format \
-  --keyword=N_ --flag=N_:1:pass-c-format
+  --keyword=N_ --flag=N_:1:pass-c-format \
+  --from-code=UTF-8
 
 # This is the copyright holder that gets inserted into the header of the
 # $(DOMAIN).pot file.  Set this to the copyright holder of the surrounding

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: andreldm1989@gmail.com\n"
-"POT-Creation-Date: 2014-07-29 20:14-0300\n"
+"POT-Creation-Date: 2014-08-02 13:37-0300\n"
 "PO-Revision-Date: 2014-04-10 13:10+0000\n"
 "Last-Translator: giuseppep <anubisteam01@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/kissplayer/"
@@ -55,15 +55,53 @@ msgstr "Informazioni su"
 msgid "Info"
 msgstr ""
 
-#: src/window_about.cpp:68
+#: src/window_about.cpp:61
+msgid "A Simple and Lightweight Music Player"
+msgstr ""
+
+#: src/window_about.cpp:63
+msgid "Contact:"
+msgstr ""
+
+#: src/window_about.cpp:64
+msgid "Website:"
+msgstr ""
+
+#: src/window_about.cpp:73
 msgid "Credits"
 msgstr ""
 
-#: src/window_about.cpp:82
+#: src/window_about.cpp:77
+msgid "Developers:"
+msgstr ""
+
+#: src/window_about.cpp:78
+msgid "Project Leader"
+msgstr ""
+
+#: src/window_about.cpp:79
+msgid "Developer"
+msgstr ""
+
+#: src/window_about.cpp:81
+msgid "Contributors:"
+msgstr ""
+
+#: src/window_about.cpp:91
 msgid "License"
 msgstr ""
 
-#: src/window_about.cpp:95 src/window_settings.cpp:182
+#: src/window_about.cpp:95
+msgid ""
+"This program is licensed under the terms of the GNU General Public License "
+"version 2."
+msgstr ""
+
+#: src/window_about.cpp:96
+msgid "Available online under:"
+msgstr ""
+
+#: src/window_about.cpp:107 src/window_settings.cpp:182
 msgid "Close"
 msgstr "Chiudi"
 
