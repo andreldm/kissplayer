@@ -23,7 +23,7 @@ done
 
 cd ..
 
-objdump -p *.exe | grep "DLL Name:" | while read -r dll; do
+objdump -p kissplayer.exe | grep "DLL Name:" | while read -r dll; do
     dll=`echo $dll | cut -d' ' -f3`
     containsElement $dll "${win_dlls[@]}"
     if [ "$?" -eq "1" ]; then
