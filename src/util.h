@@ -13,10 +13,6 @@
 #define     SEARCH_TYPE_ARTIST          2
 #define     SEARCH_TYPE_ALBUM           3
 
-#define     KISS_MAJOR_VERSION          0
-#define     KISS_MINOR_VERSION          6
-#define     KISS_PATCH_VERSION          3
-
 #define     DEFAULT_BACKGROUND_COLOR    0x5A595800
 #define     DEFAULT_SELECTION_COLOR     0xFFFFFF00
 #define     DEFAULT_FOREGROUND_COLOR    0xC8C8C800

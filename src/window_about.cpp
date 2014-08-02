@@ -41,7 +41,7 @@ void window_about_show(Fl_Window* parent)
 
     window = new Fl_Window(window_x, window_y, window_w, window_h, _("About"));
 
-    title << "KISS Player v" << KISS_MAJOR_VERSION << "." << KISS_MINOR_VERSION << "." << KISS_PATCH_VERSION;
+    title << "KISS Player v" << VERSION;
 
     Fl_Box* box_title = new Fl_Box(5, 5, 240, 35);
     box_title->copy_label(title.str().c_str());
@@ -83,8 +83,7 @@ void window_about_show(Fl_Window* parent)
 
     text = new Fl_Help_View(10, 65, window_w-20, 140);
     text->textsize(14);
-    text->value("This program is licensed under the terms<br>\
-        of the GNU General Public License version 2<br>\
+    text->value("This program is licensed under the terms of the GNU General Public License version 2.<br>\
         Available online under:<br>\
         <u>http://gnu.org/licenses/gpl-2.0.html</u>");
 
