@@ -1,18 +1,21 @@
 Thumbs.db
-kissplayer
 stamp-po
 aclocal.m4
 remove-potcdate.sed
 configure
-obj/
-bin/
 locale/
 autotools/
 autom4te.cache/
 
 syntax: glob
 png2img
-Makefile*
+png2img.exe
+kissplayer
+kissplayer.exe
+kissplayer.desktop
+Makefile
+Makefile.in
+*.desktop
 *.exe
 *.s3db
 *.dll

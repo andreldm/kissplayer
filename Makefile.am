@@ -1,5 +1,5 @@
-DIST_SUBDIRS = po
-SUBDIRS = po
+DIST_SUBDIRS = po data
+SUBDIRS = po data
 
 AUTOMAKE_OPTIONS=foreign subdir-objects
 

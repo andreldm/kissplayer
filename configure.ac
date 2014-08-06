@@ -105,7 +105,19 @@ AC_CHECK_LIB([fltk_images], [main], [], [echo "libfltk_images is required for th
 ####################################
 AM_PO_SUBDIRS
 
-AC_CONFIG_FILES([Makefile])
-AC_CONFIG_FILES([m4/Makefile])
+AC_CONFIG_FILES([
+  Makefile
+  data/Makefile
+  data/kissplayer.desktop
+  data/icons/Makefile
+  data/icons/hicolor/Makefile
+  data/icons/hicolor/48x48/Makefile
+  data/icons/hicolor/48x48/apps/Makefile
+  data/icons/hicolor/64x64/Makefile
+  data/icons/hicolor/64x64/apps/Makefile
+  data/icons/hicolor/scalable/Makefile
+  data/icons/hicolor/scalable/apps/Makefile
+  m4/Makefile
+])
 AC_CONFIG_FILES([po/Makefile], [AM_POSTPROCESS_PO_MAKEFILE])
 AC_OUTPUT
