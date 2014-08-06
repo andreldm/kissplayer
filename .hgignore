@@ -9,12 +9,11 @@ autom4te.cache/
 
 syntax: glob
 png2img
-png2img.exe
 kissplayer
-kissplayer.exe
 kissplayer.desktop
 Makefile
 Makefile.in
+*.zip
 *.desktop
 *.exe
 *.s3db
