@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kissplayer 0.6.3\n"
 "Report-Msgid-Bugs-To: andreldm1989@gmail.com\n"
-"POT-Creation-Date: 2014-08-02 15:40-0300\n"
+"POT-Creation-Date: 2014-08-06 16:01-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -199,8 +199,16 @@ msgstr ""
 msgid "Lyrics Disabled"
 msgstr ""
 
-#: src/window_settings.cpp:86
+#: src/window_settings.cpp:79 src/window_settings.cpp:86
 msgid "General"
+msgstr ""
+
+#: src/window_settings.cpp:80 src/window_settings.cpp:133
+msgid "Directories"
+msgstr ""
+
+#: src/window_settings.cpp:82 src/window_settings.cpp:158
+msgid "Language"
 msgstr ""
 
 #: src/window_settings.cpp:92
@@ -227,20 +235,12 @@ msgstr ""
 msgid "Default Colors"
 msgstr ""
 
-#: src/window_settings.cpp:133
-msgid "Directories"
-msgstr ""
-
 #: src/window_settings.cpp:145
 msgid "Add"
 msgstr ""
 
 #: src/window_settings.cpp:150
 msgid "Remove"
-msgstr ""
-
-#: src/window_settings.cpp:158
-msgid "Language"
 msgstr ""
 
 #: src/window_settings.cpp:341

@@ -76,10 +76,10 @@ void window_settings_show(Fl_Window* parent)
     tab_selector->color(window_main_get_browser_music_color(1));
     tab_selector->color2(window_main_get_browser_music_color(2));
     tab_selector->textcolor(window_main_get_browser_music_color(3));
-    tab_selector->add("General");
-    tab_selector->add("Directories");
+    tab_selector->add(_("General"));
+    tab_selector->add(_("Directories"));
 #ifdef WIN32
-    tab_selector->add("Language");
+    tab_selector->add(_("Language"));
 #endif
 
     // TAB GENERAL

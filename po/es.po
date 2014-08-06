@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: andreldm1989@gmail.com\n"
-"POT-Creation-Date: 2014-08-02 15:40-0300\n"
+"POT-Creation-Date: 2014-08-06 16:01-0300\n"
 "PO-Revision-Date: 2014-05-28 14:42+0000\n"
 "Last-Translator: csanchez <carlos1994sanchez@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/kissplayer/"
@@ -201,9 +201,17 @@ msgstr "Buscando..."
 msgid "Lyrics Disabled"
 msgstr "Letras deshabilitadas"
 
-#: src/window_settings.cpp:86
+#: src/window_settings.cpp:79 src/window_settings.cpp:86
 msgid "General"
 msgstr ""
+
+#: src/window_settings.cpp:80 src/window_settings.cpp:133
+msgid "Directories"
+msgstr "Directorios"
+
+#: src/window_settings.cpp:82 src/window_settings.cpp:158
+msgid "Language"
+msgstr "Idioma"
 
 #: src/window_settings.cpp:92
 msgid "Display Lyrics"
@@ -229,10 +237,6 @@ msgstr "Color de texto"
 msgid "Default Colors"
 msgstr "Colores predeterminados"
 
-#: src/window_settings.cpp:133
-msgid "Directories"
-msgstr "Directorios"
-
 #: src/window_settings.cpp:145
 msgid "Add"
 msgstr "Añadir"
@@ -240,10 +244,6 @@ msgstr "Añadir"
 #: src/window_settings.cpp:150
 msgid "Remove"
 msgstr "Quitar"
-
-#: src/window_settings.cpp:158
-msgid "Language"
-msgstr "Idioma"
 
 #: src/window_settings.cpp:341
 msgid "Choose Color"
