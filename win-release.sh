@@ -42,12 +42,26 @@ done
 # libiconv is not listed in objdump but is needed
 cp "$MINGW_PATH/libiconv-2.dll" $OUTPUT
 
-strip kissplayer.exe
 cp kissplayer.exe $OUTPUT
 cp LICENSE.txt $OUTPUT
 cp CHANGELOG.txt $OUTPUT
 cp README.txt $OUTPUT
 
-7z a -tzip "kissplayer-$VERSION.zip" kissplayer > /dev/null
+echo "* Stripping executable and dlls..."
+strip $OUTPUT/*.exe $OUTPUT/*.dll
 
-echo done
+command -v upx >/dev/null 2>&1 && {
+  echo "* Compressing executable and dlls with UPX..."
+  upx -9 $OUTPUT/*.exe $OUTPUT/*.dll
+} || {
+  echo "* UPX not found, skipping executable compression..."
+}
+
+command -v 7z >/dev/null 2>&1 && {
+  echo "* Zipping..."
+  7z a -tzip "kissplayer-$VERSION.zip" kissplayer
+} || {
+  echo "* 7z not found, skipping zipping..."
+}
+
+echo "* Done!"
