@@ -2,7 +2,7 @@
 
 # This is script is meant to be run from a MSYS console
 
-MINGW_PATH=C:/MinGW/bin/
+MINGW_PATH=C:/MinGW/bin
 OUTPUT=kissplayer
 VERSION=`grep AC_INIT configure.ac | cut -d',' -f2 | tr -d '[] '`
 
@@ -32,12 +32,15 @@ objdump -p kissplayer.exe | grep "DLL Name:" | while read -r dll; do
   if [ "$?" -eq "1" ]; then
     continue
   fi
-  if [ ! -f $MINGW_PATH$dll ]; then
-    echo "$MINGW_PATH$dll not found!"
+  if [ ! -f $MINGW_PATH/$dll ]; then
+    echo "$MINGW_PATH/$dll not found!"
     continue
   fi
-  cp $MINGW_PATH$dll $OUTPUT
+  cp $MINGW_PATH/$dll $OUTPUT
 done
+
+# libiconv is not listed in objdump but is needed
+cp "$MINGW_PATH/libiconv-2.dll" $OUTPUT
 
 strip kissplayer.exe
 cp kissplayer.exe $OUTPUT
