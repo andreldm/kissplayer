@@ -1,4 +1,4 @@
-DIST_SUBDIRS = po data
+DIST_SUBDIRS = m4 po data
 SUBDIRS = po data
 
 AUTOMAKE_OPTIONS=foreign subdir-objects

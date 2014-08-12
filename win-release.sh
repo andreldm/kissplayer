@@ -17,13 +17,11 @@ win_dlls=(advapi32.dll comctl32.dll gdi32.dll kernel32.dll msvcrt.dll ole32.dll 
 mkdir -p $OUTPUT
 
 cd po
-
 find . -type f -iname "*.gmo" -print0 | while IFS= read -r -d $'\0' file; do
   lang=`echo "$file" | cut -d'.' -f2 | tr -d '/'`
   mkdir -p ../$OUTPUT/locale/$lang/LC_MESSAGES
   cp "$file" ../$OUTPUT/locale/$lang/LC_MESSAGES/kissplayer.mo
 done
-
 cd ..
 
 objdump -p kissplayer.exe | grep "DLL Name:" | while read -r dll; do
@@ -47,8 +45,20 @@ cp LICENSE.txt $OUTPUT
 cp CHANGELOG.txt $OUTPUT
 cp README.txt $OUTPUT
 
-echo "* Stripping executable and dlls..."
-strip $OUTPUT/*.exe $OUTPUT/*.dll
+echo "* Stripping kissplayer.exe"
+strip $OUTPUT/kissplayer.exe
+
+cd $OUTPUT
+for file in *.dll
+do
+  # As the distributed fmodex dll is MSVC compiled, stripping it would break it
+  case $file in
+    *fmodex*) continue;
+  esac
+  echo "* Stripping $file..."
+  strip $file
+done
+cd ..
 
 command -v upx >/dev/null 2>&1 && {
   echo "* Compressing executable and dlls with UPX..."
