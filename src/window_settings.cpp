@@ -30,7 +30,8 @@ static KSP_Check_Button* button_scroll_title;
 static Fl_Select_Browser* browser_directories;
 static Fl_Choice* lang_choice;
 static Fl_Hold_Browser* tab_selector;
-static Fl_Group* tabs[3] = { 0,0,0 };
+static Fl_Input* input_proxy;
+static Fl_Group* tabs[4] = { 0,0,0,0 };
 
 static deque<COD_VALUE> listDir;
 static bool should_resync;
@@ -78,6 +79,7 @@ void window_settings_show(Fl_Window* parent)
     tab_selector->textcolor(window_main_get_browser_music_color(3));
     tab_selector->add(_("General"));
     tab_selector->add(_("Directories"));
+    tab_selector->add(_("Network"));
 #ifdef WIN32
     tab_selector->add(_("Language"));
 #endif
@@ -154,13 +156,24 @@ void window_settings_show(Fl_Window* parent)
 
     tabs[1]->end();
 
-    // TAB LANGUAGE
-    tabs[2] = new Fl_Group(215, 10, window_w - 225, window_h - 20, _("Language"));
-#ifdef WIN32
+    // TAB NETWORK
+    tabs[2] = new Fl_Group(215, 10, window_w - 225, window_h - 20, _("Network"));
     tabs[2]->labelsize(16);
     tabs[2]->align(FL_ALIGN_INSIDE | FL_ALIGN_TOP);
     tabs[2]->box(FL_UP_FRAME);
     tabs[2]->begin();
+
+    input_proxy = new Fl_Input(220, 40, window_w - 235, 160, 0);
+
+    tabs[2]->end();
+
+    // TAB LANGUAGE
+    tabs[3] = new Fl_Group(215, 10, window_w - 225, window_h - 20, _("Language"));
+#ifdef WIN32
+    tabs[3]->labelsize(16);
+    tabs[3]->align(FL_ALIGN_INSIDE | FL_ALIGN_TOP);
+    tabs[3]->box(FL_UP_FRAME);
+    tabs[3]->begin();
 
     lang_choice = new Fl_Choice(220, 40, 200, 25);
     lang_choice->clear_visible_focus();
@@ -176,7 +189,7 @@ void window_settings_show(Fl_Window* parent)
     lang_choice->value((index < 0 ? 0 : index));
     dao_close_db();
 #endif
-    tabs[2]->end();
+    tabs[3]->end();
 
     // CLOSE BUTTON
     Fl_Button* button_close = new Fl_Button(0, window_h - 40, 60, 25, _("Close"));
