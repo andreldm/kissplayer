@@ -6,6 +6,8 @@
 #include <FL/Fl.H>
 #include <FL/fl_ask.H>
 #include <FL/Fl_Button.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl_Input.H>
 #include <FL/Fl_Hold_Browser.H>
 #include <FL/Fl_Light_Button.H>
 #include <FL/Fl_Color_Chooser.H>
@@ -50,6 +52,7 @@ static void cb_lyrics(Fl_Widget*, void*);
 static void cb_scroll_title(Fl_Widget*, void*);
 static void cb_change(Fl_Widget*, void*);
 static void cb_tab_select(Fl_Widget*, void*);
+static void cb_proxy(Fl_Widget*, void*);
 
 void window_settings_show(Fl_Window* parent)
 {
@@ -163,8 +166,15 @@ void window_settings_show(Fl_Window* parent)
     tabs[2]->box(FL_UP_FRAME);
     tabs[2]->begin();
 
-    input_proxy = new Fl_Input(220, 40, window_w - 235, 160, 0);
+    Fl_Box* label_proxy = new Fl_Box(220, 40, window_w - 235, 22, _("Proxy:"));
+    util_adjust_width(label_proxy);
 
+    input_proxy = new Fl_Input(215 + 8 + label_proxy->w(), 40, window_w - 240 - label_proxy->w(), 22, 0);
+    input_proxy->tooltip(_("Complete proxy string, ex: http://192.168.1.1:3128"));
+    dao_open_db();
+    input_proxy->value(dao_get_key("proxy").c_str());
+    dao_close_db();
+    input_proxy->callback(cb_proxy);
     tabs[2]->end();
 
     // TAB LANGUAGE
@@ -186,8 +196,8 @@ void window_settings_show(Fl_Window* parent)
 
     dao_open_db();
     int index = util_s2i(dao_get_key("lang_index"));
-    lang_choice->value((index < 0 ? 0 : index));
     dao_close_db();
+    lang_choice->value((index < 0 ? 0 : index));
 #endif
     tabs[3]->end();
 
@@ -389,4 +399,10 @@ void cb_tab_select(Fl_Widget*, void*) {
             tabs[t]->hide();
         }
     }
+}
+
+void cb_proxy(Fl_Widget*, void*) {
+    dao_open_db();
+    dao_set_key("proxy", input_proxy->value());
+    dao_close_db();
 }
