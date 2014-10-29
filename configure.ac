@@ -19,7 +19,7 @@ case "$target" in
     os=linux
     AC_MSG_RESULT([Linux])
     ;;
-  *mingw*)
+  *mingw*|*msys*)
     os=windows
     AC_MSG_RESULT([Windows])
     ;;
