@@ -6,6 +6,7 @@
 #include <FL/Fl.H>
 #include <curl/curl.h>
 
+#include "dao.h"
 #include "util.h"
 #include "sound.h"
 #include "locale.h"
@@ -98,10 +99,10 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
     char* url_unescaped;
     int findResult;
 
-    // As of December 2013, these regex are valid.
+    // As of November 2014, these regex are valid.
     // If they change the site layout, this fetcher
     // might not work properly or not work at all!
-    // DO NOT TRANSLATE THESE STRINGS
+    // DO NOT MAKE THESE STRINGS TRANSLATABLE
     string conditionNotFound = "This page needs content.";
     string conditionNotFound2 = "PUT LYRICS HERE";
     string conditionNotFound3 = "You have followed a link to a page that doesn't exist yet";
@@ -133,6 +134,12 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_easy_setopt(curl, CURLOPT_TIMEOUT, 5);
+        dao_open_db();
+        string proxy = dao_get_key("proxy");
+        dao_close_db();
+        if(!proxy.empty()) {
+            curl_easy_setopt(curl, CURLOPT_PROXY, proxy.c_str());
+        }
         CURLcode res = curl_easy_perform(curl);
         check_ticket(thread_ticket);
 
