@@ -1,28 +1,36 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Folders
+autom4te.cache/
+autotools/
+locale/
 
-# Precompiled Headers
-*.gch
-*.pch
+# Files
+aclocal.m4
+configure
+kissplayer
+kissplayer.desktop
+Makefile
+Makefile.in
+png2img
+remove-potcdate.sed
+stamp-po
+Thumbs.db
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
+# Extensions
+*.cbp
+*.cscope_file_list
+*.depend
+*.deps
+*.desktop
+*.dirstamp
 *.dll
-
-# Fortran module files
-*.mod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
 *.exe
-*.out
-*.app
+*.gmo
+*.layout
+*.log
+*.mo
+*.o
+*.res
+*.s3db
+*.status
+*.zip
+
