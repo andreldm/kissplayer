@@ -41,9 +41,9 @@ done
 cp "$MINGW_PATH/libiconv-2.dll" $OUTPUT
 
 cp kissplayer.exe $OUTPUT
-cp LICENSE.txt $OUTPUT
-cp CHANGELOG.txt $OUTPUT
-cp README.txt $OUTPUT
+cp LICENSE $OUTPUT
+cp CHANGELOG $OUTPUT
+cp README.md $OUTPUT
 
 echo "* Stripping kissplayer.exe"
 strip $OUTPUT/kissplayer.exe
