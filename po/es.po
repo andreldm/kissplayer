@@ -1,5 +1,5 @@
 # Spanish translations for KISS Player.
-# Copyright (C) 2014 THE KISS PLAYER'S COPYRIGHT HOLDER
+# Copyright (C) 2015 André Miranda
 # This file is distributed under the same license as the KISS Player.
 #
 # Translators:
@@ -19,27 +19,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/lyrics_fetcher.cpp:142
+#: src/lyrics_fetcher.cpp:149
 msgid "Connection timed out!"
 msgstr "¡Tiempo de conexión agotado!"
 
-#: src/lyrics_fetcher.cpp:149
+#: src/lyrics_fetcher.cpp:156
 msgid "Connection failure!"
 msgstr "¡Fallo de conexión!"
 
-#: src/lyrics_fetcher.cpp:170
+#: src/lyrics_fetcher.cpp:177
 msgid "Error while redirecting."
 msgstr "Error al redirigir."
 
-#: src/lyrics_fetcher.cpp:198
+#: src/lyrics_fetcher.cpp:205
 msgid "Not found :-("
 msgstr "No se encontró :-("
 
-#: src/lyrics_fetcher.cpp:213
+#: src/lyrics_fetcher.cpp:220
 msgid "Error while fetching."
 msgstr "Error al buscar."
 
-#: src/sync.cpp:28 src/window_settings.cpp:363
+#: src/sync.cpp:28 src/window_settings.cpp:386
 msgid "Warning"
 msgstr "Advertencia"
 
@@ -53,63 +53,65 @@ msgstr "Acerca de..."
 
 #: src/window_about.cpp:57
 msgid "Info"
-msgstr ""
+msgstr "Información"
 
 #: src/window_about.cpp:61
 msgid "A Simple and Lightweight Music Player"
-msgstr ""
+msgstr "Un simple y ligero reproductor de música"
 
 #: src/window_about.cpp:63
 msgid "Contact:"
-msgstr ""
+msgstr "Contacto:"
 
 #: src/window_about.cpp:64
 msgid "Website:"
-msgstr ""
+msgstr "Sitio web:"
 
 #: src/window_about.cpp:73
 msgid "Credits"
-msgstr ""
+msgstr "Créditos"
 
 #: src/window_about.cpp:77
 msgid "Developers:"
-msgstr ""
+msgstr "Desarrolladores:"
 
 #: src/window_about.cpp:78
 msgid "Project Leader"
-msgstr ""
+msgstr "Líder del Proyecto"
 
 #: src/window_about.cpp:79
 msgid "Developer"
-msgstr ""
+msgstr "Desarrollador"
 
 #: src/window_about.cpp:81
 msgid "Collaborators:"
-msgstr ""
+msgstr "Colaboradores:"
 
 #: src/window_about.cpp:85
 msgid "<translators_credits>"
-msgstr ""
+msgstr "<translators_credits>"
 
 #: src/window_about.cpp:87
 msgid "Translators:"
-msgstr ""
+msgstr "Traductores:"
 
 #: src/window_about.cpp:98
 msgid "License"
-msgstr ""
+msgstr "Licencia"
 
 #: src/window_about.cpp:102
 msgid ""
 "This program is licensed under the terms of the GNU General Public License "
 "version 2."
 msgstr ""
+"Este programa está disponible bajo los términos de la Licencia Pública "
+"General GNU versión 2."
 
 #: src/window_about.cpp:103
 msgid "Available online under:"
-msgstr ""
+msgstr "Disponible en línea:"
 
-#: src/window_about.cpp:114 src/window_settings.cpp:182
+#: src/window_about.cpp:114 src/window_settings.cpp:205
 msgid "Close"
 msgstr "Cerrar"
 
@@ -181,7 +183,7 @@ msgstr "Reproducción aleatoria"
 msgid "Repeat Playlist"
 msgstr "Repetir lista de reproducción"
 
-#: src/window_main.cpp:247 src/window_settings.cpp:73
+#: src/window_main.cpp:247 src/window_settings.cpp:77
 msgid "Settings"
 msgstr "Ajustes"
 
@@ -201,57 +203,66 @@ msgstr "Buscando..."
 msgid "Lyrics Disabled"
 msgstr "Letras deshabilitadas"
 
-#: src/window_settings.cpp:79 src/window_settings.cpp:86
+#: src/window_settings.cpp:83 src/window_settings.cpp:91
 msgid "General"
-msgstr ""
+msgstr "General"
 
-#: src/window_settings.cpp:80 src/window_settings.cpp:133
+#: src/window_settings.cpp:84 src/window_settings.cpp:138
 msgid "Directories"
 msgstr "Directorios"
 
-#: src/window_settings.cpp:82 src/window_settings.cpp:158
+#: src/window_settings.cpp:85 src/window_settings.cpp:163
+msgid "Network"
+msgstr ""
+
+#: src/window_settings.cpp:87 src/window_settings.cpp:181
 msgid "Language"
 msgstr "Idioma"
 
-#: src/window_settings.cpp:92
+#: src/window_settings.cpp:97
 msgid "Display Lyrics"
-msgstr "Mostrar Letras"
+msgstr "Mostrar letras"
 
-#: src/window_settings.cpp:96
+#: src/window_settings.cpp:101
 msgid "Scroll Title"
 msgstr "Desplazar título"
 
-#: src/window_settings.cpp:100
+#: src/window_settings.cpp:105
 msgid "Background Color"
 msgstr "Color de fondo"
 
-#: src/window_settings.cpp:108
+#: src/window_settings.cpp:113
 msgid "Selection Color"
 msgstr "Color de selección "
 
-#: src/window_settings.cpp:116
+#: src/window_settings.cpp:121
 msgid "Text Color"
 msgstr "Color de texto"
 
-#: src/window_settings.cpp:124
+#: src/window_settings.cpp:129
 msgid "Default Colors"
 msgstr "Colores predeterminados"
 
-#: src/window_settings.cpp:145
+#: src/window_settings.cpp:150
 msgid "Add"
 msgstr "Añadir"
 
-#: src/window_settings.cpp:150
+#: src/window_settings.cpp:155
 msgid "Remove"
 msgstr "Quitar"
 
-#: src/window_settings.cpp:341
+#: src/window_settings.cpp:169
+msgid "Proxy:"
+msgstr ""
+
+#: src/window_settings.cpp:173
+msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
+msgstr ""
+
+#: src/window_settings.cpp:364
 msgid "Choose Color"
 msgstr "Elegir color"
 
-#: src/window_settings.cpp:364
+#: src/window_settings.cpp:387
 msgid "Please, restart the program to change the language."
 msgstr "Por favor, reinicie el programa para cambiar el idioma."
-
-#~ msgid "General & Appearance"
-#~ msgstr "Apariencia & General"

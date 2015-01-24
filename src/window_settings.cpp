@@ -170,7 +170,7 @@ void window_settings_show(Fl_Window* parent)
     util_adjust_width(label_proxy);
 
     input_proxy = new Fl_Input(215 + 8 + label_proxy->w(), 40, window_w - 240 - label_proxy->w(), 22, 0);
-    input_proxy->tooltip(_("Complete proxy string, ex: http://192.168.1.1:3128"));
+    input_proxy->tooltip(_("Complete proxy URL, ex: http://192.168.1.1:3128"));
     dao_open_db();
     input_proxy->value(dao_get_key("proxy").c_str());
     dao_close_db();

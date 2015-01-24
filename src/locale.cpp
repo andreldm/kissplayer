@@ -13,6 +13,7 @@ using namespace std;
 
 static Language* languages[] = {
     new Language("System Default", ""),
+    new Language("Čeština", "cs.UTF-8"),
     new Language("English", "en.UTF-8"),
     new Language("Español", "es.UTF-8"),
     new Language("Italiano", "it.UTF-8"),

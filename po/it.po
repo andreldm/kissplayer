@@ -1,14 +1,14 @@
 # Italian translations for KISS Player.
-# Copyright (C) 2014 THE KISS PLAYER'S COPYRIGHT HOLDER
+# Copyright (C) 2015 André Miranda
 # This file is distributed under the same license as the KISS Player.
-#
+# 
 # Translators:
 # giuseppep <anubisteam01@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: andreldm1989@gmail.com\n"
-"POT-Creation-Date: 2014-08-06 16:01-0300\n"
+"POT-Creation-Date: 2015-01-24 18:17-0200\n"
 "PO-Revision-Date: 2014-04-10 13:10+0000\n"
 "Last-Translator: giuseppep <anubisteam01@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/kissplayer/"
@@ -19,27 +19,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/lyrics_fetcher.cpp:142
+#: src/lyrics_fetcher.cpp:149
 msgid "Connection timed out!"
 msgstr "Timeout della connessione!"
 
-#: src/lyrics_fetcher.cpp:149
+#: src/lyrics_fetcher.cpp:156
 msgid "Connection failure!"
 msgstr "Connessione fallita!"
 
-#: src/lyrics_fetcher.cpp:170
+#: src/lyrics_fetcher.cpp:177
 msgid "Error while redirecting."
 msgstr "Errore durante il reindirizzamento."
 
-#: src/lyrics_fetcher.cpp:198
+#: src/lyrics_fetcher.cpp:205
 msgid "Not found :-("
 msgstr "Non trovato :-("
 
-#: src/lyrics_fetcher.cpp:213
+#: src/lyrics_fetcher.cpp:220
 msgid "Error while fetching."
 msgstr "Errore durante il recupero."
 
-#: src/sync.cpp:28 src/window_settings.cpp:363
+#: src/sync.cpp:28 src/window_settings.cpp:386
 msgid "Warning"
 msgstr "Attenzione"
 
@@ -109,7 +109,7 @@ msgstr ""
 msgid "Available online under:"
 msgstr ""
 
-#: src/window_about.cpp:114 src/window_settings.cpp:182
+#: src/window_about.cpp:114 src/window_settings.cpp:205
 msgid "Close"
 msgstr "Chiudi"
 
@@ -181,7 +181,7 @@ msgstr "Casuale"
 msgid "Repeat Playlist"
 msgstr ""
 
-#: src/window_main.cpp:247 src/window_settings.cpp:73
+#: src/window_main.cpp:247 src/window_settings.cpp:77
 msgid "Settings"
 msgstr "Impostazioni"
 
@@ -201,55 +201,67 @@ msgstr "Recupero..."
 msgid "Lyrics Disabled"
 msgstr "Testi disattivati"
 
-#: src/window_settings.cpp:79 src/window_settings.cpp:86
+#: src/window_settings.cpp:83 src/window_settings.cpp:91
 msgid "General"
 msgstr ""
 
-#: src/window_settings.cpp:80 src/window_settings.cpp:133
+#: src/window_settings.cpp:84 src/window_settings.cpp:138
 msgid "Directories"
 msgstr "Cartelle"
 
-#: src/window_settings.cpp:82 src/window_settings.cpp:158
+#: src/window_settings.cpp:85 src/window_settings.cpp:163
+msgid "Network"
+msgstr ""
+
+#: src/window_settings.cpp:87 src/window_settings.cpp:181
 msgid "Language"
 msgstr "Lingua"
 
-#: src/window_settings.cpp:92
+#: src/window_settings.cpp:97
 msgid "Display Lyrics"
 msgstr "Mostra testi"
 
-#: src/window_settings.cpp:96
+#: src/window_settings.cpp:101
 msgid "Scroll Title"
 msgstr "Scorri titolo"
 
-#: src/window_settings.cpp:100
+#: src/window_settings.cpp:105
 msgid "Background Color"
 msgstr "Colore sfondo"
 
-#: src/window_settings.cpp:108
+#: src/window_settings.cpp:113
 msgid "Selection Color"
 msgstr "Selezione colore"
 
-#: src/window_settings.cpp:116
+#: src/window_settings.cpp:121
 msgid "Text Color"
 msgstr "Colore testo"
 
-#: src/window_settings.cpp:124
+#: src/window_settings.cpp:129
 msgid "Default Colors"
 msgstr "Colori di default"
 
-#: src/window_settings.cpp:145
+#: src/window_settings.cpp:150
 msgid "Add"
 msgstr "Aggiungi"
 
-#: src/window_settings.cpp:150
+#: src/window_settings.cpp:155
 msgid "Remove"
 msgstr "Rimuovi"
 
-#: src/window_settings.cpp:341
+#: src/window_settings.cpp:169
+msgid "Proxy:"
+msgstr ""
+
+#: src/window_settings.cpp:173
+msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
+msgstr ""
+
+#: src/window_settings.cpp:364
 msgid "Choose Color"
 msgstr "Seleziona colore"
 
-#: src/window_settings.cpp:364
+#: src/window_settings.cpp:387
 msgid "Please, restart the program to change the language."
 msgstr "Riavvia il programma per cambiare la lingua"
 

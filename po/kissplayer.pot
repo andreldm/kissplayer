@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kissplayer 0.6.3\n"
 "Report-Msgid-Bugs-To: andreldm1989@gmail.com\n"
-"POT-Creation-Date: 2014-08-06 16:01-0300\n"
+"POT-Creation-Date: 2015-01-24 18:17-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,27 +17,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/lyrics_fetcher.cpp:142
+#: src/lyrics_fetcher.cpp:149
 msgid "Connection timed out!"
 msgstr ""
 
-#: src/lyrics_fetcher.cpp:149
+#: src/lyrics_fetcher.cpp:156
 msgid "Connection failure!"
 msgstr ""
 
-#: src/lyrics_fetcher.cpp:170
+#: src/lyrics_fetcher.cpp:177
 msgid "Error while redirecting."
 msgstr ""
 
-#: src/lyrics_fetcher.cpp:198
+#: src/lyrics_fetcher.cpp:205
 msgid "Not found :-("
 msgstr ""
 
-#: src/lyrics_fetcher.cpp:213
+#: src/lyrics_fetcher.cpp:220
 msgid "Error while fetching."
 msgstr ""
 
-#: src/sync.cpp:28 src/window_settings.cpp:363
+#: src/sync.cpp:28 src/window_settings.cpp:386
 msgid "Warning"
 msgstr ""
 
@@ -107,7 +107,7 @@ msgstr ""
 msgid "Available online under:"
 msgstr ""
 
-#: src/window_about.cpp:114 src/window_settings.cpp:182
+#: src/window_about.cpp:114 src/window_settings.cpp:205
 msgid "Close"
 msgstr ""
 
@@ -179,7 +179,7 @@ msgstr ""
 msgid "Repeat Playlist"
 msgstr ""
 
-#: src/window_main.cpp:247 src/window_settings.cpp:73
+#: src/window_main.cpp:247 src/window_settings.cpp:77
 msgid "Settings"
 msgstr ""
 
@@ -199,54 +199,66 @@ msgstr ""
 msgid "Lyrics Disabled"
 msgstr ""
 
-#: src/window_settings.cpp:79 src/window_settings.cpp:86
+#: src/window_settings.cpp:83 src/window_settings.cpp:91
 msgid "General"
 msgstr ""
 
-#: src/window_settings.cpp:80 src/window_settings.cpp:133
+#: src/window_settings.cpp:84 src/window_settings.cpp:138
 msgid "Directories"
 msgstr ""
 
-#: src/window_settings.cpp:82 src/window_settings.cpp:158
+#: src/window_settings.cpp:85 src/window_settings.cpp:163
+msgid "Network"
+msgstr ""
+
+#: src/window_settings.cpp:87 src/window_settings.cpp:181
 msgid "Language"
 msgstr ""
 
-#: src/window_settings.cpp:92
+#: src/window_settings.cpp:97
 msgid "Display Lyrics"
 msgstr ""
 
-#: src/window_settings.cpp:96
+#: src/window_settings.cpp:101
 msgid "Scroll Title"
 msgstr ""
 
-#: src/window_settings.cpp:100
+#: src/window_settings.cpp:105
 msgid "Background Color"
 msgstr ""
 
-#: src/window_settings.cpp:108
+#: src/window_settings.cpp:113
 msgid "Selection Color"
 msgstr ""
 
-#: src/window_settings.cpp:116
+#: src/window_settings.cpp:121
 msgid "Text Color"
 msgstr ""
 
-#: src/window_settings.cpp:124
+#: src/window_settings.cpp:129
 msgid "Default Colors"
 msgstr ""
 
-#: src/window_settings.cpp:145
+#: src/window_settings.cpp:150
 msgid "Add"
 msgstr ""
 
-#: src/window_settings.cpp:150
+#: src/window_settings.cpp:155
 msgid "Remove"
 msgstr ""
 
-#: src/window_settings.cpp:341
-msgid "Choose Color"
+#: src/window_settings.cpp:169
+msgid "Proxy:"
+msgstr ""
+
+#: src/window_settings.cpp:173
+msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
 msgstr ""
 
 #: src/window_settings.cpp:364
+msgid "Choose Color"
+msgstr ""
+
+#: src/window_settings.cpp:387
 msgid "Please, restart the program to change the language."
 msgstr ""
