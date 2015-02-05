@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: andreldm1989@gmail.com\n"
 "POT-Creation-Date: 2015-01-24 18:17-0200\n"
-"PO-Revision-Date: 2015-01-11 19:00+0000\n"
+"PO-Revision-Date: 2015-01-24 22:11+0000\n"
 "Last-Translator: fri\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/kissplayer/"
 "language/cs/)\n"
@@ -211,7 +211,7 @@ msgstr "Adresáře"
 
 #: src/window_settings.cpp:85 src/window_settings.cpp:163
 msgid "Network"
-msgstr ""
+msgstr "Síť"
 
 #: src/window_settings.cpp:87 src/window_settings.cpp:181
 msgid "Language"
@@ -251,11 +251,11 @@ msgstr "Odstranit"
 
 #: src/window_settings.cpp:169
 msgid "Proxy:"
-msgstr ""
+msgstr "Proxy:"
 
 #: src/window_settings.cpp:173
 msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
-msgstr ""
+msgstr "Úplná adresa proxy (URL), např.: http://192.168.1.1:3128"
 
 #: src/window_settings.cpp:364
 msgid "Choose Color"
