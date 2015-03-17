@@ -557,6 +557,20 @@ int handler(int e, Fl_Window* w)
                 sound_position(pos - 5000);
 
             return 1;
+        case FL_Up: // Cycle search type
+            if(Fl::event_ctrl() && input_search == Fl::focus()) {
+                int v = choice_search_type->value() -1;
+                if(v >= 0) choice_search_type->value(v);
+                cb_search_type(choice_search_type, NULL);
+                return 0;
+            }
+        case FL_Down: // Cycle search type
+            if(Fl::event_ctrl() && input_search == Fl::focus()) {
+                int v = choice_search_type->value() +1;
+                if(v < choice_search_type->size()) choice_search_type->value(v);
+                cb_search_type(choice_search_type, NULL);
+                return 0;
+            }
         case 'k': // Search bar gets focused
             if(Fl::event_ctrl()) {
                 input_search->take_focus();
