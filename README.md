@@ -7,6 +7,8 @@
 
 ### A Simple and Lightweight Music Player ###
 
+![kissplayer](https://cloud.githubusercontent.com/assets/599565/6767569/9a85cff8-d015-11e4-9574-1f1b7b7a9213.png)
+
 Cross-platform and open-source Music Player designed to be simple and lightweight.
 If you want a player full of features, most of them you don't use, exaggerated eye-candy and a memory hog, take a look around , there are lots. However if you want a different player that doesn't distract you or wastes your time, KISS Player can be a great alternative.
 
