@@ -9,3 +9,6 @@ before_install:
   - sudo mkdir /usr/local/include/fmodex
   - sudo mv fmod/api/inc/* /usr/local/include/fmodex
   - sudo mv fmod/api/lib/*.so /usr/local/lib
+
+before_script:
+  - ./autogen.sh
