@@ -3,12 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
-#define _WIN32_IE   0x0500
 #include <shlobj.h>
 
 #include <FL/x.H>
 
-#include "mingw_fix.h"
 #include "../window_main.h"
 
 using namespace std;
