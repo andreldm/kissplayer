@@ -5,9 +5,7 @@ before_install:
   - sudo apt-get install -y libtag1-dev libfltk1.3-dev libsqlite3-dev libpng12-dev zlib1g-dev libcurl4-openssl-dev libxpm-dev libxtst-dev libxft-dev libxinerama-dev
   - wget http://www.fmod.org/download/fmodex/api/Linux/fmodapi44451linux.tar.gz -O fmod.tar.gz
   - mkdir fmod
-  - tar xf fmod.tar.gz -C fmod
+  - tar xf fmod.tar.gz -C fmod --strip-components 1
   - sudo mkdir /usr/local/include/fmodex
   - mv fmod/api/inc/* /usr/local/include/fmodex
   - mv fmod/api/lib/*.a /usr/local/lib
-
-install: make get-deps
