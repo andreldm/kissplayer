@@ -8,4 +8,4 @@ before_install:
   - tar xf fmod.tar.gz -C fmod --strip-components 1
   - sudo mkdir /usr/local/include/fmodex
   - sudo mv fmod/api/inc/* /usr/local/include/fmodex
-  - sudo mv fmod/api/lib/*.a /usr/local/lib
+  - sudo mv fmod/api/lib/*.so /usr/local/lib
