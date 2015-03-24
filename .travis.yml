@@ -1,7 +1,7 @@
 language: cpp
 
 before_install:
-  - sudo add-apt-repository ppa:kubuntu-ppa/backports -y
+  - echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty universe" | sudo tee -a /etc/apt/sources.list
   - sudo apt-get update -qq
   - sudo apt-get install -y libtag1-dev libfltk1.3-dev libsqlite3-dev libpng12-dev zlib1g-dev libcurl4-openssl-dev libxpm-dev libxtst-dev libxft-dev libxinerama-dev
   - wget http://www.fmod.org/download/fmodex/api/Linux/fmodapi44451linux.tar.gz -O fmod.tar.gz
