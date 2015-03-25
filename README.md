@@ -5,7 +5,7 @@
                       |_|\_\___|____/____/  |_|   |_|\__,_|\__, |\___|_|
                                                            |___/
 
-### A Simple and Lightweight Music Player ###
+### A Simple and Lightweight Music Player [![Build Status](https://travis-ci.org/andreldm/kissplayer.svg?branch=master)](https://travis-ci.org/andreldm/kissplayer)
 
 ![kissplayer](https://cloud.githubusercontent.com/assets/599565/6767569/9a85cff8-d015-11e4-9574-1f1b7b7a9213.png)
 
