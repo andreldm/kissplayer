@@ -82,6 +82,7 @@ int os_specific_init()
 
     XRecordEnableContextAsync(disp_data, context, keyHookCallback, NULL);
 
+    // Start polling
     Fl::repeat_timeout(0.1, keyHookTimer);
 
     return 0;
@@ -95,13 +96,20 @@ void os_specific_end()
     }*/
 }
 
-void os_specific_get_working_dir(std::string& dir)
+int os_specific_get_working_dir(std::string& dir)
 {
     struct passwd* pw = getpwuid(getuid());
     string path = pw->pw_dir;
     path.append("/.kissplayer/");
     dir.assign(path);
-    mkdir(dir.c_str(), 0777);
+
+    if(mkdir(dir.c_str(), 0777) != 0) {
+        if (errno != EEXIST) {
+            return -1;
+        }
+    }
+
+    return 0;
 }
 
 void os_specific_dir_chooser(char* dir)

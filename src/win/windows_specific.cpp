@@ -95,7 +95,7 @@ void os_specific_end()
 /**
 * Get the directory where the database file is
 */
-void os_specific_get_working_dir(string& dir)
+int os_specific_get_working_dir(string& dir)
 {
     wchar_t wpath[PATH_LENGTH];
     GetModuleFileNameW(NULL, wpath, PATH_LENGTH);
@@ -106,6 +106,8 @@ void os_specific_get_working_dir(string& dir)
     fl_utf8fromwc(path, PATH_LENGTH, wdir, lstrlenW(wdir));
 
     dir.replace(0, strlen(path), path);
+
+    return 0;
 }
 
 /**

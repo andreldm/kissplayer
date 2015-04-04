@@ -20,6 +20,9 @@ struct FL_BLINE {
 KSP_Browser::KSP_Browser(int x, int y, int w, int h)
     : Fl_Select_Browser(x, y, w, h, NULL)
 {
+    dnd_evt = false;
+    highlighted_line = NULL;
+
     type(FL_HOLD_BROWSER);
     box(FL_DOWN_BOX);
 }

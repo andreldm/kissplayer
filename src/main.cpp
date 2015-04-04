@@ -1,5 +1,6 @@
 #include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
+#include <FL/fl_ask.H>
 #include <FL/fl_draw.H>
 
 #include "sound.h"
@@ -20,7 +21,12 @@ int     FLAG_SEARCH_TYPE;
 
 int main(int argc, char** argv)
 {
-    dao_start_db();
+    fl_message_hotspot(false);
+
+    if(dao_start_db() != 0) {
+        fl_alert(_("Error while initializing database"));
+        return -1;
+    }
 
     Locale::init();
 
@@ -35,11 +41,15 @@ int main(int argc, char** argv)
         os_specific_maximize_window();
     }
 
-    // TODO: Check if returns 0, else "Keyboard hooker failed!";
-    os_specific_init();
+    if(os_specific_init() != 0) {
+        fl_alert(_("Keyboard hooker failed!"));
+        return -1;
+    }
 
-    // TODO: Check if returns 0, else "Could not initialize sound system!"
-    sound_initialize();
+    if(sound_initialize() != 0) {
+        fl_alert(_("Error while initializing sound system!"));
+        return -1;
+    }
 
     Fl::lock();
 

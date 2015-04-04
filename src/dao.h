@@ -15,7 +15,7 @@ public:
 
 void            dao_open_db                     (void);
 void            dao_close_db                    (void);
-void            dao_start_db                    (void);
+int             dao_start_db                    (void);
 void            dao_begin_transaction           (void);
 void            dao_commit_transaction          (void);
 

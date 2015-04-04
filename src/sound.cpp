@@ -22,8 +22,6 @@ int sound_initialize(void)
 {
     if (FMOD_System_Create(&_system) != FMOD_OK) return -1;
     if (FMOD_System_Init(_system, 2, FMOD_INIT_NORMAL | FMOD_IGNORETAGS, 0) != FMOD_OK) return -1;
-    // sets initial sound volume (mute)
-    if (FMOD_Channel_SetVolume(_channel, 0.0f) != FMOD_OK) return -1;
 
     return 0;
 }

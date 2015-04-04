@@ -10,7 +10,7 @@
 void    os_specific_set_app_icon                (void);
 int     os_specific_init                        (void);
 void    os_specific_end                         (void);
-void    os_specific_get_working_dir             (std::string& dir);
+int     os_specific_get_working_dir             (std::string& dir);
 void    os_specific_dir_chooser                 (char* dir);
 void    os_specific_maximize_window             (void);
 bool    os_specific_is_window_maximized         (void);

@@ -51,9 +51,12 @@ void dao_commit_transaction()
     dao_close_db();
 }
 
-void dao_start_db()
+int dao_start_db()
 {
-    os_specific_get_working_dir(DB_NAME);
+    if(os_specific_get_working_dir(DB_NAME) != 0) {
+        return -1;
+    }
+
     DB_NAME.append("db.s3db");
 
     dao_open_db();

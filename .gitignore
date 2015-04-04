@@ -1,6 +1,7 @@
 # Folders
 autom4te.cache/
 autotools/
+cov-int/
 locale/
 
 # Files
