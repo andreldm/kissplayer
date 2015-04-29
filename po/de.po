@@ -1,0 +1,265 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR André Miranda
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Ettore Atalan <atalanttore@googlemail.com>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: KISS Player\n"
+"Report-Msgid-Bugs-To: andreldm1989@gmail.com\n"
+"POT-Creation-Date: 2015-01-24 18:17-0200\n"
+"PO-Revision-Date: 2015-04-28 23:12+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"Language-Team: German (http://www.transifex.com/projects/p/kissplayer/language/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/lyrics_fetcher.cpp:149
+msgid "Connection timed out!"
+msgstr "Zeitüberschreitung der Verbindung!"
+
+#: src/lyrics_fetcher.cpp:156
+msgid "Connection failure!"
+msgstr "Verbindungsfehler!"
+
+#: src/lyrics_fetcher.cpp:177
+msgid "Error while redirecting."
+msgstr "Fehler beim Umleiten."
+
+#: src/lyrics_fetcher.cpp:205
+msgid "Not found :-("
+msgstr "Nicht gefunden :-("
+
+#: src/lyrics_fetcher.cpp:220
+msgid "Error while fetching."
+msgstr "Fehler beim Abrufen."
+
+#: src/sync.cpp:28 src/window_settings.cpp:386
+msgid "Warning"
+msgstr "Warnung"
+
+#: src/sync.cpp:29
+msgid "Please, add at least one directory on the Settings Window."
+msgstr "Bitte fügen Sie mindestens ein Verzeichnis im Fenster Einstellungen hinzu."
+
+#: src/window_about.cpp:42 src/window_main.cpp:248
+msgid "About"
+msgstr "Über"
+
+#: src/window_about.cpp:57
+msgid "Info"
+msgstr "Info"
+
+#: src/window_about.cpp:61
+msgid "A Simple and Lightweight Music Player"
+msgstr "Ein einfacher und leichtgewichtiger Musikabspieler"
+
+#: src/window_about.cpp:63
+msgid "Contact:"
+msgstr "Kontakt:"
+
+#: src/window_about.cpp:64
+msgid "Website:"
+msgstr "Webseite:"
+
+#: src/window_about.cpp:73
+msgid "Credits"
+msgstr "Danksagung"
+
+#: src/window_about.cpp:77
+msgid "Developers:"
+msgstr "Entwickler:"
+
+#: src/window_about.cpp:78
+msgid "Project Leader"
+msgstr "Projektleiter"
+
+#: src/window_about.cpp:79
+msgid "Developer"
+msgstr "Entwickler"
+
+#: src/window_about.cpp:81
+msgid "Collaborators:"
+msgstr "Mitarbeiter:"
+
+#: src/window_about.cpp:85
+msgid "<translators_credits>"
+msgstr "<translators_credits>"
+
+#: src/window_about.cpp:87
+msgid "Translators:"
+msgstr "Übersetzer:"
+
+#: src/window_about.cpp:98
+msgid "License"
+msgstr "Lizenz"
+
+#: src/window_about.cpp:102
+msgid ""
+"This program is licensed under the terms of the GNU General Public License "
+"version 2."
+msgstr "Dieses Programm ist unter den Bedingungen der GNU General Public License Version 2 lizenziert."
+
+#: src/window_about.cpp:103
+msgid "Available online under:"
+msgstr "Online verfügbar unter:"
+
+#: src/window_about.cpp:114 src/window_settings.cpp:205
+msgid "Close"
+msgstr "Schließen"
+
+#: src/window_loading.cpp:27
+msgid "Please Wait"
+msgstr "Bitte warten"
+
+#: src/window_loading.cpp:30
+msgid "Scanning directories..."
+msgstr "Verzeichnisse werden durchsucht..."
+
+#: src/window_loading.cpp:33
+msgid "Loading files..."
+msgstr "Dateien werden geladen..."
+
+#: src/window_loading.cpp:36
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: src/window_main.cpp:141
+msgid "Search:"
+msgstr "Suche:"
+
+#: src/window_main.cpp:151 src/window_main.cpp:442
+msgid "All"
+msgstr "Alle"
+
+#: src/window_main.cpp:152 src/window_main.cpp:443
+msgid "Title"
+msgstr "Titel"
+
+#: src/window_main.cpp:153 src/window_main.cpp:444
+msgid "Artist"
+msgstr "Interpret"
+
+#: src/window_main.cpp:154 src/window_main.cpp:445
+msgid "Album"
+msgstr "Album"
+
+#: src/window_main.cpp:209
+msgid "Play/Pause"
+msgstr "Wiedergabe/Pause"
+
+#: src/window_main.cpp:215
+msgid "Stop"
+msgstr "Stopp"
+
+#: src/window_main.cpp:221
+msgid "Previous"
+msgstr "Vorheriger"
+
+#: src/window_main.cpp:227
+msgid "Next"
+msgstr "Nächster"
+
+#: src/window_main.cpp:235
+msgid "Volume"
+msgstr "Lautstärke"
+
+#: src/window_main.cpp:244
+msgid "Synchronize Library"
+msgstr "Bibliothek synchronisieren"
+
+#: src/window_main.cpp:245
+msgid "Randomize"
+msgstr "Zufällig anordnen"
+
+#: src/window_main.cpp:246
+msgid "Repeat Playlist"
+msgstr "Wiedergabeliste wiederholen"
+
+#: src/window_main.cpp:247 src/window_settings.cpp:77
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: src/window_main.cpp:304
+msgid "KISS Player - Paused"
+msgstr "KISS Player - Pausiert"
+
+#: src/window_main.cpp:336
+msgid "KISS Player"
+msgstr "KISS Player"
+
+#: src/window_main.cpp:641
+msgid "Fetching..."
+msgstr "Abrufvorgang..."
+
+#: src/window_main.cpp:645
+msgid "Lyrics Disabled"
+msgstr "Songtext deaktiviert"
+
+#: src/window_settings.cpp:83 src/window_settings.cpp:91
+msgid "General"
+msgstr "Allgemein"
+
+#: src/window_settings.cpp:84 src/window_settings.cpp:138
+msgid "Directories"
+msgstr "Verzeichnisse"
+
+#: src/window_settings.cpp:85 src/window_settings.cpp:163
+msgid "Network"
+msgstr "Netzwerk"
+
+#: src/window_settings.cpp:87 src/window_settings.cpp:181
+msgid "Language"
+msgstr "Sprache"
+
+#: src/window_settings.cpp:97
+msgid "Display Lyrics"
+msgstr "Songtext anzeigen"
+
+#: src/window_settings.cpp:101
+msgid "Scroll Title"
+msgstr "Bildlauftitel"
+
+#: src/window_settings.cpp:105
+msgid "Background Color"
+msgstr "Hintergrundfarbe"
+
+#: src/window_settings.cpp:113
+msgid "Selection Color"
+msgstr "Auswahlfarbe"
+
+#: src/window_settings.cpp:121
+msgid "Text Color"
+msgstr "Textfarbe"
+
+#: src/window_settings.cpp:129
+msgid "Default Colors"
+msgstr "Standardfarben"
+
+#: src/window_settings.cpp:150
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: src/window_settings.cpp:155
+msgid "Remove"
+msgstr "Entfernen"
+
+#: src/window_settings.cpp:169
+msgid "Proxy:"
+msgstr "Proxy:"
+
+#: src/window_settings.cpp:173
+msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
+msgstr "Vollständige Proxy-URL, z.B.: http://192.168.1.1:3128"
+
+#: src/window_settings.cpp:364
+msgid "Choose Color"
+msgstr "Farbe auswählen"
+
+#: src/window_settings.cpp:387
+msgid "Please, restart the program to change the language."
+msgstr "Bitte starten Sie das Programm neu, um die Sprache zu ändern."
