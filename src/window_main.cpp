@@ -287,7 +287,7 @@ void cb_close_window(Fl_Widget* widget, void*)
     sound_unload();
     save_config();
 
-    window->~Fl_Window();
+    window->~Fl_Double_Window();
 }
 
 void cb_menu(Fl_Widget* w, void*)

@@ -231,13 +231,13 @@ void cb_close(Fl_Widget* widget, void*)
 
 void cb_add_dir(Fl_Widget* widget, void*)
 {
-    char dir[PATH_LENGTH];
+    char dir[PATH_LENGTH] = "";
     int dirQty = listDir.size();
 
     os_specific_dir_chooser(dir);
     Fl::redraw();
 
-    if(dir != NULL && strlen(dir) > 0) {
+    if(strlen(dir) > 0) {
         // If the user didn't cancel
         dao_insert_directory(dir);
         update_dir_list();

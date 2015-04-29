@@ -49,7 +49,7 @@ void Locale::setLanguage(int index)
     dao_open_db();
     dao_set_key(KEY_LANGUAGE, choice);
     dao_set_key(KEY_LANGUAGE_INDEX, util_i2s(index));
-    dao_close_db;
+    dao_close_db();
 }
 
 Language** Locale::getDefinedLanguages()
