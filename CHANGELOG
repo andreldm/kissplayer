@@ -1,3 +1,11 @@
+v 0.6.4 - 29/04/2015:
+- Project hosted on GitHub
+- Project on Travis CI
+- Minimal proxy support
+- Windows support provided by MSYS2 instead of MinGW
+- New and updated translations
+- Cycle search type with ctrl up and down
+
 v 0.6.3 - 22/07/2014:
 - Fix ticket #17 by Maykon Silva
 - Fix ticket #29 by Herman Polloni
