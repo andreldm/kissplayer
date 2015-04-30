@@ -1,16 +1,17 @@
-# Brazilian Portuguese translations for KISS Player.
+# pt_BR translation for KISS Player.
 # Copyright (C) 2015 André Miranda
-# This file is distributed under the same license as the KISS Player.
-#
+# This file is distributed under the same license as the PACKAGE package.
+# 
 # Translators:
-# AndreLDM <andreldm1989@gmail.com>, 2014
-# Maykon Silva <maykosiqueira@gmail.com>, 2014.
+# André Miranda <andreldm1989@gmail.com>, 2014
+# André Miranda <andreldm1989@gmail.com>, 2014-2015
+# Maykon Silva <maykosiqueira@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: andreldm1989@gmail.com\n"
 "POT-Creation-Date: 2015-01-24 18:17-0200\n"
-"PO-Revision-Date: 2015-01-24 20:18+0000\n"
+"PO-Revision-Date: 2015-01-24 20:21+0000\n"
 "Last-Translator: André Miranda <andreldm1989@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/kissplayer/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"

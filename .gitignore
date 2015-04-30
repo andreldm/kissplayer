@@ -5,6 +5,7 @@ cov-int/
 locale/
 
 # Files
+.transifex-user
 aclocal.m4
 configure
 kissplayer

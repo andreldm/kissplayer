@@ -1,2 +1,10 @@
-# Set of available languages.
-cs de es it pt_BR
+# please keep this list sorted alphabetically
+
+cs
+de
+el
+es
+it
+pt_BR
+tr_TR
+zh

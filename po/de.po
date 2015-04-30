@@ -1,5 +1,5 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR André Miranda
+# de translation for KISS Player.
+# Copyright (C) 2015 André Miranda
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: andreldm1989@gmail.com\n"
 "POT-Creation-Date: 2015-01-24 18:17-0200\n"
-"PO-Revision-Date: 2015-04-28 23:12+0000\n"
+"PO-Revision-Date: 2015-04-29 11:54+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/kissplayer/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -88,7 +88,7 @@ msgstr "Mitarbeiter:"
 
 #: src/window_about.cpp:85
 msgid "<translators_credits>"
-msgstr "<translators_credits>"
+msgstr "Ettore Atalan"
 
 #: src/window_about.cpp:87
 msgid "Translators:"
