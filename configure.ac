@@ -3,7 +3,7 @@
 ################################################################
 
 AC_PREREQ([2.68])
-AC_INIT([KISS Player], [0.6.4], [andreldm1989@gmail.com], [kissplayer], [http://sourceforge.net/projects/kissplayer/])
+AC_INIT([KISS Player], [0.6.4], [andreldm1989@gmail.com], [kissplayer], [https://github.com/andreldm/kissplayer])
 AC_CONFIG_AUX_DIR(autotools)
 AC_CONFIG_MACRO_DIR(m4)
 
@@ -72,7 +72,6 @@ if test "x$os" = "xlinux"; then
   AC_CHECK_LIB([fontconfig], [main], [], [echo "libfontconfig is required for this program"; exit -1])
   AC_CHECK_LIB([pthread], [main], [], [echo "libpthread is required for this program"; exit -1])
   AC_CHECK_LIB([dl], [main], [], [echo "libdl is required for this program"; exit -1])
-  AC_CHECK_LIB([curl], [main], [], [echo "libcurl is required for this program"; exit -1])
 
   if test "x$arch" = "x64"; then
     AC_CHECK_LIB([fmodex64], [main], [], [echo "libfmodex64 is required for this program"; exit -1])
@@ -86,11 +85,9 @@ elif test "x$os" = "xwindows"; then
   AC_CHECK_LIB([wsock32], [main], [], [echo "libwsock32 is required for this program"; exit -1])
   AC_CHECK_LIB([gdi32], [main], [], [echo "libgdi32 is required for this program"; exit -1])
   AC_CHECK_LIB([comdlg32], [main], [], [echo "libcomdlg32 is required for this program"; exit -1])
+  AC_CHECK_LIB([ws2_32], [main], [], [echo "libcomdlg32 is required for this program"; exit -1])
   AC_CHECK_LIB([intl], [main], [], [echo "libintl is required for this program"; exit -1])
-  AC_CHECK_LIB([fmodex], [main], [], [echo "libfmodex required for this program"; exit -1])
-  AC_CHECK_LIB([curldll], [main], [], [
-    AC_CHECK_LIB([curl], [main], [], [echo "libcurl or libcurldll required for this program"; exit -1])
-  ])
+  AC_CHECK_LIB([fmodex], [main], [], [echo "libfmod required for this program"; exit -1])
 fi
 
 AC_CHECK_LIB([z], [main])
@@ -99,6 +96,7 @@ AC_CHECK_LIB([sqlite3], [sqlite3_close], [], [echo "libsqlite3 is required for t
 AC_CHECK_LIB([tag], [read], [], [echo "TagLib is required for this program"; exit -1])
 AC_CHECK_LIB([fltk], [main], [], [echo "FLTK is required for this program"; exit -1])
 AC_CHECK_LIB([fltk_images], [main], [], [echo "libfltk_images is required for this program"; exit -1])
+AC_CHECK_LIB([curl], [main], [], [echo "libcurl required for this program"; exit -1])
 
 ####################################
 # Support for the po directory

@@ -1,19 +1,12 @@
 #!/bin/bash
 
-# This is script is meant to be run from a MSYS console
+# This is script is meant to be run from a MSYS2(mingw32) console
 
-MINGW_PATH=C:/MinGW/bin
+MINGW_PATH=C:/msys64/mingw32/bin
 OUTPUT=kissplayer
 VERSION=`grep AC_INIT configure.ac | cut -d',' -f2 | tr -d '[] '`
 
-containsElement() {
-  local e
-  for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 1; done
-  return 0
-}
-
-win_dlls=(advapi32.dll comctl32.dll gdi32.dll kernel32.dll msvcrt.dll ole32.dll shell32.dll user32.dll)
-
+echo "* Copying files to '$OUTPUT'"
 mkdir -p $OUTPUT
 
 cd po
@@ -24,48 +17,52 @@ find . -type f -iname "*.gmo" -print0 | while IFS= read -r -d $'\0' file; do
 done
 cd ..
 
-objdump -p kissplayer.exe | grep "DLL Name:" | while read -r dll; do
-  dll=`echo $dll | cut -d' ' -f3`
-  containsElement $dll "${win_dlls[@]}"
-  if [ "$?" -eq "1" ]; then
-    continue
-  fi
-  if [ ! -f $MINGW_PATH/$dll ]; then
-    echo "$MINGW_PATH/$dll not found!"
-    continue
-  fi
-  cp $MINGW_PATH/$dll $OUTPUT
-done
-
-# libiconv is not listed in objdump but is needed
-cp "$MINGW_PATH/libiconv-2.dll" $OUTPUT
-
 cp kissplayer.exe $OUTPUT
 cp LICENSE $OUTPUT
 cp CHANGELOG $OUTPUT
 cp README.md $OUTPUT
-
-echo "* Stripping kissplayer.exe"
-strip $OUTPUT/kissplayer.exe
+cp "$MINGW_PATH/fmodex.dll" $OUTPUT
+cp "$MINGW_PATH/libgcc_s_dw2-1.dll" $OUTPUT
+cp "$MINGW_PATH/libiconv-2.dll" $OUTPUT
+cp "$MINGW_PATH/libintl-8.dll" $OUTPUT
+cp "$MINGW_PATH/libsqlite3-0.dll" $OUTPUT
+cp "$MINGW_PATH/libstdc++-6.dll" $OUTPUT
+cp "$MINGW_PATH/libtag.dll" $OUTPUT
+cp "$MINGW_PATH/libwinpthread-1.dll" $OUTPUT
+cp "$MINGW_PATH/mgwfltknox-1.3.dll" $OUTPUT
+cp "$MINGW_PATH/zlib1.dll" $OUTPUT
 
 cd $OUTPUT
+echo "* Stripping kissplayer.exe"
+strip kissplayer.exe
+
 for file in *.dll
 do
-  # As the distributed fmodex dll is MSVC compiled, stripping it would break it
+  # As the distributed fmodex dll is MSVC compiled, stripping it might break it
   case $file in
-    *fmodex*) continue;
+    fmodex*) continue;
   esac
   echo "* Stripping $file..."
   strip $file
 done
-cd ..
 
 command -v upx >/dev/null 2>&1 && {
   echo "* Compressing executable and dlls with UPX..."
-  upx -9 $OUTPUT/*.exe $OUTPUT/*.dll
+  # Stripping all binaries, except libgcc_s_dw2-1.dll
+  upx -9 kissplayer.exe fmodex.dll libiconv-2.dll \
+  libsqlite3-0.dll libtag.dll libwinpthread-1.dll \
+  libintl-8.dll mgwfltknox-1.3.dll zlib1.dll
 } || {
   echo "* UPX not found, skipping executable compression..."
 }
+
+echo "* Checking kissplayer.exe..."
+./kissplayer.exe || {
+  echo "kissplayer.exe doesn't seem to be working"
+  exit;
+}
+
+cd ..
 
 command -v 7z >/dev/null 2>&1 && {
   echo "* Zipping..."
