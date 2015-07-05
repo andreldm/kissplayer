@@ -25,7 +25,6 @@ void sync_execute(bool do_not_warn)
 
     if(!do_not_warn && listDir.size() == 0) {
         fl_beep();
-        fl_message_title(_("Warning"));
         fl_message(_("Please, add at least one directory on the Settings Window."));
         listDir.clear();
         return;

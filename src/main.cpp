@@ -21,7 +21,13 @@ int     FLAG_SEARCH_TYPE;
 
 int main(int argc, char** argv)
 {
-    fl_message_hotspot(false);
+    Fl::scheme("GTK+");
+
+    Fl::background(50, 50, 50);
+    Fl::background2(90, 90, 90);
+    Fl::foreground(255, 255, 255);
+
+    fl_message_title_default(_("Warning"));
 
     if(dao_start_db() != 0) {
         fl_alert(_("Error while initializing database"));

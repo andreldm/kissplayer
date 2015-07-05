@@ -383,7 +383,6 @@ void cb_change(Fl_Widget* widget, void*)
     Locale::setLanguage(lang_choice->value());
 
     fl_beep();
-    fl_message_title(_("Warning"));
     fl_message(_("Please, restart the program to change the language."));
 }
 

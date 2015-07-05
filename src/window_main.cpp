@@ -265,12 +265,6 @@ void window_main_init(int argc, char** argv)
     Fl::add_timeout(0.5, timer_check_music);
     Fl::add_timeout(0.2, timer_title_scrolling);
 
-    Fl::scheme("GTK+");
-
-    Fl::background(50, 50, 50);
-    Fl::background2(90, 90, 90);
-    Fl::foreground(255, 255, 255);
-
     window->resizable(tile_center);
     window->end();
 
