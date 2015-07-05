@@ -14,15 +14,14 @@ using namespace std;
 static Language* languages[] = {
     new Language("System Default", ""),
     new Language("Čeština", "cs.UTF-8"),
+    new Language("Deutsch", "de.UTF-8"),
+    new Language("ελληνικά", "el.UTF-8"),
     new Language("English", "en.UTF-8"),
     new Language("Español", "es.UTF-8"),
     new Language("Italiano", "it.UTF-8"),
     new Language("Português (Brasil)", "pt_BR.UTF-8"),
     NULL
 };
-
-#include <iostream>
-using namespace std;
 
 void Locale::init()
 {
@@ -34,6 +33,7 @@ void Locale::init()
     language = "LC_ALL=" + language;
     putenv(language.c_str());
     bindtextdomain("kissplayer", ".\\locale");
+    bind_textdomain_codeset("kissplayer", "UTF-8");
 #elif __linux__
     bindtextdomain("kissplayer", LOCALEDIR);
     setlocale(LC_ALL, "");
