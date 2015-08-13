@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Giuseppe Pignataro <anubisteam01@gmail.com>, 2014
+# Giuseppe Pignataro <rogepix@gmail.com>, 2014
+# Giuseppe Pignataro <rogepix@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: andreldm1989@gmail.com\n"
 "POT-Creation-Date: 2015-01-24 18:17-0200\n"
-"PO-Revision-Date: 2015-01-24 20:17+0000\n"
-"Last-Translator: André Miranda <andreldm1989@gmail.com>\n"
-"Language-Team: Italian (http://www.transifex.com/projects/p/kissplayer/language/it/)\n"
+"PO-Revision-Date: 2015-05-30 00:30+0000\n"
+"Last-Translator: Giuseppe Pignataro <rogepix@gmail.com>\n"
+"Language-Team: Italian (http://www.transifex.com/kissplayer/kissplayer/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -44,7 +45,7 @@ msgstr "Attenzione"
 
 #: src/sync.cpp:29
 msgid "Please, add at least one directory on the Settings Window."
-msgstr ""
+msgstr "Per piacere, aggiungi almeno una cartella nella finestra delle impostazioni."
 
 #: src/window_about.cpp:42 src/window_main.cpp:248
 msgid "About"
@@ -52,61 +53,61 @@ msgstr "Informazioni su"
 
 #: src/window_about.cpp:57
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: src/window_about.cpp:61
 msgid "A Simple and Lightweight Music Player"
-msgstr ""
+msgstr "Un lettore musicale semplice e leggero"
 
 #: src/window_about.cpp:63
 msgid "Contact:"
-msgstr ""
+msgstr "Contatti:"
 
 #: src/window_about.cpp:64
 msgid "Website:"
-msgstr ""
+msgstr "Sito web:"
 
 #: src/window_about.cpp:73
 msgid "Credits"
-msgstr ""
+msgstr "Crediti"
 
 #: src/window_about.cpp:77
 msgid "Developers:"
-msgstr ""
+msgstr "Sviluppatori:"
 
 #: src/window_about.cpp:78
 msgid "Project Leader"
-msgstr ""
+msgstr "Project Leader"
 
 #: src/window_about.cpp:79
 msgid "Developer"
-msgstr ""
+msgstr "Sviluppatore"
 
 #: src/window_about.cpp:81
 msgid "Collaborators:"
-msgstr ""
+msgstr "Collaboratori:"
 
 #: src/window_about.cpp:85
 msgid "<translators_credits>"
-msgstr ""
+msgstr "Giuseppe Pignataro\nrogepix at gmail dot com"
 
 #: src/window_about.cpp:87
 msgid "Translators:"
-msgstr ""
+msgstr "Traduttori:"
 
 #: src/window_about.cpp:98
 msgid "License"
-msgstr ""
+msgstr "Licenza"
 
 #: src/window_about.cpp:102
 msgid ""
 "This program is licensed under the terms of the GNU General Public License "
 "version 2."
-msgstr ""
+msgstr "Questo programma è rilasciato secondo u termini della GNU General Public License versione 2."
 
 #: src/window_about.cpp:103
 msgid "Available online under:"
-msgstr ""
+msgstr "Disponibile online sotto:"
 
 #: src/window_about.cpp:114 src/window_settings.cpp:205
 msgid "Close"
@@ -178,7 +179,7 @@ msgstr "Casuale"
 
 #: src/window_main.cpp:246
 msgid "Repeat Playlist"
-msgstr ""
+msgstr "Ripeti Playlist"
 
 #: src/window_main.cpp:247 src/window_settings.cpp:77
 msgid "Settings"
@@ -202,7 +203,7 @@ msgstr "Testi disattivati"
 
 #: src/window_settings.cpp:83 src/window_settings.cpp:91
 msgid "General"
-msgstr ""
+msgstr "Generale"
 
 #: src/window_settings.cpp:84 src/window_settings.cpp:138
 msgid "Directories"
@@ -210,7 +211,7 @@ msgstr "Cartelle"
 
 #: src/window_settings.cpp:85 src/window_settings.cpp:163
 msgid "Network"
-msgstr ""
+msgstr "Rete"
 
 #: src/window_settings.cpp:87 src/window_settings.cpp:181
 msgid "Language"
@@ -250,11 +251,11 @@ msgstr "Rimuovi"
 
 #: src/window_settings.cpp:169
 msgid "Proxy:"
-msgstr ""
+msgstr "Proxy:"
 
 #: src/window_settings.cpp:173
 msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
-msgstr ""
+msgstr "URL proxy completo, p.e.: http://192.168.1.1:3128"
 
 #: src/window_settings.cpp:364
 msgid "Choose Color"
