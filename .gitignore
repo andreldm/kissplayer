@@ -36,4 +36,4 @@ Thumbs.db
 *.s3db
 *.status
 *.zip
-*.po~
+*~
