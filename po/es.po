@@ -1,5 +1,5 @@
 # es translation for KISS Player.
-# Copyright (C) 2015 André Miranda
+# Copyright (C) 2015 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
@@ -9,10 +9,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
-"Report-Msgid-Bugs-To: andreldm1989@gmail.com\n"
-"POT-Creation-Date: 2015-01-24 18:17-0200\n"
-"PO-Revision-Date: 2015-01-25 14:21+0000\n"
-"Last-Translator: csanchez <carlos1994sanchez@gmail.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-09-14 22:04-0300\n"
+"PO-Revision-Date: 2015-09-15 01:05+0000\n"
+"Last-Translator: André Miranda <andreldm1989@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/kissplayer/kissplayer/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,85 +20,237 @@ msgstr ""
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/lyrics_fetcher.cpp:149
-msgid "Connection timed out!"
-msgstr "¡Tiempo de conexión agotado!"
-
-#: src/lyrics_fetcher.cpp:156
-msgid "Connection failure!"
-msgstr "¡Fallo de conexión!"
-
-#: src/lyrics_fetcher.cpp:177
-msgid "Error while redirecting."
-msgstr "Error al redirigir."
-
-#: src/lyrics_fetcher.cpp:205
-msgid "Not found :-("
-msgstr "No se encontró :-("
-
-#: src/lyrics_fetcher.cpp:220
-msgid "Error while fetching."
-msgstr "Error al buscar."
-
-#: src/sync.cpp:28 src/window_settings.cpp:386
-msgid "Warning"
-msgstr "Advertencia"
-
-#: src/sync.cpp:29
-msgid "Please, add at least one directory on the Settings Window."
-msgstr "Por favor, añada al menos un directorio en la ventana de Ajustes."
-
-#: src/window_about.cpp:42 src/window_main.cpp:248
-msgid "About"
-msgstr "Acerca de..."
-
-#: src/window_about.cpp:57
-msgid "Info"
-msgstr "Información"
+#: src/window_about.cpp:85
+msgid "<translators_credits>"
+msgstr "<translators_credits>"
 
 #: src/window_about.cpp:61
 msgid "A Simple and Lightweight Music Player"
 msgstr "Un simple y ligero reproductor de música"
 
-#: src/window_about.cpp:63
-msgid "Contact:"
-msgstr "Contacto:"
+#: src/window_about.cpp:42 src/window_main.cpp:248
+msgid "About"
+msgstr "Acerca de..."
 
-#: src/window_about.cpp:64
-msgid "Website:"
-msgstr "Sitio web:"
+#: src/window_settings.cpp:150
+msgid "Add"
+msgstr "Añadir"
 
-#: src/window_about.cpp:73
-msgid "Credits"
-msgstr "Créditos"
+#: src/window_main.cpp:154 src/window_main.cpp:439
+msgid "Album"
+msgstr "Álbum"
 
-#: src/window_about.cpp:77
-msgid "Developers:"
-msgstr "Desarrolladores:"
+#: src/window_main.cpp:151 src/window_main.cpp:436
+msgid "All"
+msgstr "Todos"
 
-#: src/window_about.cpp:78
-msgid "Project Leader"
-msgstr "Líder del Proyecto"
+#: src/window_main.cpp:153 src/window_main.cpp:438
+msgid "Artist"
+msgstr "Artista"
 
-#: src/window_about.cpp:79
-msgid "Developer"
-msgstr "Desarrollador"
+#: src/window_about.cpp:103
+msgid "Available online under:"
+msgstr "Disponible en línea:"
+
+#: src/window_settings.cpp:105
+msgid "Background Color"
+msgstr "Color de fondo"
+
+#: src/window_loading.cpp:36
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: src/window_settings.cpp:364
+msgid "Choose Color"
+msgstr "Elegir color"
+
+#: src/window_about.cpp:114 src/window_settings.cpp:205
+msgid "Close"
+msgstr "Cerrar"
 
 #: src/window_about.cpp:81
 msgid "Collaborators:"
 msgstr "Colaboradores:"
 
-#: src/window_about.cpp:85
-msgid "<translators_credits>"
-msgstr "<translators_credits>"
+#: src/window_settings.cpp:173
+msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
+msgstr "URL completa del proxy,  ej: http://192.168.1.1:3128"
 
-#: src/window_about.cpp:87
-msgid "Translators:"
-msgstr "Traductores:"
+#: src/lyrics_fetcher.cpp:156
+msgid "Connection failure!"
+msgstr "¡Fallo de conexión!"
+
+#: src/lyrics_fetcher.cpp:149
+msgid "Connection timed out!"
+msgstr "¡Tiempo de conexión agotado!"
+
+#: src/window_about.cpp:63
+msgid "Contact:"
+msgstr "Contacto:"
+
+#: src/window_about.cpp:73
+msgid "Credits"
+msgstr "Créditos"
+
+#: src/window_settings.cpp:129
+msgid "Default Colors"
+msgstr "Colores predeterminados"
+
+#: src/window_about.cpp:79
+msgid "Developer"
+msgstr "Desarrollador"
+
+#: src/window_about.cpp:77
+msgid "Developers:"
+msgstr "Desarrolladores:"
+
+#: src/window_settings.cpp:84 src/window_settings.cpp:138
+msgid "Directories"
+msgstr "Directorios"
+
+#: src/window_settings.cpp:97
+msgid "Display Lyrics"
+msgstr "Mostrar letras"
+
+#: src/lyrics_fetcher.cpp:220
+msgid "Error while fetching."
+msgstr "Error al buscar."
+
+#: src/main.cpp:33
+msgid "Error while initializing database!"
+msgstr ""
+
+#: src/main.cpp:56
+msgid "Error while initializing sound system!"
+msgstr ""
+
+#: src/lyrics_fetcher.cpp:177
+msgid "Error while redirecting."
+msgstr "Error al redirigir."
+
+#: src/main.cpp:51
+msgid "Error while registering keyboard hook!"
+msgstr ""
+
+#: src/window_main.cpp:649
+msgid "Fetching..."
+msgstr "Buscando..."
+
+#: src/window_settings.cpp:83 src/window_settings.cpp:91
+msgid "General"
+msgstr "General"
+
+#: src/window_about.cpp:57
+msgid "Info"
+msgstr "Información"
+
+#: src/window_main.cpp:330
+msgid "KISS Player"
+msgstr "KISS Player"
+
+#: src/window_main.cpp:298
+msgid "KISS Player - Paused"
+msgstr "KISS Player - En pausa"
+
+#: src/window_settings.cpp:87 src/window_settings.cpp:181
+msgid "Language"
+msgstr "Idioma"
 
 #: src/window_about.cpp:98
 msgid "License"
 msgstr "Licencia"
+
+#: src/window_loading.cpp:33
+msgid "Loading files..."
+msgstr "Cargando archivos..."
+
+#: src/window_main.cpp:653
+msgid "Lyrics Disabled"
+msgstr "Letras deshabilitadas"
+
+#: src/window_settings.cpp:85 src/window_settings.cpp:163
+msgid "Network"
+msgstr "Red"
+
+#: src/window_main.cpp:227
+msgid "Next"
+msgstr "Siguiente"
+
+#: src/lyrics_fetcher.cpp:205
+msgid "Not found :-("
+msgstr "No se encontró :-("
+
+#: src/window_main.cpp:209
+msgid "Play/Pause"
+msgstr "Reproducir/Pausar"
+
+#: src/window_loading.cpp:27
+msgid "Please Wait"
+msgstr "Espere por favor"
+
+#: src/sync.cpp:28
+msgid "Please, add at least one directory on the Settings Window."
+msgstr "Por favor, añada al menos un directorio en la ventana de Ajustes."
+
+#: src/window_settings.cpp:386
+msgid "Please, restart the program to change the language."
+msgstr "Por favor, reinicie el programa para cambiar el idioma."
+
+#: src/window_main.cpp:221
+msgid "Previous"
+msgstr "Anterior"
+
+#: src/window_about.cpp:78
+msgid "Project Leader"
+msgstr "Líder del Proyecto"
+
+#: src/window_settings.cpp:169
+msgid "Proxy:"
+msgstr "Proxy:"
+
+#: src/window_main.cpp:245
+msgid "Randomize"
+msgstr "Reproducción aleatoria"
+
+#: src/window_settings.cpp:155
+msgid "Remove"
+msgstr "Quitar"
+
+#: src/window_main.cpp:246
+msgid "Repeat Playlist"
+msgstr "Repetir lista de reproducción"
+
+#: src/window_loading.cpp:30
+msgid "Scanning directories..."
+msgstr "Escaneando directorios..."
+
+#: src/window_settings.cpp:101
+msgid "Scroll Title"
+msgstr "Desplazar título"
+
+#: src/window_main.cpp:141
+msgid "Search:"
+msgstr "Buscar:"
+
+#: src/window_settings.cpp:113
+msgid "Selection Color"
+msgstr "Color de selección "
+
+#: src/window_main.cpp:247 src/window_settings.cpp:77
+msgid "Settings"
+msgstr "Ajustes"
+
+#: src/window_main.cpp:215
+msgid "Stop"
+msgstr "Detener"
+
+#: src/window_main.cpp:244
+msgid "Synchronize Library"
+msgstr "Sincronizar biblioteca"
+
+#: src/window_settings.cpp:121
+msgid "Text Color"
+msgstr "Color de texto"
 
 #: src/window_about.cpp:102
 msgid ""
@@ -106,162 +258,22 @@ msgid ""
 "version 2."
 msgstr "Este programa está disponible bajo los términos de la Licencia Pública General GNU versión 2."
 
-#: src/window_about.cpp:103
-msgid "Available online under:"
-msgstr "Disponible en línea:"
-
-#: src/window_about.cpp:114 src/window_settings.cpp:205
-msgid "Close"
-msgstr "Cerrar"
-
-#: src/window_loading.cpp:27
-msgid "Please Wait"
-msgstr "Espere por favor"
-
-#: src/window_loading.cpp:30
-msgid "Scanning directories..."
-msgstr "Escaneando directorios..."
-
-#: src/window_loading.cpp:33
-msgid "Loading files..."
-msgstr "Cargando archivos..."
-
-#: src/window_loading.cpp:36
-msgid "Cancel"
-msgstr "Cancelar"
-
-#: src/window_main.cpp:141
-msgid "Search:"
-msgstr "Buscar:"
-
-#: src/window_main.cpp:151 src/window_main.cpp:442
-msgid "All"
-msgstr "Todos"
-
-#: src/window_main.cpp:152 src/window_main.cpp:443
+#: src/window_main.cpp:152 src/window_main.cpp:437
 msgid "Title"
 msgstr "Título"
 
-#: src/window_main.cpp:153 src/window_main.cpp:444
-msgid "Artist"
-msgstr "Artista"
-
-#: src/window_main.cpp:154 src/window_main.cpp:445
-msgid "Album"
-msgstr "Álbum"
-
-#: src/window_main.cpp:209
-msgid "Play/Pause"
-msgstr "Reproducir/Pausar"
-
-#: src/window_main.cpp:215
-msgid "Stop"
-msgstr "Detener"
-
-#: src/window_main.cpp:221
-msgid "Previous"
-msgstr "Anterior"
-
-#: src/window_main.cpp:227
-msgid "Next"
-msgstr "Siguiente"
+#: src/window_about.cpp:87
+msgid "Translators:"
+msgstr "Traductores:"
 
 #: src/window_main.cpp:235
 msgid "Volume"
 msgstr "Volumen"
 
-#: src/window_main.cpp:244
-msgid "Synchronize Library"
-msgstr "Sincronizar biblioteca"
+#: src/main.cpp:30
+msgid "Warning"
+msgstr "Advertencia"
 
-#: src/window_main.cpp:245
-msgid "Randomize"
-msgstr "Reproducción aleatoria"
-
-#: src/window_main.cpp:246
-msgid "Repeat Playlist"
-msgstr "Repetir lista de reproducción"
-
-#: src/window_main.cpp:247 src/window_settings.cpp:77
-msgid "Settings"
-msgstr "Ajustes"
-
-#: src/window_main.cpp:304
-msgid "KISS Player - Paused"
-msgstr "KISS Player - En pausa"
-
-#: src/window_main.cpp:336
-msgid "KISS Player"
-msgstr "KISS Player"
-
-#: src/window_main.cpp:641
-msgid "Fetching..."
-msgstr "Buscando..."
-
-#: src/window_main.cpp:645
-msgid "Lyrics Disabled"
-msgstr "Letras deshabilitadas"
-
-#: src/window_settings.cpp:83 src/window_settings.cpp:91
-msgid "General"
-msgstr "General"
-
-#: src/window_settings.cpp:84 src/window_settings.cpp:138
-msgid "Directories"
-msgstr "Directorios"
-
-#: src/window_settings.cpp:85 src/window_settings.cpp:163
-msgid "Network"
-msgstr "Red"
-
-#: src/window_settings.cpp:87 src/window_settings.cpp:181
-msgid "Language"
-msgstr "Idioma"
-
-#: src/window_settings.cpp:97
-msgid "Display Lyrics"
-msgstr "Mostrar letras"
-
-#: src/window_settings.cpp:101
-msgid "Scroll Title"
-msgstr "Desplazar título"
-
-#: src/window_settings.cpp:105
-msgid "Background Color"
-msgstr "Color de fondo"
-
-#: src/window_settings.cpp:113
-msgid "Selection Color"
-msgstr "Color de selección "
-
-#: src/window_settings.cpp:121
-msgid "Text Color"
-msgstr "Color de texto"
-
-#: src/window_settings.cpp:129
-msgid "Default Colors"
-msgstr "Colores predeterminados"
-
-#: src/window_settings.cpp:150
-msgid "Add"
-msgstr "Añadir"
-
-#: src/window_settings.cpp:155
-msgid "Remove"
-msgstr "Quitar"
-
-#: src/window_settings.cpp:169
-msgid "Proxy:"
-msgstr "Proxy:"
-
-#: src/window_settings.cpp:173
-msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
-msgstr "URL completa del proxy,  ej: http://192.168.1.1:3128"
-
-#: src/window_settings.cpp:364
-msgid "Choose Color"
-msgstr "Elegir color"
-
-#: src/window_settings.cpp:387
-msgid "Please, restart the program to change the language."
-msgstr "Por favor, reinicie el programa para cambiar el idioma."
+#: src/window_about.cpp:64
+msgid "Website:"
+msgstr "Sitio web:"
