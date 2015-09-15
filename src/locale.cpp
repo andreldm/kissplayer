@@ -21,6 +21,7 @@ static Language* languages[] = {
     new Language("Italiano", "it.UTF-8"),
     new Language("Português (Brasil)", "pt_BR.UTF-8"),
     new Language("Türkçe", "tr.UTF-8"),
+    new Language("中文 (中国)", "zh_CN.UTF-8"),
     NULL
 };
 
