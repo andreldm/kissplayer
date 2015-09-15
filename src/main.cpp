@@ -48,7 +48,7 @@ int main(int argc, char** argv)
     }
 
     if(os_specific_init() != 0) {
-        fl_alert(_("Keyboard hooker failed!"));
+        fl_alert(_("Error while registering keyboard hook!"));
         return -1;
     }
 
