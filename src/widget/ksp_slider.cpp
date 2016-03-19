@@ -7,8 +7,8 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Menu_Window.H>
 
+#include "../configuration.h"
 #include "../util.h"
-#include "../sound.h"
 #include "../window_main.h"
 
 using namespace std;
@@ -20,11 +20,12 @@ using namespace std;
 class TipWin : public Fl_Menu_Window
 {
 public:
-    TipWin();
+    TipWin(WindowMain* window_main);
     void draw();
     void update(float f, int parent_y);
 
 private:
+    WindowMain* window_main;
     std::string tip;
 };
 
@@ -39,8 +40,9 @@ public:
     void resize(int x, int y, int ww, int hh);
 };
 
-TipWin::TipWin() : Fl_Menu_Window(1,1)
+TipWin::TipWin(WindowMain* window_main) : Fl_Menu_Window(1,1)
 {
+    this->window_main = window_main;
     clear_visible_focus();
     set_override();
     end();
@@ -48,20 +50,20 @@ TipWin::TipWin() : Fl_Menu_Window(1,1)
 
 void TipWin::draw()
 {
-    draw_box(FL_BORDER_BOX, 0, 0, w(), h(), Fl_Color(window_main_get_browser_music_color(1)));
-    fl_color(Fl_Color(window_main_get_browser_music_color(3)));
+    draw_box(FL_BORDER_BOX, 0, 0, w(), h(), Configuration::instance()->background());
+    fl_color(Configuration::instance()->textcolor());
     fl_draw(tip.c_str(), tip.length(), 3, w()-6, h()-6, Fl_Align(FL_ALIGN_LEFT|FL_ALIGN_WRAP));
 }
 
 void TipWin::update(float f, int parent_y)
 {
     int xx = Fl::event_x_root();
-    int yy = window_main_get_instance()->y() + parent_y - 17;
+    int yy = window_main->y() + parent_y - 17;
 
-    if (xx < window_main_get_instance()->x() + 14) {
-        xx = window_main_get_instance()->x() + 14;
-    } else if(xx > window_main_get_instance()->x() + window_main_get_instance()->w() - 14) {
-        xx = window_main_get_instance()->x() + window_main_get_instance()->w() - 14;
+    if (xx < window_main->x() + 14) {
+        xx = window_main->x() + 14;
+    } else if(xx > window_main->x() + window_main->w() - 14) {
+        xx = window_main->x() + window_main->w() - 14;
     }
 
     tip = util_format_time((int)f);
@@ -160,9 +162,11 @@ int KSP_Slider::handle(int event, int X, int Y, int W, int H)
     }
 }
 
-KSP_Slider::KSP_Slider(int x, int y, int w, int h, const char* l)
+KSP_Slider::KSP_Slider(WindowMain* window_main, int x, int y, int w, int h, const char* l)
     : Fl_Slider(x, y, w, h, l)
 {
+    this->window_main = window_main;
+
     type(FL_HOR_NICE_SLIDER);
     box(FL_FLAT_BOX);
     color2(0xDDDDDD00);
@@ -174,7 +178,7 @@ KSP_Slider::KSP_Slider(int x, int y, int w, int h, const char* l)
     reset();
 
     Fl_Group* save = Fl_Group::current();
-    tipwin = new TipWin();
+    tipwin = new TipWin(window_main);
     tipwin->hide();
     Fl_Group::current(save);
 }
@@ -186,15 +190,17 @@ KSP_Slider::~KSP_Slider()
 
 void KSP_Slider::update_time()
 {
-    time_display->copy_label(util_format_time(value()));
+    string time = util_format_time(value());
+    time_display->copy_label(time.c_str());
     redraw();
 }
 
-void KSP_Slider::realise_new_sound()
+void KSP_Slider::realise_new_sound(int length)
 {
-    copy_label(util_format_time(sound_length()));
+    string time = util_format_time(length);
+    copy_label(time.c_str());
     time_display->label("00:00");
-    maximum(sound_length());
+    maximum(length);
     value(0);
 }
 
@@ -215,10 +221,10 @@ int KSP_Slider::handle(int event)
     }
 
     return handle(event,
-                  x()+Fl::box_dx(box()),
-                  y()+Fl::box_dy(box()),
-                  w()-Fl::box_dw(box()),
-                  h()-Fl::box_dh(box()));
+                  x() + Fl::box_dx(box()),
+                  y() + Fl::box_dy(box()),
+                  w() - Fl::box_dw(box()),
+                  h() - Fl::box_dh(box()));
 }
 
 bool KSP_Slider::is_tipwin_current()

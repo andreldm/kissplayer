@@ -3,6 +3,12 @@
 
 #include <FL/Fl_Window.H>
 
-void    window_about_show   (Fl_Window* parent);
+class WindowAbout : public Fl_Window
+{
+public:
+            WindowAbout         (void);
+    void    show                (Fl_Window* parent);
+    void    close               (void);
+};
 
 #endif

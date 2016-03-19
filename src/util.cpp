@@ -19,34 +19,9 @@
 using namespace std;
 
 /**
-* Parses the arguments to check if there are music files to play
-*/
-void util_parse_args(int argc, char** argv, deque<Music>& listMusic)
-{
-    for(int i = 1; i < argc; i++) {
-        string arg(argv[i]);
-
-        if(util_is_ext_supported(arg)) {
-            Music m;
-            TagLib::FileRef* f = new TagLib::FileRef(arg.c_str());
-            if(!f->isNull()) {
-                m.title = f->tag()->title().toCString(true);
-                m.artist = f->tag()->artist().toCString(true);
-                m.album = f->tag()->album().toCString(true);
-                m.filepath = arg;
-                m.resolveNames();
-                listMusic.push_back(m);
-            }
-            delete(f);
-        }
-    }
-}
-
-/**
 * Parses the drag and drop url list
 */
-bool util_parse_dnd(string urls, deque<Music>& listMusic)
-{
+bool util_parse_dnd(string urls, deque<Music>& listMusic) {
     istringstream lines(urls);
     string url;
     bool list_changed = false;
@@ -85,8 +60,7 @@ bool util_parse_dnd(string urls, deque<Music>& listMusic)
     return list_changed;
 }
 
-bool util_is_ext_supported(string filename)
-{
+bool util_is_ext_supported(string filename) {
     const char* ext = fl_filename_ext(filename.c_str());
 
     if(strcmp(ext, ".mp3") == 0) return true;
@@ -101,8 +75,7 @@ bool util_is_ext_supported(string filename)
 /**
 * Removes whitespaces at the beginning and end of a string
 */
-void util_trim(string &str)
-{
+void util_trim(string &str) {
     string::size_type pos = str.find_last_not_of(" \f\n\r\t\v");
     str.erase(pos + 1);
 
@@ -114,8 +87,7 @@ void util_trim(string &str)
 * Takes a time value in miliseconds and returns formated in mm:ss.
 * Ex: 123 secs -> 02:03 |  799 secs -> 13:19
 */
-const char* util_format_time (int time)
-{
+string util_format_time (int time) {
     stringstream stream;
 
     time = (int) time / 1000;
@@ -125,23 +97,22 @@ const char* util_format_time (int time)
 
     stream << (minutes <= 9 ? "0" : "") << minutes << ":" << (seconds <= 9 ? "0" : "") << seconds;
 
-    return stream.str().c_str();
+    return stream.str();
 }
 
 /**
 * Generates random numbers
 */
-ptrdiff_t myrandom (ptrdiff_t i)
-{
+ptrdiff_t myrandom (ptrdiff_t i) {
     return rand()%i;
 }
 
 /**
 * Generates a vector filled with unique random numbers
 */
-void util_randomize(deque<int>& listRandom, int max)
-{
+void util_randomize(deque<int>& listRandom, int max) {
     listRandom.clear();
+    if(max < 1) return;
 
     ptrdiff_t (*p_myrandom)(ptrdiff_t) = myrandom;
     srand((int)time(NULL));
@@ -152,8 +123,7 @@ void util_randomize(deque<int>& listRandom, int max)
     random_shuffle(listRandom.begin(), listRandom.end(), p_myrandom);
 }
 
-void util_replace_all(string& str, const string& from, const string& to)
-{
+void util_replace_all(string& str, const string& from, const string& to) {
     size_t start_pos = 0;
     while((start_pos = str.find(from, start_pos)) != string::npos) {
         str.replace(start_pos, from.length(), to);
@@ -161,8 +131,7 @@ void util_replace_all(string& str, const string& from, const string& to)
     }
 }
 
-void util_erease_between(string& str, const string& start, const string& end)
-{
+void util_erase_between(string& str, const string& start, const string& end) {
     size_t start_pos = 0;
     size_t end_pos = 0;
     while((start_pos = str.find(start, start_pos)) != string::npos) {
@@ -175,39 +144,53 @@ void util_erease_between(string& str, const string& start, const string& end)
     }
 }
 
-void util_adjust_width(Fl_Widget* w, int padding)
-{
+void util_adjust_width(Fl_Widget* w, int padding) {
   int ww = 0, hh = 0;
   w->measure_label(ww, hh);
   w->size(ww + padding, w->h());
 }
 
-int util_s2i(string value)
-{
+int util_s2i(string value) {
     if(value.empty()) {
         return -1;
     }
     return atoi (value.c_str());
 }
 
-string util_i2s(int value)
-{
+string util_i2s(int value) {
     stringstream out;
     out << value;
     return out.str();
 }
 
-float util_s2f(string value)
-{
+float util_s2f(string value) {
     if(value.empty()) {
         return -1;
     }
     return atof (value.c_str());
 }
 
-string util_f2s(float value)
-{
+string util_f2s(float value) {
     stringstream out;
     out << value;
     return out.str();
+}
+
+size_t util_write_string(void* ptr, size_t size, size_t count, void* stream) {
+    ((string*)stream)->append((char*)ptr, 0, size* count);
+    return size* count;
+}
+
+void util_uppercase_initials(string& str) {
+    for(int i = 0; i < str.length(); i++) {
+        if(i == 0 && islower(str[i])) {
+            str[i] = toupper(str[i]);
+            continue;
+        }
+
+        if(str[i-1] && str[i-1] == '_' && islower(str[i])) {
+            str[i] = toupper(str[i]);
+            continue;
+        }
+    }
 }

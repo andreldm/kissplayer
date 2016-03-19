@@ -4,6 +4,7 @@
 #include <string>
 #include <deque>
 
+#include "constants.h"
 #include "music.h"
 
 class COD_VALUE
@@ -13,26 +14,32 @@ public:
     std::string value;
 };
 
-void            dao_open_db                     (void);
-void            dao_close_db                    (void);
-int             dao_start_db                    (void);
-void            dao_begin_transaction           (void);
-void            dao_commit_transaction          (void);
+class Dao
+{
+private:
+    std::string     db_filepath;
 
-void            dao_set_key                     (std::string key, std::string value);
-std::string     dao_get_key                     (std::string key);
+public:
+    Dao                                         (void);
 
-void            dao_insert_music                (Music& music);
-void            dao_mark_music_not_found        (void);
-void            dao_delete_music_not_found      (void);
-void            dao_get_all_music               (std::deque<Music>& listMusic);
-void            dao_search_music                (const char* text, std::deque<Music>& listMusic);
+    int             init                        (void);
+    void            open_db                     (void);
+    void            close_db                    (void);
+    void            begin_transaction           (void);
+    void            commit_transaction          (void);
 
-void            dao_insert_directory            (const char* directory);
-void            dao_delete_directory            (int cod);
-void            dao_get_directories             (std::deque<COD_VALUE>& dirList);
+    void            set_key                     (std::string key, std::string value);
+    std::string     get_key                     (std::string key);
 
-// GLOBAL IMPORT
-extern int FLAG_SEARCH_TYPE;
+    void            insert_music                (Music& music);
+    void            mark_music_not_found        (void);
+    void            delete_music_not_found      (void);
+    void            get_all_music               (std::deque<Music>& listMusic);
+    void            search_music                (std::string text, SearchType type, std::deque<Music>& listMusic);
+
+    void            insert_directory            (const char* directory);
+    void            delete_directory            (int cod);
+    void            get_directories             (std::deque<COD_VALUE>& dirList);
+};
 
 #endif

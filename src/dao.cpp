@@ -1,15 +1,16 @@
 #include "dao.h"
 
+#include <FL/fl_utf8.h>
+#include <string.h>
 #include <sqlite3.h>
 #include <iostream>
 #include <stdlib.h>
 
+#include "constants.h"
 #include "util.h"
 #include "os_specific.h"
 
 using namespace std;
-
-static string DB_NAME = "db.s3db";
 
 static sqlite3* db;
 static char* ErrMsg;
@@ -25,41 +26,48 @@ void print_errors()
     }
 }
 
-void dao_open_db()
+Dao::Dao()
 {
-    sqlite3_open(DB_NAME.c_str(), &db);
+    db_filepath = "db.s3db";
 }
 
-void dao_close_db()
+void Dao::open_db()
+{
+    sqlite3_open(db_filepath.c_str(), &db);
+}
+
+void Dao::close_db()
 {
     sqlite3_close(db);
 }
 
-void dao_begin_transaction()
+void Dao::begin_transaction()
 {
-    dao_open_db();
+    open_db();
 
     sqlite3_exec(db,"BEGIN;", 0, 0, &ErrMsg);
     print_errors();
 }
 
-void dao_commit_transaction()
+void Dao::commit_transaction()
 {
     sqlite3_exec(db,"COMMIT;", 0, 0, &ErrMsg);
     print_errors();
 
-    dao_close_db();
+    close_db();
 }
 
-int dao_start_db()
+int Dao::init()
 {
-    if(os_specific_get_working_dir(DB_NAME) != 0) {
+    // FIXME: Avoid instantiation and delete
+    OsUtils* osUtils = new OsUtils();
+    if(osUtils->get_working_dir(db_filepath) != 0) {
+        delete osUtils;
         return -1;
     }
+    delete osUtils;
 
-    DB_NAME.append("db.s3db");
-
-    dao_open_db();
+    open_db();
     const char* query;
 
     query = "CREATE TABLE IF NOT EXISTS [TB_MUSIC] ( \
@@ -84,10 +92,10 @@ int dao_start_db()
     sqlite3_exec(db, query, 0, 0, &ErrMsg);
     print_errors();
 
-    dao_close_db();
+    close_db();
 }
 
-string dao_get_key(string key)
+string Dao::get_key(string key)
 {
     string value;
 
@@ -109,7 +117,7 @@ string dao_get_key(string key)
     return value;
 }
 
-void dao_set_key(string key, string value)
+void Dao::set_key(string key, string value)
 {
     sqlite3_prepare_v2(db, "INSERT INTO TB_CONFIG VALUES(?, ?);", -1, &stmt, NULL);
     sqlite3_bind_text(stmt, 1, key.c_str(), -1, SQLITE_STATIC);
@@ -124,7 +132,7 @@ void dao_set_key(string key, string value)
 /**
 * Tries to insert a row, in case of constraint(filepath is unique) updates the row.
 */
-void dao_insert_music(Music& music)
+void Dao::insert_music(Music& music)
 {
     sqlite3_prepare_v2(db, "INSERT INTO TB_MUSIC(title, artist, album, filepath) VALUES(?, ?, ?, ?);", -1, &stmt, NULL);
 
@@ -153,28 +161,28 @@ void dao_insert_music(Music& music)
     }
 }
 
-void dao_mark_music_not_found()
+void Dao::mark_music_not_found()
 {
-    dao_open_db();
+    open_db();
     sqlite3_exec(db,"UPDATE TB_MUSIC SET not_found = 1;", 0, 0, &ErrMsg);
     print_errors();
-    dao_close_db();
+    close_db();
 }
 
-void dao_delete_music_not_found()
+void Dao::delete_music_not_found()
 {
-    dao_open_db();
+    open_db();
     sqlite3_exec(db,"DELETE FROM TB_MUSIC WHERE not_found = 1;", 0, 0, &ErrMsg);
     print_errors();
 
     sqlite3_exec(db,"VACUUM;", 0, 0, &ErrMsg);
     print_errors();
-    dao_close_db();
+    close_db();
 }
 
-void dao_insert_directory(const char* directory)
+void Dao::insert_directory(const char* directory)
 {
-    dao_open_db();
+    open_db();
     sqlite3_prepare_v2(db, "INSERT INTO TB_DIRECTORY(directory) VALUES(?);", -1, &stmt, NULL);
     sqlite3_bind_text(stmt, 1, directory, -1, SQLITE_STATIC);
 
@@ -183,12 +191,12 @@ void dao_insert_directory(const char* directory)
     }
 
     sqlite3_finalize(stmt);
-    dao_close_db();
+    close_db();
 }
 
-void dao_delete_directory(int cod)
+void Dao::delete_directory(int cod)
 {
-    dao_open_db();
+    open_db();
     sqlite3_prepare_v2(db, "DELETE FROM TB_DIRECTORY WHERE cod = ?;", -1, &stmt, NULL);
     sqlite3_bind_int(stmt, 1, cod);
 
@@ -197,14 +205,14 @@ void dao_delete_directory(int cod)
     }
 
     sqlite3_finalize(stmt);
-    dao_close_db();
+    close_db();
 }
 
-void dao_get_all_music(deque<Music>& listMusic)
+void Dao::get_all_music(deque<Music>& listMusic)
 {
     listMusic.clear();
 
-    dao_open_db();
+    open_db();
     sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC ORDER BY artist, title;", -1, &stmt, NULL);
 
     while(sqlite3_step(stmt) == SQLITE_ROW) {
@@ -237,23 +245,20 @@ void dao_get_all_music(deque<Music>& listMusic)
     }
 
     sqlite3_finalize(stmt);
-    dao_close_db();
+    close_db();
 }
 
-#include <FL/fl_utf8.h>
-#include <string.h>
-
-void dao_search_music(const char* text, deque<Music>& listMusic)
+void Dao::search_music(string text, SearchType type, deque<Music>& listMusic)
 {
     listMusic.clear();
 
-    dao_open_db();
+    open_db();
 
     string text_prepared = "%";
     text_prepared.append(text);
     text_prepared.append("%");
 
-    switch(FLAG_SEARCH_TYPE) {
+    switch(type) {
     case SEARCH_TYPE_ALL:
         sqlite3_prepare_v2(db, "SELECT * FROM TB_MUSIC WHERE title LIKE ? OR artist LIKE ? OR album LIKE ? ORDER BY artist, title;", -1, &stmt, NULL);
         sqlite3_bind_text(stmt, 1, text_prepared.c_str(), -1, SQLITE_STATIC);
@@ -281,36 +286,28 @@ void dao_search_music(const char* text, deque<Music>& listMusic)
         for(int i = 0; i < sqlite3_column_count(stmt); i++) {
             string col = sqlite3_column_name(stmt, i);
 
-            if(col.compare("cod") == 0) {
+            if(col.compare("cod") == 0)
                 m.cod = sqlite3_column_int(stmt, i);
-                continue;
-            }
-            if(col.compare("title") == 0) {
-                m.title = (char*)sqlite3_column_text(stmt, i);
-                continue;
-            }
-            if(col.compare("artist") == 0) {
-                m.artist = (char*)sqlite3_column_text(stmt, i);
-                continue;
-            }
-            if(col.compare("album") == 0) {
-                m.album = (char*)sqlite3_column_text(stmt, i);
-                continue;
-            }
-            if(col.compare("filepath") == 0) {
-                m.filepath = (char*)sqlite3_column_text(stmt, i);
-                continue;
-            }
+            else if(col.compare("title") == 0)
+                m.title = (char*) sqlite3_column_text(stmt, i);
+            else if(col.compare("artist") == 0)
+                m.artist = (char*) sqlite3_column_text(stmt, i);
+            else if(col.compare("album") == 0)
+                m.album = (char*) sqlite3_column_text(stmt, i);
+            else if(col.compare("filepath") == 0)
+                m.filepath = (char*) sqlite3_column_text(stmt, i);
         }
+
         listMusic.push_back(m);
     }
+
     sqlite3_finalize(stmt);
-    dao_close_db();
+    close_db();
 }
 
-void dao_get_directories(deque<COD_VALUE>& dirList)
+void Dao::get_directories(deque<COD_VALUE>& dirList)
 {
-    dao_open_db();
+    open_db();
     sqlite3_prepare_v2(db, "SELECT * FROM TB_DIRECTORY", -1, &stmt, NULL);
 
     while(sqlite3_step(stmt) == SQLITE_ROW) {
@@ -322,5 +319,5 @@ void dao_get_directories(deque<COD_VALUE>& dirList)
     }
 
     sqlite3_finalize(stmt);
-    dao_close_db();
+    close_db();
 }

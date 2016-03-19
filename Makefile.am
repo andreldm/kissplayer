@@ -2,18 +2,27 @@ DIST_SUBDIRS = m4 po data
 SUBDIRS = po data
 AUTOMAKE_OPTIONS=foreign subdir-objects
 CFLAGS=-O2
+CXXFLAGS=-std=c++11 -O2
+#CC=clang
+#CXX=clang++
 
 # Define a C macro LOCALEDIR indicating where catalogs will be installed.
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 bin_PROGRAMS = kissplayer
 
+kissplayer_CPPFLAGS = $(LIBSIGC_CFLAGS)
+kissplayer_LDADD = $(LIBSIGC_LIBS)
+
 kissplayer_SOURCES = src/dao.cpp \
-  src/locale.cpp \
+  src/configuration.cpp \
   src/images.cpp \
+  src/locale.cpp \
   src/lyrics_fetcher.cpp \
   src/main.cpp \
   src/music.cpp \
+  src/playlist.cpp \
+  src/signals.cpp \
   src/sound.cpp \
   src/sync.cpp \
   src/util.cpp \

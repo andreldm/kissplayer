@@ -1,10 +1,22 @@
 #ifndef window_settings_h
 #define window_settings_h
+
 #include <FL/Fl_Window.H>
 
-void    window_settings_show   (Fl_Window* parent);
+#include "dao.h"
 
-// GLOBAL IMPORT
-extern bool FLAG_LYRICS;
+class WindowSettings : public Fl_Window
+{
+private:
+    Dao* dao;
+
+    void    toogleLyrics        (void);
+    void    toogleScrollTitle   (void);
+
+public:
+            WindowSettings      (Dao*);
+    void    show                (Fl_Window* parent);
+    void    close               (void);
+};
 
 #endif

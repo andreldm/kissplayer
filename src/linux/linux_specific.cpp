@@ -1,4 +1,4 @@
-#include "linux_specific.h"
+#include "../os_specific.h"
 
 #include <unistd.h>
 #include <pwd.h>
@@ -16,7 +16,6 @@
 #include "../window_main.h"
 #include "../util.h"
 
-
 using namespace std;
 
 static Pixmap mask;
@@ -32,19 +31,17 @@ typedef union {
 void keyHookCallback(XPointer pointer, XRecordInterceptData* hook);
 void keyHookTimer(void*);
 
-void os_specific_set_app_icon()
+void OsUtils::set_app_icon(Fl_Window* window)
 {
-    Fl_Window* window = window_main_get_instance();
-
     fl_open_display();
     Pixmap p;
     XpmCreatePixmapFromData(fl_display, DefaultRootWindow(fl_display), const_cast<char**>(icon_xpm), &p, &mask, NULL);
     window->icon((char*)p);
 }
 
-int os_specific_init()
+int OsUtils::init()
 {
-    Fl_Window* window = window_main_get_instance();
+    /*Fl_Window* window = window_main_get_instance();
 
     // To achieve icon transparency on Linux, we need this procedure.
     // Source: www.fltk.org/newsgroups.php?gfltk.general+v:14448
@@ -83,12 +80,12 @@ int os_specific_init()
     XRecordEnableContextAsync(disp_data, context, keyHookCallback, NULL);
 
     // Start polling
-    Fl::repeat_timeout(0.1, keyHookTimer);
+    Fl::repeat_timeout(0.1, keyHookTimer);*/
 
     return 0;
 }
 
-void os_specific_end()
+void OsUtils::end()
 {
     /*if(disp_data) {
         // Close the data display.
@@ -96,9 +93,9 @@ void os_specific_end()
     }*/
 }
 
-int os_specific_get_working_dir(std::string& dir)
+int OsUtils::get_working_dir(std::string& dir)
 {
-    struct passwd* pw = getpwuid(getuid());
+    /*struct passwd* pw = getpwuid(getuid());
     string path = pw->pw_dir;
     path.append("/.kissplayer/");
     dir.assign(path);
@@ -107,12 +104,12 @@ int os_specific_get_working_dir(std::string& dir)
         if (errno != EEXIST) {
             return -1;
         }
-    }
+    }*/
 
     return 0;
 }
 
-void os_specific_dir_chooser(char* dir)
+void OsUtils::dir_chooser(char* dir)
 {
     char* r = fl_dir_chooser("Select a folder", NULL);
 
@@ -128,9 +125,9 @@ void os_specific_dir_chooser(char* dir)
  * Set the window to maximized state.
  * Source: www.mail-archive.com/xfree86@xfree86.org/msg21266.html
  */
-void os_specific_maximize_window()
+void OsUtils::maximize_window()
 {
-    Fl_Window* window = window_main_get_instance();
+    /*Fl_Window* window = window_main_get_instance();
 
     static Atom atomState = XInternAtom(fl_display, "_NET_WM_STATE", True);
     static Atom atomMaxVert = XInternAtom(fl_display, "_NET_WM_STATE_MAXIMIZED_VERT", True);
@@ -147,16 +144,16 @@ void os_specific_maximize_window()
     xev.xclient.data.l[0] = (unsigned long)1;
     xev.xclient.data.l[1] = atomMaxVert;
     xev.xclient.data.l[2] = atomMaxHorz;
-    XSendEvent(fl_display, DefaultRootWindow(fl_display), False, SubstructureRedirectMask|SubstructureNotifyMask, &xev);
+    XSendEvent(fl_display, DefaultRootWindow(fl_display), False, SubstructureRedirectMask|SubstructureNotifyMask, &xev);*/
 }
 
 /**
  * Check if the window is maximized.
  * Source: SDL_x11window.c
  */
-bool os_specific_is_window_maximized()
+bool OsUtils::is_window_maximized()
 {
-    Fl_Window* window = window_main_get_instance();
+    /*Fl_Window* window = window_main_get_instance();
 
     static Atom atomState = XInternAtom(fl_display, "_NET_WM_STATE", True);
     static Atom atomMaxVert = XInternAtom(fl_display, "_NET_WM_STATE_MAXIMIZED_VERT", True);
@@ -184,7 +181,38 @@ bool os_specific_is_window_maximized()
         }
     }
 
-    return (maximized == 3);
+    return (maximized == 3);*/
+    return false;
+}
+
+void OsUtils::scanfolder(const char* dir, deque<string>& filelist)
+{
+    dirent** list;
+    int fileQty = fl_filename_list(dir, &list);
+
+    for(int i = 0; i < fileQty; i++) {
+        const char* filename = list[i]->d_name;
+
+        if(filename[0] == '.') {
+            continue;
+        }
+
+        char buffer[8192];
+        sprintf(buffer, "%s/%s", dir, filename);
+
+        if(fl_filename_isdir(buffer)) {
+            scanfolder(buffer, filelist);
+            continue;
+        }
+
+        string fn = filename;
+
+        if(util_is_ext_supported(fn)) {
+               filelist.push_back(buffer);
+        }
+    }
+
+    fl_filename_free_list(&list, fileQty);
 }
 
 void keyHookTimer(void*)
@@ -195,7 +223,7 @@ void keyHookTimer(void*)
 
 void keyHookCallback(XPointer pointer, XRecordInterceptData* hook)
 {
-    static int keyPressed = false;
+    /*static int keyPressed = false;
 
     // Make sure that our data come from a legitimate source.
     if(hook->category != XRecordFromServer && hook->category != XRecordFromClient) {
@@ -220,35 +248,5 @@ void keyHookCallback(XPointer pointer, XRecordInterceptData* hook)
         keyPressed = true;
     }
 
-    XRecordFreeData(hook);
-}
-
-void os_specific_scanfolder(const char* dir, deque<string>& filelist)
-{
-    dirent** list;
-    int fileQty = fl_filename_list(dir, &list);
-
-    for(int i = 0; i < fileQty; i++) {
-        const char* filename = list[i]->d_name;
-
-        if(filename[0] == '.') {
-            continue;
-        }
-
-        char buffer[8192];
-        sprintf(buffer, "%s/%s", dir, filename);
-
-        if(fl_filename_isdir(buffer)) {
-            os_specific_scanfolder(buffer, filelist);
-            continue;
-        }
-
-        string fn = filename;
-
-        if(util_is_ext_supported(fn)) {
-               filelist.push_back(buffer);
-        }
-    }
-
-    fl_filename_free_list(&list, fileQty);
+    XRecordFreeData(hook);*/
 }

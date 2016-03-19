@@ -2,6 +2,7 @@
 
 #include <sstream>
 
+#include <sigc++/sigc++.h>
 #include <FL/Fl_Help_View.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
@@ -13,33 +14,14 @@
 #include "util.h"
 #include "locale.h"
 
-static Fl_Window* window;
+static sigc::signal<void> SignalClose;
 
-static void cb_close(Fl_Widget*, void*);
-
-void window_about_show(Fl_Window* parent)
+WindowAbout::WindowAbout()
+        : Fl_Window(380, 250, _("About"))
 {
     std::stringstream sstream;
     Fl_Help_View* text;
     Fl_Group* group;
-
-    int window_w = 380;
-    int window_h = 250;
-    int window_x = 0;
-    int window_y = 0;
-
-    // Place this window at the center of the parent window or screen
-    if(parent) {
-        window_x = parent->x() + (parent->w()/2)-(window_w/2);
-        window_y = parent->y() + (parent->h()/2)-(window_h/2);
-    } else {
-        int screen_w = Fl::w();
-        int screen_h = Fl::h();
-        window_x = (screen_w/2)-(window_w/2);
-        window_y = (screen_h/2)-(window_h/2);
-    }
-
-    window = new Fl_Window(window_x, window_y, window_w, window_h, _("About"));
 
     sstream << "KISS Player v" << VERSION;
 
@@ -50,11 +32,11 @@ void window_about_show(Fl_Window* parent)
     box_title->labeltype(FL_SHADOW_LABEL);
     box_title->align(FL_ALIGN_TOP_LEFT | FL_ALIGN_INSIDE);
 
-    Fl_Tabs* tabs = new Fl_Tabs(5, 40, window_w-10, window_h-80);
+    Fl_Tabs* tabs = new Fl_Tabs(5, 40, w() - 10, h() - 80);
     tabs->clear_visible_focus();
 
     /** INFO **/
-    group = new Fl_Group(5, 60, window_w-10, window_h-80, _("Info"));
+    group = new Fl_Group(5, 60, w() - 10, h() - 80, _("Info"));
 
     sstream.str(std::string());
     sstream.clear();
@@ -63,14 +45,14 @@ void window_about_show(Fl_Window* parent)
     sstream << _("Contact:") << " <u>" << PACKAGE_BUGREPORT << "</u><br>";
     sstream << _("Website:") << " <u>" << PACKAGE_URL << "</u>";
 
-    text = new Fl_Help_View(10, 65, window_w-20, 140);
+    text = new Fl_Help_View(10, 65, w() - 20, 140);
     text->textsize(14);
     text->value(sstream.str().c_str());
 
     group->end();
 
     /** CREDITS **/
-    group = new Fl_Group(5, 60, window_w-10, 210, _("Credits"));
+    group = new Fl_Group(5, 60, w() - 10, 210, _("Credits"));
 
     sstream.str(std::string());
     sstream.clear();
@@ -88,14 +70,14 @@ void window_about_show(Fl_Window* parent)
         sstream << translators_credits;
     }
 
-    text = new Fl_Help_View(10, 65, window_w-20, 140);
+    text = new Fl_Help_View(10, 65, w() - 20, 140);
     text->textsize(14);
     text->value(sstream.str().c_str());
 
     group->end();
 
     /** LICENSE **/
-    group = new Fl_Group(5, 60, window_w-10, 210, _("License"));
+    group = new Fl_Group(5, 60, w() - 10, 210, _("License"));
 
     sstream.str(std::string());
     sstream.clear();
@@ -103,25 +85,45 @@ void window_about_show(Fl_Window* parent)
     sstream << _("Available online under:") << "<br>";
     sstream << "<u>http://gnu.org/licenses/gpl-2.0.html</u>";
 
-    text = new Fl_Help_View(10, 65, window_w-20, 140);
+    text = new Fl_Help_View(10, 65, w() - 20, 140);
     text->textsize(14);
     text->value(sstream.str().c_str());
 
     group->end();
-
     tabs->end();
 
-    Fl_Button* button_close = new Fl_Button((window_w/2)-30, window_h-32, 60, 25, _("Close"));
+    Fl_Button* button_close = new Fl_Button((w() / 2) - 30, h() - 32, 60, 25, _("Close"));
     util_adjust_width(button_close, 15);
-    button_close->callback((Fl_Callback*)cb_close);
+    button_close->callback([](Fl_Widget *w, void *u) {
+        SignalClose.emit();
+    });
 
-    window->set_modal();
-    window->show();
+    SignalClose.connect(sigc::mem_fun(this, &WindowAbout::close));
+
+    set_modal();
 }
 
-void cb_close(Fl_Widget* widget, void*)
+void WindowAbout::show(Fl_Window* parent)
 {
-    window->clear();
-    window->hide();
-    delete window;
+    int window_x = 0;
+    int window_y = 0;
+
+    // Place this window at the center of the parent window or screen
+    if(parent) {
+        window_x = parent->x() + (parent->w() / 2) - (w() / 2);
+        window_y = parent->y() + (parent->h() / 2) - (h() / 2);
+    } else {
+        int screen_w = Fl::w();
+        int screen_h = Fl::h();
+        window_x = (screen_w / 2) - (w() / 2);
+        window_y = (screen_h / 2) - (h() / 2);
+    }
+
+    resize(window_x, window_y, w(), h());
+    Fl_Window::show();
+}
+
+void WindowAbout::close()
+{
+    hide();
 }

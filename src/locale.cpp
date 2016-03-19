@@ -2,7 +2,7 @@
 
 #include <FL/fl_utf8.h>
 
-#include "dao.h"
+#include "constants.h"
 #include "util.h"
 #include "os_specific.h"
 
@@ -46,10 +46,10 @@ void Locale::setLanguage(int index)
 {
     const char* choice = languages[index]->locale_name.c_str();
 
-    dao_open_db();
-    dao_set_key(KEY_LANGUAGE, choice);
-    dao_set_key(KEY_LANGUAGE_INDEX, util_i2s(index));
-    dao_close_db();
+    dao->open_db();
+    dao->set_key(KEY_LANGUAGE, choice);
+    dao->set_key(KEY_LANGUAGE_INDEX, util_i2s(index));
+    dao->close_db();
 }
 
 Language** Locale::getDefinedLanguages()

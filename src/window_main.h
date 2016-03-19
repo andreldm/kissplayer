@@ -2,29 +2,81 @@
 #define window_main_h
 
 #include <FL/Fl.H>
+#include <FL/Fl_Button.H>
+#include <FL/Fl_Choice.H>
 #include <FL/Fl_Double_Window.H>
+#include <FL/Fl_Input.H>
+#include <FL/Fl_Text_Buffer.H>
+#include <FL/Fl_Text_Display.H>
 
-Fl_Double_Window*   window_main_get_instance                    (void);
-void                window_main_init                            (int argc, char** argv);
-void                window_main_toggle_play                     (void);
-void                window_main_stop                            (void);
-void                window_main_next                            (void);
-void                window_main_previous                        (void);
-void                window_main_reset_title                     (void);
-void                window_main_search                          (void);
-void                window_main_set_choice_search_type_color    (Fl_Color c);
-void                window_main_set_input_search_type_color     (Fl_Color c);
-void                window_main_set_lyrics_pane_color           (Fl_Color c1, Fl_Color c2, Fl_Color t);
-void                window_main_set_browser_music_color         (Fl_Color c1, Fl_Color c2, Fl_Color t);
-Fl_Color            window_main_get_browser_music_color         (int c);
+#include "configuration.h"
+#include "constants.h"
+#include "dao.h"
+#include "lyrics_fetcher.h"
+#include "playlist.h"
+#include "sound.h"
+#include "window_about.h"
+#include "window_settings.h"
+
+#include "widget/ksp_slider.h"
+#include "widget/ksp_volume_controller.h"
+#include "widget/ksp_browser.h"
+#include "widget/ksp_tile.h"
+
+class WindowMain : public Fl_Double_Window
+{
+private:
+    Sound* sound;
+    Dao* dao;
+    LyricsFetcher* lyricsFetcher;
+    Playlist* playlist;
+    WindowAbout* windowAbout;
+    WindowSettings* windowSettings;
+
+    Fl_Button* button_play;
+    Fl_Button* button_stop;
+    Fl_Button* button_previous;
+    Fl_Button* button_next;
+    Fl_Button* button_search;
+    Fl_Button* button_menu;
+    Fl_Button* button_clear;
+    KSP_Volume_Controller* volume_controller;
+    KSP_Browser* browser_music;
+    KSP_Slider* slider_music;
+    Fl_Input* input_search;
+    Fl_Choice* choice_search_type;
+    Fl_Text_Display* lyrics_pane;
+    Fl_Text_Buffer* lyrics_text_buffer;
+    Fl_Group* group_search;
+    Fl_Group* group_controls;
+    KSP_Tile* tile_center;
+
+    SearchType searchType;
+
+    void        toggle_play                     (void);
+    void        play                            (bool);
+    void        stop                            (void);
+    void        next                            (void);
+    void        previous                        (void);
+    void        reset_title                     (void);
+    void        search                          (void);
+    void        search_type                     (void);
+    void        volume_changed                  (float);
+
+    void        music_browser_event             (void);
+    void        show_about                      (void);
+    void        show_settings                   (void);
+    void        update_colors                   (void);
+    void        close_window                    (Fl_Widget*);
+    void        clear_search                    (void);
+    void        update_music_playing            (int);
+
+public:
+    WindowMain(Sound*, Dao*);
+    void        init                            (int argc, char** argv);
+};
 
 // GLOBAL IMPORT
-extern bool     FLAG_MAXIMIZE_WINDOW;
-extern bool     FLAG_RANDOM;
-extern bool     FLAG_REPEAT;
-extern bool     FLAG_LYRICS;
-extern bool     FLAG_SCROLL_TITLE;
-extern int      FLAG_SEARCH_TYPE;
 extern float    INITIAL_VOLUME;
 
 #endif

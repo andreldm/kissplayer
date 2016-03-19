@@ -5,19 +5,20 @@
 
 class TipWin;
 class TimeDisplay;
+class WindowMain;
 
 /**
  * A modified version of the Fl_Slider that features:
- * -Ignores the Left and Right key events.
- * -A Tip Window that displays the song's position while the mouse is hovering.
+ * - Ignores the Left and Right key events.
+ * - A Tip Window that displays the song's position while the mouse is hovering.
  */
 class KSP_Slider : public Fl_Slider
 {
 public:
-    KSP_Slider(int x, int y, int w, int h, const char* l = 0);
+    KSP_Slider(WindowMain* window_main, int x, int y, int w, int h, const char* l = 0);
     ~KSP_Slider();
     void update_time();
-    void realise_new_sound();
+    void realise_new_sound(int length);
     void reset();
     int handle(int event);
     bool is_tipwin_current();
@@ -25,6 +26,7 @@ public:
 private:
     TipWin* tipwin;
     TimeDisplay* time_display;
+    WindowMain* window_main;
 
     double calc_value(int event, int X, int Y, int W, int H);
     int handle(int event, int X, int Y, int W, int H);

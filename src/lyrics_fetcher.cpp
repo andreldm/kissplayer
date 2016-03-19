@@ -6,9 +6,8 @@
 #include <FL/Fl.H>
 #include <curl/curl.h>
 
-#include "dao.h"
+#include "configuration.h"
 #include "util.h"
-#include "sound.h"
 #include "locale.h"
 
 extern "C" {
@@ -17,31 +16,44 @@ extern "C" {
 
 using namespace std;
 
-class LyricsData
-{
-    public:
-    Fl_Text_Buffer* lyrics_text_buffer;
+class LyricsData {
+public:
+    Fl_Text_Buffer* text_buffer;
+    Sound* sound;
     string artist;
     string title;
+    string proxy;
     int ticket;
+    bool shouldFetchLyrics;
 };
 
 int ticket = 0;
 
 bool try_again(LyricsData* lyrics_data);
-size_t writeToString(void* ptr, size_t size, size_t count, void* stream);
-void upperCaseInitials(string& str);
 void thread_sleep(int ms);
 int thread_run(void * arg);
 bool do_fetch(LyricsData* lyrics_data, bool firstTry = true);
 
-void lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, string title)
+LyricsFetcher::LyricsFetcher(Dao* dao, Sound* sound, Fl_Text_Buffer* text_buffer)
 {
+    this->dao = dao;
+    this->sound = sound;
+    this->text_buffer = text_buffer;
+}
+
+void LyricsFetcher::fetch(Music* music) {
+    dao->open_db();
+    string proxy = dao->get_key("proxy");
+    dao->close_db();
+
     LyricsData* data = new LyricsData();
-    data->artist = artist;
-    data->title = title;
-    data->lyrics_text_buffer = lyrics_text_buffer;
+    data->text_buffer = text_buffer;
+    data->artist = music->artist;
+    data->title = music->title;
+    data->sound = this->sound;
+    data->proxy = proxy;
     data->ticket = ++ticket;
+    data->shouldFetchLyrics = Configuration::instance()->shouldFetchLyrics();
 
     // Ticket reset
     if (ticket > 10000) ticket = 0;
@@ -50,16 +62,14 @@ void lyrics_fetcher_run(Fl_Text_Buffer* lyrics_text_buffer, string artist, strin
     thrd_create(&t, thread_run, (void*) data);
 }
 
-void check_ticket(int thread_ticket)
-{
-    // If the sound is not loaded(stoped), also ignore this fetch
-    if(thread_ticket != ticket || !sound_is_loaded()) {
+void check_ticket(int thread_ticket, Sound* sound) {
+    // If the sound is not loaded(stopped), also ignore this fetch
+    if(thread_ticket != ticket || !sound->isLoaded()) {
         thrd_exit(thrd_success);
     }
 }
 
-int thread_run(void* arg)
-{
+int thread_run(void* arg) {
     // This sleep is useful if the user is skipping songs
     thread_sleep(500);
     LyricsData* data = (LyricsData*) arg;
@@ -67,8 +77,7 @@ int thread_run(void* arg)
     return 0;
 }
 
-void thread_sleep (int ms)
-{
+void thread_sleep (int ms) {
     struct timespec ts;
 
     /* Calculate current time + ms */
@@ -82,12 +91,12 @@ void thread_sleep (int ms)
     thrd_sleep(&ts, NULL);
 }
 
-bool do_fetch(LyricsData* lyrics_data, bool firstTry)
-{
+bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
     int thread_ticket = lyrics_data->ticket;
     string artist = lyrics_data->artist;
     string title = lyrics_data->title;
-    Fl_Text_Buffer* lyrics_text_buffer = lyrics_data->lyrics_text_buffer;
+    string proxy = lyrics_data->proxy;
+    Fl_Text_Buffer* text_buffer = lyrics_data->text_buffer;
 
     CURL* curl;
     string data;
@@ -116,8 +125,8 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
     util_replace_all(title, " ", "_");
     util_replace_all(artist, "?", "%3F");
     util_replace_all(title, "?", "%3F");
-    upperCaseInitials(artist);
-    upperCaseInitials(title);
+    util_uppercase_initials(artist);
+    util_uppercase_initials(title);
 
     url = url.append(artist);
     url = url.append(":");
@@ -126,34 +135,32 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
 
     //cout <<"URL: " << url << endl;
     curl = curl_easy_init();
-    check_ticket(thread_ticket);
+    check_ticket(thread_ticket, lyrics_data->sound);
 
     if(curl) {
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeToString);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, util_write_string);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_easy_setopt(curl, CURLOPT_TIMEOUT, 5);
-        dao_open_db();
-        string proxy = dao_get_key("proxy");
-        dao_close_db();
+
         if(!proxy.empty()) {
             curl_easy_setopt(curl, CURLOPT_PROXY, proxy.c_str());
         }
         CURLcode res = curl_easy_perform(curl);
-        check_ticket(thread_ticket);
+        check_ticket(thread_ticket, lyrics_data->sound);
 
         // Check if timed out
         if(res == CURLE_OPERATION_TIMEDOUT) {
             curl_easy_cleanup(curl);
-            lyrics_text_buffer->text(_("Connection timed out!"));
+            text_buffer->text(_("Connection timed out!"));
             return false;
         }
 
         // Check if there was any problem
         if(res != CURLE_OK) {
             curl_easy_cleanup(curl);
-            lyrics_text_buffer->text(_("Connection failure!"));
+            text_buffer->text(_("Connection failure!"));
             //cout << "CURL Error: " << res << endl;
             return false;
         }
@@ -174,7 +181,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
 
             findResult = data.find(":");
             if(findResult == string::npos) {
-                lyrics_text_buffer->text(_("Error while redirecting."));
+                text_buffer->text(_("Error while redirecting."));
                 return false;
             }
 
@@ -202,7 +209,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
             if(firstTry) {
                 bool result = try_again(lyrics_data);
                 if(!result) {
-                    lyrics_text_buffer->text(_("Not found :-("));
+                    text_buffer->text(_("Not found :-("));
                 }
             }
 
@@ -217,7 +224,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
             if(firstTry) {
                 bool result = try_again(lyrics_data);
                 if(!result) {
-                    lyrics_text_buffer->text(_("Error while fetching."));
+                    text_buffer->text(_("Error while fetching."));
                 }
             }
 
@@ -245,44 +252,23 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry)
     util_replace_all(result, "{{", "");
     util_replace_all(result, "}}", "");
 
-    check_ticket(thread_ticket);
+    check_ticket(thread_ticket, lyrics_data->sound);
     Fl::lock ();
-    if(FLAG_LYRICS) {
-        lyrics_text_buffer->text(result.c_str());
+    if(lyrics_data->shouldFetchLyrics) {
+        text_buffer->text(result.c_str());
     }
     Fl::unlock ();
 
     return true;
 }
 
-bool try_again(LyricsData* lyrics_data)
-{
-    check_ticket(lyrics_data->ticket);
+bool try_again(LyricsData* lyrics_data) {
+    check_ticket(lyrics_data->ticket, lyrics_data->sound);
     string _title = lyrics_data->title;
-    util_erease_between(_title, "(", ")");
-    util_erease_between(_title, "[", "]");
+    util_erase_between(_title, "(", ")");
+    util_erase_between(_title, "[", "]");
     util_replace_all(_title, "!", "");
     lyrics_data->title = _title;
 
     return do_fetch(lyrics_data, false);
-}
-
-size_t writeToString(void* ptr, size_t size, size_t count, void *stream)
-{
-    ((string*)stream)->append((char*)ptr, 0, size* count);
-    return size* count;
-}
-
-void upperCaseInitials(string& str)
-{
-    for(int i = 0; i < str.length(); i++) {
-        if(i == 0 && islower(str[i])) {
-            str[i] = toupper(str[i]);
-            continue;
-        }
-        if(str[i-1] && str[i-1] == '_' && islower(str[i])) {
-            str[i] = toupper(str[i]);
-            continue;
-        }
-    }
 }

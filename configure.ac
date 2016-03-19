@@ -3,7 +3,7 @@
 ################################################################
 
 AC_PREREQ([2.68])
-AC_INIT([KISS Player], [0.6.4], [andreldm1989@gmail.com], [kissplayer], [https://github.com/andreldm/kissplayer])
+AC_INIT([KISS Player], [0.7.0], [andre42m@gmail.com], [kissplayer], [https://github.com/andreldm/kissplayer])
 AC_CONFIG_AUX_DIR(autotools)
 AC_CONFIG_MACRO_DIR(m4)
 
@@ -97,6 +97,8 @@ AC_CHECK_LIB([tag], [read], [], [echo "TagLib is required for this program"; exi
 AC_CHECK_LIB([fltk], [main], [], [echo "FLTK is required for this program"; exit -1])
 AC_CHECK_LIB([fltk_images], [main], [], [echo "libfltk_images is required for this program"; exit -1])
 AC_CHECK_LIB([curl], [main], [], [echo "libcurl required for this program"; exit -1])
+
+PKG_CHECK_MODULES([LIBSIGC], [sigc++-2.0])
 
 ####################################
 # Support for the po directory

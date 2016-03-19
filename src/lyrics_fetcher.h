@@ -4,7 +4,24 @@
 #include <string>
 #include <FL/Fl_Text_Buffer.H>
 
-void    lyrics_fetcher_run      (Fl_Text_Buffer* lyrics_text_buffer, std::string artist, std::string title);
+#include "dao.h"
+#include "music.h"
+#include "sound.h"
+
+// class LyricsData;
+
+class LyricsFetcher
+{
+private:
+    Dao* dao;
+    Sound* sound;
+    Fl_Text_Buffer* text_buffer;
+
+public:
+    LyricsFetcher(Dao*, Sound*, Fl_Text_Buffer*);
+
+    void fetch (Music* music);
+};
 
 // GLOBAL IMPORT
 extern bool     FLAG_LYRICS;

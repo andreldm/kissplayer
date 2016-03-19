@@ -3,6 +3,7 @@
 #include <deque>
 #include <string>
 
+#include <sigc++/sigc++.h>
 #include <FL/Fl.H>
 #include <FL/fl_ask.H>
 #include <FL/Fl_Button.H>
@@ -13,6 +14,7 @@
 #include <FL/Fl_Color_Chooser.H>
 #include <FL/Fl_Select_Browser.H>
 
+#include "configuration.h"
 #include "widget/ksp_check_button.h"
 #include "locale.h"
 #include "os_specific.h"
@@ -41,45 +43,30 @@ static bool should_resync;
 static void update_dir_list();
 static Fl_Color edit_color(Fl_Color val);
 
-static void cb_close(Fl_Widget*, void*);
 static void cb_add_dir(Fl_Widget*, void*);
 static void cb_remove_dir(Fl_Widget*, void*);
 static void cb_background_color(Fl_Widget*, void*);
 static void cb_selection_color(Fl_Widget*, void*);
 static void cb_text_color(Fl_Widget*, void*);
 static void cb_default_colors(Fl_Widget*, void*);
-static void cb_lyrics(Fl_Widget*, void*);
-static void cb_scroll_title(Fl_Widget*, void*);
+// static void cb_lyrics(Fl_Widget*, void*);
+// static void cb_scroll_title(Fl_Widget*, void*);
 static void cb_change(Fl_Widget*, void*);
 static void cb_tab_select(Fl_Widget*, void*);
 static void cb_proxy(Fl_Widget*, void*);
 
-void window_settings_show(Fl_Window* parent)
+static sigc::signal<void> SignalClose;
+
+WindowSettings::WindowSettings(Dao* dao)
+        : Fl_Window(650, 300, _("Settings"))
 {
-    should_resync = false;
+    this->dao = dao;
 
-    int window_w = 650;
-    int window_h = 300;
-    int window_x = 0;
-    int window_y = 0;
-
-    // Place this window at the center of the parent window or screen
-    if(parent) {
-        window_x = parent->x() + (parent->w()/2)-(window_w/2);
-        window_y = parent->y() + (parent->h()/2)-(window_h/2);
-    } else {
-        int screen_w = Fl::w();
-        int screen_h = Fl::h();
-        window_x = (screen_w/2)-(window_w/2);
-        window_y = (screen_h/2)-(window_h/2);
-    }
-
-    window = new Fl_Window(window_x, window_y, window_w, window_h, _("Settings"));
-
-    tab_selector = new Fl_Hold_Browser(10, 10, 200, window_h - 20);
-    tab_selector->color(window_main_get_browser_music_color(1));
-    tab_selector->color2(window_main_get_browser_music_color(2));
-    tab_selector->textcolor(window_main_get_browser_music_color(3));
+    // should_resync = false;
+    tab_selector = new Fl_Hold_Browser(10, 10, 200, h() - 20);
+    tab_selector->color(Configuration::instance()->background());
+    tab_selector->color2(Configuration::instance()->foreground());
+    tab_selector->textcolor(Configuration::instance()->textcolor());
     tab_selector->add(_("General"));
     tab_selector->add(_("Directories"));
     tab_selector->add(_("Network"));
@@ -88,25 +75,25 @@ void window_settings_show(Fl_Window* parent)
 #endif
 
     // TAB GENERAL
-    tabs[0] = new Fl_Group(215, 10, window_w - 225, window_h - 20, _("General"));
+    tabs[0] = new Fl_Group(215, 10, w() - 225, h() - 20, _("General"));
     tabs[0]->labelsize(16);
     tabs[0]->align(FL_ALIGN_INSIDE | FL_ALIGN_TOP);
     tabs[0]->box(FL_UP_FRAME);
     tabs[0]->begin();
 
     button_lyrics = new KSP_Check_Button(220, 40, 120, 16,_("Display Lyrics"));
-    button_lyrics->value(FLAG_LYRICS);
-    button_lyrics->callback((Fl_Callback*)cb_lyrics);
+    // button_lyrics->value(FLAG_LYRICS);
+    // button_lyrics->callback((Fl_Callback*)cb_lyrics);
 
     button_scroll_title = new KSP_Check_Button(220, 65, 120, 16, _("Scroll Title"));
-    button_scroll_title->value(FLAG_SCROLL_TITLE);
-    button_scroll_title->callback((Fl_Callback*)cb_scroll_title);
+    // button_scroll_title->value(FLAG_SCROLL_TITLE);
+    // button_scroll_title->callback((Fl_Callback*)cb_scroll_title);
 
     button_background_color = new Fl_Button(220, 100, 16, 16, _("Background Color"));
     button_background_color->box(FL_DOWN_BOX);
     button_background_color->labelsize(12);
     button_background_color->clear_visible_focus();
-    button_background_color->color(window_main_get_browser_music_color(1));
+    button_background_color->color(Configuration::instance()->background());
     button_background_color->callback((Fl_Callback*)cb_background_color);
     button_background_color->align(FL_ALIGN_RIGHT);
 
@@ -114,7 +101,7 @@ void window_settings_show(Fl_Window* parent)
     button_selection_color->box(FL_DOWN_BOX);
     button_selection_color->labelsize(12);
     button_selection_color->clear_visible_focus();
-    button_selection_color->color(window_main_get_browser_music_color(2));
+    button_selection_color->color(Configuration::instance()->foreground());
     button_selection_color->callback((Fl_Callback*)cb_selection_color);
     button_selection_color->align(FL_ALIGN_RIGHT);
 
@@ -122,7 +109,7 @@ void window_settings_show(Fl_Window* parent)
     button_text_color->box(FL_DOWN_BOX);
     button_text_color->labelsize(12);
     button_text_color->clear_visible_focus();
-    button_text_color->color(window_main_get_browser_music_color(3));
+    button_text_color->color(Configuration::instance()->textcolor());
     button_text_color->callback((Fl_Callback*)cb_text_color);
     button_text_color->align(FL_ALIGN_RIGHT);
 
@@ -135,17 +122,17 @@ void window_settings_show(Fl_Window* parent)
     tabs[0]->end();
 
     // TAB DIRECTORIES
-    tabs[1] = new Fl_Group(215, 10, window_w - 225, window_h - 20, _("Directories"));
+    tabs[1] = new Fl_Group(215, 10, w() - 225, h() - 20, _("Directories"));
     tabs[1]->labelsize(16);
     tabs[1]->align(FL_ALIGN_INSIDE | FL_ALIGN_TOP);
     tabs[1]->box(FL_UP_FRAME);
     tabs[1]->begin();
 
-    browser_directories = new Fl_Select_Browser(220, 40, window_w - 235, 160, 0);
+    browser_directories = new Fl_Select_Browser(220, 40, w() - 235, 160, 0);
     browser_directories->type(FL_HOLD_BROWSER);
-    browser_directories->color(window_main_get_browser_music_color(1));
-    browser_directories->color2(window_main_get_browser_music_color(2));
-    browser_directories->textcolor(window_main_get_browser_music_color(3));
+    browser_directories->color(Configuration::instance()->background());
+    browser_directories->color2(Configuration::instance()->foreground());
+    browser_directories->textcolor(Configuration::instance()->textcolor());
 
     Fl_Button* button_add = new Fl_Button(220, 205, 70, 25, _("Add"));
     util_adjust_width(button_add, 10);
@@ -160,25 +147,25 @@ void window_settings_show(Fl_Window* parent)
     tabs[1]->end();
 
     // TAB NETWORK
-    tabs[2] = new Fl_Group(215, 10, window_w - 225, window_h - 20, _("Network"));
+    tabs[2] = new Fl_Group(215, 10, w() - 225, h() - 20, _("Network"));
     tabs[2]->labelsize(16);
     tabs[2]->align(FL_ALIGN_INSIDE | FL_ALIGN_TOP);
     tabs[2]->box(FL_UP_FRAME);
     tabs[2]->begin();
 
-    Fl_Box* label_proxy = new Fl_Box(220, 40, window_w - 235, 22, _("Proxy:"));
+    Fl_Box* label_proxy = new Fl_Box(220, 40, w() - 235, 22, _("Proxy:"));
     util_adjust_width(label_proxy);
 
-    input_proxy = new Fl_Input(215 + 8 + label_proxy->w(), 40, window_w - 240 - label_proxy->w(), 22, 0);
+    input_proxy = new Fl_Input(215 + 8 + label_proxy->w(), 40, w() - 240 - label_proxy->w(), 22, 0);
     input_proxy->tooltip(_("Complete proxy URL, ex: http://192.168.1.1:3128"));
-    dao_open_db();
-    input_proxy->value(dao_get_key("proxy").c_str());
-    dao_close_db();
+    dao->open_db();
+    input_proxy->value(dao->get_key("proxy").c_str());
+    dao->close_db();
     input_proxy->callback(cb_proxy);
     tabs[2]->end();
 
     // TAB LANGUAGE
-    tabs[3] = new Fl_Group(215, 10, window_w - 225, window_h - 20, _("Language"));
+    tabs[3] = new Fl_Group(215, 10, w() - 225, h() - 20, _("Language"));
 #ifdef WIN32
     tabs[3]->labelsize(16);
     tabs[3]->align(FL_ALIGN_INSIDE | FL_ALIGN_TOP);
@@ -194,20 +181,21 @@ void window_settings_show(Fl_Window* parent)
     }
     lang_choice->callback(cb_change);
 
-    dao_open_db();
-    int index = util_s2i(dao_get_key("lang_index"));
-    dao_close_db();
+    dao->open_db();
+    int index = util_s2i(dao->get_key("lang_index"));
+    dao->close_db();
     lang_choice->value((index < 0 ? 0 : index));
 #endif
     tabs[3]->end();
 
     // CLOSE BUTTON
-    Fl_Button* button_close = new Fl_Button(0, window_h - 40, 60, 25, _("Close"));
+    Fl_Button* button_close = new Fl_Button(0, h() - 40, 60, 25, _("Close"));
     util_adjust_width(button_close, 10);
     button_close->position(tabs[0]->x() + (tabs[0]->w() / 2) - (button_close->w() / 2), button_close->y());
-
     button_close->clear_visible_focus();
-    button_close->callback((Fl_Callback*)cb_close);
+    button_close->callback([](Fl_Widget *w, void *u) {
+        SignalClose.emit();
+    });
 
     update_dir_list();
 
@@ -215,23 +203,45 @@ void window_settings_show(Fl_Window* parent)
     tab_selector->callback(cb_tab_select);
     tab_selector->do_callback();
 
-    window->set_modal();
-    window->callback((Fl_Callback*)cb_close);
-    window->show();
+    set_modal();
+    callback([](Fl_Widget *w, void *u) {
+        SignalClose.emit();
+    });
+
+    SignalClose.connect(sigc::mem_fun(this, &WindowSettings::close));
 }
 
-void cb_close(Fl_Widget* widget, void*)
+void WindowSettings::show(Fl_Window* parent)
 {
-    window->clear();
-    window->hide();
-    window_main_get_instance()->show();
-    delete window;
-    if(should_resync) sync_execute(true);
+    int window_x = 0;
+    int window_y = 0;
+
+    // Place this window at the center of the parent window or screen
+    if(parent) {
+        window_x = parent->x() + (parent->w()/2)-(w()/2);
+        window_y = parent->y() + (parent->h()/2)-(h()/2);
+    } else {
+        int screen_w = Fl::w();
+        int screen_h = Fl::h();
+        window_x = (screen_w/2)-(w()/2);
+        window_y = (screen_h/2)-(h()/2);
+    }
+
+    resize(window_x, window_y, w(), h());
+    Fl_Window::show();
+}
+
+void WindowSettings::close()
+{
+    clear();
+    hide();
+    /*window_main_get_instance()->show();*/
+    /*if(should_resync) sync_execute(true);*/
 }
 
 void cb_add_dir(Fl_Widget* widget, void*)
 {
-    char dir[PATH_LENGTH] = "";
+    /*char dir[PATH_LENGTH] = "";
     int dirQty = listDir.size();
 
     os_specific_dir_chooser(dir);
@@ -246,12 +256,12 @@ void cb_add_dir(Fl_Widget* widget, void*)
     if(listDir.size() != dirQty) {
         // If a directory was added
         should_resync = true;
-    }
+    }*/
 }
 
 void cb_remove_dir(Fl_Widget* widget, void*)
 {
-    int index = browser_directories->value();
+    /*int index = browser_directories->value();
     if(index <= 0) return;
 
     string dir = browser_directories->text(index);
@@ -262,12 +272,12 @@ void cb_remove_dir(Fl_Widget* widget, void*)
         }
     }
 
-    should_resync = true;
+    should_resync = true;*/
 }
 
 void cb_background_color(Fl_Widget* widget, void*)
 {
-    Fl_Color val = edit_color(button_background_color->color());
+    /*Fl_Color val = edit_color(button_background_color->color());
 
     button_background_color->color(val);
     button_background_color->redraw();
@@ -279,12 +289,12 @@ void cb_background_color(Fl_Widget* widget, void*)
     tab_selector->redraw();
 
     window_main_set_browser_music_color(val, -1, -1);
-    window_main_set_lyrics_pane_color(val, -1, -1);
+    window_main_set_lyrics_pane_color(val, -1, -1);*/
 }
 
 void cb_selection_color(Fl_Widget* widget, void*)
 {
-    Fl_Color val = edit_color(button_selection_color->color());
+    /*Fl_Color val = edit_color(button_selection_color->color());
 
     button_selection_color->color(val);
     button_selection_color->redraw();
@@ -298,12 +308,12 @@ void cb_selection_color(Fl_Widget* widget, void*)
     window_main_set_input_search_type_color(val);
     window_main_set_browser_music_color(-1, val, -1);
     window_main_set_lyrics_pane_color(-1, val, -1);
-    window_main_set_choice_search_type_color(val);
+    window_main_set_choice_search_type_color(val);*/
 }
 
 void cb_text_color(Fl_Widget* widget, void*)
 {
-    Fl_Color val = edit_color(button_text_color->color());
+    /*Fl_Color val = edit_color(button_text_color->color());
 
     button_text_color->color(val);
     button_text_color->redraw();
@@ -315,12 +325,12 @@ void cb_text_color(Fl_Widget* widget, void*)
     tab_selector->redraw();
 
     window_main_set_browser_music_color(-1, -1, val);
-    window_main_set_lyrics_pane_color(-1, -1, val);
+    window_main_set_lyrics_pane_color(-1, -1, val);*/
 }
 
 void cb_default_colors(Fl_Widget* widget, void*)
 {
-    window_main_set_input_search_type_color(DEFAULT_SELECTION_COLOR);
+    /*window_main_set_input_search_type_color(DEFAULT_SELECTION_COLOR);
     window_main_set_choice_search_type_color(DEFAULT_SELECTION_COLOR);
     window_main_set_browser_music_color(DEFAULT_BACKGROUND_COLOR, DEFAULT_SELECTION_COLOR, DEFAULT_FOREGROUND_COLOR);
     window_main_set_lyrics_pane_color(DEFAULT_BACKGROUND_COLOR, DEFAULT_SELECTION_COLOR, DEFAULT_FOREGROUND_COLOR);
@@ -339,21 +349,21 @@ void cb_default_colors(Fl_Widget* widget, void*)
     button_background_color->redraw();
     button_selection_color->redraw();
     browser_directories->redraw();
-    tab_selector->redraw();
+    tab_selector->redraw();*/
 }
 
-void cb_lyrics(Fl_Widget* widget, void*)
+void WindowSettings::toogleLyrics()
 {
-    FLAG_LYRICS = !FLAG_LYRICS;
+    Configuration::instance()->shouldFetchLyrics(Configuration::instance()->shouldFetchLyrics());
 }
 
-void cb_scroll_title(Fl_Widget* widget, void*)
+void WindowSettings::toogleScrollTitle()
 {
-    FLAG_SCROLL_TITLE = !FLAG_SCROLL_TITLE;
+    Configuration::instance()->shouldScrollTitle(Configuration::instance()->shouldScrollTitle());
 
-    if(!FLAG_SCROLL_TITLE) {
+    /*if(!FLAG_SCROLL_TITLE) {
         window_main_reset_title();
-    }
+    }*/
 }
 
 Fl_Color edit_color(Fl_Color val)
@@ -368,19 +378,19 @@ Fl_Color edit_color(Fl_Color val)
 
 void update_dir_list()
 {
-    browser_directories->clear();
+    /*browser_directories->clear();
     listDir.clear();
     dao_get_directories(listDir);
 
     for(int i = 0; i < listDir.size(); i++) {
         string s = listDir.at(i).value;
         browser_directories->add(s.c_str());
-    }
+    }*/
 }
 
 void cb_change(Fl_Widget* widget, void*)
 {
-    Locale::setLanguage(lang_choice->value());
+    /*Locale::setLanguage(lang_choice->value());*/
 
     fl_beep();
     fl_message(_("Please, restart the program to change the language."));
@@ -401,7 +411,7 @@ void cb_tab_select(Fl_Widget*, void*) {
 }
 
 void cb_proxy(Fl_Widget*, void*) {
-    dao_open_db();
+    /*dao_open_db();
     dao_set_key("proxy", input_proxy->value());
-    dao_close_db();
+    dao_close_db();*/
 }

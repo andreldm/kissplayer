@@ -1,25 +1,46 @@
 #ifndef sound_h
 #define sound_h
 
-int     sound_initialize    (void); //initialises sound system
-void    sound_load          (const char* filename); // loads a soundfile
-void    sound_unload        (void); // frees the sound object
-bool    sound_is_loaded     (void); // checks whether the sound is load or not
+#if defined WIN32
+    #include <fmod.h>
+#else
+    #include <fmodex/fmod.h>
+    #include <fmodex/fmod.hpp>
+#endif
 
-void    sound_play          (bool pause = false); // plays a sound (may start paused; no argument for unpaused)
+#include "constants.h"
 
-void    sound_active        (bool sound); // set the sound on/off
-void    sound_toggle_active (void); // toggles sound on/off
+class Sound {
+private:
+    char current_file[PATH_LENGTH];
+    bool loaded = false;
+    bool playing = false;
+    FMOD::System* system;
+    FMOD::Sound* sound;
+    FMOD::Channel* channel;
 
-void    sound_pause         (bool pause); // pause or unpause the sound
-void    sound_toggle_pause  (void); // toggles pause on/off
+public:
+    int     init            (void); // initialises the sound system
+    void    destroy         (void); // destroys the sound system
+    void    load            (const char* filename); // loads a soundfile
+    void    unload          (void); // frees the sound object
+    bool    isLoaded        (void); // checks whether the sound is load or not
 
-bool    sound_is_playing    (void); // checks whether the sound is playing or not
-int     sound_length        (void); // get the sound's length in miliseconds
-int     sound_position      (void); // get the current sound's position within the length in miliseconds
-void    sound_position      (int mili); // set the current sound's position within the length in miliseconds
+    void    play            (bool pause = false); // plays a sound (may start paused; no argument for unpaused)
 
-void    sound_volume        (float v); // sets the actual playing sound's volume
-float   sound_volume        (void); // gets the actual playing sound's volume
+    void    setActive       (bool sound); // set the sound on/off
+    void    toggleActive    (void); // toggles sound on/off
+
+    void    setPaused       (bool pause); // pause or unpause the sound
+    void    togglePaused    (void); // toggles pause on/off
+
+    bool    isPlaying       (void); // checks whether the sound is playing or not
+    int     length          (void); // get the sound's length in miliseconds
+    int     getPosition     (void); // get the current sound's position within the length in miliseconds
+    void    setPosition     (int mili); // set the current sound's position within the length in miliseconds
+
+    float   getVolume       (void); // gets the actual playing sound's volume
+    void    setVolume       (float v); // sets the actual playing sound's volume
+ };
 
 #endif

@@ -5,6 +5,9 @@
 #include <locale.h>
 #include <string>
 
+#include "dao.h"
+#include "util.h"
+
 #define _(STRING) gettext(STRING)
 
 class Language {
@@ -21,10 +24,13 @@ public:
 
 class Locale
 {
+private:
+    Dao* dao;
+
 public:
-    static void init();
-    static void setLanguage(int index);
-    static Language** getDefinedLanguages();
+    void init();
+    void setLanguage(int index);
+    Language** getDefinedLanguages();
 };
 
 #endif
