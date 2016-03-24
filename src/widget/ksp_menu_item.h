@@ -19,6 +19,7 @@ public:
     const KSP_Menu_Item* pulldown(int X, int Y) const;
 
     void set_label_icon(const char* text, Fl_Image* icon, bool prepend_space = true);
+    void set_toggled(bool toggled);
 };
 
 #endif

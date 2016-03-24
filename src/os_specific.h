@@ -1,24 +1,22 @@
-#ifndef os_utils_h
-#define os_utils_h
+#ifndef os_specific_h
+#define os_specific_h
 
 #include <deque>
 #include <string>
 
 #include <FL/Fl_Window.H>
 
-class OsUtils {
+class OsSpecific {
 private:
 
 public:
-    // OsUtils();
-
     void    set_app_icon            (Fl_Window* window);
-    int     init                    (void);
+    int     init                    (Fl_Window* window);
     void    end                     (void);
     int     get_working_dir         (std::string& dir);
     void    dir_chooser             (char* dir);
-    void    maximize_window         (void);
-    bool    is_window_maximized     (void);
+    void    maximize_window         (Fl_Window* window);
+    bool    is_window_maximized     (Fl_Window* window);
 
     void    scanfolder              (const char* dir, std::deque<std::string>& filelist);
 };

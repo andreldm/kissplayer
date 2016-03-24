@@ -8,7 +8,6 @@
 
 #include "music.h"
 
-bool            util_parse_dnd          (std::string urls, std::deque<Music>& listMusic);
 bool            util_is_ext_supported   (std::string filename);
 void            util_trim               (std::string& str);
 std::string     util_format_time        (int secs);
@@ -18,6 +17,7 @@ void            util_erase_between      (std::string& str, const std::string& st
 void            util_adjust_width       (Fl_Widget* w, int padding = 6);
 size_t          util_write_string       (void* ptr, size_t size, size_t count, void* stream);
 void            util_uppercase_initials (std::string& str);
+void            util_center_window      (Fl_Widget* window, Fl_Widget* parent = NULL);
 
 int             util_s2i                (std::string value);
 std::string     util_i2s                (int value);

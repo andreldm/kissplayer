@@ -14,25 +14,15 @@
 static Fl_Progress* progress_bar_dir;
 static Fl_Progress* progress_bar_file;
 
-static void cb_cancel(Fl_Widget*, void*);
-
 WindowLoading::WindowLoading(Configuration* config)
-        : Fl_Window(0, 0, _("Please Wait"))
+        : Fl_Window(350, 140, _("Please Wait"))
 {
     this->config = config;
 }
 
 void WindowLoading::show(void)
 {
-    // To place the window at the center of the screen
-    int window_w = 350;
-    int window_h = 140;
-    int screen_w = Fl::w();
-    int screen_h = Fl::h();
-    int window_x = (screen_w/2)-(window_w/2);
-    int window_y = (screen_h/2)-(window_h/2);
-
-    resize(window_x, window_y, window_w, window_h);
+    util_center_window(this);
     this->align(Fl_Align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE));
 
     progress_bar_dir = new Fl_Progress(20, 20, 320, 30, _("Scanning directories..."));

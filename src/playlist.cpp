@@ -1,10 +1,20 @@
 #include "playlist.h"
 
+#include <sstream>
 #include <taglib/fileref.h>
 
 #include "configuration.h"
 #include "signals.h"
 #include "util.h"
+
+#if defined WIN32
+    #include <time.h>
+    #include <windows.h>
+#else
+    #include <stdlib.h>
+    #include <curl/curl.h>
+    static CURL* curl = curl_easy_init();
+#endif
 
 using namespace std;
 
@@ -45,10 +55,23 @@ bool Playlist::parse_args(int argc, char** argv)
 
     util_randomize(listRandom, listMusic.size());
 
+    if (parsed) {
+        musicIndex = -1;
+        musicIndexRandom = 0;
+
+        if (Configuration::instance()->shouldRandomize()) {
+            musicIndex = listRandom.at(musicIndexRandom++);
+        } else {
+            musicIndex++;
+        }
+
+        SignalPlay.emit();
+    }
+
     return parsed;
 }
 
-bool Playlist::search(std::string text, SearchType type)
+void Playlist::search(std::string text, SearchType type)
 {
     dao->search_music(text, type, listMusic);
     update_browser();
@@ -59,7 +82,7 @@ void Playlist::update_browser()
     browser_music->clear();
     browser_music->clear_highlighted();
 
-    for(int i = 0; i < listMusic.size(); i++) {
+    for(uint i = 0; i < listMusic.size(); i++) {
         Music m = listMusic.at(i);
         browser_music->add(m.getDesc().c_str());
         if(m.cod != 0 && m.cod == musicPlayingCod) {
@@ -76,11 +99,11 @@ bool Playlist::play(float volume, bool playAtBrowser)
 {
     lastVolume = volume;
 
-    if(playAtBrowser && browser_music->value() == 0) {
+    if (playAtBrowser && browser_music->value() == 0) {
         return false;
     }
 
-    if(playAtBrowser || !sound->isLoaded()) {
+    if (playAtBrowser || !sound->isLoaded()) {
         musicIndex = (browser_music->value() == 0) ? 0 : browser_music->value()-1;
     }
 
@@ -114,7 +137,7 @@ bool Playlist::play(float volume, bool playAtBrowser)
 
 bool Playlist::stop()
 {
-    if(!sound->isPlaying()) {
+    if (!sound->isPlaying()) {
         return false;
     }
 
@@ -127,16 +150,16 @@ bool Playlist::stop()
 bool Playlist::hasNext()
 {
     // There's no music on the list or no music playing
-    if(listMusic.empty() || !sound->isLoaded()) return false;
+    if (listMusic.empty() || !sound->isLoaded()) return false;
 
-    if(Configuration::instance()->shouldRepeatSong()) return true;
+    if (Configuration::instance()->shouldRepeatSong()) return true;
 
     // '-1' is the beginning of the playlist
-    if(Configuration::instance()->shouldRandomize()) {
-        if(musicIndexRandom == -1 || musicIndexRandom + 2 <= listRandom.size()) {
+    if (Configuration::instance()->shouldRandomize()) {
+        if(musicIndexRandom == -1 || musicIndexRandom + 2 <= (int) listRandom.size()) {
             return true;
         }
-    } else if(musicIndex + 2 <= listMusic.size()) {
+    } else if (musicIndex + 2 <= (int) listMusic.size()) {
         return true;
     }
 
@@ -146,9 +169,9 @@ bool Playlist::hasNext()
 bool Playlist::hasPrevious()
 {
     // There's no music on the list or no music playing
-    if(listMusic.empty() || !sound->isLoaded()) return false;
+    if (listMusic.empty() || !sound->isLoaded()) return false;
 
-    if(Configuration::instance()->shouldRepeatSong()) return true;
+    if( Configuration::instance()->shouldRepeatSong()) return true;
 
     return Configuration::instance()->shouldRandomize() ?
         musicIndexRandom > 0 :
@@ -157,17 +180,17 @@ bool Playlist::hasPrevious()
 
 void Playlist::increment_music_index()
 {
-    if(Configuration::instance()->shouldRandomize()) {
-        if(musicIndexRandom + 2 > listMusic.size()) {
-            if(!Configuration::instance()->shouldRepeatSong()) return;
+    if (Configuration::instance()->shouldRandomize()) {
+        if (musicIndexRandom + 2 > (int) listMusic.size()) {
+            if (!Configuration::instance()->shouldRepeatSong()) return;
             musicIndexRandom = -1;
             util_randomize(listRandom, listMusic.size());
         }
 
         musicIndex = listRandom.at(++musicIndexRandom);
     } else {
-        if(musicIndex + 2 > listMusic.size()) {
-            if(!Configuration::instance()->shouldRepeatSong()) return;
+        if (musicIndex + 2 > (int) listMusic.size()) {
+            if (!Configuration::instance()->shouldRepeatSong()) return;
             musicIndex = -1;
         }
 
@@ -177,17 +200,17 @@ void Playlist::increment_music_index()
 
 void Playlist::decrement_music_index()
 {
-    if(Configuration::instance()->shouldRandomize()) {
-        if(musicIndexRandom <= 0) {
-            if(!Configuration::instance()->shouldRepeatSong()) return;
+    if (Configuration::instance()->shouldRandomize()) {
+        if (musicIndexRandom <= 0) {
+            if (!Configuration::instance()->shouldRepeatSong()) return;
             musicIndexRandom = listMusic.size() -1;
             util_randomize(listRandom, listMusic.size());
         }
 
         musicIndex = listRandom.at(--musicIndexRandom);
     } else {
-        if(musicIndex <= 0) {
-            if(!Configuration::instance()->shouldRepeatSong()) return;
+        if (musicIndex <= 0) {
+            if (!Configuration::instance()->shouldRepeatSong()) return;
             musicIndex = listMusic.size();
         }
 
@@ -195,15 +218,15 @@ void Playlist::decrement_music_index()
     }
 }
 
-bool Playlist::next()
+void Playlist::next()
 {
-    if(hasNext()) {
+    if (hasNext()) {
         increment_music_index();
         play(lastVolume);
     }
 }
 
-bool Playlist::previous()
+void Playlist::previous()
 {
     if(hasPrevious()) {
         decrement_music_index();
@@ -219,4 +242,44 @@ Music Playlist::getCurrentMusic()
 bool Playlist::isEmpty()
 {
     return listMusic.empty();
+}
+
+void Playlist::parse_dnd(string urls)
+{
+    istringstream lines(urls);
+    string url;
+    bool list_changed = false;
+
+    while (getline(lines, url)) {
+        if(util_is_ext_supported(url)) {
+#ifdef WIN32
+            wchar_t filepath[PATH_LENGTH];
+            fl_utf8towc(url.c_str(), url.size(), filepath, PATH_LENGTH);
+#else
+            char* url_unescaped = curl_easy_unescape(curl , url.c_str(), 0, NULL);
+            url = url_unescaped;
+            util_replace_all(url, "file://", "");
+            curl_free(url_unescaped);
+            const char* filepath = url.c_str();
+#endif
+            Music m;
+            TagLib::FileRef* f = new TagLib::FileRef(filepath);
+            if(!f->isNull()) {
+                m.title = f->tag()->title().toCString(true);
+                m.artist = f->tag()->artist().toCString(true);
+                m.album = f->tag()->album().toCString(true);
+                m.filepath = url;
+                m.resolveNames();
+
+                if(!list_changed) {
+                    listMusic.clear();
+                    list_changed = true;
+                }
+                listMusic.push_back(m);
+            }
+            delete(f);
+        }
+    }
+
+    if(list_changed) update_browser();
 }

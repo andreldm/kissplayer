@@ -13,7 +13,7 @@
 #include <FL/x.H>
 
 #include "icon.xpm"
-#include "../window_main.h"
+#include "../signals.h"
 #include "../util.h"
 
 using namespace std;
@@ -31,7 +31,7 @@ typedef union {
 void keyHookCallback(XPointer pointer, XRecordInterceptData* hook);
 void keyHookTimer(void*);
 
-void OsUtils::set_app_icon(Fl_Window* window)
+void OsSpecific::set_app_icon(Fl_Window* window)
 {
     fl_open_display();
     Pixmap p;
@@ -39,10 +39,8 @@ void OsUtils::set_app_icon(Fl_Window* window)
     window->icon((char*)p);
 }
 
-int OsUtils::init()
+int OsSpecific::init(Fl_Window* window)
 {
-    /*Fl_Window* window = window_main_get_instance();
-
     // To achieve icon transparency on Linux, we need this procedure.
     // Source: www.fltk.org/newsgroups.php?gfltk.general+v:14448
     XWMHints* hints = XGetWMHints(fl_display, fl_xid(window));
@@ -80,12 +78,12 @@ int OsUtils::init()
     XRecordEnableContextAsync(disp_data, context, keyHookCallback, NULL);
 
     // Start polling
-    Fl::repeat_timeout(0.1, keyHookTimer);*/
+    Fl::repeat_timeout(0.1, keyHookTimer);
 
     return 0;
 }
 
-void OsUtils::end()
+void OsSpecific::end()
 {
     /*if(disp_data) {
         // Close the data display.
@@ -93,7 +91,7 @@ void OsUtils::end()
     }*/
 }
 
-int OsUtils::get_working_dir(std::string& dir)
+int OsSpecific::get_working_dir(std::string& dir)
 {
     /*struct passwd* pw = getpwuid(getuid());
     string path = pw->pw_dir;
@@ -109,7 +107,7 @@ int OsUtils::get_working_dir(std::string& dir)
     return 0;
 }
 
-void OsUtils::dir_chooser(char* dir)
+void OsSpecific::dir_chooser(char* dir)
 {
     char* r = fl_dir_chooser("Select a folder", NULL);
 
@@ -125,10 +123,8 @@ void OsUtils::dir_chooser(char* dir)
  * Set the window to maximized state.
  * Source: www.mail-archive.com/xfree86@xfree86.org/msg21266.html
  */
-void OsUtils::maximize_window()
+void OsSpecific::maximize_window(Fl_Window* window)
 {
-    /*Fl_Window* window = window_main_get_instance();
-
     static Atom atomState = XInternAtom(fl_display, "_NET_WM_STATE", True);
     static Atom atomMaxVert = XInternAtom(fl_display, "_NET_WM_STATE_MAXIMIZED_VERT", True);
     static Atom atomMaxHorz = XInternAtom(fl_display, "_NET_WM_STATE_MAXIMIZED_HORZ", True);
@@ -144,17 +140,15 @@ void OsUtils::maximize_window()
     xev.xclient.data.l[0] = (unsigned long)1;
     xev.xclient.data.l[1] = atomMaxVert;
     xev.xclient.data.l[2] = atomMaxHorz;
-    XSendEvent(fl_display, DefaultRootWindow(fl_display), False, SubstructureRedirectMask|SubstructureNotifyMask, &xev);*/
+    XSendEvent(fl_display, DefaultRootWindow(fl_display), False, SubstructureRedirectMask|SubstructureNotifyMask, &xev);
 }
 
 /**
  * Check if the window is maximized.
  * Source: SDL_x11window.c
  */
-bool OsUtils::is_window_maximized()
+bool OsSpecific::is_window_maximized(Fl_Window* window)
 {
-    /*Fl_Window* window = window_main_get_instance();
-
     static Atom atomState = XInternAtom(fl_display, "_NET_WM_STATE", True);
     static Atom atomMaxVert = XInternAtom(fl_display, "_NET_WM_STATE_MAXIMIZED_VERT", True);
     static Atom atomMaxHorz = XInternAtom(fl_display, "_NET_WM_STATE_MAXIMIZED_HORZ", True);
@@ -181,11 +175,10 @@ bool OsUtils::is_window_maximized()
         }
     }
 
-    return (maximized == 3);*/
-    return false;
+    return (maximized == 3);
 }
 
-void OsUtils::scanfolder(const char* dir, deque<string>& filelist)
+void OsSpecific::scanfolder(const char* dir, deque<string>& filelist)
 {
     dirent** list;
     int fileQty = fl_filename_list(dir, &list);
@@ -223,10 +216,10 @@ void keyHookTimer(void*)
 
 void keyHookCallback(XPointer pointer, XRecordInterceptData* hook)
 {
-    /*static int keyPressed = false;
+    static int keyPressed = false;
 
     // Make sure that our data come from a legitimate source.
-    if(hook->category != XRecordFromServer && hook->category != XRecordFromClient) {
+    if (hook->category != XRecordFromServer && hook->category != XRecordFromClient) {
         XRecordFreeData(hook);
         return;
     }
@@ -234,19 +227,19 @@ void keyHookCallback(XPointer pointer, XRecordInterceptData* hook)
     // Convert the hook data to an XRecordDatum.
     XRecordDatum* data = (XRecordDatum*) hook->data;
 
-    if(data->type == KeyRelease) {
+    if (data->type == KeyRelease) {
         keyPressed = false;
     }
 
-    if(!keyPressed && data->type == KeyPress) {
+    if (!keyPressed && data->type == KeyPress) {
         KeySym k = XkbKeycodeToKeysym(fl_display, data->event.u.u.detail, 0, 0);
 
-        if(k == XF86XK_AudioPlay) window_main_toggle_play();
-        if(k == XF86XK_AudioNext) window_main_next();
-        if(k == XF86XK_AudioPrev) window_main_previous();
+        if (k == XF86XK_AudioPlay) SignalPlay.emit();
+        if (k == XF86XK_AudioNext) SignalNext.emit();
+        if( k == XF86XK_AudioPrev) SignalPrevious.emit();
 
         keyPressed = true;
     }
 
-    XRecordFreeData(hook);*/
+    XRecordFreeData(hook);
 }

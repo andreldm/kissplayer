@@ -25,23 +25,23 @@
 
 using namespace std;
 
-static Fl_Window* window;
+// static Fl_Window* window;
 static Fl_Button* button_background_color;
 static Fl_Button* button_selection_color;
 static Fl_Button* button_text_color;
 static KSP_Check_Button* button_lyrics;
 static KSP_Check_Button* button_scroll_title;
 static Fl_Select_Browser* browser_directories;
-static Fl_Choice* lang_choice;
+// static Fl_Choice* lang_choice;
 static Fl_Hold_Browser* tab_selector;
 static Fl_Input* input_proxy;
 static Fl_Group* tabs[4] = { 0,0,0,0 };
 
 static deque<COD_VALUE> listDir;
-static bool should_resync;
+// static bool should_resync;
 
 static void update_dir_list();
-static Fl_Color edit_color(Fl_Color val);
+// static Fl_Color edit_color(Fl_Color val);
 
 static void cb_add_dir(Fl_Widget*, void*);
 static void cb_remove_dir(Fl_Widget*, void*);
@@ -51,7 +51,7 @@ static void cb_text_color(Fl_Widget*, void*);
 static void cb_default_colors(Fl_Widget*, void*);
 // static void cb_lyrics(Fl_Widget*, void*);
 // static void cb_scroll_title(Fl_Widget*, void*);
-static void cb_change(Fl_Widget*, void*);
+// static void cb_change(Fl_Widget*, void*);
 static void cb_tab_select(Fl_Widget*, void*);
 static void cb_proxy(Fl_Widget*, void*);
 
@@ -213,21 +213,7 @@ WindowSettings::WindowSettings(Dao* dao)
 
 void WindowSettings::show(Fl_Window* parent)
 {
-    int window_x = 0;
-    int window_y = 0;
-
-    // Place this window at the center of the parent window or screen
-    if(parent) {
-        window_x = parent->x() + (parent->w()/2)-(w()/2);
-        window_y = parent->y() + (parent->h()/2)-(h()/2);
-    } else {
-        int screen_w = Fl::w();
-        int screen_h = Fl::h();
-        window_x = (screen_w/2)-(w()/2);
-        window_y = (screen_h/2)-(h()/2);
-    }
-
-    resize(window_x, window_y, w(), h());
+    util_center_window(this, parent);
     Fl_Window::show();
 }
 
@@ -366,15 +352,15 @@ void WindowSettings::toogleScrollTitle()
     }*/
 }
 
-Fl_Color edit_color(Fl_Color val)
-{
-  uchar r, g, b;
-  Fl::get_color(val, r, g, b);
-
-  fl_color_chooser(_("Choose Color"), r, g, b);
-
-  return(fl_rgb_color(r, g, b));
-}
+// Fl_Color edit_color(Fl_Color val)
+// {
+//   uchar r, g, b;
+//   Fl::get_color(val, r, g, b);
+//
+//   fl_color_chooser(_("Choose Color"), r, g, b);
+//
+//   return(fl_rgb_color(r, g, b));
+// }
 
 void update_dir_list()
 {
@@ -388,21 +374,21 @@ void update_dir_list()
     }*/
 }
 
-void cb_change(Fl_Widget* widget, void*)
-{
-    /*Locale::setLanguage(lang_choice->value());*/
-
-    fl_beep();
-    fl_message(_("Please, restart the program to change the language."));
-}
+// void cb_change(Fl_Widget* widget, void*)
+// {
+//     /*Locale::setLanguage(lang_choice->value());*/
+//
+//     fl_beep();
+//     fl_message(_("Please, restart the program to change the language."));
+// }
 
 void cb_tab_select(Fl_Widget*, void*) {
-    if(tab_selector->value() == 0) {
+    if (tab_selector->value() == 0) {
         return;
     }
 
-    for (int t = 0; t < sizeof(tabs) / sizeof(tabs[0]); t++) {
-        if (t == (tab_selector->value() - 1)) {
+    for (uint t = 0; t < sizeof(tabs) / sizeof(tabs[0]); t++) {
+        if ((int) t == (tab_selector->value() - 1)) {
             tabs[t]->show();
         } else {
             tabs[t]->hide();

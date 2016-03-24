@@ -28,8 +28,10 @@ public:
     void            begin_transaction           (void);
     void            commit_transaction          (void);
 
-    void            set_key                     (std::string key, std::string value);
     std::string     get_key                     (std::string key);
+    int             get_key_int                 (std::string key);
+    void            set_key                     (std::string key, std::string value);
+    void            set_key_int                 (std::string key, int value);
 
     void            insert_music                (Music& music);
     void            mark_music_not_found        (void);

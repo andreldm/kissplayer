@@ -100,13 +100,11 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
 
     CURL* curl;
     string data;
+    uint findResult;
 
     // Maybe we can upgrade this code to support
     // several sites, if one fail, try the next.
     string url = "http://lyrics.wikia.com/";
-
-    char* url_unescaped;
-    int findResult;
 
     // As of November 2014, these regex are valid.
     // If they change the site layout, this fetcher
@@ -217,8 +215,8 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
         }
 
         // Check if the lyrics were really found
-        findResult = data.find(conditionStart);
-        if(findResult == -1) {
+        int result = data.find(conditionStart);
+        if (result == -1) {
             curl_easy_cleanup(curl);
 
             if(firstTry) {

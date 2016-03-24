@@ -807,3 +807,9 @@ void KSP_Menu_Item::set_label_icon(const char* text, Fl_Image* icon, bool prepen
     label((const char*)mlabel);
     labeltype(_FL_MULTI_LABEL);
 }
+
+void KSP_Menu_Item::set_toggled(bool toggled)
+{
+    if (toggled) set();
+    else clear();
+}

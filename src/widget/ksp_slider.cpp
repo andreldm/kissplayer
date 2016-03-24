@@ -99,7 +99,7 @@ double KSP_Slider::calc_value(int event, int X, int Y, int W, int H)
             if (val > 1.0) val = 1.0;
             else if (val < 0.0) val = 0.0;
         }
-        int xx = int(val * (W - T) + .5);
+        // int xx = int(val * (W - T) + .5);
     }
 
     int xx = mx - 7;
@@ -117,7 +117,7 @@ double KSP_Slider::calc_value(int event, int X, int Y, int W, int H)
 int KSP_Slider::handle(int event, int X, int Y, int W, int H)
 {
     double v;
-    int yy;
+    // int yy;
 
     switch (event) {
     case FL_PUSH:

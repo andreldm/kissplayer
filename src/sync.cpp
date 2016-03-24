@@ -44,7 +44,7 @@ void Sync::execute(bool do_not_warn)
 
     dao->begin_transaction();
 
-    for(int i = 0; i < listDir.size(); i++) {
+    for(uint i = 0; i < listDir.size(); i++) {
         Fl::check();
 #ifdef WIN32
         deque<wstring> listFiles;
@@ -56,12 +56,12 @@ void Sync::execute(bool do_not_warn)
 #endif
 
         // FIXME
-        OsUtils* osUtils = new OsUtils();
-        osUtils->scanfolder(dir, listFiles);
-        delete osUtils;
+        OsSpecific* osSpecific = new OsSpecific();
+        osSpecific->scanfolder(dir, listFiles);
+        delete osSpecific;
         windowLoading->set_file_max(listFiles.size());
 
-        for(int j = 0; j < listFiles.size(); j++) {
+        for(uint j = 0; j < listFiles.size(); j++) {
             //cout<<"Dir: "<<i+1<<"/"<<listDir.size()<<" - File: "<<j+1<<"/"<<listFiles.size()<< endl;
             if(config->isCancelSync()) break;
 

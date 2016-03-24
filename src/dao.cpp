@@ -60,12 +60,12 @@ void Dao::commit_transaction()
 int Dao::init()
 {
     // FIXME: Avoid instantiation and delete
-    OsUtils* osUtils = new OsUtils();
-    if(osUtils->get_working_dir(db_filepath) != 0) {
-        delete osUtils;
+    OsSpecific* osSpecific = new OsSpecific();
+    if(osSpecific->get_working_dir(db_filepath) != 0) {
+        delete osSpecific;
         return -1;
     }
-    delete osUtils;
+    delete osSpecific;
 
     open_db();
     const char* query;
@@ -93,6 +93,8 @@ int Dao::init()
     print_errors();
 
     close_db();
+
+    return 0;
 }
 
 string Dao::get_key(string key)
@@ -117,6 +119,11 @@ string Dao::get_key(string key)
     return value;
 }
 
+int Dao::get_key_int(string key)
+{
+    return util_s2i(get_key(key));
+}
+
 void Dao::set_key(string key, string value)
 {
     sqlite3_prepare_v2(db, "INSERT INTO TB_CONFIG VALUES(?, ?);", -1, &stmt, NULL);
@@ -129,6 +136,12 @@ void Dao::set_key(string key, string value)
 
     sqlite3_finalize(stmt);
 }
+
+void Dao::set_key_int(string key, int value)
+{
+    set_key(key, util_i2s(value));
+}
+
 /**
 * Tries to insert a row, in case of constraint(filepath is unique) updates the row.
 */

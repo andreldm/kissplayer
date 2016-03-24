@@ -13,14 +13,14 @@ void KSP_Tile::resize(int X,int Y,int W,int H)
     int dy = Y-y();
     int dw = W-w();
     int dh = H-h();
-    int *p = sizes();
+    // int *p = sizes();
 
     Fl_Widget::resize(X,Y,W,H);
 
-    int OR = p[5];
-    int NR = X+W-(p[1]-OR);
-    int OB = p[7];
-    int NB = Y+H-(p[3]-OB);
+    // int OR = p[5];
+    // int NR = X+W-(p[1]-OR);
+    // int OB = p[7];
+    // int NB = Y+H-(p[3]-OB);
 
     Fl_Widget*const* a = array();
 

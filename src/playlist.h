@@ -26,18 +26,24 @@ private:
     void decrement_music_index  (void);
 
 public:
-              Playlist           (Dao* dao, Sound* sound, KSP_Browser* browser_music);
+              Playlist            (Dao* dao, Sound* sound, KSP_Browser* browser_music);
 
-    bool      parse_args         (int argc, char** argv);
-    bool      search             (std::string text, SearchType type);
-    bool      hasNext            (void);
-    bool      hasPrevious        (void);
-    bool      play               (float volume, bool playAtBrowser = false);
-    bool      stop               (void);
-    bool      next               (void);
-    bool      previous           (void);
-    bool      isEmpty            (void);
-    Music     getCurrentMusic    (void);
+    bool      parse_args          (int argc, char** argv);
+    void      parse_dnd           (std::string urls);
+    void      search              (std::string text, SearchType type);
+    bool      hasNext             (void);
+    bool      hasPrevious         (void);
+    bool      play                (float volume, bool playAtBrowser = false);
+    bool      stop                (void);
+    void      next                (void);
+    void      previous            (void);
+    bool      isEmpty             (void);
+    Music     getCurrentMusic     (void);
+
+    int       getMusicIndex       (void)  { return musicIndex; }
+    void      setMusicIndex       (int v) { musicIndex = v; }
+    int       getMusicIndexRandom (void)  { return musicIndexRandom; }
+    void      setMusicIndexRandom (int v) { musicIndexRandom = v; }
 };
 
 #endif

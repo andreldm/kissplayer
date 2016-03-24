@@ -38,12 +38,36 @@ esac
 AM_CONDITIONAL(IS64BIT, test "x$arch" = "x64")
 
 ####################################
+# Debug compilation support
+####################################
+AC_MSG_CHECKING([whether to build with debug information])
+AC_ARG_ENABLE([debug],
+    [AS_HELP_STRING([--enable-debug],
+        [enable debug data generation (def=no)])],
+    [debugit="$enableval"],
+    [debugit=no])
+AC_MSG_RESULT([$debugit])
+
+if test x"$debugit" = x"yes"; then
+    AC_DEFINE([DEBUG],[],[Debug Mode])
+    AM_CFLAGS="$AM_CFLAGS -g -Wall -Werror -Wno-uninitialized -O0"
+    AM_CXXFLAGS="$AM_CXXFLAGS -g -Wall -Werror -Wno-uninitialized -O0"
+else
+    AC_DEFINE([NDEBUG],[],[No-debug Mode])
+    AM_CFLAGS="$AM_CFLAGS -O2"
+    AM_CXXFLAGS="$AM_CXXFLAGS -O2"
+fi
+
+AC_SUBST([AM_CFLAGS])
+AC_SUBST([AM_CXXFLAGS])
+
+####################################
 # Init
 ####################################
 AC_CONFIG_SRCDIR([src/main.cpp])
 #AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.11 subdir-objects foreign])
-AM_SILENT_RULES([yes])
+#AM_SILENT_RULES([yes])
 
 ####################################
 # Check for programs

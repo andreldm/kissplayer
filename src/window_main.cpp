@@ -11,7 +11,6 @@
 
 #include "images.h"
 #include "locale.h"
-#include "os_specific.h"
 #include "widget/ksp_menu_item.h"
 #include "sound.h"
 #include "util.h"
@@ -24,21 +23,16 @@ using namespace std;
 static string windowTitle;
 static int windowTitlePosition;
 static string lastSearch;
-static bool skipLastSearch;
 
 // FUNCTIONS
-static void timer_title_scrolling(void*);
-static void timer_check_music(void*);
-static void timer_play_at_start(void*);
-static int handler(int, Fl_Window*);
+// static void timer_title_scrolling(void*);
+// static void timer_check_music(void*);
+// static void timer_play_at_start(void*);
+// static int handler(int, Fl_Window*);
 
 // CALLBACKS
-static void cb_close_window(Fl_Widget*, void*);
-static void cb_menu(Fl_Widget*, void*);
 static void cb_sync(Fl_Widget*, void*);
-static void cb_random(Fl_Widget*, void*);
 static void cb_repeat(Fl_Widget*, void*);
-static void cb_slider_music(Fl_Widget*, void*);
 
 // PRIVATE SIGNALS
 static sigc::signal<void> SignalMusicBrowser;
@@ -46,6 +40,7 @@ static sigc::signal<void, Fl_Widget*> SignalClose;
 static sigc::signal<void> SignalShowAbout;
 static sigc::signal<void> SignalShowSettings;
 static sigc::signal<void> SignalClearSearch;
+static sigc::signal<void> SignalSlideChanged;
 
 // MENU ITEMS INDEX
 enum {
@@ -60,7 +55,11 @@ enum {
 // MENU ITEMS
 static KSP_Menu_Item menu_items[] = {
     KSP_Menu_Item(0, 0, cb_sync, NULL),
-    KSP_Menu_Item(0, 0, cb_random, NULL, FL_MENU_TOGGLE),
+    KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) {
+        bool random = Configuration::instance()->shouldRandomize();
+        Configuration::instance()->shouldRandomize(!random);
+        menu_items[MENU_ITEM_RANDOM].set_toggled(!random);
+    }, NULL, FL_MENU_TOGGLE),
     KSP_Menu_Item(0, 0, cb_repeat, NULL, FL_MENU_TOGGLE),
     KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) { SignalShowSettings.emit(); }, NULL),
     KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) { SignalShowAbout.emit(); }, NULL),
@@ -68,30 +67,21 @@ static KSP_Menu_Item menu_items[] = {
 };
 
 WindowMain::WindowMain(Sound* sound, Dao* dao)
-    : Fl_Double_Window(0, 0, "KISS Player")
+    : Fl_Double_Window(770, 465, "KISS Player")
 {
     this->sound = sound;
     this->dao = dao;
+    this->osSpecific = new OsSpecific();
 }
 
 void WindowMain::init(int argc, char** argv)
 {
-    // Place the window at the center of the screen
-    int window_w = 770;
-    int window_h = 465;
-    int screen_w = Fl::w();
-    int screen_h = Fl::h();
-    int window_x = (screen_w/2)-(window_w/2);
-    int window_y = (screen_h/2)-(window_h/2);
-
+    util_center_window(this);
     xclass("KISS Player");
-    resize(window_x, window_y, window_w, window_h);
     size_range(420, 370);
     callback([](Fl_Widget* w, void*) {
         SignalClose.emit(w);
     });
-
-    Configuration::instance()->load(dao);
 
     // SEARCH GROUP AND ITS WIDGETS
     group_search = new Fl_Group(5, 5, 760, 30);
@@ -138,7 +128,10 @@ void WindowMain::init(int argc, char** argv)
     button_menu = new Fl_Button(738, 10, 22, 22);
     button_menu->clear_visible_focus();
     button_menu->image(img_icon_menu);
-    button_menu->callback(cb_menu);
+    button_menu->callback([](Fl_Widget* w, void*) {
+        const KSP_Menu_Item* m = menu_items[0].popup(w->x(), w->y() + w->h());
+        if (m && m->callback()) m->do_callback(w, m->user_data());
+    });
 
     group_search->resizable(input_search);
     group_search->end();
@@ -160,7 +153,9 @@ void WindowMain::init(int argc, char** argv)
     lyrics_pane->textfont(FL_HELVETICA);
     lyrics_pane->wrap_mode(Fl_Text_Display::WRAP_AT_BOUNDS, 0);
     lyrics_pane->scrollbar_width(15);
-    lyrics_pane->callback(cb_slider_music);
+    lyrics_pane->callback([](Fl_Widget*, void*) {
+        SignalSlideChanged.emit();
+    });
     lyrics_pane->scrollbar_align(FL_ALIGN_RIGHT);
 
     tile_center->box(FL_DOWN_BOX);
@@ -204,7 +199,9 @@ void WindowMain::init(int argc, char** argv)
     });
 
     slider_music = new KSP_Slider(this, 157, 424, 527, 19, "00:00");
-    slider_music->callback(cb_slider_music);
+    slider_music->callback([](Fl_Widget* w, void* u) {
+        SignalSlideChanged.emit();
+    });
 
     volume_controller = new KSP_Volume_Controller(699, 418, 60, 30);
     volume_controller->value(8);
@@ -246,18 +243,21 @@ void WindowMain::init(int argc, char** argv)
     SignalUpdateColors.connect(sigc::mem_fun(this, &WindowMain::update_colors));
     SignalClearSearch.connect(sigc::mem_fun(this, &WindowMain::clear_search));
     SignalUpdateMusicPlaying.connect(sigc::mem_fun(this, &WindowMain::update_music_playing));
+    SignalSlideChanged.connect(sigc::mem_fun(this, &WindowMain::slide_changed));
 
     // Init other components
     this->playlist = new Playlist(dao, sound, browser_music);
     this->lyricsFetcher = new LyricsFetcher(dao, sound, lyrics_text_buffer);
 
+    load_config();
+
     // Check for music files on arguments
-    skipLastSearch = playlist->parse_args(argc, argv);
+    if (!playlist->parse_args(argc, argv)) {
+        lastSearch = Configuration::instance()->lastSearch();
+        search();
+    };
 
     SignalUpdateColors.emit();
-
-    // FIXME: Remove this
-    search();
 }
 
 void WindowMain::close_window(Fl_Widget* widget)
@@ -267,47 +267,15 @@ void WindowMain::close_window(Fl_Widget* widget)
         return;
     }
 
-    SaveData data;
-    data.x = x();
-    data.y = y();
-    data.w = w();
-    data.h = h();
-
-    Configuration::instance()->save(data, dao);
+    save_config();
 
     widget->~Fl_Widget();
-}
-
-void cb_menu(Fl_Widget* w, void*)
-{
-    const KSP_Menu_Item* m = menu_items[0].popup(w->x(), w->y() + w->h());
-    if (m && m->callback()) m->do_callback(w, m->user_data());
-}
-
-void cb_slider_music(Fl_Widget* widget, void*)
-{
-    // If there's no music playing, do not change
-    // The slider's changes are handled at timer_check_music and my_handler
-    /*if(!sound_is_loaded()) {
-        slider_music->value(0);
-    }*/
 }
 
 void WindowMain::clear_search()
 {
     input_search->value(NULL);
     input_search->do_callback();
-}
-
-void cb_random(Fl_Widget* widget, void*)
-{
-    /*Configuration::instance()->shouldRandomize(Configuration::instance()->shouldRandomize());
-
-    if(Configuration::instance()->shouldRandomize()) {
-        menu_items[MENU_ITEM_RANDOM].set();
-    } else {
-        menu_items[MENU_ITEM_RANDOM].clear();
-    }*/
 }
 
 void cb_repeat(Fl_Widget* widget, void*)
@@ -529,14 +497,11 @@ void timer_play_at_start(void*)
 
 void WindowMain::music_browser_event()
 {
-    /*if(browser_music->dnd_evt) {
+    if(browser_music->dnd_evt) {
         browser_music->dnd_evt = false;
-        bool list_changed = util_parse_dnd(browser_music->evt_txt, listMusic);
-        if(list_changed) {
-            update_playlist();
-        }
+        playlist->parse_dnd(browser_music->evt_txt);
         return;
-    }*/
+    }
 
     if(Fl::event_clicks() > 0 && Fl::event_button() == FL_LEFT_MOUSE) {
         play(true);
@@ -658,7 +623,8 @@ void WindowMain::update_colors()
     choice_search_type->redraw();
 }
 
-void WindowMain::update_music_playing (int index) {
+void WindowMain::update_music_playing(int index)
+{
     index += 1;
 
     browser_music->value(index);
@@ -678,7 +644,7 @@ void WindowMain::update_music_playing (int index) {
 
     slider_music->realise_new_sound(sound->length());
 
-    if(Configuration::instance()->shouldFetchLyrics()) {
+    if (Configuration::instance()->shouldFetchLyrics()) {
         lyrics_text_buffer->text(_("Fetching..."));
         Music music = playlist->getCurrentMusic();
         lyricsFetcher->fetch(&music);
@@ -686,4 +652,58 @@ void WindowMain::update_music_playing (int index) {
     } else {
         lyrics_text_buffer->text(_("Lyrics Disabled"));
     }
+}
+
+void WindowMain::slide_changed()
+{
+    // If there's no music playing, do not change
+    // The slider's changes are handled at timer_check_music and my_handler
+    if (!sound->isLoaded()) {
+        slider_music->value(0);
+    }
+}
+
+void WindowMain::save_config()
+{
+    ConfigData data;
+    data.x = x();
+    data.y = y();
+    data.w = w();
+    data.h = h();
+    data.isWindowMaximized = osSpecific->is_window_maximized(this);
+    data.browserMusicWidth = browser_music->w();
+    data.volumeLevel = volume_controller->value();
+    data.lastSearch = lastSearch;
+    data.searchType = searchType;
+    data.musicIndex = playlist->getMusicIndex();
+    data.musicIndexRandom = playlist->getMusicIndexRandom();
+
+    Configuration::instance()->save(data, dao);
+}
+
+void WindowMain::load_config()
+{
+    ConfigData data = Configuration::instance()->load(dao);
+
+    if (data.x != -1) position(data.x, y());
+    if (data.y != -1) position(x(), data.y);
+    if (data.w != -1) size(data.w, h());
+    if (data.h != -1) size(w(), data.h);
+
+    if (data.browserMusicWidth > 0) {
+        browser_music->size(data.browserMusicWidth, browser_music->h());
+        int x = tile_center->x() + data.browserMusicWidth;
+        int y = tile_center->y();
+        int w = tile_center->w() - data.browserMusicWidth;
+        int h = lyrics_pane->h();
+        lyrics_pane->resize(x, y, w, h);
+    }
+
+    // volume_controllerdata.volumeLevel;
+    lastSearch = data.lastSearch;
+    searchType = (SearchType) data.searchType;
+    playlist->setMusicIndex(data.musicIndex);
+    playlist->setMusicIndexRandom(data.musicIndexRandom);
+
+    menu_items[MENU_ITEM_RANDOM].set_toggled(Configuration::instance()->shouldRandomize());
 }

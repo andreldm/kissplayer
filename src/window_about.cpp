@@ -105,21 +105,7 @@ WindowAbout::WindowAbout()
 
 void WindowAbout::show(Fl_Window* parent)
 {
-    int window_x = 0;
-    int window_y = 0;
-
-    // Place this window at the center of the parent window or screen
-    if(parent) {
-        window_x = parent->x() + (parent->w() / 2) - (w() / 2);
-        window_y = parent->y() + (parent->h() / 2) - (h() / 2);
-    } else {
-        int screen_w = Fl::w();
-        int screen_h = Fl::h();
-        window_x = (screen_w / 2) - (w() / 2);
-        window_y = (screen_h / 2) - (h() / 2);
-    }
-
-    resize(window_x, window_y, w(), h());
+    util_center_window(this, parent);
     Fl_Window::show();
 }
 

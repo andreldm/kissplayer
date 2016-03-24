@@ -33,13 +33,14 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    OsUtils osUtils;
-    osUtils.init();
+    OsSpecific osSpecific;
 
     WindowMain windowMain(&sound, &dao);
     windowMain.init(argc, argv);
-    osUtils.set_app_icon(&windowMain);
+    osSpecific.set_app_icon(&windowMain);
     windowMain.show(0, NULL);
+
+    osSpecific.init(&windowMain);
 
     // if(FLAG_MAXIMIZE_WINDOW) {
     //     os_specific_maximize_window();
@@ -60,7 +61,7 @@ int main(int argc, char** argv)
     int fl_result = Fl::run();
 
     sound.destroy();
-    osUtils.end();
+    osSpecific.end();
 
     return fl_result;
 }

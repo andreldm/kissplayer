@@ -13,6 +13,7 @@
 #include "constants.h"
 #include "dao.h"
 #include "lyrics_fetcher.h"
+#include "os_specific.h"
 #include "playlist.h"
 #include "sound.h"
 #include "window_about.h"
@@ -28,6 +29,7 @@ class WindowMain : public Fl_Double_Window
 private:
     Sound* sound;
     Dao* dao;
+    OsSpecific* osSpecific;
     LyricsFetcher* lyricsFetcher;
     Playlist* playlist;
     WindowAbout* windowAbout;
@@ -62,7 +64,6 @@ private:
     void        search                          (void);
     void        search_type                     (void);
     void        volume_changed                  (float);
-
     void        music_browser_event             (void);
     void        show_about                      (void);
     void        show_settings                   (void);
@@ -70,9 +71,12 @@ private:
     void        close_window                    (Fl_Widget*);
     void        clear_search                    (void);
     void        update_music_playing            (int);
+    void        slide_changed                   (void);
+    void        save_config                     (void);
+    void        load_config                     (void);
 
 public:
-    WindowMain(Sound*, Dao*);
+                WindowMain                      (Sound*, Dao*);
     void        init                            (int argc, char** argv);
 };
 

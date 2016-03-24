@@ -1,8 +1,7 @@
 DIST_SUBDIRS = m4 po data
 SUBDIRS = po data
 AUTOMAKE_OPTIONS=foreign subdir-objects
-CFLAGS=-O2
-CXXFLAGS=-std=c++11 -O2
+CXXFLAGS=-std=c++11
 #CC=clang
 #CXX=clang++
 
