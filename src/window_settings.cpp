@@ -219,7 +219,6 @@ void WindowSettings::show(Fl_Window* parent)
 
 void WindowSettings::close()
 {
-    clear();
     hide();
     /*window_main_get_instance()->show();*/
     /*if(should_resync) sync_execute(true);*/

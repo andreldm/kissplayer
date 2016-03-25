@@ -268,8 +268,7 @@ void WindowMain::close_window(Fl_Widget* widget)
     }
 
     save_config();
-
-    widget->~Fl_Widget();
+    hide();
 }
 
 void WindowMain::clear_search()
