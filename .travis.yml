@@ -3,7 +3,7 @@ language: cpp
 before_install:
   - echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list
   - sudo apt-get update -qq
-  - sudo apt-get install -y libtag1-dev libfltk1.3-dev libsqlite3-dev libpng12-dev zlib1g-dev libcurl4-openssl-dev libxpm-dev libxtst-dev libxft-dev libxinerama-dev
+  - sudo apt-get install -y libtag1-dev libfltk1.3-dev libsqlite3-dev libpng12-dev zlib1g-dev libcurl4-openssl-dev libxpm-dev libxtst-dev libxft-dev libxinerama-dev libsigc++-2.0-dev
   - wget https://www.dropbox.com/s/0z62kk2p79gs6bh/fmodapi44458linux.tar.gz?dl=1 -O fmod.tar.gz
   - mkdir fmod
   - tar xf fmod.tar.gz -C fmod --strip-components 1
