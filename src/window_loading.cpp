@@ -47,7 +47,7 @@ void WindowLoading::show(void)
 
 void WindowLoading::close (void)
 {
-    // if(window) {
+    // if (window) {
         clear();
         hide();
         // delete window;
@@ -56,28 +56,28 @@ void WindowLoading::close (void)
 
 void WindowLoading::set_dir_max(int m)
 {
-    if(progress_bar_dir) {
+    if (progress_bar_dir) {
         progress_bar_dir->maximum(m);
     }
 }
 
 void WindowLoading::set_file_max(int m)
 {
-    if(progress_bar_file) {
+    if (progress_bar_file) {
         progress_bar_file->maximum(m);
     }
 }
 
 void WindowLoading::set_dir_value(int v)
 {
-    if(progress_bar_dir) {
+    if (progress_bar_dir) {
         progress_bar_dir->value(v);
     }
 }
 
 void WindowLoading::set_file_value(int v)
 {
-    if(progress_bar_file) {
+    if (progress_bar_file) {
         progress_bar_file->value(v);
     }
 }

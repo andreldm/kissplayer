@@ -38,12 +38,12 @@ void KSP_Volume_Controller::draw()
     int barh = (int) (hh / maximum());
 
     fl_color(FL_WHITE);
-    for(int i = 1; i <= value(); i++) {
+    for (int i = 1; i <= value(); i++) {
         fl_rectf(xx + (barw * (i - 1)), yy + hh - (barh * i), barw, (barh * i));
     }
 
     fl_color(fl_darker(FL_WHITE));
-    for(int i = 1; i <= maximum(); i++) {
+    for (int i = 1; i <= maximum(); i++) {
         fl_rect(xx + (barw * (i - 1)), yy + hh - (barh * i), barw, (barh * i));
     }
 }
@@ -60,7 +60,8 @@ int KSP_Volume_Controller::handle(int event)
         int mx = Fl::event_x() - x();
         if (mx < 0 || mx > w()) return 1;
 
-        int v = (int) (mx * maximum()) / w(); // Just a cross multiplication
+        // Just a cross multiplication
+        int v = (int) (mx * maximum()) / w();
         handle_drag(clamp(v));
         return 1;
     }

@@ -20,7 +20,7 @@ int main(int argc, char** argv)
     fl_message_title_default(_("Warning"));
 
     Dao dao;
-    if(dao.init() != 0) {
+    if (dao.init() != 0) {
         fl_alert(_("Error while initializing database"));
         return -1;
     }
@@ -28,7 +28,7 @@ int main(int argc, char** argv)
     // Locale::init();
 
     Sound sound;
-    if(sound.init() != 0) {
+    if (sound.init() != 0) {
         fl_alert(_("Error while sound system"));
         return -1;
     }
@@ -42,16 +42,16 @@ int main(int argc, char** argv)
 
     osSpecific.init(&windowMain);
 
-    // if(FLAG_MAXIMIZE_WINDOW) {
+    // if (FLAG_MAXIMIZE_WINDOW) {
     //     os_specific_maximize_window();
     // }
 
-    // if(os_specific_init() != 0) {
+    // if (os_specific_init() != 0) {
     //     fl_alert(_("Keyboard hooker failed!"));
     //     return -1;
     // }
     //
-    // if(sound_initialize() != 0) {
+    // if (sound_initialize() != 0) {
     //     fl_alert(_("Error while initializing sound system!"));
     //     return -1;
     // }

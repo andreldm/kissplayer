@@ -67,7 +67,7 @@ AC_SUBST([AM_CXXFLAGS])
 AC_CONFIG_SRCDIR([src/main.cpp])
 #AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.11 subdir-objects foreign])
-#AM_SILENT_RULES([yes])
+AM_SILENT_RULES([yes])
 
 ####################################
 # Check for programs

@@ -17,7 +17,7 @@ void KSP_Check_Button::draw()
     int dy = (h() - W) / 2;
 
     draw_box(down_box(), x() + dx, y() + dy, W, W, FL_BACKGROUND2_COLOR);
-    if(value()) {
+    if (value()) {
         fl_color(FL_WHITE);
 
         int tx = x() + dx + 3;
@@ -25,7 +25,7 @@ void KSP_Check_Button::draw()
         int d1 = tw / 3;
         int d2 = tw - d1;
         int ty = y() + dy + (W + d2) / 2 - d1 - 2;
-        for(int n = 0; n < 3; n++, ty++) {
+        for (int n = 0; n < 3; n++, ty++) {
             fl_line(tx, ty, tx + d1, ty + d1);
             fl_line(tx + d1, ty + d1, tx + tw - 1, ty + d1 - d2 + 1);
         }

@@ -65,7 +65,7 @@ WindowAbout::WindowAbout()
     sstream << "Herman Polloni";
 
     std::string translators_credits = _("<translators_credits>");
-    if(translators_credits.compare("<translators_credits>") != 0) {
+    if (translators_credits.compare("<translators_credits>") != 0) {
         sstream << "<br><p></p><b>" << _("Translators:") << "</b><br>";
         sstream << translators_credits;
     }

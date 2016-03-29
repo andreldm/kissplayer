@@ -22,12 +22,12 @@ class Configuration
 private:
     static Configuration *_instance;
 
-    bool _shouldMaximizeWindow;
-    bool _shouldRandomize;
-    bool _shouldRepeatSong;
-    bool _shouldFetchLyrics;
-    bool _shouldScrollTitle;
-    bool _isCancelSync;
+    bool _shouldMaximizeWindow = false;
+    bool _shouldRandomize = false;
+    bool _shouldRepeatSong = false;
+    bool _shouldFetchLyrics = true;
+    bool _shouldScrollTitle = true;
+    bool _isCancelSync = false;
     bool _isListChanged;
 
     std::string _lastSearch;

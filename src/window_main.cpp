@@ -24,16 +24,6 @@ static string windowTitle;
 static int windowTitlePosition;
 static string lastSearch;
 
-// FUNCTIONS
-// static void timer_title_scrolling(void*);
-// static void timer_check_music(void*);
-// static void timer_play_at_start(void*);
-// static int handler(int, Fl_Window*);
-
-// CALLBACKS
-static void cb_sync(Fl_Widget*, void*);
-static void cb_repeat(Fl_Widget*, void*);
-
 // PRIVATE SIGNALS
 static sigc::signal<void> SignalMusicBrowser;
 static sigc::signal<void, Fl_Widget*> SignalClose;
@@ -41,6 +31,19 @@ static sigc::signal<void> SignalShowAbout;
 static sigc::signal<void> SignalShowSettings;
 static sigc::signal<void> SignalClearSearch;
 static sigc::signal<void> SignalSlideChanged;
+static sigc::signal<void> SignalSync;
+static sigc::signal<int, int, Fl_Window*> SignalEvent;
+static sigc::signal<void> SignalCheckMusicEnd;
+static sigc::signal<void> SignalCheckTitleScroll;
+
+// TIMER CALLBACKS
+static Fl_Timeout_Handler cb_check_music_end = static_cast<Fl_Timeout_Handler>([] (void *data) {
+    SignalCheckMusicEnd.emit();
+});
+
+static Fl_Timeout_Handler cb_check_title_scroll = static_cast<Fl_Timeout_Handler>([] (void *data) {
+    SignalCheckTitleScroll.emit();
+});
 
 // MENU ITEMS INDEX
 enum {
@@ -54,13 +57,17 @@ enum {
 
 // MENU ITEMS
 static KSP_Menu_Item menu_items[] = {
-    KSP_Menu_Item(0, 0, cb_sync, NULL),
+    KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) { SignalSync.emit(); }, NULL),
     KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) {
         bool random = Configuration::instance()->shouldRandomize();
         Configuration::instance()->shouldRandomize(!random);
         menu_items[MENU_ITEM_RANDOM].set_toggled(!random);
     }, NULL, FL_MENU_TOGGLE),
-    KSP_Menu_Item(0, 0, cb_repeat, NULL, FL_MENU_TOGGLE),
+    KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) {
+        bool repeat = Configuration::instance()->shouldRepeatSong();
+        Configuration::instance()->shouldRepeatSong(!repeat);
+        menu_items[MENU_ITEM_REPEAT].set_toggled(!repeat);
+    }, NULL, FL_MENU_TOGGLE),
     KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) { SignalShowSettings.emit(); }, NULL),
     KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) { SignalShowAbout.emit(); }, NULL),
     KSP_Menu_Item(0)
@@ -222,12 +229,16 @@ void WindowMain::init(int argc, char** argv)
     menu_items[MENU_ITEM_SETTINGS].set_label_icon(_("Settings"), &img_icon_settings);
     menu_items[MENU_ITEM_ABOUT].set_label_icon(_("About"), &img_icon_about);
 
-    // Fl::event_dispatch(handler);
-    // Fl::add_timeout(0.5, timer_check_music);
-    // Fl::add_timeout(0.2, timer_title_scrolling);
-
     resizable(tile_center);
     end();
+
+    // Register FLTK events
+    Fl::event_dispatch(static_cast<Fl_Event_Dispatch>([] (int event, Fl_Window* w) {
+        return SignalEvent(event, w);
+    }));
+
+    Fl::add_timeout(0.5, cb_check_music_end);
+    Fl::add_timeout(0.2, cb_check_title_scroll);
 
     SignalClose.connect(sigc::mem_fun(this, &WindowMain::close_window));
     SignalPlay.connect(sigc::mem_fun(this, &WindowMain::toggle_play));
@@ -244,6 +255,10 @@ void WindowMain::init(int argc, char** argv)
     SignalClearSearch.connect(sigc::mem_fun(this, &WindowMain::clear_search));
     SignalUpdateMusicPlaying.connect(sigc::mem_fun(this, &WindowMain::update_music_playing));
     SignalSlideChanged.connect(sigc::mem_fun(this, &WindowMain::slide_changed));
+    SignalSync.connect(sigc::mem_fun(this, &WindowMain::execute_sync));
+    SignalEvent.connect(sigc::mem_fun(this, &WindowMain::handle_event));
+    SignalCheckMusicEnd.connect(sigc::mem_fun(this, &WindowMain::check_music_end));
+    SignalCheckTitleScroll.connect(sigc::mem_fun(this, &WindowMain::check_title_scroll));
 
     // Init other components
     this->playlist = new Playlist(dao, sound, browser_music);
@@ -263,7 +278,7 @@ void WindowMain::init(int argc, char** argv)
 void WindowMain::close_window(Fl_Widget* widget)
 {
     // ignore Escape key
-    if(Fl::event() == FL_SHORTCUT && Fl::event_key() == FL_Escape) {
+    if (Fl::event() == FL_SHORTCUT && Fl::event_key() == FL_Escape) {
         return;
     }
 
@@ -275,17 +290,6 @@ void WindowMain::clear_search()
 {
     input_search->value(NULL);
     input_search->do_callback();
-}
-
-void cb_repeat(Fl_Widget* widget, void*)
-{
-    /*Configuration::instance()->shouldRepeatSong(Configuration::instance()->shouldRepeatSong());
-
-    if(Configuration::instance()->shouldRepeatSong()) {
-        menu_items[MENU_ITEM_REPEAT].set();
-    } else {
-        menu_items[MENU_ITEM_REPEAT].clear();
-    }*/
 }
 
 void WindowMain::show_settings()
@@ -302,104 +306,105 @@ void WindowMain::show_about()
     windowAbout->show(this);
 }
 
-void cb_sync(Fl_Widget* widget, void*)
+void WindowMain::execute_sync()
 {
     /*sync_execute();*/
 }
-/*
-int handler(int e, Fl_Window* w)
+
+int WindowMain::handle_event(int e, Fl_Window* w)
 {
     // When the slider is released, set the sound's position
-    if(e == FL_RELEASE && Fl::belowmouse() == slider_music && sound_is_loaded() && !Fl::event_buttons()) {
+    if (e == FL_RELEASE && Fl::belowmouse() == slider_music && sound->isLoaded() && !Fl::event_buttons()) {
         // Needed to update without delay
         slider_music->update_time();
 
         // We need to store the volume, because FMOD will reset this value
-        float volume = sound_volume();
+        float volume = sound->getVolume();
 
         // If the user is holding the slider and the music reaches its end,
         // we need to play the sound, otherwise we get a strange sound loop.
-        if(sound_is_playing()) {
-            sound_play();
+        if (sound->isPlaying()) {
+            sound->play();
         }
 
-        sound_position(slider_music->value());
-        sound_volume(volume);
+        sound->setPosition(slider_music->value());
+        sound->setVolume(volume);
     }
 
-    if(e == FL_KEYDOWN) {
+    if (e == FL_KEYDOWN) {
         int key = Fl::event_original_key();
         float v;
 
         switch(key) {
-        case FL_Volume_Down: // Increase Volume
+        case FL_Volume_Down:
             volume_controller->decrease();
-            cb_volume(volume_controller, NULL);
+            SignalVolume.emit(volume_controller->value2());
             return 0;
-        case FL_Volume_Up: // Decrease Volume
+        case FL_Volume_Up:
             volume_controller->increase();
-            cb_volume(volume_controller, NULL);
+            SignalVolume.emit(volume_controller->value2());
             return 0;
         }
     }
 
-    if(e == FL_KEYUP) {
+    if (e == FL_KEYUP) {
         int key = Fl::event_original_key();
         int pos;
 
         switch(key) {
         case FL_Right: // Go 5s foward
             // If the input search is focused or the slider is being dragged, do not continue
-            if(input_search == Fl::focus() || Fl::pushed() == slider_music) {
+            if (input_search == Fl::focus() || Fl::pushed() == slider_music) {
                 return Fl::handle_(e, w);
             }
             Fl::focus(slider_music);
 
-            pos = sound_position();
-            if(pos < sound_length() + 5000) {
-                sound_position(pos + 5000);
+            pos = sound->getPosition();
+            if (pos < sound->length() + 5000) {
+                sound->setPosition(pos + 5000);
             }
 
             return 1;
         case FL_Left: // Go 5s backward
             // If the input search is focused or the slider is being dragged, do not continue
-            if(input_search == Fl::focus() || Fl::pushed() == slider_music) {
+            if (input_search == Fl::focus() || Fl::pushed() == slider_music) {
                 return Fl::handle_(e, w);
             }
             Fl::focus(slider_music);
 
-            pos = sound_position();
-            if(sound_length() - 5000 > 0)
-                sound_position(pos - 5000);
+            pos = sound->getPosition();
+            if (sound->length() - 5000 > 0) {
+                sound->setPosition(pos - 5000);
+            }
 
             return 1;
         case FL_Up: // Cycle search type
-            if(Fl::event_ctrl() && input_search == Fl::focus()) {
+            if (Fl::event_ctrl() && input_search == Fl::focus()) {
                 int v = choice_search_type->value() -1;
-                if(v >= 0) choice_search_type->value(v);
-                cb_search_type(choice_search_type, NULL);
+                if (v >= 0) choice_search_type->value(v);
+                SignalSearchType.emit();
                 return 0;
             }
         case FL_Down: // Cycle search type
-            if(Fl::event_ctrl() && input_search == Fl::focus()) {
+            if (Fl::event_ctrl() && input_search == Fl::focus()) {
                 int v = choice_search_type->value() +1;
-                if(v < choice_search_type->size()) choice_search_type->value(v);
-                cb_search_type(choice_search_type, NULL);
+                if (v < choice_search_type->size()) choice_search_type->value(v);
+                SignalSearchType.emit();
                 return 0;
             }
         case 'k': // Search bar gets focused
-            if(Fl::event_ctrl()) {
+            if (Fl::event_ctrl()) {
                 input_search->take_focus();
-                input_search->position(0,input_search->size());
+                input_search->position(0, input_search->size());
                 input_search->redraw();
             }
             return 0;
         case FL_F + 6: // Toggles seach bar focus
-            if(input_search == Fl::focus()) {
+            if (input_search == Fl::focus()) {
                 browser_music->take_focus();
             } else {
                 input_search->take_focus();
-                input_search->position(0,input_search->size());
+                input_search->position(0, input_search->size());
                 input_search->redraw();
             }
             return 0;
@@ -408,24 +413,24 @@ int handler(int e, Fl_Window* w)
     }
 
     // MOUSEWHEEL HANDLER FOR VOLUME DIAL
-    if(e == FL_MOUSEWHEEL &&
+    if (e == FL_MOUSEWHEEL &&
         Fl::belowmouse() != NULL &&
         Fl::belowmouse() != browser_music &&
         Fl::belowmouse() != lyrics_pane &&
         Fl::belowmouse()->parent() != browser_music &&
-        (Fl_Window::current() == window || slider_music->is_tipwin_current())) {
+        (Fl_Window::current() == this || slider_music->is_tipwin_current())) {
             volume_controller->increase(Fl::event_dy() * -1);
-            cb_volume(volume_controller, NULL);
+            SignalVolume.emit(volume_controller->value2());
             return 0;
     }
 
     return Fl::handle_(e, w);
 }
 
-void timer_title_scrolling(void*)
+void WindowMain::check_title_scroll()
 {
-    Fl::repeat_timeout(0.2, timer_title_scrolling);
-    if (!FLAG_SCROLL_TITLE || !sound_is_loaded() || !sound_is_playing()) {
+    Fl::repeat_timeout(0.2, cb_check_title_scroll);
+    if (!Configuration::instance()->shouldScrollTitle() || !sound->isLoaded() || !sound->isPlaying()) {
         return;
     }
 
@@ -439,34 +444,32 @@ void timer_title_scrolling(void*)
     title.append(" - ");
     title.append(windowTitle.substr(0, windowTitlePosition));
 
-    window->copy_label(title.c_str());
+    this->copy_label(title.c_str());
 
     // if the current char is multibyte
     // we should "jump" those extra bytes
     const char* str = windowTitle.c_str();
     int charLen = fl_utf8len(str[windowTitlePosition]);
-    if(charLen > 1) {
+    if (charLen > 1) {
         windowTitlePosition += (charLen - 1);
     }
 }
 
-void timer_check_music(void*)
+void WindowMain::check_music_end()
 {
-    Fl::repeat_timeout(0.25, timer_check_music);
+    Fl::repeat_timeout(0.25, cb_check_music_end);
 
     // If there's no music playing, do not continue
-    if(!sound_is_loaded()) {
-        return;
-    }
+    if (!sound->isLoaded()) return;
 
     // If the music reached its end, so advance to the next one.
     // Note that we check if any mouse button is pressed, so if
     // the user is dragging the slider it won't advance the music.
-    if(slider_music->value() >= (slider_music->maximum() - 1) && Fl::pushed() != slider_music) {
-        if(hasNextMusic()) {
-            cb_next(NULL, 0);
+    if (slider_music->value() >= (slider_music->maximum() - 1) && Fl::pushed() != slider_music) {
+        if (playlist->hasNext()) {
+            SignalNext.emit();
         } else {
-            cb_stop(NULL, 0);
+            SignalStop.emit();
         }
         return;
     }
@@ -474,44 +477,30 @@ void timer_check_music(void*)
     //box_current_time->copy_label(util_format_time(sound_position()));
     //box_current_time->damage();
 
-    if(Fl::pushed() != slider_music) {
-        slider_music->value(sound_position());
+    if (Fl::pushed() != slider_music) {
+        slider_music->value(sound->getPosition());
         slider_music->update_time();
     }
 }
 
-void timer_play_at_start(void*)
-{
-    musicIndex = -1;
-    musicIndexRandom = 0;
-
-    if(FLAG_RANDOM) {
-        musicIndex = listRandom.at(musicIndexRandom++);
-    } else {
-        musicIndex++;
-    }
-
-    play_music();
-}*/
-
 void WindowMain::music_browser_event()
 {
-    if(browser_music->dnd_evt) {
+    if (browser_music->dnd_evt) {
         browser_music->dnd_evt = false;
         playlist->parse_dnd(browser_music->evt_txt);
         return;
     }
 
-    if(Fl::event_clicks() > 0 && Fl::event_button() == FL_LEFT_MOUSE) {
+    if (Fl::event_clicks() > 0 && Fl::event_button() == FL_LEFT_MOUSE) {
         play(true);
     }
 }
 
 void WindowMain::toggle_play()
 {
-    if(sound->isLoaded()) {
+    if (sound->isLoaded()) {
         // It has to be done before the togglePause
-        if(sound->isPlaying()) {
+        if (sound->isPlaying()) {
             button_play->image(img_icon_play);
             label(_("KISS Player - Paused"));
 // #ifdef WIN32
@@ -519,7 +508,7 @@ void WindowMain::toggle_play()
 // #endif
         } else {
             button_play->image(img_icon_pause);
-            if(!Configuration::instance()->shouldScrollTitle())
+            if (!Configuration::instance()->shouldScrollTitle())
                 copy_label(windowTitle.c_str());
 
 // #ifdef WIN32
@@ -529,7 +518,7 @@ void WindowMain::toggle_play()
 
         button_play->redraw();
         sound->togglePaused();
-    } else if(!playlist->isEmpty()) {
+    } else if (!playlist->isEmpty()) {
         play(false);
     }
 }
@@ -537,12 +526,12 @@ void WindowMain::toggle_play()
 void WindowMain::play(bool playAtMusicBrowser)
 {
     float volume = volume_controller->value2();
-    if(!playlist->play(volume, playAtMusicBrowser)) return;
+    if (!playlist->play(volume, playAtMusicBrowser)) return;
 }
 
 void WindowMain::stop()
 {
-    if(!playlist->stop()) {
+    if (!playlist->stop()) {
         return;
     }
 
@@ -571,10 +560,10 @@ void WindowMain::search_type()
 {
     const char* choice = choice_search_type->text();
 
-    if(strcmp(choice, _("All")) == 0) searchType = SEARCH_TYPE_ALL;
-    else if(strcmp(choice, _("Title")) == 0) searchType = SEARCH_TYPE_TITLE;
-    else if(strcmp(choice, _("Artist")) == 0) searchType = SEARCH_TYPE_ARTIST;
-    else if(strcmp(choice, _("Album")) == 0) searchType = SEARCH_TYPE_ALBUM;
+    if (strcmp(choice, _("All")) == 0) searchType = SEARCH_TYPE_ALL;
+    else if (strcmp(choice, _("Title")) == 0) searchType = SEARCH_TYPE_TITLE;
+    else if (strcmp(choice, _("Artist")) == 0) searchType = SEARCH_TYPE_ARTIST;
+    else if (strcmp(choice, _("Album")) == 0) searchType = SEARCH_TYPE_ALBUM;
 
     input_search->take_focus();
     input_search->do_callback();
@@ -698,11 +687,12 @@ void WindowMain::load_config()
         lyrics_pane->resize(x, y, w, h);
     }
 
-    // volume_controllerdata.volumeLevel;
     lastSearch = data.lastSearch;
     searchType = (SearchType) data.searchType;
+    volume_controller->value(data.volumeLevel);
     playlist->setMusicIndex(data.musicIndex);
     playlist->setMusicIndexRandom(data.musicIndexRandom);
 
     menu_items[MENU_ITEM_RANDOM].set_toggled(Configuration::instance()->shouldRandomize());
+    menu_items[MENU_ITEM_REPEAT].set_toggled(Configuration::instance()->shouldRepeatSong());
 }

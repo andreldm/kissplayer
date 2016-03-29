@@ -19,7 +19,7 @@ Music::Music (void)
 string Music::getDesc(void)
 {
     string temp = "";
-    if(artist.empty() || title.empty()) {
+    if (artist.empty() || title.empty()) {
         resolveNames();
     }
 
@@ -40,7 +40,7 @@ void Music::resolveNames(void)
     int foundDot;
     int foundHyphen;
 
-    if(artist.empty()) {
+    if (artist.empty()) {
         foundSlash = filepath.find_last_of("/\\");
         artist = filepath.substr(foundSlash+1);
 
@@ -52,7 +52,7 @@ void Music::resolveNames(void)
         util_trim(artist);
     }
 
-    if(title.empty()) {
+    if (title.empty()) {
         foundSlash = filepath.find_last_of("/\\");
         title = filepath.substr(foundSlash+1);
 

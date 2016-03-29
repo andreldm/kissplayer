@@ -29,7 +29,7 @@ void Sound::load(const char* filename) {
 }
 
 void Sound::unload(void) {
-    if(loaded) {
+    if (loaded) {
         channel->stop();
         sound->release();
         loaded = false;

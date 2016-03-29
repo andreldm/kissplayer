@@ -43,14 +43,14 @@ int KSP_Browser::handle(int e)
         evt_txt.clear();
         evt_txt += Fl::event_text();
 
-        if(callback() && ((when() & FL_WHEN_RELEASE) || (when() & FL_WHEN_CHANGED))) {
+        if (callback() && ((when() & FL_WHEN_RELEASE) || (when() & FL_WHEN_CHANGED))) {
             Fl::add_timeout(0.0, callback_deferred, (void*)this);
         }
         return 1;
     case FL_KEYBOARD:
         // ignore left and right keys
         int key = Fl::event_original_key();
-        if(key == FL_Right || key == FL_Left) {
+        if (key == FL_Right || key == FL_Left) {
             return 1;
         }
         break;
@@ -62,7 +62,7 @@ int KSP_Browser::handle(int e)
 void KSP_Browser::set_highlighted(int line)
 {
     FL_BLINE* item = find_line(line);
-    if(item == NULL) return;
+    if (item == NULL) return;
 
     highlighted_line = item;
 }

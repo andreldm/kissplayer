@@ -221,7 +221,7 @@ void WindowSettings::close()
 {
     hide();
     /*window_main_get_instance()->show();*/
-    /*if(should_resync) sync_execute(true);*/
+    /*if (should_resync) sync_execute(true);*/
 }
 
 void cb_add_dir(Fl_Widget* widget, void*)
@@ -232,13 +232,13 @@ void cb_add_dir(Fl_Widget* widget, void*)
     os_specific_dir_chooser(dir);
     Fl::redraw();
 
-    if(strlen(dir) > 0) {
+    if (strlen(dir) > 0) {
         // If the user didn't cancel
         dao_insert_directory(dir);
         update_dir_list();
     }
 
-    if(listDir.size() != dirQty) {
+    if (listDir.size() != dirQty) {
         // If a directory was added
         should_resync = true;
     }*/
@@ -247,11 +247,11 @@ void cb_add_dir(Fl_Widget* widget, void*)
 void cb_remove_dir(Fl_Widget* widget, void*)
 {
     /*int index = browser_directories->value();
-    if(index <= 0) return;
+    if (index <= 0) return;
 
     string dir = browser_directories->text(index);
-    for(int i = 0; i < listDir.size(); i++) {
-        if(listDir.at(i).value == dir) {
+    for (int i = 0; i < listDir.size(); i++) {
+        if (listDir.at(i).value == dir) {
             dao_delete_directory(listDir.at(i).cod);
             update_dir_list();
         }
@@ -346,7 +346,7 @@ void WindowSettings::toogleScrollTitle()
 {
     Configuration::instance()->shouldScrollTitle(Configuration::instance()->shouldScrollTitle());
 
-    /*if(!FLAG_SCROLL_TITLE) {
+    /*if (!FLAG_SCROLL_TITLE) {
         window_main_reset_title();
     }*/
 }
@@ -367,7 +367,7 @@ void update_dir_list()
     listDir.clear();
     dao_get_directories(listDir);
 
-    for(int i = 0; i < listDir.size(); i++) {
+    for (int i = 0; i < listDir.size(); i++) {
         string s = listDir.at(i).value;
         browser_directories->add(s.c_str());
     }*/

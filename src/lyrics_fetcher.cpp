@@ -64,7 +64,7 @@ void LyricsFetcher::fetch(Music* music) {
 
 void check_ticket(int thread_ticket, Sound* sound) {
     // If the sound is not loaded(stopped), also ignore this fetch
-    if(thread_ticket != ticket || !sound->isLoaded()) {
+    if (thread_ticket != ticket || !sound->isLoaded()) {
         thrd_exit(thrd_success);
     }
 }
@@ -135,28 +135,28 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
     curl = curl_easy_init();
     check_ticket(thread_ticket, lyrics_data->sound);
 
-    if(curl) {
+    if (curl) {
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, util_write_string);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_easy_setopt(curl, CURLOPT_TIMEOUT, 5);
 
-        if(!proxy.empty()) {
+        if (!proxy.empty()) {
             curl_easy_setopt(curl, CURLOPT_PROXY, proxy.c_str());
         }
         CURLcode res = curl_easy_perform(curl);
         check_ticket(thread_ticket, lyrics_data->sound);
 
         // Check if timed out
-        if(res == CURLE_OPERATION_TIMEDOUT) {
+        if (res == CURLE_OPERATION_TIMEDOUT) {
             curl_easy_cleanup(curl);
             text_buffer->text(_("Connection timed out!"));
             return false;
         }
 
         // Check if there was any problem
-        if(res != CURLE_OK) {
+        if (res != CURLE_OK) {
             curl_easy_cleanup(curl);
             text_buffer->text(_("Connection failure!"));
             //cout << "CURL Error: " << res << endl;
@@ -165,20 +165,20 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
 
         // Check if it's a redirect page
         findResult = data.find(conditionRedirect);
-        if(findResult == string::npos) {
+        if (findResult == string::npos) {
             findResult = data.find(conditionRedirect2);
         }
-        if(findResult == string::npos) {
+        if (findResult == string::npos) {
             findResult = data.find(conditionRedirect3);
         }
-        if(findResult != string::npos) {
+        if (findResult != string::npos) {
             findResult = data.find("[[", findResult);
             data.erase(0, findResult + 2);
             findResult = data.find("]]");
             data.erase(findResult);
 
             findResult = data.find(":");
-            if(findResult == string::npos) {
+            if (findResult == string::npos) {
                 text_buffer->text(_("Error while redirecting."));
                 return false;
             }
@@ -194,19 +194,19 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
 
         // Check if the Lyrics doesn't exist
         findResult = data.find(conditionNotFound);
-        if(findResult == string::npos) {
+        if (findResult == string::npos) {
             findResult = data.find(conditionNotFound2);
         }
-        if(findResult == string::npos) {
+        if (findResult == string::npos) {
             findResult = data.find(conditionNotFound3);
         }
 
-        if(findResult != string::npos) {
+        if (findResult != string::npos) {
             curl_easy_cleanup(curl);
 
-            if(firstTry) {
+            if (firstTry) {
                 bool result = try_again(lyrics_data);
-                if(!result) {
+                if (!result) {
                     text_buffer->text(_("Not found :-("));
                 }
             }
@@ -219,9 +219,9 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
         if (result == -1) {
             curl_easy_cleanup(curl);
 
-            if(firstTry) {
+            if (firstTry) {
                 bool result = try_again(lyrics_data);
-                if(!result) {
+                if (!result) {
                     text_buffer->text(_("Error while fetching."));
                 }
             }
@@ -243,7 +243,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
 
     string result = artist + "\n" + title + "\n" + data;
     util_replace_all(result, "\n\n\n", "\n\n");
-    while(result.at(result.size()-1) == '\n') {
+    while (result.at(result.size()-1) == '\n') {
         result = result.substr(0, result.size()-1);
     }
 
@@ -252,7 +252,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
 
     check_ticket(thread_ticket, lyrics_data->sound);
     Fl::lock ();
-    if(lyrics_data->shouldFetchLyrics) {
+    if (lyrics_data->shouldFetchLyrics) {
         text_buffer->text(result.c_str());
     }
     Fl::unlock ();

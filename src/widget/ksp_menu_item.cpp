@@ -682,7 +682,7 @@ const KSP_Menu_Item* KSP_Menu_Item::pulldown(int X, int Y) const
         }
 
         // only do rest if item changes:
-        if(pp.fakemenu) {delete pp.fakemenu; pp.fakemenu = 0;} // turn off "menubar button"
+        if (pp.fakemenu) {delete pp.fakemenu; pp.fakemenu = 0;} // turn off "menubar button"
 
         if (!pp.current_item) { // pointing at nothing
             // turn off selection in deepest menu, but don't erase other menus:
@@ -690,7 +690,7 @@ const KSP_Menu_Item* KSP_Menu_Item::pulldown(int X, int Y) const
             continue;
         }
 
-        if(pp.fakemenu) {delete pp.fakemenu; pp.fakemenu = 0;}
+        if (pp.fakemenu) {delete pp.fakemenu; pp.fakemenu = 0;}
         initial_item = 0; // stop the startup code
         pp.p[pp.menu_number]->autoscroll(pp.item_number);
 
@@ -779,7 +779,7 @@ void KSP_Menu_Item::set_label_icon(const char* text, Fl_Image* icon, bool prepen
     if (!text) text = "";
     char* text2;
 
-    if(prepend_space) {
+    if (prepend_space) {
         size_t len = strlen(text);
         text2 = new char[len + 2];
         text2[0] = ' ';
@@ -788,7 +788,7 @@ void KSP_Menu_Item::set_label_icon(const char* text, Fl_Image* icon, bool prepen
         text2 = (char *)text;
     }
 
-    if(!icon) {
+    if (!icon) {
         label(text2);
         return;
     }

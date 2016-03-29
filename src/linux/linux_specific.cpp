@@ -36,7 +36,7 @@ void OsSpecific::set_app_icon(Fl_Window* window)
     fl_open_display();
     Pixmap p;
     XpmCreatePixmapFromData(fl_display, DefaultRootWindow(fl_display), const_cast<char**>(icon_xpm), &p, &mask, NULL);
-    window->icon((char*)p);
+    window->icon((char*) p);
 }
 
 int OsSpecific::init(Fl_Window* window)
@@ -52,7 +52,7 @@ int OsSpecific::init(Fl_Window* window)
     // Setup keyboard hook
     // Try to attach to the default X11 display
     disp_data = XOpenDisplay(NULL);
-    if(disp_data == NULL ) {
+    if (disp_data == NULL ) {
         printf("Error: Could not open display!\n");
         return -1;
     }
@@ -60,7 +60,7 @@ int OsSpecific::init(Fl_Window* window)
     // Setup XRecord range
     XRecordClientSpec clients = XRecordAllClients;
     XRecordRange* range = XRecordAllocRange();
-    if(range == NULL) {
+    if (range == NULL) {
         printf("Error: Could not allocate XRecordRange!");
         return -1;
     }
@@ -70,7 +70,7 @@ int OsSpecific::init(Fl_Window* window)
     range->device_events.last = MotionNotify;
     XRecordContext context = XRecordCreateContext(disp_data, 0, &clients, 1, &range, 1);
     XFree(range);
-    if(context == 0) {
+    if (context == 0) {
         printf("Error: Could not create XRecordContext!");
         return -1;
     }
@@ -85,7 +85,7 @@ int OsSpecific::init(Fl_Window* window)
 
 void OsSpecific::end()
 {
-    /*if(disp_data) {
+    /*if (disp_data) {
         // Close the data display.
         XCloseDisplay(disp_data); // Crash!
     }*/
@@ -98,7 +98,7 @@ int OsSpecific::get_working_dir(std::string& dir)
     path.append("/.kissplayer/");
     dir.assign(path);
 
-    if(mkdir(dir.c_str(), 0777) != 0) {
+    if (mkdir(dir.c_str(), 0777) != 0) {
         if (errno != EEXIST) {
             return -1;
         }
@@ -111,7 +111,7 @@ void OsSpecific::dir_chooser(char* dir)
 {
     char* r = fl_dir_chooser("Select a folder", NULL);
 
-    if(r == NULL) {
+    if (r == NULL) {
         dir[0] = '\0';
         return;
     }
@@ -160,16 +160,16 @@ bool OsSpecific::is_window_maximized(Fl_Window* window)
     long maxLength = 1024;
     int maximized = 0;
 
-    if(Success == XGetWindowProperty(fl_display, fl_xid(window), atomState,
+    if (Success == XGetWindowProperty(fl_display, fl_xid(window), atomState,
                            0l, maxLength, False, XA_ATOM, &actualType,
                            &actualFormat, &numItems, &bytesAfter,
                            &propertyValue)) {
         Atom* atoms = (Atom*) propertyValue;
 
-        for(i = 0; i < numItems; ++i) {
-            if(atoms[i] == atomMaxVert) {
+        for (i = 0; i < numItems; ++i) {
+            if (atoms[i] == atomMaxVert) {
                 maximized |= 1;
-            } else if(atoms[i] == atomMaxHorz) {
+            } else if (atoms[i] == atomMaxHorz) {
                 maximized |= 2;
             }
         }
@@ -183,24 +183,24 @@ void OsSpecific::scanfolder(const char* dir, deque<string>& filelist)
     dirent** list;
     int fileQty = fl_filename_list(dir, &list);
 
-    for(int i = 0; i < fileQty; i++) {
+    for (int i = 0; i < fileQty; i++) {
         const char* filename = list[i]->d_name;
 
-        if(filename[0] == '.') {
+        if (filename[0] == '.') {
             continue;
         }
 
         char buffer[8192];
         sprintf(buffer, "%s/%s", dir, filename);
 
-        if(fl_filename_isdir(buffer)) {
+        if (fl_filename_isdir(buffer)) {
             scanfolder(buffer, filelist);
             continue;
         }
 
         string fn = filename;
 
-        if(util_is_ext_supported(fn)) {
+        if (util_is_ext_supported(fn)) {
                filelist.push_back(buffer);
         }
     }
@@ -236,7 +236,7 @@ void keyHookCallback(XPointer pointer, XRecordInterceptData* hook)
 
         if (k == XF86XK_AudioPlay) SignalPlay.emit();
         if (k == XF86XK_AudioNext) SignalNext.emit();
-        if( k == XF86XK_AudioPrev) SignalPrevious.emit();
+        if ( k == XF86XK_AudioPrev) SignalPrevious.emit();
 
         keyPressed = true;
     }

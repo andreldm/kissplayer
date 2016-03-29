@@ -33,13 +33,13 @@ bool Playlist::parse_args(int argc, char** argv)
 {
     bool parsed = false;
 
-    for(int i = 1; i < argc; i++) {
+    for (int i = 1; i < argc; i++) {
         string arg(argv[i]);
 
-        if(util_is_ext_supported(arg)) {
+        if (util_is_ext_supported(arg)) {
             Music m;
             TagLib::FileRef* f = new TagLib::FileRef(arg.c_str());
-            if(!f->isNull()) {
+            if (!f->isNull()) {
                 parsed = true;
                 m.title = f->tag()->title().toCString(true);
                 m.artist = f->tag()->artist().toCString(true);
@@ -82,10 +82,10 @@ void Playlist::update_browser()
     browser_music->clear();
     browser_music->clear_highlighted();
 
-    for(uint i = 0; i < listMusic.size(); i++) {
+    for (uint i = 0; i < listMusic.size(); i++) {
         Music m = listMusic.at(i);
         browser_music->add(m.getDesc().c_str());
-        if(m.cod != 0 && m.cod == musicPlayingCod) {
+        if (m.cod != 0 && m.cod == musicPlayingCod) {
             browser_music->set_highlighted(i + 1);
             browser_music->value(i + 1);
         }
@@ -112,13 +112,13 @@ bool Playlist::play(float volume, bool playAtBrowser)
     const char* filepath = music.filepath.c_str();
 
     // TODO: First we need to check if the file exists
-    /*while(fl_access(filepath, 0)) { // 0 = F_OK
-        if(!hasNext()) {
+    /*while (fl_access(filepath, 0)) { // 0 = F_OK
+        if (!hasNext()) {
             stop(); // FIXME: Update WindowMain
             return false;
         }
 
-        if(Configuration::instance()->shouldRandomize()) musicIndex = listRandom.at(++musicIndexRandom);
+        if (Configuration::instance()->shouldRandomize()) musicIndex = listRandom.at(++musicIndexRandom);
         else musicIndex++;
 
         filepath = listMusic.at(musicIndex).filepath.c_str();
@@ -156,7 +156,7 @@ bool Playlist::hasNext()
 
     // '-1' is the beginning of the playlist
     if (Configuration::instance()->shouldRandomize()) {
-        if(musicIndexRandom == -1 || musicIndexRandom + 2 <= (int) listRandom.size()) {
+        if (musicIndexRandom == -1 || musicIndexRandom + 2 <= (int) listRandom.size()) {
             return true;
         }
     } else if (musicIndex + 2 <= (int) listMusic.size()) {
@@ -171,7 +171,7 @@ bool Playlist::hasPrevious()
     // There's no music on the list or no music playing
     if (listMusic.empty() || !sound->isLoaded()) return false;
 
-    if( Configuration::instance()->shouldRepeatSong()) return true;
+    if ( Configuration::instance()->shouldRepeatSong()) return true;
 
     return Configuration::instance()->shouldRandomize() ?
         musicIndexRandom > 0 :
@@ -228,7 +228,7 @@ void Playlist::next()
 
 void Playlist::previous()
 {
-    if(hasPrevious()) {
+    if (hasPrevious()) {
         decrement_music_index();
         play(lastVolume);
     }
@@ -251,7 +251,7 @@ void Playlist::parse_dnd(string urls)
     bool list_changed = false;
 
     while (getline(lines, url)) {
-        if(util_is_ext_supported(url)) {
+        if (util_is_ext_supported(url)) {
 #ifdef WIN32
             wchar_t filepath[PATH_LENGTH];
             fl_utf8towc(url.c_str(), url.size(), filepath, PATH_LENGTH);
@@ -264,14 +264,14 @@ void Playlist::parse_dnd(string urls)
 #endif
             Music m;
             TagLib::FileRef* f = new TagLib::FileRef(filepath);
-            if(!f->isNull()) {
+            if (!f->isNull()) {
                 m.title = f->tag()->title().toCString(true);
                 m.artist = f->tag()->artist().toCString(true);
                 m.album = f->tag()->album().toCString(true);
                 m.filepath = url;
                 m.resolveNames();
 
-                if(!list_changed) {
+                if (!list_changed) {
                     listMusic.clear();
                     list_changed = true;
                 }
@@ -281,5 +281,5 @@ void Playlist::parse_dnd(string urls)
         }
     }
 
-    if(list_changed) update_browser();
+    if (list_changed) update_browser();
 }

@@ -38,17 +38,17 @@ bool firstFile = true;
 
 int main(int argc, char* argv[])
 {
-  if(argc < 2) {
+  if (argc < 2) {
     printf("Converts png files to img object suitable for FLTK.\nUsage: png2img <directory>\n");
     return 1;
   }
 
   FILE* f = fl_fopen("images.cpp", "wb");
-  if(f) out_cpp = f;
+  if (f) out_cpp = f;
   f = fl_fopen("images.h", "wb");
-  if(f) out_h = f;
+  if (f) out_h = f;
 
-  if(!out_cpp || !out_h) {
+  if (!out_cpp || !out_h) {
     printf("ERROR: Couldn't create output files!");
     return 1;
   }
@@ -57,11 +57,11 @@ int main(int argc, char* argv[])
   const char* dirpath = argv[1];
   DIR* dir;
 
-  if((dir = opendir(dirpath)) != NULL) {
+  if ((dir = opendir(dirpath)) != NULL) {
     struct dirent* ent;
-    while((ent=readdir(dir)) != NULL) {
+    while ((ent=readdir(dir)) != NULL) {
       string filename = ent->d_name;
-      if(hasEnding(filename, ".png")) {
+      if (hasEnding(filename, ".png")) {
         filefound = true;
         filename.insert(0, DIR_SEPARATOR);
         filename.insert(0, dirpath);
@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
     closedir(dir);
   }
 
-  if(filefound) {
+  if (filefound) {
     fprintf(out_h, "\n#endif\n");
   } else {
     printf("No png files have been found in %s\n", dirpath);
@@ -90,12 +90,12 @@ void write(const char* filepath)
   printf("Writing file: %s\n", filepath);
   Fl_PNG_Image* img = new Fl_PNG_Image(filepath);
 
-  if(!img) {
+  if (!img) {
     printf("Can't open file.\n");
     return;
   }
 
-  if(firstFile) {
+  if (firstFile) {
     firstFile = false;
     fprintf(out_cpp, "#include \"images.h\"\n");
 
@@ -114,10 +114,10 @@ void write(const char* filepath)
   const char* var_name_img = getName(filepath, false);
   fprintf(out_cpp, "\nstatic unsigned char %s[] = {", var_name_png);
 
-  for(; w < e;) {
+  for (; w < e;) {
     unsigned char c = *w++;
     fprintf(out_cpp, "%d", c);
-    if(w<e) putc(',', out_cpp);
+    if (w<e) putc(',', out_cpp);
   }
   fprintf(out_cpp, "};\n");
   fprintf(out_cpp, "Fl_RGB_Image %s(%s, %d, %d, %d, %d);\n", var_name_img, var_name_png, img->w(), img->h(), img->d(), img->ld());
@@ -127,14 +127,14 @@ void write(const char* filepath)
 const char* getName(const char* filepath, bool append_png) {
   int pad = 0;
   const char* filename = fl_filename_name(filepath);
-  if(filename[0] == '.') {
+  if (filename[0] == '.') {
     pad = 1;
   }
   
   string* str = new string(fl_filename_setext(const_cast<char *>(filename + pad), sizeof(filename + pad), NULL));
 
   str->insert(0, "img_");
-  if(append_png) {
+  if (append_png) {
     str->append("_png");
   }
 

@@ -62,7 +62,7 @@ void TipWin::update(float f, int parent_y)
 
     if (xx < window_main->x() + 14) {
         xx = window_main->x() + 14;
-    } else if(xx > window_main->x() + window_main->w() - 14) {
+    } else if (xx > window_main->x() + window_main->w() - 14) {
         xx = window_main->x() + window_main->w() - 14;
     }
 

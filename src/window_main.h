@@ -74,6 +74,10 @@ private:
     void        slide_changed                   (void);
     void        save_config                     (void);
     void        load_config                     (void);
+    void        execute_sync                    (void);
+    int         handle_event                    (int, Fl_Window*);
+    void        check_title_scroll              (void);
+    void        check_music_end                 (void);
 
 public:
                 WindowMain                      (Sound*, Dao*);

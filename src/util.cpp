@@ -22,11 +22,11 @@ bool util_is_ext_supported(string filename)
 {
     const char* ext = fl_filename_ext(filename.c_str());
 
-    if(strcmp(ext, ".mp3") == 0) return true;
-    if(strcmp(ext, ".wma") == 0) return true;
-    if(strcmp(ext, ".ogg") == 0) return true;
-    if(strcmp(ext, ".wav") == 0) return true;
-    if(strcmp(ext, ".flac") == 0) return true;
+    if (strcmp(ext, ".mp3") == 0) return true;
+    if (strcmp(ext, ".wma") == 0) return true;
+    if (strcmp(ext, ".ogg") == 0) return true;
+    if (strcmp(ext, ".wav") == 0) return true;
+    if (strcmp(ext, ".flac") == 0) return true;
 
     return false;
 }
@@ -75,11 +75,11 @@ ptrdiff_t myrandom (ptrdiff_t i)
 void util_randomize(deque<int>& listRandom, int max)
 {
     listRandom.clear();
-    if(max < 1) return;
+    if (max < 1) return;
 
     ptrdiff_t (*p_myrandom)(ptrdiff_t) = myrandom;
     srand((int)time(NULL));
-    for(int i = 0; i < max; i++) {
+    for (int i = 0; i < max; i++) {
         listRandom.push_back(i);
     }
 
@@ -89,7 +89,7 @@ void util_randomize(deque<int>& listRandom, int max)
 void util_replace_all(string& str, const string& from, const string& to)
 {
     size_t start_pos = 0;
-    while((start_pos = str.find(from, start_pos)) != string::npos) {
+    while ((start_pos = str.find(from, start_pos)) != string::npos) {
         str.replace(start_pos, from.length(), to);
         start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
     }
@@ -99,9 +99,9 @@ void util_erase_between(string& str, const string& start, const string& end)
 {
     size_t start_pos = 0;
     size_t end_pos = 0;
-    while((start_pos = str.find(start, start_pos)) != string::npos) {
+    while ((start_pos = str.find(start, start_pos)) != string::npos) {
         end_pos = str.find(end, start_pos);
-        if(end_pos != string::npos) {
+        if (end_pos != string::npos) {
             str.erase(start_pos, end_pos - start_pos + 1);
         } else {
             str.replace(start_pos, start.length(), "");
@@ -118,7 +118,7 @@ void util_adjust_width(Fl_Widget* w, int padding)
 
 int util_s2i(string value)
 {
-    if(value.empty()) {
+    if (value.empty()) {
         return -1;
     }
     return atoi (value.c_str());
@@ -133,7 +133,7 @@ string util_i2s(int value)
 
 float util_s2f(string value)
 {
-    if(value.empty()) {
+    if (value.empty()) {
         return -1;
     }
     return atof (value.c_str());
@@ -160,7 +160,7 @@ void util_uppercase_initials(string& str)
             continue;
         }
 
-        if(str[i-1] && str[i-1] == '_' && islower(str[i])) {
+        if (str[i-1] && str[i-1] == '_' && islower(str[i])) {
             str[i] = toupper(str[i]);
             continue;
         }
@@ -174,7 +174,7 @@ void util_center_window(Fl_Widget* window, Fl_Widget* parent)
 {
     int x = 0, y = 0;
 
-    if(parent) {
+    if (parent) {
         x = parent->x() + (parent->w() / 2) - (window->w() / 2);
         y = parent->y() + (parent->h() / 2) - (window->h() / 2);
     } else {

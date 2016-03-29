@@ -85,7 +85,7 @@ int os_specific_init()
 void os_specific_end()
 {
     // On Windows 7
-    if(taskbarList != NULL) {
+    if (taskbarList != NULL) {
         taskbarList->Release();
     }
 
@@ -150,22 +150,22 @@ bool os_specific_is_window_maximized()
 */
 int windows_event_handler(int e)
 {
-    if(fl_msg.message == taskBarCreatedId) {
+    if (fl_msg.message == taskBarCreatedId) {
         hwnd = fl_msg.hwnd;
         create_thumbnail_toolbar();
         return 1;
     }
 
-    if(fl_msg.message == WM_COMMAND) {
-        if(LOWORD(fl_msg.wParam) == ID_THUMBNAIL_BUTTON1) {
+    if (fl_msg.message == WM_COMMAND) {
+        if (LOWORD(fl_msg.wParam) == ID_THUMBNAIL_BUTTON1) {
             window_main_previous();
             return 1;
         }
-        if(LOWORD(fl_msg.wParam) == ID_THUMBNAIL_BUTTON2) {
+        if (LOWORD(fl_msg.wParam) == ID_THUMBNAIL_BUTTON2) {
             window_main_toggle_play();
             return 1;
         }
-        if(LOWORD(fl_msg.wParam) == ID_THUMBNAIL_BUTTON3) {
+        if (LOWORD(fl_msg.wParam) == ID_THUMBNAIL_BUTTON3) {
             window_main_next();
             return 1;
         }
@@ -229,14 +229,14 @@ void create_thumbnail_toolbar()
 void win_specific_update_thumbnail_toolbar(string command)
 {
     //Not on Windows 7
-    if(taskbarList == NULL) {
+    if (taskbarList == NULL) {
         return;
     }
 
-    if(strcmp(command.c_str(), "play") == 0) {
+    if (strcmp(command.c_str(), "play") == 0) {
         thumb_buttons[1].iBitmap = 1;
         wcscpy(thumb_buttons[1].szTip, L"Play");
-    } else if(strcmp(command.c_str(), "pause") == 0) {
+    } else if (strcmp(command.c_str(), "pause") == 0) {
         thumb_buttons[1].iBitmap = 3;
         wcscpy(thumb_buttons[1].szTip, L"Pause");
     }
@@ -256,7 +256,7 @@ LRESULT CALLBACK KeyboardHookProc(int nCode, WPARAM wParam, LPARAM lParam)
     KBDLLHOOKSTRUCT* kbhook = (KBDLLHOOKSTRUCT*) lParam;
 
     // On Key Release
-    if(keyPressed && (wParam == WM_KEYUP || wParam == WM_SYSKEYUP)) {
+    if (keyPressed && (wParam == WM_KEYUP || wParam == WM_SYSKEYUP)) {
         switch((unsigned int) kbhook->vkCode) {
         case VK_MEDIA_PLAY_PAUSE:
         case VK_MEDIA_STOP:
@@ -268,7 +268,7 @@ LRESULT CALLBACK KeyboardHookProc(int nCode, WPARAM wParam, LPARAM lParam)
     }
 
     // On Key Press
-    if(!keyPressed && (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN)) {
+    if (!keyPressed && (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN)) {
         switch((unsigned int) kbhook->vkCode) {
         case VK_MEDIA_PLAY_PAUSE:
             window_main_toggle_play();
@@ -302,13 +302,13 @@ void os_specific_scanfolder(const wchar_t* dir, deque<wstring>& filelist)
     wsprintfW(path, L"%s\\*.*", dir);
 
     // Check if it's a valid path
-    if((hFind = FindFirstFileW(path, &filedata)) == INVALID_HANDLE_VALUE) {
+    if ((hFind = FindFirstFileW(path, &filedata)) == INVALID_HANDLE_VALUE) {
         return;
     }
 
     do {
         // Ignore "." and ".."
-        if(wcscmp(filedata.cFileName, L".") == 0 || wcscmp(filedata.cFileName, L"..") == 0) {
+        if (wcscmp(filedata.cFileName, L".") == 0 || wcscmp(filedata.cFileName, L"..") == 0) {
             continue;
         }
 
@@ -316,13 +316,13 @@ void os_specific_scanfolder(const wchar_t* dir, deque<wstring>& filelist)
         wsprintfW(path, L"%s\\%s", dir, filedata.cFileName);
 
         // If it's a folder, search it too
-        if(filedata.dwFileAttributes &FILE_ATTRIBUTE_DIRECTORY) {
+        if (filedata.dwFileAttributes &FILE_ATTRIBUTE_DIRECTORY) {
             os_specific_scanfolder(path, filelist);
             continue;
         }
         _wsplitpath(path, NULL, NULL, NULL, ext);
 
-        if(wcscmp(ext, L".mp3") == 0 ||
+        if (wcscmp(ext, L".mp3") == 0 ||
             wcscmp(ext, L".wma") == 0 ||
             wcscmp(ext, L".ogg") == 0 ||
             wcscmp(ext, L".wav") == 0 ||
@@ -330,7 +330,7 @@ void os_specific_scanfolder(const wchar_t* dir, deque<wstring>& filelist)
                 filelist.push_back(path);
         }
     }
-    while(FindNextFileW(hFind, &filedata));
+    while (FindNextFileW(hFind, &filedata));
 
     FindClose(hFind);
     return;

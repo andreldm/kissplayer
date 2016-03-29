@@ -4,7 +4,7 @@
 #include <FL/Fl_Valuator.H>
 
 /**
- * Custom volume controller.
+ * Custom volume controller
  */
 class KSP_Volume_Controller : public Fl_Valuator
 {
