@@ -3,6 +3,8 @@
 #include <FL/fl_ask.H>
 #include <FL/fl_draw.H>
 
+#include "configuration.h"
+#include "context.h"
 #include "sound.h"
 #include "locale.h"
 #include "window_main.h"
@@ -19,28 +21,30 @@ int main(int argc, char** argv)
 
     fl_message_title_default(_("Warning"));
 
-    Dao dao;
-    if (dao.init() != 0) {
+    Context context;
+    context.configuration = new Configuration();
+    context.dao = new Dao();
+    context.sound = new Sound();
+    context.osSpecific = new OsSpecific();
+
+    // Locale::init();
+
+    if (context.dao->init() != 0) {
         fl_alert(_("Error while initializing database"));
         return -1;
     }
 
-    // Locale::init();
-
-    Sound sound;
-    if (sound.init() != 0) {
+    if (context.sound->init() != 0) {
         fl_alert(_("Error while sound system"));
         return -1;
     }
 
-    OsSpecific osSpecific;
-
-    WindowMain windowMain(&sound, &dao);
+    WindowMain windowMain(&context);
     windowMain.init(argc, argv);
-    osSpecific.set_app_icon(&windowMain);
+    context.osSpecific->set_app_icon(&windowMain);
     windowMain.show(0, NULL);
 
-    osSpecific.init(&windowMain);
+    context.osSpecific->init(&windowMain);
 
     // if (FLAG_MAXIMIZE_WINDOW) {
     //     os_specific_maximize_window();
@@ -60,8 +64,8 @@ int main(int argc, char** argv)
 
     int fl_result = Fl::run();
 
-    sound.destroy();
-    osSpecific.end();
+    context.sound->destroy();
+    context.osSpecific->end();
 
     return fl_result;
 }

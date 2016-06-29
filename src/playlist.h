@@ -4,15 +4,13 @@
 #include <deque>
 
 #include "constants.h"
-#include "dao.h"
+#include "context.h"
 #include "music.h"
-#include "sound.h"
 #include "widget/ksp_browser.h"
 
 class Playlist {
 private:
-    Dao* dao;
-    Sound* sound;
+    Context* context;
     KSP_Browser* browser_music;
     std::deque<Music> listMusic;
     std::deque<int> listRandom;
@@ -26,7 +24,7 @@ private:
     void decrement_music_index  (void);
 
 public:
-              Playlist            (Dao* dao, Sound* sound, KSP_Browser* browser_music);
+              Playlist            (Context* context, KSP_Browser* browser_music);
 
     bool      parse_args          (int argc, char** argv);
     void      parse_dnd           (std::string urls);

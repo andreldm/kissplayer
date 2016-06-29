@@ -1,21 +1,17 @@
 #ifndef sync_h
 #define sync_h
 
-#include "configuration.h"
-#include "dao.h"
+#include "context.h"
 #include "window_loading.h"
-#include "window_main.h"
 
 class Sync
 {
 private:
-    Configuration* config;
-    Dao* dao;
-    WindowMain* windowMain;
+    Context* context;
     WindowLoading* windowLoading;
 
 public:
-    Sync(Configuration*, WindowMain*);
+    Sync(Context* context);
     void    execute    (bool do_not_warn = false);
 };
 

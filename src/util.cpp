@@ -155,8 +155,8 @@ size_t util_write_string(void* ptr, size_t size, size_t count, void* stream)
 void util_uppercase_initials(string& str)
 {
     for (uint i = 0; i < str.length(); i++) {
-        if (i == 0 && islower(str[i])) {
-            str[i] = toupper(str[i]);
+        if (i == 0) {
+            if (islower(str[i])) str[i] = toupper(str[i]);
             continue;
         }
 

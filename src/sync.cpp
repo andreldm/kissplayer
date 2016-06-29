@@ -4,6 +4,7 @@
 
 #include <taglib/fileref.h>
 
+#include <FL/Fl.H>
 #include <FL/fl_ask.H>
 
 #include "locale.h"
@@ -14,11 +15,10 @@
 
 using namespace std;
 
-Sync::Sync(Configuration* config, WindowMain* windowMain)
+Sync::Sync(Context* context)
 {
-    this->config = config;
-    this->windowMain = windowMain;
-    this->windowLoading = new WindowLoading(config);
+    this->context = context;
+    // this->windowLoading = new WindowLoading(context);
 }
 
 /**
@@ -27,9 +27,9 @@ Sync::Sync(Configuration* config, WindowMain* windowMain)
 void Sync::execute(bool do_not_warn)
 {
     deque<COD_VALUE> listDir;
-    dao->get_directories(listDir);
+    context->dao->get_directories(listDir);
 
-    if (!do_not_warn && listDir.size() == 0) {
+    if (!do_not_warn && listDir.empty()) {
         fl_beep();
         fl_message(_("Please, add at least one directory on the Settings Window."));
         listDir.clear();
@@ -37,12 +37,13 @@ void Sync::execute(bool do_not_warn)
     }
 
     SignalStop.emit();
+    WindowLoading* windowLoading = new WindowLoading(context);
     windowLoading->show();
     windowLoading->set_dir_max(listDir.size());
 
-    dao->mark_music_not_found();
+    context->dao->mark_music_not_found();
 
-    dao->begin_transaction();
+    context->dao->begin_transaction();
 
     for (uint i = 0; i < listDir.size(); i++) {
         Fl::check();
@@ -62,8 +63,8 @@ void Sync::execute(bool do_not_warn)
         windowLoading->set_file_max(listFiles.size());
 
         for (uint j = 0; j < listFiles.size(); j++) {
-            //cout<<"Dir: "<<i+1<<"/"<<listDir.size()<<" - File: "<<j+1<<"/"<<listFiles.size()<< endl;
-            if (config->isCancelSync()) break;
+//            cout<<"Dir: "<<i+1<<"/"<<listDir.size()<<" - File: "<<j+1<<"/"<<listFiles.size()<< endl;
+            if (context->configuration->isCancelSync()) break;
 
 #ifdef WIN32
             const wchar_t* filepath = listFiles.at(j).c_str();
@@ -89,23 +90,24 @@ void Sync::execute(bool do_not_warn)
             m.filepath = path;
             m.resolveNames();
 
-            dao->insert_music(m);
+            context->dao->insert_music(m);
             windowLoading->set_file_value(j + 1);
             Fl::check();
         }
         listFiles.clear();
-        if (config->isCancelSync()) break;
+        if (context->configuration->isCancelSync()) break;
 
         windowLoading->set_dir_value(i + 1);
     }
 
     windowLoading->close();
+    delete windowLoading;
 
-    dao->commit_transaction();
+    context->dao->commit_transaction();
 
-    dao->delete_music_not_found();
+    context->dao->delete_music_not_found();
 
-    config->isCancelSync(false);
+    context->configuration->isCancelSync(false);
 
     SignalSearch.emit();
 }

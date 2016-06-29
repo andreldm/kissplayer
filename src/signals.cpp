@@ -8,6 +8,7 @@ signal<void> SignalNext;
 signal<void> SignalPrevious;
 signal<void> SignalSearch;
 signal<void> SignalSearchType;
+signal<void> SignalResetWindowTitle;
 signal<void, float> SignalVolume;
 
 signal<void> SignalCancelSync;

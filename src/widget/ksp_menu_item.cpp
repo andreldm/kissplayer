@@ -218,7 +218,8 @@ namespace KSP_MENU
         if (Wp > W) W = Wp;
         if (Wtitle > W) W = Wtitle;
 
-        if (X < scr_x) X = scr_x; if (X > scr_x+scr_w-W) X = right_edge-W;
+        if (X < scr_x) X = scr_x;
+        if (X > scr_x+scr_w-W) X = right_edge-W;
         x(X); w(W);
         h((numitems ? itemheight*numitems-LEADING : 0)+2*BW+3);
 

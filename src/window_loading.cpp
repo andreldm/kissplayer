@@ -14,15 +14,10 @@
 static Fl_Progress* progress_bar_dir;
 static Fl_Progress* progress_bar_file;
 
-WindowLoading::WindowLoading(Configuration* config)
+WindowLoading::WindowLoading(Context* context)
         : Fl_Window(350, 140, _("Please Wait"))
 {
-    this->config = config;
-}
-
-void WindowLoading::show(void)
-{
-    util_center_window(this);
+    this->context = context;
     this->align(Fl_Align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE));
 
     progress_bar_dir = new Fl_Progress(20, 20, 320, 30, _("Scanning directories..."));
@@ -42,7 +37,12 @@ void WindowLoading::show(void)
     SignalCancelSync.connect(sigc::mem_fun(this, &WindowLoading::cancel));
 
     set_modal();
-    show();
+}
+
+void WindowLoading::show(void)
+{
+    util_center_window(this);
+    Fl_Window::show();
 }
 
 void WindowLoading::close (void)
@@ -84,5 +84,5 @@ void WindowLoading::set_file_value(int v)
 
 void WindowLoading::cancel()
 {
-    config->isCancelSync(true);
+    context->configuration->isCancelSync(true);
 }

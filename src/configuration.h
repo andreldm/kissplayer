@@ -20,8 +20,6 @@ struct ConfigData {
 class Configuration
 {
 private:
-    static Configuration *_instance;
-
     bool _shouldMaximizeWindow = false;
     bool _shouldRandomize = false;
     bool _shouldRepeatSong = false;
@@ -36,11 +34,7 @@ private:
     Fl_Color _foreground;
     Fl_Color _textcolor;
 
-    Configuration();
-
 public:
-    static Configuration *instance();
-
     void         save                    (ConfigData, Dao*);
     ConfigData   load                    (Dao*);
 

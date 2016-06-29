@@ -9,6 +9,7 @@
 #include <FL/Fl_Tile.H>
 #include <FL/filename.H>
 
+#include "configuration.h"
 #include "images.h"
 #include "locale.h"
 #include "widget/ksp_menu_item.h"
@@ -21,7 +22,7 @@ using namespace std;
 
 // VARIABLES
 static string windowTitle;
-static int windowTitlePosition;
+static uint windowTitlePosition;
 static string lastSearch;
 
 // PRIVATE SIGNALS
@@ -59,13 +60,13 @@ enum {
 static KSP_Menu_Item menu_items[] = {
     KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) { SignalSync.emit(); }, NULL),
     KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) {
-        bool random = Configuration::instance()->shouldRandomize();
-        Configuration::instance()->shouldRandomize(!random);
+        bool random = context->configuration->shouldRandomize();
+        context->configuration->shouldRandomize(!random);
         menu_items[MENU_ITEM_RANDOM].set_toggled(!random);
     }, NULL, FL_MENU_TOGGLE),
     KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) {
-        bool repeat = Configuration::instance()->shouldRepeatSong();
-        Configuration::instance()->shouldRepeatSong(!repeat);
+        bool repeat = context->configuration->shouldRepeatSong();
+        context->configuration->shouldRepeatSong(!repeat);
         menu_items[MENU_ITEM_REPEAT].set_toggled(!repeat);
     }, NULL, FL_MENU_TOGGLE),
     KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) { SignalShowSettings.emit(); }, NULL),
@@ -73,12 +74,10 @@ static KSP_Menu_Item menu_items[] = {
     KSP_Menu_Item(0)
 };
 
-WindowMain::WindowMain(Sound* sound, Dao* dao)
+WindowMain::WindowMain(Context* context)
     : Fl_Double_Window(770, 465, "KISS Player")
 {
-    this->sound = sound;
-    this->dao = dao;
-    this->osSpecific = new OsSpecific();
+    this->context = context;
 }
 
 void WindowMain::init(int argc, char** argv)
@@ -259,16 +258,18 @@ void WindowMain::init(int argc, char** argv)
     SignalEvent.connect(sigc::mem_fun(this, &WindowMain::handle_event));
     SignalCheckMusicEnd.connect(sigc::mem_fun(this, &WindowMain::check_music_end));
     SignalCheckTitleScroll.connect(sigc::mem_fun(this, &WindowMain::check_title_scroll));
+    SignalResetWindowTitle.connect(sigc::mem_fun(this, &WindowMain::reset_title));
 
     // Init other components
-    this->playlist = new Playlist(dao, sound, browser_music);
-    this->lyricsFetcher = new LyricsFetcher(dao, sound, lyrics_text_buffer);
+    this->playlist = new Playlist(context, browser_music);
+    this->lyricsFetcher = new LyricsFetcher(context, lyrics_text_buffer);
+    this->sync = new Sync(context);
 
     load_config();
 
     // Check for music files on arguments
     if (!playlist->parse_args(argc, argv)) {
-        lastSearch = Configuration::instance()->lastSearch();
+        lastSearch = context->configuration->lastSearch();
         search();
     };
 
@@ -295,7 +296,7 @@ void WindowMain::clear_search()
 void WindowMain::show_settings()
 {
     delete windowSettings;
-    windowSettings = new WindowSettings(this->dao);
+    windowSettings = new WindowSettings(context->dao);
     windowSettings->show(this);
 }
 
@@ -308,32 +309,31 @@ void WindowMain::show_about()
 
 void WindowMain::execute_sync()
 {
-    /*sync_execute();*/
+    sync->execute();
 }
 
 int WindowMain::handle_event(int e, Fl_Window* w)
 {
     // When the slider is released, set the sound's position
-    if (e == FL_RELEASE && Fl::belowmouse() == slider_music && sound->isLoaded() && !Fl::event_buttons()) {
+    if (e == FL_RELEASE && Fl::belowmouse() == slider_music && context->sound->isLoaded() && !Fl::event_buttons()) {
         // Needed to update without delay
         slider_music->update_time();
 
         // We need to store the volume, because FMOD will reset this value
-        float volume = sound->getVolume();
+        float volume = context->sound->getVolume();
 
         // If the user is holding the slider and the music reaches its end,
         // we need to play the sound, otherwise we get a strange sound loop.
-        if (sound->isPlaying()) {
-            sound->play();
+        if (context->sound->isPlaying()) {
+            context->sound->play();
         }
 
-        sound->setPosition(slider_music->value());
-        sound->setVolume(volume);
+        context->sound->setPosition(slider_music->value());
+        context->sound->setVolume(volume);
     }
 
     if (e == FL_KEYDOWN) {
         int key = Fl::event_original_key();
-        float v;
 
         switch(key) {
         case FL_Volume_Down:
@@ -359,9 +359,9 @@ int WindowMain::handle_event(int e, Fl_Window* w)
             }
             Fl::focus(slider_music);
 
-            pos = sound->getPosition();
-            if (pos < sound->length() + 5000) {
-                sound->setPosition(pos + 5000);
+            pos = context->sound->getPosition();
+            if (pos < context->sound->length() + 5000) {
+                context->sound->setPosition(pos + 5000);
             }
 
             return 1;
@@ -372,9 +372,9 @@ int WindowMain::handle_event(int e, Fl_Window* w)
             }
             Fl::focus(slider_music);
 
-            pos = sound->getPosition();
-            if (sound->length() - 5000 > 0) {
-                sound->setPosition(pos - 5000);
+            pos = context->sound->getPosition();
+            if (context->sound->length() - 5000 > 0) {
+                context->sound->setPosition(pos - 5000);
             }
 
             return 1;
@@ -383,15 +383,15 @@ int WindowMain::handle_event(int e, Fl_Window* w)
                 int v = choice_search_type->value() -1;
                 if (v >= 0) choice_search_type->value(v);
                 SignalSearchType.emit();
-                return 0;
             }
+            return 0;
         case FL_Down: // Cycle search type
             if (Fl::event_ctrl() && input_search == Fl::focus()) {
                 int v = choice_search_type->value() +1;
                 if (v < choice_search_type->size()) choice_search_type->value(v);
                 SignalSearchType.emit();
-                return 0;
             }
+            return 0;
         case 'k': // Search bar gets focused
             if (Fl::event_ctrl()) {
                 input_search->take_focus();
@@ -430,7 +430,7 @@ int WindowMain::handle_event(int e, Fl_Window* w)
 void WindowMain::check_title_scroll()
 {
     Fl::repeat_timeout(0.2, cb_check_title_scroll);
-    if (!Configuration::instance()->shouldScrollTitle() || !sound->isLoaded() || !sound->isPlaying()) {
+    if (!context->configuration->shouldScrollTitle() || !context->sound->isLoaded() || !context->sound->isPlaying()) {
         return;
     }
 
@@ -460,7 +460,7 @@ void WindowMain::check_music_end()
     Fl::repeat_timeout(0.25, cb_check_music_end);
 
     // If there's no music playing, do not continue
-    if (!sound->isLoaded()) return;
+    if (!context->sound->isLoaded()) return;
 
     // If the music reached its end, so advance to the next one.
     // Note that we check if any mouse button is pressed, so if
@@ -478,7 +478,7 @@ void WindowMain::check_music_end()
     //box_current_time->damage();
 
     if (Fl::pushed() != slider_music) {
-        slider_music->value(sound->getPosition());
+        slider_music->value(context->sound->getPosition());
         slider_music->update_time();
     }
 }
@@ -498,9 +498,9 @@ void WindowMain::music_browser_event()
 
 void WindowMain::toggle_play()
 {
-    if (sound->isLoaded()) {
+    if (context->sound->isLoaded()) {
         // It has to be done before the togglePause
-        if (sound->isPlaying()) {
+        if (context->sound->isPlaying()) {
             button_play->image(img_icon_play);
             label(_("KISS Player - Paused"));
 // #ifdef WIN32
@@ -508,7 +508,7 @@ void WindowMain::toggle_play()
 // #endif
         } else {
             button_play->image(img_icon_pause);
-            if (!Configuration::instance()->shouldScrollTitle())
+            if (!context->configuration->shouldScrollTitle())
                 copy_label(windowTitle.c_str());
 
 // #ifdef WIN32
@@ -517,7 +517,7 @@ void WindowMain::toggle_play()
         }
 
         button_play->redraw();
-        sound->togglePaused();
+        context->sound->togglePaused();
     } else if (!playlist->isEmpty()) {
         play(false);
     }
@@ -577,12 +577,12 @@ void WindowMain::search()
 
 void WindowMain::volume_changed(float volume)
 {
-    sound->setVolume(volume);
+    context->sound->setVolume(volume);
 }
 
 void WindowMain::reset_title()
 {
-    if (!sound->isLoaded() || !sound->isPlaying()) {
+    if (!context->sound->isLoaded() || !context->sound->isPlaying()) {
         return;
     }
 
@@ -596,14 +596,14 @@ void WindowMain::reset_title()
 
 void WindowMain::update_colors()
 {
-    browser_music->color(Configuration::instance()->background());
-    browser_music->color2(Configuration::instance()->foreground());
-    lyrics_pane->color(Configuration::instance()->background());
-    lyrics_pane->color2(Configuration::instance()->foreground());
-    input_search->color2(Configuration::instance()->foreground());
-    choice_search_type->color2(Configuration::instance()->foreground());
-    browser_music->textcolor(Configuration::instance()->textcolor());
-    lyrics_pane->textcolor(Configuration::instance()->textcolor());
+    browser_music->color(context->configuration->background());
+    browser_music->color2(context->configuration->foreground());
+    lyrics_pane->color(context->configuration->background());
+    lyrics_pane->color2(context->configuration->foreground());
+    input_search->color2(context->configuration->foreground());
+    choice_search_type->color2(context->configuration->foreground());
+    browser_music->textcolor(context->configuration->textcolor());
+    lyrics_pane->textcolor(context->configuration->textcolor());
 
     browser_music->redraw();
     lyrics_pane->redraw();
@@ -630,9 +630,9 @@ void WindowMain::update_music_playing(int index)
     //     win_specific_update_thumbnail_toolbar("pause");
     // #endif
 
-    slider_music->realise_new_sound(sound->length());
+    slider_music->realise_new_sound(context->sound->length());
 
-    if (Configuration::instance()->shouldFetchLyrics()) {
+    if (context->configuration->shouldFetchLyrics()) {
         lyrics_text_buffer->text(_("Fetching..."));
         Music music = playlist->getCurrentMusic();
         lyricsFetcher->fetch(&music);
@@ -646,7 +646,7 @@ void WindowMain::slide_changed()
 {
     // If there's no music playing, do not change
     // The slider's changes are handled at timer_check_music and my_handler
-    if (!sound->isLoaded()) {
+    if (!context->sound->isLoaded()) {
         slider_music->value(0);
     }
 }
@@ -658,7 +658,7 @@ void WindowMain::save_config()
     data.y = y();
     data.w = w();
     data.h = h();
-    data.isWindowMaximized = osSpecific->is_window_maximized(this);
+    data.isWindowMaximized = context->osSpecific->is_window_maximized(this);
     data.browserMusicWidth = browser_music->w();
     data.volumeLevel = volume_controller->value();
     data.lastSearch = lastSearch;
@@ -666,12 +666,12 @@ void WindowMain::save_config()
     data.musicIndex = playlist->getMusicIndex();
     data.musicIndexRandom = playlist->getMusicIndexRandom();
 
-    Configuration::instance()->save(data, dao);
+    context->configuration->save(data, context->dao);
 }
 
 void WindowMain::load_config()
 {
-    ConfigData data = Configuration::instance()->load(dao);
+    ConfigData data = context->configuration->load(context->dao);
 
     if (data.x != -1) position(data.x, y());
     if (data.y != -1) position(x(), data.y);
@@ -687,12 +687,18 @@ void WindowMain::load_config()
         lyrics_pane->resize(x, y, w, h);
     }
 
-    lastSearch = data.lastSearch;
-    searchType = (SearchType) data.searchType;
     volume_controller->value(data.volumeLevel);
     playlist->setMusicIndex(data.musicIndex);
     playlist->setMusicIndexRandom(data.musicIndexRandom);
 
-    menu_items[MENU_ITEM_RANDOM].set_toggled(Configuration::instance()->shouldRandomize());
-    menu_items[MENU_ITEM_REPEAT].set_toggled(Configuration::instance()->shouldRepeatSong());
+    lastSearch = data.lastSearch;
+    input_search->value(lastSearch.c_str());
+
+    if (data.searchType >= 0) {
+        searchType = (SearchType) data.searchType;
+        choice_search_type->value(searchType);
+    }
+
+    menu_items[MENU_ITEM_RANDOM].set_toggled(context->configuration->shouldRandomize());
+    menu_items[MENU_ITEM_REPEAT].set_toggled(context->configuration->shouldRepeatSong());
 }

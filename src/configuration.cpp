@@ -4,19 +4,6 @@
 
 using namespace std;
 
-Configuration* Configuration::_instance = 0;
-
-Configuration::Configuration()
-{
-}
-
-Configuration* Configuration::instance()
-{
-    if (!_instance)
-      _instance = new Configuration();
-    return _instance;
-}
-
 void Configuration::save(ConfigData data, Dao* dao)
 {
     dao->begin_transaction();

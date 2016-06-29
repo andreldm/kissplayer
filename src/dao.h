@@ -17,11 +17,9 @@ public:
 class Dao
 {
 private:
-    std::string     db_filepath;
+    std::string DB_FILENAME;
 
 public:
-    Dao                                         (void);
-
     int             init                        (void);
     void            open_db                     (void);
     void            close_db                    (void);
@@ -29,8 +27,11 @@ public:
     void            commit_transaction          (void);
 
     std::string     get_key                     (std::string key);
+    std::string     open_get_key                (std::string key);
     int             get_key_int                 (std::string key);
+
     void            set_key                     (std::string key, std::string value);
+    void            open_set_key                (std::string key, std::string value);
     void            set_key_int                 (std::string key, int value);
 
     void            insert_music                (Music& music);
@@ -39,7 +40,7 @@ public:
     void            get_all_music               (std::deque<Music>& listMusic);
     void            search_music                (std::string text, SearchType type, std::deque<Music>& listMusic);
 
-    void            insert_directory            (const char* directory);
+    void            insert_directory            (std::string& dir);
     void            delete_directory            (int cod);
     void            get_directories             (std::deque<COD_VALUE>& dirList);
 };

@@ -4,7 +4,7 @@
 #include <string>
 #include <FL/Fl_Text_Buffer.H>
 
-#include "dao.h"
+#include "context.h"
 #include "music.h"
 #include "sound.h"
 
@@ -13,12 +13,11 @@
 class LyricsFetcher
 {
 private:
-    Dao* dao;
-    Sound* sound;
+    Context* context;
     Fl_Text_Buffer* text_buffer;
 
 public:
-    LyricsFetcher(Dao*, Sound*, Fl_Text_Buffer*);
+    LyricsFetcher(Context*, Fl_Text_Buffer*);
 
     void fetch (Music* music);
 };

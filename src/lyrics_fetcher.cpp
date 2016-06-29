@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <cctype>
+#include <regex>
 
 #include <FL/Fl.H>
 #include <curl/curl.h>
@@ -34,26 +35,22 @@ void thread_sleep(int ms);
 int thread_run(void * arg);
 bool do_fetch(LyricsData* lyrics_data, bool firstTry = true);
 
-LyricsFetcher::LyricsFetcher(Dao* dao, Sound* sound, Fl_Text_Buffer* text_buffer)
+LyricsFetcher::LyricsFetcher(Context* context, Fl_Text_Buffer* text_buffer)
 {
-    this->dao = dao;
-    this->sound = sound;
     this->text_buffer = text_buffer;
 }
 
 void LyricsFetcher::fetch(Music* music) {
-    dao->open_db();
-    string proxy = dao->get_key("proxy");
-    dao->close_db();
+    string proxy = context->dao->open_get_key("proxy");
 
     LyricsData* data = new LyricsData();
     data->text_buffer = text_buffer;
     data->artist = music->artist;
     data->title = music->title;
-    data->sound = this->sound;
+    data->sound = context->sound;
     data->proxy = proxy;
     data->ticket = ++ticket;
-    data->shouldFetchLyrics = Configuration::instance()->shouldFetchLyrics();
+    data->shouldFetchLyrics = context->configuration->shouldFetchLyrics();
 
     // Ticket reset
     if (ticket > 10000) ticket = 0;
@@ -110,12 +107,12 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
     // If they change the site layout, this fetcher
     // might not work properly or not work at all!
     // DO NOT MAKE THESE STRINGS TRANSLATABLE
-    string conditionNotFound = "This page needs content.";
-    string conditionNotFound2 = "PUT LYRICS HERE";
-    string conditionNotFound3 = "You have followed a link to a page that doesn't exist yet";
-    string conditionRedirect = "#REDIRECT";
-    string conditionRedirect2 = "#redirect";
-    string conditionRedirect3 = "#Redirect";
+    smatch m;
+    regex regexNotFound ("This page needs content\\.");
+    regex regexNotFound2 ("PUT LYRICS HERE");
+    regex regexNotFound3 ("You have followed a link to a page that doesn't exist yet");
+    regex regexRedirect ("#redirect", regex_constants::icase);
+    regex regexFound ("lyrics>(.*)&lt;/lyrics>", regex_constants::extended);
     string conditionStart = "lyrics>";
     string conditionEnd = "&lt;/lyrics>";
 
@@ -131,7 +128,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
     url = url.append(title);
     url = url.append("?action=edit");
 
-    //cout <<"URL: " << url << endl;
+    // cout <<"URL: " << url << endl;
     curl = curl_easy_init();
     check_ticket(thread_ticket, lyrics_data->sound);
 
@@ -164,14 +161,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
         }
 
         // Check if it's a redirect page
-        findResult = data.find(conditionRedirect);
-        if (findResult == string::npos) {
-            findResult = data.find(conditionRedirect2);
-        }
-        if (findResult == string::npos) {
-            findResult = data.find(conditionRedirect3);
-        }
-        if (findResult != string::npos) {
+        if (regex_match(data, regexRedirect)) {
             findResult = data.find("[[", findResult);
             data.erase(0, findResult + 2);
             findResult = data.find("]]");
@@ -193,15 +183,9 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
         }
 
         // Check if the Lyrics doesn't exist
-        findResult = data.find(conditionNotFound);
-        if (findResult == string::npos) {
-            findResult = data.find(conditionNotFound2);
-        }
-        if (findResult == string::npos) {
-            findResult = data.find(conditionNotFound3);
-        }
-
-        if (findResult != string::npos) {
+        if (regex_search(data, regexNotFound) ||
+			regex_search(data, regexNotFound2) ||
+			regex_search(data, regexNotFound3)) {
             curl_easy_cleanup(curl);
 
             if (firstTry) {
@@ -215,8 +199,9 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
         }
 
         // Check if the lyrics were really found
-        int result = data.find(conditionStart);
-        if (result == -1) {
+        if (regex_search(data, m, regexFound) && m.size() > 1) {
+			data = m.str(1);
+		} else {
             curl_easy_cleanup(curl);
 
             if (firstTry) {
@@ -228,10 +213,6 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
 
             return false;
         }
-        data.erase(0, findResult + conditionStart.size());
-
-        findResult = data.find(conditionEnd);
-        data.erase(findResult);
 
         curl_easy_cleanup(curl);
     }
@@ -251,11 +232,11 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
     util_replace_all(result, "}}", "");
 
     check_ticket(thread_ticket, lyrics_data->sound);
-    Fl::lock ();
+    Fl::lock();
     if (lyrics_data->shouldFetchLyrics) {
         text_buffer->text(result.c_str());
     }
-    Fl::unlock ();
+    Fl::unlock();
 
     return true;
 }

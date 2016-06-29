@@ -3,15 +3,14 @@
 
 #include <FL/Fl_Window.H>
 
-#include "configuration.h"
+#include "context.h"
 
 class WindowLoading : public Fl_Window
 {
 private:
-    Configuration* config;
-
+    Context* context;
 public:
-    WindowLoading               (Configuration*);
+    WindowLoading               (Context* context);
     void    show                (void);
     void    close               (void);
     void    set_dir_max         (int m);

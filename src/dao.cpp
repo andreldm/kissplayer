@@ -26,14 +26,9 @@ void print_errors()
     }
 }
 
-Dao::Dao()
-{
-    db_filepath = "db.s3db";
-}
-
 void Dao::open_db()
 {
-    sqlite3_open(db_filepath.c_str(), &db);
+    sqlite3_open(DB_FILENAME.c_str(), &db);
 }
 
 void Dao::close_db()
@@ -45,13 +40,13 @@ void Dao::begin_transaction()
 {
     open_db();
 
-    sqlite3_exec(db,"BEGIN;", 0, 0, &ErrMsg);
+    sqlite3_exec(db, "BEGIN;", 0, 0, &ErrMsg);
     print_errors();
 }
 
 void Dao::commit_transaction()
 {
-    sqlite3_exec(db,"COMMIT;", 0, 0, &ErrMsg);
+    sqlite3_exec(db, "COMMIT;", 0, 0, &ErrMsg);
     print_errors();
 
     close_db();
@@ -59,9 +54,11 @@ void Dao::commit_transaction()
 
 int Dao::init()
 {
+    DB_FILENAME = "db.s3db";
+
     // FIXME: Avoid instantiation and delete
     OsSpecific* osSpecific = new OsSpecific();
-    if (osSpecific->get_working_dir(db_filepath) != 0) {
+    if (osSpecific->get_working_dir(DB_FILENAME) != 0) {
         delete osSpecific;
         return -1;
     }
@@ -119,6 +116,14 @@ string Dao::get_key(string key)
     return value;
 }
 
+string Dao::open_get_key(string key)
+{
+    open_db();
+    string k = get_key(key);
+    close_db();
+    return k;
+}
+
 int Dao::get_key_int(string key)
 {
     return util_s2i(get_key(key));
@@ -135,6 +140,13 @@ void Dao::set_key(string key, string value)
     }
 
     sqlite3_finalize(stmt);
+}
+
+void Dao::open_set_key(string key, string value)
+{
+    open_db();
+    set_key(key, value);
+    close_db();
 }
 
 void Dao::set_key_int(string key, int value)
@@ -193,11 +205,11 @@ void Dao::delete_music_not_found()
     close_db();
 }
 
-void Dao::insert_directory(const char* directory)
+void Dao::insert_directory(string& dir)
 {
     open_db();
     sqlite3_prepare_v2(db, "INSERT INTO TB_DIRECTORY(directory) VALUES(?);", -1, &stmt, NULL);
-    sqlite3_bind_text(stmt, 1, directory, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, dir.c_str(), -1, SQLITE_STATIC);
 
     if (sqlite3_step(stmt) == SQLITE_ERROR) {
         cout << sqlite3_errmsg(db)<< endl;

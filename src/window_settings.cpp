@@ -15,13 +15,12 @@
 #include <FL/Fl_Select_Browser.H>
 
 #include "configuration.h"
-#include "widget/ksp_check_button.h"
 #include "locale.h"
-#include "os_specific.h"
-#include "window_main.h"
-#include "dao.h"
-#include "util.h"
+#include "signals.h"
 #include "sync.h"
+#include "util.h"
+#include "window_main.h"
+#include "widget/ksp_check_button.h"
 
 using namespace std;
 
@@ -40,27 +39,27 @@ static Fl_Group* tabs[4] = { 0,0,0,0 };
 static deque<COD_VALUE> listDir;
 // static bool should_resync;
 
-static void update_dir_list();
-// static Fl_Color edit_color(Fl_Color val);
-
-static void cb_add_dir(Fl_Widget*, void*);
-static void cb_remove_dir(Fl_Widget*, void*);
-static void cb_background_color(Fl_Widget*, void*);
-static void cb_selection_color(Fl_Widget*, void*);
-static void cb_text_color(Fl_Widget*, void*);
-static void cb_default_colors(Fl_Widget*, void*);
-// static void cb_lyrics(Fl_Widget*, void*);
-// static void cb_scroll_title(Fl_Widget*, void*);
-// static void cb_change(Fl_Widget*, void*);
-static void cb_tab_select(Fl_Widget*, void*);
-static void cb_proxy(Fl_Widget*, void*);
-
+// PRIVATE SIGNALS
 static sigc::signal<void> SignalClose;
+static sigc::signal<void> SignalUpdateProxy;
+static sigc::signal<void> SignalAddDir;
+static sigc::signal<void> SignalRemoveDir;
+
+Fl_Color edit_color(Fl_Color val)
+{
+  uchar r, g, b;
+  Fl::get_color(val, r, g, b);
+
+  fl_color_chooser(_("Choose Color"), r, g, b);
+
+  return(fl_rgb_color(r, g, b));
+}
 
 WindowSettings::WindowSettings(Dao* dao)
         : Fl_Window(650, 300, _("Settings"))
 {
     this->dao = dao;
+    this->osSpecific = new OsSpecific();
 
     // should_resync = false;
     tab_selector = new Fl_Hold_Browser(10, 10, 200, h() - 20);
@@ -82,42 +81,68 @@ WindowSettings::WindowSettings(Dao* dao)
     tabs[0]->begin();
 
     button_lyrics = new KSP_Check_Button(220, 40, 120, 16,_("Display Lyrics"));
-    // button_lyrics->value(FLAG_LYRICS);
-    // button_lyrics->callback((Fl_Callback*)cb_lyrics);
+    button_lyrics->value(Configuration::instance()->shouldFetchLyrics());
+    button_lyrics->callback([](Fl_Widget*, void*) {
+        bool lyrics = Configuration::instance()->shouldFetchLyrics();
+        Configuration::instance()->shouldFetchLyrics(!lyrics);
+        button_lyrics->value(!lyrics);
+    });
 
     button_scroll_title = new KSP_Check_Button(220, 65, 120, 16, _("Scroll Title"));
-    // button_scroll_title->value(FLAG_SCROLL_TITLE);
-    // button_scroll_title->callback((Fl_Callback*)cb_scroll_title);
+    button_scroll_title->value(Configuration::instance()->shouldScrollTitle());
+    button_scroll_title->callback([](Fl_Widget*, void*) {
+        bool scroll = Configuration::instance()->shouldScrollTitle();
+        Configuration::instance()->shouldScrollTitle(!scroll);
+        button_scroll_title->value(!scroll);
+        if (scroll) SignalResetWindowTitle.emit();
+    });
 
     button_background_color = new Fl_Button(220, 100, 16, 16, _("Background Color"));
     button_background_color->box(FL_DOWN_BOX);
     button_background_color->labelsize(12);
     button_background_color->clear_visible_focus();
-    button_background_color->color(Configuration::instance()->background());
-    button_background_color->callback((Fl_Callback*)cb_background_color);
     button_background_color->align(FL_ALIGN_RIGHT);
+    button_background_color->color(Configuration::instance()->background());
+    button_background_color->callback([](Fl_Widget*, void*) {
+        Fl_Color c = edit_color(button_background_color->color());
+        Configuration::instance()->background(c);
+        SignalUpdateColors.emit();
+    });
 
     button_selection_color = new Fl_Button(220, 125, 16, 16, _("Selection Color"));
     button_selection_color->box(FL_DOWN_BOX);
     button_selection_color->labelsize(12);
     button_selection_color->clear_visible_focus();
-    button_selection_color->color(Configuration::instance()->foreground());
-    button_selection_color->callback((Fl_Callback*)cb_selection_color);
     button_selection_color->align(FL_ALIGN_RIGHT);
+    button_selection_color->color(Configuration::instance()->foreground());
+    button_selection_color->callback([](Fl_Widget*, void*) {
+        Fl_Color c = edit_color(button_selection_color->color());
+        Configuration::instance()->foreground(c);
+        SignalUpdateColors.emit();
+    });
 
     button_text_color = new Fl_Button(220, 150, 16, 16, _("Text Color"));
     button_text_color->box(FL_DOWN_BOX);
     button_text_color->labelsize(12);
     button_text_color->clear_visible_focus();
-    button_text_color->color(Configuration::instance()->textcolor());
-    button_text_color->callback((Fl_Callback*)cb_text_color);
     button_text_color->align(FL_ALIGN_RIGHT);
+    button_text_color->color(Configuration::instance()->textcolor());
+    button_text_color->callback([](Fl_Widget*, void*) {
+        Fl_Color c = edit_color(button_text_color->color());
+        Configuration::instance()->textcolor(c);
+        SignalUpdateColors.emit();
+    });
 
     Fl_Button* button_default_colors = new Fl_Button(220, 175, 0, 22, _("Default Colors"));
     button_default_colors->labelsize(12);
     util_adjust_width(button_default_colors, 10);
     button_default_colors->clear_visible_focus();
-    button_default_colors->callback((Fl_Callback*)cb_default_colors);
+    button_default_colors->callback([](Fl_Widget*, void*) {
+        Configuration::instance()->background(DEFAULT_BACKGROUND_COLOR);
+        Configuration::instance()->foreground(DEFAULT_FOREGROUND_COLOR);
+        Configuration::instance()->textcolor(DEFAULT_SELECTION_COLOR);
+        SignalUpdateColors.emit();
+    });
 
     tabs[0]->end();
 
@@ -137,12 +162,12 @@ WindowSettings::WindowSettings(Dao* dao)
     Fl_Button* button_add = new Fl_Button(220, 205, 70, 25, _("Add"));
     util_adjust_width(button_add, 10);
     button_add->clear_visible_focus();
-    button_add->callback((Fl_Callback*)cb_add_dir);
+    button_add->callback([](Fl_Widget *w, void *u) { SignalAddDir.emit(); });
 
     Fl_Button* button_remove = new Fl_Button(220 + button_add->w() + 5, 205, 70, 25, _("Remove"));
     util_adjust_width(button_remove, 10);
     button_remove->clear_visible_focus();
-    button_remove->callback((Fl_Callback*)cb_remove_dir);
+    button_remove->callback([](Fl_Widget *w, void *u) { SignalRemoveDir.emit(); });
 
     tabs[1]->end();
 
@@ -158,10 +183,10 @@ WindowSettings::WindowSettings(Dao* dao)
 
     input_proxy = new Fl_Input(215 + 8 + label_proxy->w(), 40, w() - 240 - label_proxy->w(), 22, 0);
     input_proxy->tooltip(_("Complete proxy URL, ex: http://192.168.1.1:3128"));
-    dao->open_db();
-    input_proxy->value(dao->get_key("proxy").c_str());
-    dao->close_db();
-    input_proxy->callback(cb_proxy);
+    input_proxy->value(dao->open_get_key("proxy").c_str());
+    input_proxy->callback([](Fl_Widget*, void*) {
+        SignalUpdateProxy.emit();
+    });
     tabs[2]->end();
 
     // TAB LANGUAGE
@@ -193,22 +218,34 @@ WindowSettings::WindowSettings(Dao* dao)
     util_adjust_width(button_close, 10);
     button_close->position(tabs[0]->x() + (tabs[0]->w() / 2) - (button_close->w() / 2), button_close->y());
     button_close->clear_visible_focus();
-    button_close->callback([](Fl_Widget *w, void *u) {
-        SignalClose.emit();
-    });
+    button_close->callback([](Fl_Widget *w, void *u) { SignalClose.emit(); });
 
-    update_dir_list();
+    updateDirList();
 
     tab_selector->select(1);
-    tab_selector->callback(cb_tab_select);
+    tab_selector->callback([](Fl_Widget* w, void*) {
+    	if (tab_selector->value() == 0) {
+			return;
+		}
+
+		for (uint t = 0; t < sizeof(tabs) / sizeof(tabs[0]); t++) {
+			if ((int) t == (tab_selector->value() - 1)) {
+				tabs[t]->show();
+			} else {
+				tabs[t]->hide();
+			}
+		}
+    });
     tab_selector->do_callback();
 
     set_modal();
-    callback([](Fl_Widget *w, void *u) {
-        SignalClose.emit();
-    });
+    callback([](Fl_Widget *w, void *u) { SignalClose.emit(); });
 
     SignalClose.connect(sigc::mem_fun(this, &WindowSettings::close));
+    SignalUpdateColors.connect(sigc::mem_fun(this, &WindowSettings::updateColors));
+    SignalUpdateProxy.connect(sigc::mem_fun(this, &WindowSettings::updateProxy));
+    SignalAddDir.connect(sigc::mem_fun(this, &WindowSettings::addDir));
+    SignalRemoveDir.connect(sigc::mem_fun(this, &WindowSettings::removeDir));
 }
 
 void WindowSettings::show(Fl_Window* parent)
@@ -220,157 +257,87 @@ void WindowSettings::show(Fl_Window* parent)
 void WindowSettings::close()
 {
     hide();
-    /*window_main_get_instance()->show();*/
     /*if (should_resync) sync_execute(true);*/
 }
 
-void cb_add_dir(Fl_Widget* widget, void*)
+void WindowSettings::addDir()
 {
-    /*char dir[PATH_LENGTH] = "";
-    int dirQty = listDir.size();
+    char dir[PATH_LENGTH] = "";
+    uint dirQty = listDir.size();
 
-    os_specific_dir_chooser(dir);
+    osSpecific->dir_chooser(dir);
     Fl::redraw();
 
     if (strlen(dir) > 0) {
         // If the user didn't cancel
-        dao_insert_directory(dir);
-        update_dir_list();
+        string s(dir);
+    	dao->insert_directory(s);
+    	updateDirList();
     }
 
     if (listDir.size() != dirQty) {
         // If a directory was added
-        should_resync = true;
-    }*/
+//        should_resync = true;
+    }
 }
 
-void cb_remove_dir(Fl_Widget* widget, void*)
+void WindowSettings::removeDir()
 {
-    /*int index = browser_directories->value();
+    int index = browser_directories->value();
     if (index <= 0) return;
 
     string dir = browser_directories->text(index);
-    for (int i = 0; i < listDir.size(); i++) {
-        if (listDir.at(i).value == dir) {
-            dao_delete_directory(listDir.at(i).cod);
-            update_dir_list();
+    for (auto d : listDir) {
+        if (d.value == dir) {
+            dao->delete_directory(d.cod);
+            updateDirList();
+            break;
         }
     }
 
-    should_resync = true;*/
+//    should_resync = true;
 }
 
-void cb_background_color(Fl_Widget* widget, void*)
+void WindowSettings::updateProxy()
 {
-    /*Fl_Color val = edit_color(button_background_color->color());
+    dao->open_set_key("proxy", input_proxy->value());
+}
 
-    button_background_color->color(val);
+void WindowSettings::updateColors()
+{
+    Fl_Color bg = Configuration::instance()->background();
+    Fl_Color fg = Configuration::instance()->foreground();
+    Fl_Color tx = Configuration::instance()->textcolor();
+
+    button_background_color->color(bg);
     button_background_color->redraw();
 
-    browser_directories->color(val);
-    browser_directories->redraw();
-
-    tab_selector->color(val);
-    tab_selector->redraw();
-
-    window_main_set_browser_music_color(val, -1, -1);
-    window_main_set_lyrics_pane_color(val, -1, -1);*/
-}
-
-void cb_selection_color(Fl_Widget* widget, void*)
-{
-    /*Fl_Color val = edit_color(button_selection_color->color());
-
-    button_selection_color->color(val);
+    button_selection_color->color(fg);
     button_selection_color->redraw();
 
-    browser_directories->color2(val);
-    browser_directories->redraw();
-
-    tab_selector->color2(val);
-    tab_selector->redraw();
-
-    window_main_set_input_search_type_color(val);
-    window_main_set_browser_music_color(-1, val, -1);
-    window_main_set_lyrics_pane_color(-1, val, -1);
-    window_main_set_choice_search_type_color(val);*/
-}
-
-void cb_text_color(Fl_Widget* widget, void*)
-{
-    /*Fl_Color val = edit_color(button_text_color->color());
-
-    button_text_color->color(val);
+    button_text_color->color(tx);
     button_text_color->redraw();
 
-    browser_directories->textcolor(val);
+    browser_directories->color(bg);
+    browser_directories->color2(fg);
+    browser_directories->textcolor(tx);
     browser_directories->redraw();
 
-    tab_selector->textcolor(val);
+    tab_selector->color(bg);
+    tab_selector->color2(fg);
+    tab_selector->textcolor(tx);
     tab_selector->redraw();
-
-    window_main_set_browser_music_color(-1, -1, val);
-    window_main_set_lyrics_pane_color(-1, -1, val);*/
 }
 
-void cb_default_colors(Fl_Widget* widget, void*)
+void WindowSettings::updateDirList()
 {
-    /*window_main_set_input_search_type_color(DEFAULT_SELECTION_COLOR);
-    window_main_set_choice_search_type_color(DEFAULT_SELECTION_COLOR);
-    window_main_set_browser_music_color(DEFAULT_BACKGROUND_COLOR, DEFAULT_SELECTION_COLOR, DEFAULT_FOREGROUND_COLOR);
-    window_main_set_lyrics_pane_color(DEFAULT_BACKGROUND_COLOR, DEFAULT_SELECTION_COLOR, DEFAULT_FOREGROUND_COLOR);
-
-    button_text_color->color(DEFAULT_FOREGROUND_COLOR);
-    button_background_color->color(DEFAULT_BACKGROUND_COLOR);
-    button_selection_color->color(DEFAULT_SELECTION_COLOR);
-    browser_directories->color(DEFAULT_BACKGROUND_COLOR);
-    browser_directories->color2(DEFAULT_SELECTION_COLOR);
-    browser_directories->textcolor(DEFAULT_FOREGROUND_COLOR);
-    tab_selector->color(DEFAULT_BACKGROUND_COLOR);
-    tab_selector->color2(DEFAULT_SELECTION_COLOR);
-    tab_selector->textcolor(DEFAULT_FOREGROUND_COLOR);
-
-    button_text_color->redraw();
-    button_background_color->redraw();
-    button_selection_color->redraw();
-    browser_directories->redraw();
-    tab_selector->redraw();*/
-}
-
-void WindowSettings::toogleLyrics()
-{
-    Configuration::instance()->shouldFetchLyrics(Configuration::instance()->shouldFetchLyrics());
-}
-
-void WindowSettings::toogleScrollTitle()
-{
-    Configuration::instance()->shouldScrollTitle(Configuration::instance()->shouldScrollTitle());
-
-    /*if (!FLAG_SCROLL_TITLE) {
-        window_main_reset_title();
-    }*/
-}
-
-// Fl_Color edit_color(Fl_Color val)
-// {
-//   uchar r, g, b;
-//   Fl::get_color(val, r, g, b);
-//
-//   fl_color_chooser(_("Choose Color"), r, g, b);
-//
-//   return(fl_rgb_color(r, g, b));
-// }
-
-void update_dir_list()
-{
-    /*browser_directories->clear();
+    browser_directories->clear();
     listDir.clear();
-    dao_get_directories(listDir);
+    dao->get_directories(listDir);
 
-    for (int i = 0; i < listDir.size(); i++) {
-        string s = listDir.at(i).value;
-        browser_directories->add(s.c_str());
-    }*/
+    for (auto s : listDir) {
+        browser_directories->add(s.value.c_str());
+    }
 }
 
 // void cb_change(Fl_Widget* widget, void*)
@@ -380,23 +347,3 @@ void update_dir_list()
 //     fl_beep();
 //     fl_message(_("Please, restart the program to change the language."));
 // }
-
-void cb_tab_select(Fl_Widget*, void*) {
-    if (tab_selector->value() == 0) {
-        return;
-    }
-
-    for (uint t = 0; t < sizeof(tabs) / sizeof(tabs[0]); t++) {
-        if ((int) t == (tab_selector->value() - 1)) {
-            tabs[t]->show();
-        } else {
-            tabs[t]->hide();
-        }
-    }
-}
-
-void cb_proxy(Fl_Widget*, void*) {
-    /*dao_open_db();
-    dao_set_key("proxy", input_proxy->value());
-    dao_close_db();*/
-}

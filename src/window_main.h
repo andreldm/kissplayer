@@ -9,13 +9,11 @@
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Text_Display.H>
 
-#include "configuration.h"
 #include "constants.h"
-#include "dao.h"
+#include "context.h"
 #include "lyrics_fetcher.h"
-#include "os_specific.h"
 #include "playlist.h"
-#include "sound.h"
+#include "sync.h"
 #include "window_about.h"
 #include "window_settings.h"
 
@@ -27,10 +25,9 @@
 class WindowMain : public Fl_Double_Window
 {
 private:
-    Sound* sound;
-    Dao* dao;
-    OsSpecific* osSpecific;
+    Context* context;
     LyricsFetcher* lyricsFetcher;
+    Sync* sync;
     Playlist* playlist;
     WindowAbout* windowAbout;
     WindowSettings* windowSettings;
@@ -80,7 +77,7 @@ private:
     void        check_music_end                 (void);
 
 public:
-                WindowMain                      (Sound*, Dao*);
+                WindowMain                      (Context*);
     void        init                            (int argc, char** argv);
 };
 

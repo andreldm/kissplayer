@@ -18,11 +18,10 @@
 
 using namespace std;
 
-Playlist::Playlist(Dao* dao, Sound* sound, KSP_Browser* browser_music)
+Playlist::Playlist(Context* context, KSP_Browser* browser_music)
 {
-    this->dao = dao;
+    this->context = context;
     this->browser_music = browser_music;
-    this->sound = sound;
 }
 
 /**
@@ -59,7 +58,7 @@ bool Playlist::parse_args(int argc, char** argv)
         musicIndex = -1;
         musicIndexRandom = 0;
 
-        if (Configuration::instance()->shouldRandomize()) {
+        if (context->configuration->shouldRandomize()) {
             musicIndex = listRandom.at(musicIndexRandom++);
         } else {
             musicIndex++;
@@ -73,7 +72,7 @@ bool Playlist::parse_args(int argc, char** argv)
 
 void Playlist::search(std::string text, SearchType type)
 {
-    dao->search_music(text, type, listMusic);
+    context->dao->search_music(text, type, listMusic);
     update_browser();
 }
 
@@ -103,7 +102,7 @@ bool Playlist::play(float volume, bool playAtBrowser)
         return false;
     }
 
-    if (playAtBrowser || !sound->isLoaded()) {
+    if (playAtBrowser || !context->sound->isLoaded()) {
         musicIndex = (browser_music->value() == 0) ? 0 : browser_music->value()-1;
     }
 
@@ -118,7 +117,7 @@ bool Playlist::play(float volume, bool playAtBrowser)
             return false;
         }
 
-        if (Configuration::instance()->shouldRandomize()) musicIndex = listRandom.at(++musicIndexRandom);
+        if (context->configuration->shouldRandomize()) musicIndex = listRandom.at(++musicIndexRandom);
         else musicIndex++;
 
         filepath = listMusic.at(musicIndex).filepath.c_str();
@@ -126,9 +125,9 @@ bool Playlist::play(float volume, bool playAtBrowser)
         browser_music->redraw();
     }*/
 
-    sound->load(filepath);
-    sound->play();
-    sound->setVolume(volume);
+    context->sound->load(filepath);
+    context->sound->play();
+    context->sound->setVolume(volume);
 
     SignalUpdateMusicPlaying.emit(musicIndex);
 
@@ -137,12 +136,12 @@ bool Playlist::play(float volume, bool playAtBrowser)
 
 bool Playlist::stop()
 {
-    if (!sound->isPlaying()) {
+    if (!context->sound->isPlaying()) {
         return false;
     }
 
     musicPlayingCod = 0;
-    sound->setActive(false);
+    context->sound->setActive(false);
 
     return true;
 }
@@ -150,12 +149,12 @@ bool Playlist::stop()
 bool Playlist::hasNext()
 {
     // There's no music on the list or no music playing
-    if (listMusic.empty() || !sound->isLoaded()) return false;
+    if (listMusic.empty() || !context->sound->isLoaded()) return false;
 
-    if (Configuration::instance()->shouldRepeatSong()) return true;
+    if (context->configuration->shouldRepeatSong()) return true;
 
     // '-1' is the beginning of the playlist
-    if (Configuration::instance()->shouldRandomize()) {
+    if (context->configuration->shouldRandomize()) {
         if (musicIndexRandom == -1 || musicIndexRandom + 2 <= (int) listRandom.size()) {
             return true;
         }
@@ -169,20 +168,20 @@ bool Playlist::hasNext()
 bool Playlist::hasPrevious()
 {
     // There's no music on the list or no music playing
-    if (listMusic.empty() || !sound->isLoaded()) return false;
+    if (listMusic.empty() || !context->sound->isLoaded()) return false;
 
-    if ( Configuration::instance()->shouldRepeatSong()) return true;
+    if ( context->configuration->shouldRepeatSong()) return true;
 
-    return Configuration::instance()->shouldRandomize() ?
+    return context->configuration->shouldRandomize() ?
         musicIndexRandom > 0 :
         musicIndex > 0;
 }
 
 void Playlist::increment_music_index()
 {
-    if (Configuration::instance()->shouldRandomize()) {
+    if (context->configuration->shouldRandomize()) {
         if (musicIndexRandom + 2 > (int) listMusic.size()) {
-            if (!Configuration::instance()->shouldRepeatSong()) return;
+            if (!context->configuration->shouldRepeatSong()) return;
             musicIndexRandom = -1;
             util_randomize(listRandom, listMusic.size());
         }
@@ -190,7 +189,7 @@ void Playlist::increment_music_index()
         musicIndex = listRandom.at(++musicIndexRandom);
     } else {
         if (musicIndex + 2 > (int) listMusic.size()) {
-            if (!Configuration::instance()->shouldRepeatSong()) return;
+            if (!context->configuration->shouldRepeatSong()) return;
             musicIndex = -1;
         }
 
@@ -200,9 +199,9 @@ void Playlist::increment_music_index()
 
 void Playlist::decrement_music_index()
 {
-    if (Configuration::instance()->shouldRandomize()) {
+    if (context->configuration->shouldRandomize()) {
         if (musicIndexRandom <= 0) {
-            if (!Configuration::instance()->shouldRepeatSong()) return;
+            if (!context->configuration->shouldRepeatSong()) return;
             musicIndexRandom = listMusic.size() -1;
             util_randomize(listRandom, listMusic.size());
         }
@@ -210,7 +209,7 @@ void Playlist::decrement_music_index()
         musicIndex = listRandom.at(--musicIndexRandom);
     } else {
         if (musicIndex <= 0) {
-            if (!Configuration::instance()->shouldRepeatSong()) return;
+            if (!context->configuration->shouldRepeatSong()) return;
             musicIndex = listMusic.size();
         }
 
