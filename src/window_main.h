@@ -77,6 +77,8 @@ private:
     int         handle_event                    (int, Fl_Window*);
     void        check_title_scroll              (void);
     void        check_music_end                 (void);
+    void        toggle_randomize                (void);
+    void        toggle_repeat                   (void);
 
 public:
                 WindowMain                      (Context*);

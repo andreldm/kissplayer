@@ -36,6 +36,8 @@ static sigc::signal<void> SignalSync;
 static sigc::signal<int, int, Fl_Window*> SignalEvent;
 static sigc::signal<void> SignalCheckMusicEnd;
 static sigc::signal<void> SignalCheckTitleScroll;
+static sigc::signal<void> SignalToggleRandomize;
+static sigc::signal<void> SignalToggleRepeat;
 
 // TIMER CALLBACKS
 static Fl_Timeout_Handler cb_check_music_end = static_cast<Fl_Timeout_Handler>([] (void *data) {
@@ -59,16 +61,8 @@ enum {
 // MENU ITEMS
 static KSP_Menu_Item menu_items[] = {
     KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) { SignalSync.emit(); }, NULL),
-    KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) {
-        bool random = context->configuration->shouldRandomize();
-        context->configuration->shouldRandomize(!random);
-        menu_items[MENU_ITEM_RANDOM].set_toggled(!random);
-    }, NULL, FL_MENU_TOGGLE),
-    KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) {
-        bool repeat = context->configuration->shouldRepeatSong();
-        context->configuration->shouldRepeatSong(!repeat);
-        menu_items[MENU_ITEM_REPEAT].set_toggled(!repeat);
-    }, NULL, FL_MENU_TOGGLE),
+    KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) { SignalToggleRandomize.emit(); }, NULL, FL_MENU_TOGGLE),
+    KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) { SignalToggleRepeat.emit(); }, NULL, FL_MENU_TOGGLE),
     KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) { SignalShowSettings.emit(); }, NULL),
     KSP_Menu_Item(0, 0, [](Fl_Widget*, void*) { SignalShowAbout.emit(); }, NULL),
     KSP_Menu_Item(0)
@@ -261,6 +255,8 @@ void WindowMain::init(int argc, char** argv)
     SignalCheckMusicEnd.connect(sigc::mem_fun(this, &WindowMain::check_music_end));
     SignalCheckTitleScroll.connect(sigc::mem_fun(this, &WindowMain::check_title_scroll));
     SignalResetWindowTitle.connect(sigc::mem_fun(this, &WindowMain::reset_title));
+    SignalToggleRandomize.connect(sigc::mem_fun(this, &WindowMain::toggle_randomize));
+    SignalToggleRepeat.connect(sigc::mem_fun(this, &WindowMain::toggle_repeat));
 
     // Init other components
     this->playlist = new Playlist(context, browser_music);
@@ -703,4 +699,18 @@ void WindowMain::load_config()
 
     menu_items[MENU_ITEM_RANDOM].set_toggled(context->configuration->shouldRandomize());
     menu_items[MENU_ITEM_REPEAT].set_toggled(context->configuration->shouldRepeatSong());
+}
+
+void WindowMain::toggle_randomize()
+{
+    bool random = context->configuration->shouldRandomize();
+    context->configuration->shouldRandomize(!random);
+    menu_items[MENU_ITEM_RANDOM].set_toggled(!random);
+}
+
+void WindowMain::toggle_repeat()
+{
+    bool repeat = context->configuration->shouldRepeatSong();
+    context->configuration->shouldRepeatSong(!repeat);
+    menu_items[MENU_ITEM_REPEAT].set_toggled(!repeat);
 }
