@@ -6,11 +6,29 @@
 #include "os_specific.h"
 #include "sound.h"
 
-struct Context {
-    Configuration* configuration;
-    OsSpecific* osSpecific;
-    Dao* dao;
-    Sound* sound;
+class Context {
+public:
+    Configuration*  configuration;
+    Dao*            dao;
+    OsSpecific*     osSpecific;
+    Sound*          sound;
+
+    Context() {
+        configuration = new Configuration();
+        dao = new Dao();
+        sound = new Sound();
+        osSpecific = new OsSpecific();
+    }
+
+    ~Context() {
+        sound->destroy();
+        osSpecific->end();
+
+        delete configuration;
+        delete dao;
+        delete sound;
+        delete osSpecific;
+    }
 };
 
 #endif

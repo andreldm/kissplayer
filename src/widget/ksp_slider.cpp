@@ -7,9 +7,7 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Menu_Window.H>
 
-#include "../configuration.h"
 #include "../util.h"
-#include "../window_main.h"
 
 using namespace std;
 
@@ -20,12 +18,13 @@ using namespace std;
 class TipWin : public Fl_Menu_Window
 {
 public:
-    TipWin(WindowMain* window_main);
+    TipWin(WindowMain* window_main, Context* context);
     void draw();
     void update(float f, int parent_y);
 
 private:
     WindowMain* window_main;
+    Context* context;
     std::string tip;
 };
 
@@ -40,9 +39,10 @@ public:
     void resize(int x, int y, int ww, int hh);
 };
 
-TipWin::TipWin(WindowMain* window_main) : Fl_Menu_Window(1,1)
+TipWin::TipWin(WindowMain* window_main, Context* context) : Fl_Menu_Window(1,1)
 {
     this->window_main = window_main;
+    this->context = context;
     clear_visible_focus();
     set_override();
     end();
@@ -50,8 +50,8 @@ TipWin::TipWin(WindowMain* window_main) : Fl_Menu_Window(1,1)
 
 void TipWin::draw()
 {
-    draw_box(FL_BORDER_BOX, 0, 0, w(), h(), Configuration::instance()->background());
-    fl_color(Configuration::instance()->textcolor());
+    draw_box(FL_BORDER_BOX, 0, 0, w(), h(), context->configuration->background());
+    fl_color(context->configuration->textcolor());
     fl_draw(tip.c_str(), tip.length(), 3, w()-6, h()-6, Fl_Align(FL_ALIGN_LEFT|FL_ALIGN_WRAP));
 }
 
@@ -162,11 +162,9 @@ int KSP_Slider::handle(int event, int X, int Y, int W, int H)
     }
 }
 
-KSP_Slider::KSP_Slider(WindowMain* window_main, int x, int y, int w, int h, const char* l)
+KSP_Slider::KSP_Slider(WindowMain* window_main, Context* context, int x, int y, int w, int h, const char* l)
     : Fl_Slider(x, y, w, h, l)
 {
-    this->window_main = window_main;
-
     type(FL_HOR_NICE_SLIDER);
     box(FL_FLAT_BOX);
     color2(0xDDDDDD00);
@@ -178,7 +176,7 @@ KSP_Slider::KSP_Slider(WindowMain* window_main, int x, int y, int w, int h, cons
     reset();
 
     Fl_Group* save = Fl_Group::current();
-    tipwin = new TipWin(window_main);
+    tipwin = new TipWin(window_main, context);
     tipwin->hide();
     Fl_Group::current(save);
 }

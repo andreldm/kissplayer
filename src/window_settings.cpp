@@ -55,17 +55,19 @@ Fl_Color edit_color(Fl_Color val)
   return(fl_rgb_color(r, g, b));
 }
 
-WindowSettings::WindowSettings(Dao* dao)
+// FIXME: remove this, make the lambdas capture the context
+Context* ctx;
+
+WindowSettings::WindowSettings(Context* context)
         : Fl_Window(650, 300, _("Settings"))
 {
-    this->dao = dao;
-    this->osSpecific = new OsSpecific();
+    ctx = this->context = context;
 
     // should_resync = false;
     tab_selector = new Fl_Hold_Browser(10, 10, 200, h() - 20);
-    tab_selector->color(Configuration::instance()->background());
-    tab_selector->color2(Configuration::instance()->foreground());
-    tab_selector->textcolor(Configuration::instance()->textcolor());
+    tab_selector->color(context->configuration->background());
+    tab_selector->color2(context->configuration->foreground());
+    tab_selector->textcolor(context->configuration->textcolor());
     tab_selector->add(_("General"));
     tab_selector->add(_("Directories"));
     tab_selector->add(_("Network"));
@@ -81,18 +83,18 @@ WindowSettings::WindowSettings(Dao* dao)
     tabs[0]->begin();
 
     button_lyrics = new KSP_Check_Button(220, 40, 120, 16,_("Display Lyrics"));
-    button_lyrics->value(Configuration::instance()->shouldFetchLyrics());
+    button_lyrics->value(context->configuration->shouldFetchLyrics());
     button_lyrics->callback([](Fl_Widget*, void*) {
-        bool lyrics = Configuration::instance()->shouldFetchLyrics();
-        Configuration::instance()->shouldFetchLyrics(!lyrics);
+        bool lyrics = ctx->configuration->shouldFetchLyrics();
+        ctx->configuration->shouldFetchLyrics(!lyrics);
         button_lyrics->value(!lyrics);
     });
 
     button_scroll_title = new KSP_Check_Button(220, 65, 120, 16, _("Scroll Title"));
-    button_scroll_title->value(Configuration::instance()->shouldScrollTitle());
+    button_scroll_title->value(context->configuration->shouldScrollTitle());
     button_scroll_title->callback([](Fl_Widget*, void*) {
-        bool scroll = Configuration::instance()->shouldScrollTitle();
-        Configuration::instance()->shouldScrollTitle(!scroll);
+        bool scroll = ctx->configuration->shouldScrollTitle();
+        ctx->configuration->shouldScrollTitle(!scroll);
         button_scroll_title->value(!scroll);
         if (scroll) SignalResetWindowTitle.emit();
     });
@@ -102,10 +104,10 @@ WindowSettings::WindowSettings(Dao* dao)
     button_background_color->labelsize(12);
     button_background_color->clear_visible_focus();
     button_background_color->align(FL_ALIGN_RIGHT);
-    button_background_color->color(Configuration::instance()->background());
+    button_background_color->color(context->configuration->background());
     button_background_color->callback([](Fl_Widget*, void*) {
         Fl_Color c = edit_color(button_background_color->color());
-        Configuration::instance()->background(c);
+        ctx->configuration->background(c);
         SignalUpdateColors.emit();
     });
 
@@ -114,10 +116,10 @@ WindowSettings::WindowSettings(Dao* dao)
     button_selection_color->labelsize(12);
     button_selection_color->clear_visible_focus();
     button_selection_color->align(FL_ALIGN_RIGHT);
-    button_selection_color->color(Configuration::instance()->foreground());
+    button_selection_color->color(context->configuration->foreground());
     button_selection_color->callback([](Fl_Widget*, void*) {
         Fl_Color c = edit_color(button_selection_color->color());
-        Configuration::instance()->foreground(c);
+        ctx->configuration->foreground(c);
         SignalUpdateColors.emit();
     });
 
@@ -126,10 +128,10 @@ WindowSettings::WindowSettings(Dao* dao)
     button_text_color->labelsize(12);
     button_text_color->clear_visible_focus();
     button_text_color->align(FL_ALIGN_RIGHT);
-    button_text_color->color(Configuration::instance()->textcolor());
+    button_text_color->color(context->configuration->textcolor());
     button_text_color->callback([](Fl_Widget*, void*) {
         Fl_Color c = edit_color(button_text_color->color());
-        Configuration::instance()->textcolor(c);
+        ctx->configuration->textcolor(c);
         SignalUpdateColors.emit();
     });
 
@@ -138,9 +140,9 @@ WindowSettings::WindowSettings(Dao* dao)
     util_adjust_width(button_default_colors, 10);
     button_default_colors->clear_visible_focus();
     button_default_colors->callback([](Fl_Widget*, void*) {
-        Configuration::instance()->background(DEFAULT_BACKGROUND_COLOR);
-        Configuration::instance()->foreground(DEFAULT_FOREGROUND_COLOR);
-        Configuration::instance()->textcolor(DEFAULT_SELECTION_COLOR);
+        ctx->configuration->background(DEFAULT_BACKGROUND_COLOR);
+        ctx->configuration->foreground(DEFAULT_FOREGROUND_COLOR);
+        ctx->configuration->textcolor(DEFAULT_SELECTION_COLOR);
         SignalUpdateColors.emit();
     });
 
@@ -155,9 +157,9 @@ WindowSettings::WindowSettings(Dao* dao)
 
     browser_directories = new Fl_Select_Browser(220, 40, w() - 235, 160, 0);
     browser_directories->type(FL_HOLD_BROWSER);
-    browser_directories->color(Configuration::instance()->background());
-    browser_directories->color2(Configuration::instance()->foreground());
-    browser_directories->textcolor(Configuration::instance()->textcolor());
+    browser_directories->color(context->configuration->background());
+    browser_directories->color2(context->configuration->foreground());
+    browser_directories->textcolor(context->configuration->textcolor());
 
     Fl_Button* button_add = new Fl_Button(220, 205, 70, 25, _("Add"));
     util_adjust_width(button_add, 10);
@@ -183,7 +185,7 @@ WindowSettings::WindowSettings(Dao* dao)
 
     input_proxy = new Fl_Input(215 + 8 + label_proxy->w(), 40, w() - 240 - label_proxy->w(), 22, 0);
     input_proxy->tooltip(_("Complete proxy URL, ex: http://192.168.1.1:3128"));
-    input_proxy->value(dao->open_get_key("proxy").c_str());
+    input_proxy->value(context->dao->open_get_key("proxy").c_str());
     input_proxy->callback([](Fl_Widget*, void*) {
         SignalUpdateProxy.emit();
     });
@@ -206,9 +208,7 @@ WindowSettings::WindowSettings(Dao* dao)
     }
     lang_choice->callback(cb_change);
 
-    dao->open_db();
-    int index = util_s2i(dao->get_key("lang_index"));
-    dao->close_db();
+    int index = context->dao->open_get_key_int("lang_index");
     lang_choice->value((index < 0 ? 0 : index));
 #endif
     tabs[3]->end();
@@ -224,17 +224,17 @@ WindowSettings::WindowSettings(Dao* dao)
 
     tab_selector->select(1);
     tab_selector->callback([](Fl_Widget* w, void*) {
-    	if (tab_selector->value() == 0) {
-			return;
-		}
+        if (tab_selector->value() == 0) {
+            return;
+        }
 
-		for (uint t = 0; t < sizeof(tabs) / sizeof(tabs[0]); t++) {
-			if ((int) t == (tab_selector->value() - 1)) {
-				tabs[t]->show();
-			} else {
-				tabs[t]->hide();
-			}
-		}
+        for (uint t = 0; t < sizeof(tabs) / sizeof(tabs[0]); t++) {
+            if ((int) t == (tab_selector->value() - 1)) {
+                tabs[t]->show();
+            } else {
+                tabs[t]->hide();
+            }
+        }
     });
     tab_selector->do_callback();
 
@@ -265,14 +265,14 @@ void WindowSettings::addDir()
     char dir[PATH_LENGTH] = "";
     uint dirQty = listDir.size();
 
-    osSpecific->dir_chooser(dir);
+    context->osSpecific->dir_chooser(dir);
     Fl::redraw();
 
     if (strlen(dir) > 0) {
         // If the user didn't cancel
         string s(dir);
-    	dao->insert_directory(s);
-    	updateDirList();
+        context->dao->insert_directory(s);
+        updateDirList();
     }
 
     if (listDir.size() != dirQty) {
@@ -289,7 +289,7 @@ void WindowSettings::removeDir()
     string dir = browser_directories->text(index);
     for (auto d : listDir) {
         if (d.value == dir) {
-            dao->delete_directory(d.cod);
+            context->dao->delete_directory(d.cod);
             updateDirList();
             break;
         }
@@ -300,14 +300,14 @@ void WindowSettings::removeDir()
 
 void WindowSettings::updateProxy()
 {
-    dao->open_set_key("proxy", input_proxy->value());
+    context->dao->open_set_key("proxy", input_proxy->value());
 }
 
 void WindowSettings::updateColors()
 {
-    Fl_Color bg = Configuration::instance()->background();
-    Fl_Color fg = Configuration::instance()->foreground();
-    Fl_Color tx = Configuration::instance()->textcolor();
+    Fl_Color bg = context->configuration->background();
+    Fl_Color fg = context->configuration->foreground();
+    Fl_Color tx = context->configuration->textcolor();
 
     button_background_color->color(bg);
     button_background_color->redraw();
@@ -333,7 +333,7 @@ void WindowSettings::updateDirList()
 {
     browser_directories->clear();
     listDir.clear();
-    dao->get_directories(listDir);
+    context->dao->get_directories(listDir);
 
     for (auto s : listDir) {
         browser_directories->add(s.value.c_str());

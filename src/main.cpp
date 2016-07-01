@@ -21,30 +21,26 @@ int main(int argc, char** argv)
 
     fl_message_title_default(_("Warning"));
 
-    Context context;
-    context.configuration = new Configuration();
-    context.dao = new Dao();
-    context.sound = new Sound();
-    context.osSpecific = new OsSpecific();
+    Context* context = new Context();
 
     // Locale::init();
 
-    if (context.dao->init() != 0) {
+    if (context->dao->init(context->osSpecific) != 0) {
         fl_alert(_("Error while initializing database"));
         return -1;
     }
 
-    if (context.sound->init() != 0) {
+    if (context->sound->init() != 0) {
         fl_alert(_("Error while sound system"));
         return -1;
     }
 
-    WindowMain windowMain(&context);
+    WindowMain windowMain(context);
     windowMain.init(argc, argv);
-    context.osSpecific->set_app_icon(&windowMain);
+    context->osSpecific->set_app_icon(&windowMain);
     windowMain.show(0, NULL);
 
-    context.osSpecific->init(&windowMain);
+    context->osSpecific->init(&windowMain);
 
     // if (FLAG_MAXIMIZE_WINDOW) {
     //     os_specific_maximize_window();
@@ -64,8 +60,7 @@ int main(int argc, char** argv)
 
     int fl_result = Fl::run();
 
-    context.sound->destroy();
-    context.osSpecific->end();
+    delete context;
 
     return fl_result;
 }

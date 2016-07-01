@@ -3,6 +3,9 @@
 
 #include <FL/Fl_Slider.H>
 
+#include "../context.h"
+#include "../window_main.h"
+
 class TipWin;
 class TimeDisplay;
 class WindowMain;
@@ -15,7 +18,7 @@ class WindowMain;
 class KSP_Slider : public Fl_Slider
 {
 public:
-    KSP_Slider(WindowMain* window_main, int x, int y, int w, int h, const char* l = 0);
+    KSP_Slider(WindowMain* window_main, Context* context, int x, int y, int w, int h, const char* l = 0);
     ~KSP_Slider();
     void update_time();
     void realise_new_sound(int length);
@@ -26,7 +29,6 @@ public:
 private:
     TipWin* tipwin;
     TimeDisplay* time_display;
-    WindowMain* window_main;
 
     double calc_value(int event, int X, int Y, int W, int H);
     int handle(int event, int X, int Y, int W, int H);

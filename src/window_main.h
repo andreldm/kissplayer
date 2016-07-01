@@ -22,6 +22,8 @@
 #include "widget/ksp_browser.h"
 #include "widget/ksp_tile.h"
 
+class KSP_Slider;
+
 class WindowMain : public Fl_Double_Window
 {
 private:

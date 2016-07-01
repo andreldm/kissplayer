@@ -3,7 +3,6 @@
 #include <sstream>
 #include <taglib/fileref.h>
 
-#include "configuration.h"
 #include "signals.h"
 #include "util.h"
 

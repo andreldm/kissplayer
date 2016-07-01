@@ -3,24 +3,22 @@
 
 #include <FL/Fl_Window.H>
 
-#include "dao.h"
-#include "os_specific.h"
+#include "context.h"
 
 class WindowSettings : public Fl_Window
 {
 private:
-    Dao* dao;
-    OsSpecific* osSpecific;
+    Context* context;
 
     void    updateColors                (void);
     void    updateProxy                 (void);
 
 public:
-            WindowSettings              (Dao*);
+            WindowSettings              (Context*);
     void    show                        (Fl_Window* parent);
     void    close                       (void);
     void    addDir                      (void);
-    void    removeDir					(void);
+    void    removeDir                   (void);
     void    updateDirList               (void);
 };
 

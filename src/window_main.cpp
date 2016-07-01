@@ -206,7 +206,7 @@ void WindowMain::init(int argc, char** argv)
         SignalNext.emit();
     });
 
-    slider_music = new KSP_Slider(this, 157, 424, 527, 19, "00:00");
+    slider_music = new KSP_Slider(this, context, 157, 424, 527, 19, "00:00");
     slider_music->callback([](Fl_Widget* w, void* u) {
         SignalSlideChanged.emit();
     });
