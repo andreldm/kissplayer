@@ -93,16 +93,16 @@ void OsSpecific::end()
 
 int OsSpecific::get_working_dir(std::string& dir)
 {
-    /*struct passwd* pw = getpwuid(getuid());
+    struct passwd* pw = getpwuid(getuid());
     string path = pw->pw_dir;
-    path.append("/.kissplayer/");
+    path.append("/.config/kissplayer/");
     dir.assign(path);
 
     if (mkdir(dir.c_str(), 0777) != 0) {
         if (errno != EEXIST) {
             return -1;
         }
-    }*/
+    }
 
     return 0;
 }
