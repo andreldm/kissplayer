@@ -298,7 +298,7 @@ void WindowMain::clear_search()
 void WindowMain::show_settings()
 {
     delete windowSettings;
-    windowSettings = new WindowSettings(context->dao);
+    windowSettings = new WindowSettings(context);
     windowSettings->show(this);
 }
 

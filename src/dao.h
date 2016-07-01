@@ -6,6 +6,7 @@
 
 #include "constants.h"
 #include "music.h"
+#include "os_specific.h"
 
 class COD_VALUE
 {
@@ -16,11 +17,8 @@ public:
 
 class Dao
 {
-private:
-    std::string DB_FILENAME;
-
 public:
-    int             init                        (void);
+    int             init                        (OsSpecific*);
     void            open_db                     (void);
     void            close_db                    (void);
     void            begin_transaction           (void);
@@ -29,6 +27,7 @@ public:
     std::string     get_key                     (std::string key);
     std::string     open_get_key                (std::string key);
     int             get_key_int                 (std::string key);
+    int             open_get_key_int            (std::string key);
 
     void            set_key                     (std::string key, std::string value);
     void            open_set_key                (std::string key, std::string value);

@@ -6,15 +6,14 @@
 #include <iostream>
 #include <stdlib.h>
 
-#include "constants.h"
 #include "util.h"
-#include "os_specific.h"
 
 using namespace std;
 
 static sqlite3* db;
 static char* ErrMsg;
 static sqlite3_stmt* stmt;
+static string DB_NAME = "db.s3db";
 
 void print_errors()
 {
@@ -25,10 +24,10 @@ void print_errors()
         }
     }
 }
-
+#include <iostream>
 void Dao::open_db()
 {
-    sqlite3_open(DB_FILENAME.c_str(), &db);
+    sqlite3_open(DB_NAME.c_str(), &db);
 }
 
 void Dao::close_db()
@@ -52,20 +51,16 @@ void Dao::commit_transaction()
     close_db();
 }
 
-int Dao::init()
+int Dao::init(OsSpecific* osSpecific)
 {
-    DB_FILENAME = "db.s3db";
+    const char* query;
 
-    // FIXME: Avoid instantiation and delete
-    OsSpecific* osSpecific = new OsSpecific();
-    if (osSpecific->get_working_dir(DB_FILENAME) != 0) {
-        delete osSpecific;
+    if (osSpecific->get_working_dir(DB_NAME) != 0) {
         return -1;
     }
-    delete osSpecific;
+    DB_NAME.append("db.s3db");
 
     open_db();
-    const char* query;
 
     query = "CREATE TABLE IF NOT EXISTS [TB_MUSIC] ( \
                 [cod] INTEGER PRIMARY KEY ON CONFLICT ABORT AUTOINCREMENT, \
@@ -124,10 +119,8 @@ string Dao::open_get_key(string key)
     return k;
 }
 
-int Dao::get_key_int(string key)
-{
-    return util_s2i(get_key(key));
-}
+int Dao::get_key_int(string key) { return util_s2i(get_key(key)); }
+int Dao::open_get_key_int(string key) { return util_s2i(open_get_key(key)); }
 
 void Dao::set_key(string key, string value)
 {
