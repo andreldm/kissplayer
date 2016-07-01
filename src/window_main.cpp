@@ -78,6 +78,8 @@ WindowMain::WindowMain(Context* context)
     : Fl_Double_Window(770, 465, "KISS Player")
 {
     this->context = context;
+    windowSettings = NULL;
+    windowAbout = NULL;
 }
 
 void WindowMain::init(int argc, char** argv)
