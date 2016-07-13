@@ -24,14 +24,13 @@
 
 using namespace std;
 
-// static Fl_Window* window;
 static Fl_Button* button_background_color;
 static Fl_Button* button_selection_color;
 static Fl_Button* button_text_color;
 static KSP_Check_Button* button_lyrics;
 static KSP_Check_Button* button_scroll_title;
 static Fl_Select_Browser* browser_directories;
-// static Fl_Choice* lang_choice;
+static Fl_Choice* lang_choice;
 static Fl_Hold_Browser* tab_selector;
 static Fl_Input* input_proxy;
 static Fl_Group* tabs[4] = { 0,0,0,0 };
@@ -43,6 +42,7 @@ static sigc::signal<void> SignalClose;
 static sigc::signal<void> SignalUpdateProxy;
 static sigc::signal<void> SignalAddDir;
 static sigc::signal<void> SignalRemoveDir;
+static sigc::signal<void> SignalChangeLanguage;
 
 Fl_Color edit_color(Fl_Color val)
 {
@@ -200,12 +200,14 @@ WindowSettings::WindowSettings(Context* context)
 
     lang_choice = new Fl_Choice(220, 40, 200, 25);
     lang_choice->clear_visible_focus();
+    lang_choice->callback([](Fl_Widget*, void*) {
+        SignalChangeLanguage.emit();
+    });
 
-    Language** languages = Locale::getDefinedLanguages();
+    Language** languages = context->locale->getDefinedLanguages();
     for (int i = 0; languages[i]; i++) {
         lang_choice->add(languages[i]->description.c_str());
     }
-    lang_choice->callback(cb_change);
 
     int index = context->dao->open_get_key_int("lang_index");
     lang_choice->value((index < 0 ? 0 : index));
@@ -245,6 +247,7 @@ WindowSettings::WindowSettings(Context* context)
     SignalUpdateProxy.connect(sigc::mem_fun(this, &WindowSettings::updateProxy));
     SignalAddDir.connect(sigc::mem_fun(this, &WindowSettings::addDir));
     SignalRemoveDir.connect(sigc::mem_fun(this, &WindowSettings::removeDir));
+    SignalChangeLanguage.connect(sigc::mem_fun(this, &WindowSettings::changeLanguage));
 }
 
 void WindowSettings::show(Fl_Window* parent)
@@ -342,10 +345,10 @@ void WindowSettings::updateDirList()
     }
 }
 
-// void cb_change(Fl_Widget* widget, void*)
-// {
-//     /*Locale::setLanguage(lang_choice->value());*/
-//
-//     fl_beep();
-//     fl_message(_("Please, restart the program to change the language."));
-// }
+void WindowSettings::changeLanguage()
+{
+    context->locale->setLanguage(lang_choice->value());
+
+    fl_beep();
+    fl_message(_("Please, restart the program to change the language."));
+}

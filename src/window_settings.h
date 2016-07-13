@@ -21,6 +21,7 @@ public:
     void     addDir                      (void);
     void     removeDir                   (void);
     void     updateDirList               (void);
+    void     changeLanguage              (void);
 };
 
 #endif

@@ -23,8 +23,6 @@ int main(int argc, char** argv)
 
     Context* context = new Context();
 
-    // Locale::init();
-
     if (context->dao->init(context->osSpecific) != 0) {
         fl_alert(_("Error while initializing database"));
         return -1;

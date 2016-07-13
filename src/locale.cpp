@@ -23,15 +23,14 @@ static Language* languages[] = {
     NULL
 };
 
-void Locale::init()
+void Locale::init(Dao* dao)
 {
-#ifdef WIN32
-    dao_open_db();
-    string language = dao_get_key(KEY_LANGUAGE);
-    dao_close_db();
+    this->dao = dao;
 
-    language = "LC_ALL=" + language;
-    putenv(language.c_str());
+#ifdef WIN32
+    string language = dao->open_get_key(KEY_LANGUAGE);
+
+    setenv("LC_ALL", language.c_str(), 1);
     bindtextdomain("kissplayer", ".\\locale");
     bind_textdomain_codeset("kissplayer", "UTF-8");
 #elif __linux__
@@ -48,7 +47,7 @@ void Locale::setLanguage(int index)
 
     dao->open_db();
     dao->set_key(KEY_LANGUAGE, choice);
-    dao->set_key(KEY_LANGUAGE_INDEX, util_i2s(index));
+    dao->set_key_int(KEY_LANGUAGE_INDEX, index);
     dao->close_db();
 }
 
