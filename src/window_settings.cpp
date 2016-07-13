@@ -37,7 +37,6 @@ static Fl_Input* input_proxy;
 static Fl_Group* tabs[4] = { 0,0,0,0 };
 
 static deque<COD_VALUE> listDir;
-// static bool should_resync;
 
 // PRIVATE SIGNALS
 static sigc::signal<void> SignalClose;
@@ -62,8 +61,8 @@ WindowSettings::WindowSettings(Context* context)
         : Fl_Window(650, 300, _("Settings"))
 {
     ctx = this->context = context;
+    this->shouldSync = false;
 
-    // should_resync = false;
     tab_selector = new Fl_Hold_Browser(10, 10, 200, h() - 20);
     tab_selector->color(context->configuration->background());
     tab_selector->color2(context->configuration->foreground());
@@ -250,6 +249,8 @@ WindowSettings::WindowSettings(Context* context)
 
 void WindowSettings::show(Fl_Window* parent)
 {
+    this->shouldSync = false;
+
     util_center_window(this, parent);
     Fl_Window::show();
 }
@@ -257,7 +258,8 @@ void WindowSettings::show(Fl_Window* parent)
 void WindowSettings::close()
 {
     hide();
-    /*if (should_resync) sync_execute(true);*/
+    if (this->shouldSync)
+        SignalSync.emit();
 }
 
 void WindowSettings::addDir()
@@ -277,7 +279,7 @@ void WindowSettings::addDir()
 
     if (listDir.size() != dirQty) {
         // If a directory was added
-//        should_resync = true;
+       this->shouldSync = true;
     }
 }
 
@@ -295,7 +297,7 @@ void WindowSettings::removeDir()
         }
     }
 
-//    should_resync = true;
+   this->shouldSync = true;
 }
 
 void WindowSettings::updateProxy()

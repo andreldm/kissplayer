@@ -11,6 +11,7 @@ signal<void> SignalSearchType;
 signal<void> SignalResetWindowTitle;
 signal<void, float> SignalVolume;
 
+signal<void> SignalSync;
 signal<void> SignalCancelSync;
 signal<void> SignalUpdateColors;
 signal<void, int> SignalUpdateMusicPlaying;

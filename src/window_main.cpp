@@ -32,7 +32,6 @@ static sigc::signal<void> SignalShowAbout;
 static sigc::signal<void> SignalShowSettings;
 static sigc::signal<void> SignalClearSearch;
 static sigc::signal<void> SignalSlideChanged;
-static sigc::signal<void> SignalSync;
 static sigc::signal<int, int, Fl_Window*> SignalEvent;
 static sigc::signal<void> SignalCheckMusicEnd;
 static sigc::signal<void> SignalCheckTitleScroll;

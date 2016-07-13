@@ -13,6 +13,7 @@ extern sigc::signal<void> SignalSearchType;
 extern sigc::signal<void> SignalResetWindowTitle;
 extern sigc::signal<void, float> SignalVolume;
 
+extern sigc::signal<void> SignalSync;
 extern sigc::signal<void> SignalCancelSync;
 extern sigc::signal<void> SignalUpdateColors;
 extern sigc::signal<void, int> SignalUpdateMusicPlaying;
