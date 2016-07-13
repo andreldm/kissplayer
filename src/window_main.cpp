@@ -71,8 +71,6 @@ WindowMain::WindowMain(Context* context)
     : Fl_Double_Window(770, 465, "KISS Player")
 {
     this->context = context;
-    windowSettings = NULL;
-    windowAbout = NULL;
 }
 
 void WindowMain::init(int argc, char** argv)
@@ -261,6 +259,8 @@ void WindowMain::init(int argc, char** argv)
     this->playlist = new Playlist(context, browser_music);
     this->lyricsFetcher = new LyricsFetcher(context, lyrics_text_buffer);
     this->sync = new Sync(context);
+    this->windowAbout = new WindowAbout();
+    this->windowSettings = new WindowSettings(context);
 
     load_config();
 
@@ -292,15 +292,11 @@ void WindowMain::clear_search()
 
 void WindowMain::show_settings()
 {
-    delete windowSettings;
-    windowSettings = new WindowSettings(context);
     windowSettings->show(this);
 }
 
 void WindowMain::show_about()
 {
-    delete windowAbout;
-    windowAbout = new WindowAbout();
     windowAbout->show(this);
 }
 
