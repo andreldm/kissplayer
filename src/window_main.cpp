@@ -11,7 +11,6 @@
 
 #include "configuration.h"
 #include "images.h"
-#include "locale.h"
 #include "widget/ksp_menu_item.h"
 #include "sound.h"
 #include "util.h"

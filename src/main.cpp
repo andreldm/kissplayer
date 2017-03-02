@@ -33,6 +33,8 @@ int main(int argc, char** argv)
         return -1;
     }
 
+    context->locale->init(context->dao);
+
     WindowMain windowMain(context);
     windowMain.init(argc, argv);
     context->osSpecific->set_app_icon(&windowMain);

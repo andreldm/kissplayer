@@ -15,7 +15,6 @@
 #include <FL/Fl_Select_Browser.H>
 
 #include "configuration.h"
-#include "locale.h"
 #include "signals.h"
 #include "sync.h"
 #include "util.h"

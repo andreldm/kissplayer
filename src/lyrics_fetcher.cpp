@@ -9,7 +9,6 @@
 
 #include "configuration.h"
 #include "util.h"
-#include "locale.h"
 
 extern "C" {
     #include "tinycthread.h"
