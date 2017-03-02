@@ -4,14 +4,14 @@
 #include <FL/fl_utf8.h>
 
 int Sound::init(void) {
-    if (FMOD::System_Create(&system) != FMOD_OK) return -1;
-    if (system->init(2, FMOD_INIT_NORMAL | FMOD_IGNORETAGS, 0) != FMOD_OK) return -1;
+    if (FMOD_System_Create(&system) != FMOD_OK) return -1;
+    if (FMOD_System_Init(system, 2, FMOD_INIT_NORMAL | FMOD_IGNORETAGS, 0) != FMOD_OK) return -1;
 
     return 0;
 }
 
 void Sound::destroy(void) {
-    system->release();
+    FMOD_System_Release(system);
 }
 
 void Sound::load(const char* filename) {
@@ -20,9 +20,9 @@ void Sound::load(const char* filename) {
 #if defined WIN32
     wchar_t wide_filename[PATH_LENGTH];
     fl_utf8towc(current_file, PATH_LENGTH, wide_filename, PATH_LENGTH);
-    if (system->createStream((char*) wide_filename, FMOD_DEFAULT | FMOD_UNICODE | FMOD_ACCURATETIME, 0, &sound) != FMOD_OK) return;
+    if (FMOD_System_CreateStream(system, (char*) wide_filename, FMOD_DEFAULT | FMOD_UNICODE | FMOD_ACCURATETIME, 0, &sound) != FMOD_OK) return;
 #else
-    if (system->createStream(current_file, FMOD_DEFAULT | FMOD_ACCURATETIME, 0, &sound) != FMOD_OK) return;
+    if (FMOD_System_CreateStream(system, current_file, FMOD_DEFAULT | FMOD_ACCURATETIME, 0, &sound) != FMOD_OK) return;
 #endif
 
     loaded = true;
@@ -30,15 +30,15 @@ void Sound::load(const char* filename) {
 
 void Sound::unload(void) {
     if (loaded) {
-        channel->stop();
-        sound->release();
+        FMOD_Channel_Stop(channel);
+        FMOD_Sound_Release(sound);
         loaded = false;
     }
 }
 
 void Sound::play(bool pause) {
-    system->playSound(FMOD_CHANNEL_REUSE, sound, pause, &channel);
-    channel->setMode(FMOD_LOOP_OFF);
+    FMOD_System_PlaySound(system, FMOD_CHANNEL_REUSE, sound, pause, &channel);
+    FMOD_Channel_SetMode(channel, FMOD_LOOP_OFF);
 }
 
 void Sound::toggleActive(void) {
@@ -59,7 +59,7 @@ bool Sound::isLoaded(void) {
 }
 
 void Sound::setPaused(bool pause) {
-    channel->setPaused(pause);
+    FMOD_Channel_SetPaused(channel, pause);
 }
 
 void Sound::togglePaused(void) {
@@ -69,15 +69,15 @@ void Sound::togglePaused(void) {
 }
 
 bool Sound::isPlaying(void) {
-    bool p;
-    channel->getPaused(&p);
+    FMOD_BOOL p;
+    FMOD_Channel_GetPaused(channel, &p);
     return !p;
 }
 
 int Sound::length(void) {
     if (loaded) {
         unsigned int mili;
-        sound->getLength(&mili, FMOD_TIMEUNIT_MS);
+        FMOD_Sound_GetLength(sound, &mili, FMOD_TIMEUNIT_MS);
         return (int) mili;
     }
 
@@ -87,7 +87,7 @@ int Sound::length(void) {
 int Sound::getPosition(void) {
     if (loaded) {
         unsigned int mili;
-        channel->getPosition(&mili, FMOD_TIMEUNIT_MS);
+        FMOD_Channel_GetPosition(channel, &mili, FMOD_TIMEUNIT_MS);
         return (int) mili;
     }
 
@@ -96,20 +96,20 @@ int Sound::getPosition(void) {
 
 void Sound::setPosition(int mili) {
     if (loaded) {
-        channel->setPosition((unsigned int) (mili), FMOD_TIMEUNIT_MS);
+        FMOD_Channel_SetPosition(channel, (unsigned int) (mili), FMOD_TIMEUNIT_MS);
     }
 }
 
 void Sound::setVolume(float v) {
     if (loaded && v >= 0.0f && v <= 1.0f) {
-        channel->setVolume(v);
+        FMOD_Channel_SetVolume(channel, v);
     }
 }
 
 float Sound::getVolume() {
     float v = 0;
     if (loaded) {
-        channel->getVolume(&v);
+        FMOD_Channel_GetVolume(channel, &v);
     }
 
     return v;

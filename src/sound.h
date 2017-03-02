@@ -1,23 +1,22 @@
 #ifndef sound_h
 #define sound_h
 
-#if defined WIN32
+#include "constants.h"
+
+#if defined _WIN32
     #include <fmod.h>
 #else
     #include <fmodex/fmod.h>
-    #include <fmodex/fmod.hpp>
 #endif
-
-#include "constants.h"
 
 class Sound {
 private:
     char current_file[PATH_LENGTH];
     bool loaded = false;
     bool playing = false;
-    FMOD::System* system;
-    FMOD::Sound* sound;
-    FMOD::Channel* channel;
+    FMOD_SYSTEM* system;
+    FMOD_SOUND* sound;
+    FMOD_CHANNEL* channel;
 
 public:
     int     init            (void); // initialises the sound system
