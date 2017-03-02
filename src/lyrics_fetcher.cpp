@@ -101,7 +101,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
 
     CURL* curl;
     string data;
-    uint findResult;
+    unsigned int findResult = 0;
 
     // Maybe we can upgrade this code to support
     // several sites, if one fail, try the next.
@@ -116,7 +116,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
     regex regexNotFound2 ("PUT LYRICS HERE");
     regex regexNotFound3 ("You have followed a link to a page that doesn't exist yet");
     regex regexRedirect ("#redirect", regex_constants::icase);
-    regex regexFound ("lyrics>(.*)&lt;/lyrics>", regex_constants::extended);
+    //regex regexFound ("lyrics>(.*)&lt;/lyrics>", regex_constants::extended);
     string conditionStart = "lyrics>";
     string conditionEnd = "&lt;/lyrics>";
 
@@ -132,7 +132,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
     url = url.append(title);
     url = url.append("?action=edit");
 
-    // cout <<"URL: " << url << endl;
+    //std::cout << "URL: " << url << std::endl;
     curl = curl_easy_init();
     check_ticket(thread_ticket, lyrics_data->sound);
 
@@ -188,8 +188,8 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
 
         // Check if the Lyrics doesn't exist
         if (regex_search(data, regexNotFound) ||
-			regex_search(data, regexNotFound2) ||
-			regex_search(data, regexNotFound3)) {
+            regex_search(data, regexNotFound2) ||
+            regex_search(data, regexNotFound3)) {
             curl_easy_cleanup(curl);
 
             if (firstTry) {
@@ -203,9 +203,13 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
         }
 
         // Check if the lyrics were really found
-        if (regex_search(data, m, regexFound) && m.size() > 1) {
-			data = m.str(1);
-		} else {
+
+        // Unfortunately libstdc++ segfaults with this regex
+        //if (regex_search(data, m, regexFound) && m.size() > 1) {
+        //    data = m.str(1);
+
+        int found = data.find(conditionStart);
+        if (found == -1) {
             curl_easy_cleanup(curl);
 
             if (firstTry) {
@@ -217,6 +221,10 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
 
             return false;
         }
+
+        data.erase(0, found + conditionStart.size());
+        found = data.find(conditionEnd);
+        data.erase(found);
 
         curl_easy_cleanup(curl);
     }
