@@ -51,7 +51,7 @@ EXTRA_DIST = img/kiss.ico \
 ####################################
 if WINDOWS
 kissplayer_LDFLAGS = -mwindows
-kissplayer_CPPFLAGS = -DCURL_STATICLIB
+kissplayer_CPPFLAGS += -DCURL_STATICLIB -DWIN32 -D__CYGWIN32__
 kissplayer_SOURCES += src/win/windows_specific.cpp \
 src/win/kiss.rc
 

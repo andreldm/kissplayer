@@ -1,17 +1,15 @@
 #include "signals.h"
 
-using namespace sigc;
+sigc::signal<void> SignalPlay;
+sigc::signal<void> SignalStop;
+sigc::signal<void> SignalNext;
+sigc::signal<void> SignalPrevious;
+sigc::signal<void> SignalSearch;
+sigc::signal<void> SignalSearchType;
+sigc::signal<void> SignalResetWindowTitle;
+sigc::signal<void, float> SignalVolume;
 
-signal<void> SignalPlay;
-signal<void> SignalStop;
-signal<void> SignalNext;
-signal<void> SignalPrevious;
-signal<void> SignalSearch;
-signal<void> SignalSearchType;
-signal<void> SignalResetWindowTitle;
-signal<void, float> SignalVolume;
-
-signal<void> SignalSync;
-signal<void> SignalCancelSync;
-signal<void> SignalUpdateColors;
-signal<void, int> SignalUpdateMusicPlaying;
+sigc::signal<void> SignalSync;
+sigc::signal<void> SignalCancelSync;
+sigc::signal<void> SignalUpdateColors;
+sigc::signal<void, int> SignalUpdateMusicPlaying;

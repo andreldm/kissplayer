@@ -4,6 +4,10 @@
 #include <cctype>
 #include <regex>
 
+#if defined _WIN32 && defined _WINSOCKAPI_
+    #undef _WINSOCKAPI_
+#endif
+
 #include <FL/Fl.H>
 #include <curl/curl.h>
 

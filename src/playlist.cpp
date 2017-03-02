@@ -80,7 +80,7 @@ void Playlist::update_browser()
     browser_music->clear();
     browser_music->clear_highlighted();
 
-    for (uint i = 0; i < listMusic.size(); i++) {
+    for (unsigned int i = 0; i < listMusic.size(); i++) {
         Music m = listMusic.at(i);
         browser_music->add(m.getDesc().c_str());
         if (m.cod != 0 && m.cod == musicPlayingCod) {

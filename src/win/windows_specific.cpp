@@ -1,4 +1,4 @@
-#include "windows_specific.h"
+#include "../os_specific.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,8 +6,10 @@
 #include <shlobj.h>
 
 #include <FL/x.H>
+#include <FL/Fl.H>
+#include <FL/Fl_Window.H>
 
-#include "../window_main.h"
+#include "../signals.h"
 
 using namespace std;
 
@@ -52,19 +54,16 @@ static int windows_event_handler(int e);
 /**
 * Sets the window icon.
 */
-void os_specific_set_app_icon()
+void OsSpecific::set_app_icon(Fl_Window* window)
 {
-    Fl_Window* window = window_main_get_instance();
     window->icon((char*)LoadIcon(fl_display, MAKEINTRESOURCE(APP_ICON)));
 }
 
 /**
 * Starts Windows specific configuration.
 */
-int os_specific_init()
+int OsSpecific::init(Fl_Window* window)
 {
-    Fl_Window* window = window_main_get_instance();
-
     Fl::add_handler(windows_event_handler);
     taskBarCreatedId = RegisterWindowMessage(TEXT("TaskbarButtonCreated"));
 
@@ -82,7 +81,7 @@ int os_specific_init()
 /**
 * Executes the necessary clean up.
 */
-void os_specific_end()
+void OsSpecific::end()
 {
     // On Windows 7
     if (taskbarList != NULL) {
@@ -95,7 +94,7 @@ void os_specific_end()
 /**
 * Get the directory where the database file is
 */
-int os_specific_get_working_dir(string& dir)
+int OsSpecific::get_working_dir(string& dir)
 {
     wchar_t wpath[PATH_LENGTH];
     GetModuleFileNameW(NULL, wpath, PATH_LENGTH);
@@ -113,7 +112,7 @@ int os_specific_get_working_dir(string& dir)
 /**
 * Calls native directory chooser.
 */
-void os_specific_dir_chooser(char* dir)
+void OsSpecific::dir_chooser(char* dir)
 {
     BROWSEINFOW bi = { 0 };
     bi.lpszTitle = L"Select a folder:";
@@ -130,18 +129,16 @@ void os_specific_dir_chooser(char* dir)
 /**
  * Set the window to maximized state.
  */
-void os_specific_maximize_window()
+void OsSpecific::maximize_window(Fl_Window* window)
 {
-    Fl_Window* window = window_main_get_instance();
     SendMessage(fl_xid(window), WM_SYSCOMMAND, SC_MAXIMIZE, 0);
 }
 
 /**
  * Check if the window is maximized.
  */
-bool os_specific_is_window_maximized()
+bool OsSpecific::is_window_maximized(Fl_Window* window)
 {
-    Fl_Window* window = window_main_get_instance();
     return IsZoomed(fl_xid(window));
 }
 
@@ -158,15 +155,15 @@ int windows_event_handler(int e)
 
     if (fl_msg.message == WM_COMMAND) {
         if (LOWORD(fl_msg.wParam) == ID_THUMBNAIL_BUTTON1) {
-            window_main_previous();
+            SignalPrevious.emit();
             return 1;
         }
         if (LOWORD(fl_msg.wParam) == ID_THUMBNAIL_BUTTON2) {
-            window_main_toggle_play();
+            SignalPlay.emit();
             return 1;
         }
         if (LOWORD(fl_msg.wParam) == ID_THUMBNAIL_BUTTON3) {
-            window_main_next();
+            SignalNext.emit();
             return 1;
         }
     }
@@ -271,19 +268,19 @@ LRESULT CALLBACK KeyboardHookProc(int nCode, WPARAM wParam, LPARAM lParam)
     if (!keyPressed && (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN)) {
         switch((unsigned int) kbhook->vkCode) {
         case VK_MEDIA_PLAY_PAUSE:
-            window_main_toggle_play();
+            SignalPlay.emit();
             keyPressed = true;
             break;
         case VK_MEDIA_STOP:
-            window_main_stop();
+            SignalStop.emit();
             keyPressed = true;
             break;
         case VK_MEDIA_NEXT_TRACK:
-            window_main_next();
+            SignalNext.emit();
             keyPressed = true;
             break;
         case VK_MEDIA_PREV_TRACK:
-            window_main_previous();
+            SignalPrevious.emit();
             keyPressed = true;
             break;
         }
@@ -292,7 +289,7 @@ LRESULT CALLBACK KeyboardHookProc(int nCode, WPARAM wParam, LPARAM lParam)
     return CallNextHookEx(handlerKeyboardHook, nCode, wParam, lParam);
 }
 
-void os_specific_scanfolder(const wchar_t* dir, deque<wstring>& filelist)
+void OsSpecific::scanfolder(const wchar_t* dir, deque<wstring>& filelist)
 {
     WIN32_FIND_DATAW filedata;
     HANDLE hFind = NULL;
@@ -317,7 +314,7 @@ void os_specific_scanfolder(const wchar_t* dir, deque<wstring>& filelist)
 
         // If it's a folder, search it too
         if (filedata.dwFileAttributes &FILE_ATTRIBUTE_DIRECTORY) {
-            os_specific_scanfolder(path, filelist);
+            scanfolder(path, filelist);
             continue;
         }
         _wsplitpath(path, NULL, NULL, NULL, ext);

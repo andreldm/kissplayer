@@ -30,7 +30,9 @@ void Locale::init(Dao* dao)
 #ifdef WIN32
     string language = dao->open_get_key(KEY_LANGUAGE);
 
-    setenv("LC_ALL", language.c_str(), 1);
+    char str[50];
+    sprintf(str, "%s=%s", "LC_ALL", language.c_str());
+    putenv(str);
     bindtextdomain("kissplayer", ".\\locale");
     bind_textdomain_codeset("kissplayer", "UTF-8");
 #elif __linux__

@@ -18,7 +18,11 @@ public:
     void    maximize_window         (Fl_Window* window);
     bool    is_window_maximized     (Fl_Window* window);
 
+#ifdef WIN32
+    void    scanfolder              (const wchar_t* dir, std::deque<std::wstring>& filelist);
+#else
     void    scanfolder              (const char* dir, std::deque<std::string>& filelist);
+#endif
 };
 
 #endif

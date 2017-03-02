@@ -228,7 +228,7 @@ WindowSettings::WindowSettings(Context* context)
             return;
         }
 
-        for (uint t = 0; t < sizeof(tabs) / sizeof(tabs[0]); t++) {
+        for (unsigned int t = 0; t < sizeof(tabs) / sizeof(tabs[0]); t++) {
             if ((int) t == (tab_selector->value() - 1)) {
                 tabs[t]->show();
             } else {
@@ -267,7 +267,7 @@ void WindowSettings::close()
 void WindowSettings::addDir()
 {
     char dir[PATH_LENGTH] = "";
-    uint dirQty = listDir.size();
+    unsigned int dirQty = listDir.size();
 
     context->osSpecific->dir_chooser(dir);
     Fl::redraw();

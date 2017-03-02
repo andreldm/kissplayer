@@ -7,14 +7,9 @@
 
 #include <taglib/fileref.h>
 
-// #if defined WIN32
-//     #include <time.h>
-//     #include <windows.h>
-// #else
-//     #include <stdlib.h>
-//     #include <curl/curl.h>
-//     static CURL* curl = curl_easy_init();
-// #endif
+#ifdef _WIN32
+    #include <time.h>
+#endif
 
 using namespace std;
 
@@ -154,7 +149,7 @@ size_t util_write_string(void* ptr, size_t size, size_t count, void* stream)
 
 void util_uppercase_initials(string& str)
 {
-    for (uint i = 0; i < str.length(); i++) {
+    for (unsigned int i = 0; i < str.length(); i++) {
         if (i == 0) {
             if (islower(str[i])) str[i] = toupper(str[i]);
             continue;

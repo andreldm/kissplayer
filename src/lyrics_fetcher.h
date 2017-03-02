@@ -6,9 +6,6 @@
 
 #include "context.h"
 #include "music.h"
-#include "sound.h"
-
-// class LyricsData;
 
 class LyricsFetcher
 {
@@ -21,8 +18,5 @@ public:
 
     void fetch (Music* music);
 };
-
-// GLOBAL IMPORT
-extern bool     FLAG_LYRICS;
 
 #endif

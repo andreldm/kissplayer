@@ -21,7 +21,7 @@ using namespace std;
 
 // VARIABLES
 static string windowTitle;
-static uint windowTitlePosition;
+static unsigned int windowTitlePosition;
 static string lastSearch;
 
 // PRIVATE SIGNALS
