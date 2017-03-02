@@ -47,11 +47,8 @@ void WindowLoading::show(void)
 
 void WindowLoading::close (void)
 {
-    // if (window) {
-        clear();
-        hide();
-        // delete window;
-    // }
+    clear();
+    hide();
 }
 
 void WindowLoading::set_dir_max(int m)

@@ -40,20 +40,6 @@ int main(int argc, char** argv)
 
     context->osSpecific->init(&windowMain);
 
-    // if (FLAG_MAXIMIZE_WINDOW) {
-    //     os_specific_maximize_window();
-    // }
-
-    // if (os_specific_init() != 0) {
-    //     fl_alert(_("Keyboard hooker failed!"));
-    //     return -1;
-    // }
-    //
-    // if (sound_initialize() != 0) {
-    //     fl_alert(_("Error while initializing sound system!"));
-    //     return -1;
-    // }
-
     Fl::lock();
 
     int fl_result = Fl::run();

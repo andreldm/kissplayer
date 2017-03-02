@@ -18,7 +18,6 @@ using namespace std;
 Sync::Sync(Context* context)
 {
     this->context = context;
-    // this->windowLoading = new WindowLoading(context);
 }
 
 /**
@@ -56,14 +55,10 @@ void Sync::execute(bool do_not_warn)
         const char* dir = listDir.at(i).value.c_str();
 #endif
 
-        // FIXME
-        OsSpecific* osSpecific = new OsSpecific();
-        osSpecific->scanfolder(dir, listFiles);
-        delete osSpecific;
+        context->osSpecific->scanfolder(dir, listFiles);
         windowLoading->set_file_max(listFiles.size());
 
         for (uint j = 0; j < listFiles.size(); j++) {
-//            cout<<"Dir: "<<i+1<<"/"<<listDir.size()<<" - File: "<<j+1<<"/"<<listFiles.size()<< endl;
             if (context->configuration->isCancelSync()) break;
 
 #ifdef WIN32

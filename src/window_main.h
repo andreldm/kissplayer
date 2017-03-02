@@ -85,7 +85,4 @@ public:
     void        init                            (int argc, char** argv);
 };
 
-// GLOBAL IMPORT
-extern float    INITIAL_VOLUME;
-
 #endif

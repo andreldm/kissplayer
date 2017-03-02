@@ -467,9 +467,6 @@ void WindowMain::check_music_end()
         return;
     }
 
-    //box_current_time->copy_label(util_format_time(sound_position()));
-    //box_current_time->damage();
-
     if (Fl::pushed() != slider_music) {
         slider_music->value(context->sound->getPosition());
         slider_music->update_time();
