@@ -3,6 +3,7 @@ autom4te.cache/
 autotools/
 cov-int/
 locale/
+build/
 
 # Files
 .transifex-user
