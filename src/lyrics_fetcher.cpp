@@ -40,6 +40,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry = true);
 
 LyricsFetcher::LyricsFetcher(Context* context, Fl_Text_Buffer* text_buffer)
 {
+    this->context = context;
     this->text_buffer = text_buffer;
 }
 
