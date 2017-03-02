@@ -1,277 +1,284 @@
 # zh_CN translation for KISS Player.
 # Copyright (C) 2015 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # YF <yfdyh000@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-14 22:04-0300\n"
-"PO-Revision-Date: 2015-09-15 02:12+0000\n"
+"POT-Creation-Date: 2017-03-02 17:31-0300\n"
+"PO-Revision-Date: 2017-03-02 17:32-0300\n"
 "Last-Translator: André Miranda <andreldm1989@gmail.com>\n"
-"Language-Team: Chinese (China) (http://www.transifex.com/kissplayer/kissplayer/language/zh_CN/)\n"
+"Language-Team: Chinese (China) (http://www.transifex.com/kissplayer/"
+"kissplayer/language/zh_CN/)\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 1.8.11\n"
 
-#: src/window_about.cpp:85
+#: src/window_about.cpp:67
 msgid "<translators_credits>"
 msgstr "YFdyh000"
 
-#: src/window_about.cpp:61
+#: src/window_about.cpp:43
 msgid "A Simple and Lightweight Music Player"
 msgstr "一个简单且轻量级的音乐播放器"
 
-#: src/window_about.cpp:42 src/window_main.cpp:248
+#: src/window_about.cpp:20 src/window_main.cpp:221
 msgid "About"
 msgstr "关于"
 
-#: src/window_settings.cpp:150
+#: src/window_settings.cpp:162
 msgid "Add"
 msgstr "添加"
 
-#: src/window_main.cpp:154 src/window_main.cpp:439
+#: src/window_main.cpp:104 src/window_main.cpp:555
 msgid "Album"
 msgstr "专辑"
 
-#: src/window_main.cpp:151 src/window_main.cpp:436
+#: src/window_main.cpp:101 src/window_main.cpp:552
 msgid "All"
 msgstr "所有"
 
-#: src/window_main.cpp:153 src/window_main.cpp:438
+#: src/window_main.cpp:103 src/window_main.cpp:554
 msgid "Artist"
 msgstr "艺术家"
 
-#: src/window_about.cpp:103
+#: src/window_about.cpp:85
 msgid "Available online under:"
 msgstr "在线版本："
 
-#: src/window_settings.cpp:105
+#: src/window_settings.cpp:100
 msgid "Background Color"
 msgstr "背景色"
 
-#: src/window_loading.cpp:36
+#: src/window_loading.cpp:29
 msgid "Cancel"
 msgstr "取消"
 
-#: src/window_settings.cpp:364
+#: src/window_settings.cpp:51
 msgid "Choose Color"
 msgstr "选择颜色"
 
-#: src/window_about.cpp:114 src/window_settings.cpp:205
+#: src/window_about.cpp:95 src/window_settings.cpp:217
 msgid "Close"
 msgstr "关闭"
 
-#: src/window_about.cpp:81
+#: src/window_about.cpp:63
 msgid "Collaborators:"
 msgstr "合作者："
 
-#: src/window_settings.cpp:173
+#: src/window_settings.cpp:185
 msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
 msgstr "填写代理 URL，例如: http://192.168.1.1:3128"
 
-#: src/lyrics_fetcher.cpp:156
+#: src/lyrics_fetcher.cpp:162
 msgid "Connection failure!"
 msgstr "连接失败！"
 
-#: src/lyrics_fetcher.cpp:149
+#: src/lyrics_fetcher.cpp:155
 msgid "Connection timed out!"
 msgstr "连接超时！"
 
-#: src/window_about.cpp:63
+#: src/window_about.cpp:45
 msgid "Contact:"
 msgstr "联系："
 
-#: src/window_about.cpp:73
+#: src/window_about.cpp:55
 msgid "Credits"
 msgstr "鸣谢表"
 
-#: src/window_settings.cpp:129
+#: src/window_settings.cpp:136
 msgid "Default Colors"
 msgstr "默认颜色"
 
-#: src/window_about.cpp:79
+#: src/window_about.cpp:61
 msgid "Developer"
 msgstr "开发者"
 
-#: src/window_about.cpp:77
+#: src/window_about.cpp:59
 msgid "Developers:"
 msgstr "开发者："
 
-#: src/window_settings.cpp:84 src/window_settings.cpp:138
+#: src/window_settings.cpp:70 src/window_settings.cpp:150
 msgid "Directories"
 msgstr "目录"
 
-#: src/window_settings.cpp:97
+#: src/window_settings.cpp:83
 msgid "Display Lyrics"
 msgstr "显示歌词"
 
-#: src/lyrics_fetcher.cpp:220
+#: src/lyrics_fetcher.cpp:218
 msgid "Error while fetching."
 msgstr "获取出错。"
 
-#: src/main.cpp:33
-msgid "Error while initializing database!"
-msgstr "初始化数据库出错！"
+#: src/main.cpp:27
+msgid "Error while initializing database"
+msgstr ""
 
-#: src/main.cpp:56
-msgid "Error while initializing sound system!"
-msgstr "初始化音频系统出错！"
-
-#: src/lyrics_fetcher.cpp:177
+#: src/lyrics_fetcher.cpp:176
 msgid "Error while redirecting."
 msgstr "重定向出错！"
 
-#: src/main.cpp:51
-msgid "Error while registering keyboard hook!"
-msgstr "注册键盘钩子出错！"
+#: src/main.cpp:32
+msgid "Error while sound system"
+msgstr ""
 
-#: src/window_main.cpp:649
+#: src/window_main.cpp:625
 msgid "Fetching..."
 msgstr "正在获取..."
 
-#: src/window_settings.cpp:83 src/window_settings.cpp:91
+#: src/window_settings.cpp:69 src/window_settings.cpp:77
 msgid "General"
 msgstr "常规"
 
-#: src/window_about.cpp:57
+#: src/window_about.cpp:39
 msgid "Info"
 msgstr "信息"
 
-#: src/window_main.cpp:330
+#: src/window_main.cpp:527
 msgid "KISS Player"
 msgstr "KISS Player"
 
-#: src/window_main.cpp:298
+#: src/window_main.cpp:494
 msgid "KISS Player - Paused"
 msgstr "KISS Player - 已暂停"
 
-#: src/window_settings.cpp:87 src/window_settings.cpp:181
+#: src/window_settings.cpp:73 src/window_settings.cpp:193
 msgid "Language"
 msgstr "语言"
 
-#: src/window_about.cpp:98
+#: src/window_about.cpp:80
 msgid "License"
 msgstr "许可协议"
 
-#: src/window_loading.cpp:33
+#: src/window_loading.cpp:26
 msgid "Loading files..."
 msgstr "正在加载文件..."
 
-#: src/window_main.cpp:653
+#: src/window_main.cpp:630
 msgid "Lyrics Disabled"
 msgstr "歌词已禁用"
 
-#: src/window_settings.cpp:85 src/window_settings.cpp:163
+#: src/window_settings.cpp:71 src/window_settings.cpp:175
 msgid "Network"
 msgstr "网络"
 
-#: src/window_main.cpp:227
+#: src/window_main.cpp:194
 msgid "Next"
 msgstr "下一个"
 
-#: src/lyrics_fetcher.cpp:205
+#: src/lyrics_fetcher.cpp:198
 msgid "Not found :-("
 msgstr "未找到 :-("
 
-#: src/window_main.cpp:209
+#: src/window_main.cpp:170
 msgid "Play/Pause"
 msgstr "播放/暂停"
 
-#: src/window_loading.cpp:27
+#: src/window_loading.cpp:18
 msgid "Please Wait"
 msgstr "请稍等"
 
-#: src/sync.cpp:28
+#: src/sync.cpp:33
 msgid "Please, add at least one directory on the Settings Window."
 msgstr "请在“设置”窗口中添加至少一个目录。"
 
-#: src/window_settings.cpp:386
+#: src/window_settings.cpp:352
 msgid "Please, restart the program to change the language."
 msgstr "请重启本程序以更改语言。"
 
-#: src/window_main.cpp:221
+#: src/window_main.cpp:186
 msgid "Previous"
 msgstr "上一个"
 
-#: src/window_about.cpp:78
+#: src/window_about.cpp:60
 msgid "Project Leader"
 msgstr "项目负责人"
 
-#: src/window_settings.cpp:169
+#: src/window_settings.cpp:181
 msgid "Proxy:"
 msgstr "代理："
 
-#: src/window_main.cpp:245
+#: src/window_main.cpp:218
 msgid "Randomize"
 msgstr "随机"
 
-#: src/window_settings.cpp:155
+#: src/window_settings.cpp:167
 msgid "Remove"
 msgstr "移除"
 
-#: src/window_main.cpp:246
+#: src/window_main.cpp:219
 msgid "Repeat Playlist"
 msgstr "循环播放列表"
 
-#: src/window_loading.cpp:30
+#: src/window_loading.cpp:23
 msgid "Scanning directories..."
 msgstr "正在扫描目录..."
 
-#: src/window_settings.cpp:101
+#: src/window_settings.cpp:91
 msgid "Scroll Title"
 msgstr "滚动标题"
 
-#: src/window_main.cpp:141
+#: src/window_main.cpp:89
 msgid "Search:"
 msgstr "搜索："
 
-#: src/window_settings.cpp:113
+#: src/window_settings.cpp:112
 msgid "Selection Color"
 msgstr "选择颜色"
 
-#: src/window_main.cpp:247 src/window_settings.cpp:77
+#: src/window_main.cpp:220 src/window_settings.cpp:60
 msgid "Settings"
 msgstr "设置"
 
-#: src/window_main.cpp:215
+#: src/window_main.cpp:178
 msgid "Stop"
 msgstr "停止"
 
-#: src/window_main.cpp:244
+#: src/window_main.cpp:217
 msgid "Synchronize Library"
 msgstr "同步库"
 
-#: src/window_settings.cpp:121
+#: src/window_settings.cpp:124
 msgid "Text Color"
 msgstr "文字颜色"
 
-#: src/window_about.cpp:102
+#: src/window_about.cpp:84
 msgid ""
 "This program is licensed under the terms of the GNU General Public License "
 "version 2."
 msgstr "此程序采用 GNU General Public License version 2 许可协议条款授权。"
 
-#: src/window_main.cpp:152 src/window_main.cpp:437
+#: src/window_main.cpp:102 src/window_main.cpp:553
 msgid "Title"
 msgstr "标题"
 
-#: src/window_about.cpp:87
+#: src/window_about.cpp:69
 msgid "Translators:"
 msgstr "翻译者："
 
-#: src/window_main.cpp:235
+#: src/window_main.cpp:206
 msgid "Volume"
 msgstr "音量"
 
-#: src/main.cpp:30
+#: src/main.cpp:22
 msgid "Warning"
 msgstr "警告"
 
-#: src/window_about.cpp:64
+#: src/window_about.cpp:46
 msgid "Website:"
 msgstr "网站："
+
+#~ msgid "Error while initializing database!"
+#~ msgstr "初始化数据库出错！"
+
+#~ msgid "Error while initializing sound system!"
+#~ msgstr "初始化音频系统出错！"
+
+#~ msgid "Error while registering keyboard hook!"
+#~ msgstr "注册键盘钩子出错！"

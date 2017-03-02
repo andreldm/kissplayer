@@ -1,276 +1,273 @@
 # tr translation for KISS Player.
 # Copyright (C) 2015 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-14 22:04-0300\n"
+"POT-Creation-Date: 2017-03-02 17:31-0300\n"
 "PO-Revision-Date: 2015-09-15 01:05+0000\n"
 "Last-Translator: André Miranda <andreldm1989@gmail.com>\n"
-"Language-Team: Turkish (http://www.transifex.com/kissplayer/kissplayer/language/tr/)\n"
+"Language-Team: Turkish (http://www.transifex.com/kissplayer/kissplayer/"
+"language/tr/)\n"
+"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/window_about.cpp:85
+#: src/window_about.cpp:67
 msgid "<translators_credits>"
 msgstr "SailorOnDaTea"
 
-#: src/window_about.cpp:61
+#: src/window_about.cpp:43
 msgid "A Simple and Lightweight Music Player"
 msgstr "Basit ve Hafif Bir Müzik Çalar"
 
-#: src/window_about.cpp:42 src/window_main.cpp:248
+#: src/window_about.cpp:20 src/window_main.cpp:221
 msgid "About"
 msgstr "Hakkında"
 
-#: src/window_settings.cpp:150
+#: src/window_settings.cpp:162
 msgid "Add"
 msgstr "Ekle"
 
-#: src/window_main.cpp:154 src/window_main.cpp:439
+#: src/window_main.cpp:104 src/window_main.cpp:555
 msgid "Album"
 msgstr "Albüm"
 
-#: src/window_main.cpp:151 src/window_main.cpp:436
+#: src/window_main.cpp:101 src/window_main.cpp:552
 msgid "All"
 msgstr "Tümü"
 
-#: src/window_main.cpp:153 src/window_main.cpp:438
+#: src/window_main.cpp:103 src/window_main.cpp:554
 msgid "Artist"
 msgstr "Sanatçı"
 
-#: src/window_about.cpp:103
+#: src/window_about.cpp:85
 msgid "Available online under:"
 msgstr "Çevrimiçi olarak burada bulabilirsiniz:"
 
-#: src/window_settings.cpp:105
+#: src/window_settings.cpp:100
 msgid "Background Color"
 msgstr "Arkaplan Rengi"
 
-#: src/window_loading.cpp:36
+#: src/window_loading.cpp:29
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/window_settings.cpp:364
+#: src/window_settings.cpp:51
 msgid "Choose Color"
 msgstr "Renk Seç"
 
-#: src/window_about.cpp:114 src/window_settings.cpp:205
+#: src/window_about.cpp:95 src/window_settings.cpp:217
 msgid "Close"
 msgstr "Kapat"
 
-#: src/window_about.cpp:81
+#: src/window_about.cpp:63
 msgid "Collaborators:"
 msgstr "İşbirlikçiler:"
 
-#: src/window_settings.cpp:173
+#: src/window_settings.cpp:185
 msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
 msgstr "Tam Vekil Sunucu Adresi, örn: http://192.168.1.1:3128"
 
-#: src/lyrics_fetcher.cpp:156
+#: src/lyrics_fetcher.cpp:162
 msgid "Connection failure!"
 msgstr "Bağlantı hatası!"
 
-#: src/lyrics_fetcher.cpp:149
+#: src/lyrics_fetcher.cpp:155
 msgid "Connection timed out!"
 msgstr "Bağlantı zaman aşımına uğradı!"
 
-#: src/window_about.cpp:63
+#: src/window_about.cpp:45
 msgid "Contact:"
 msgstr "İletişim:"
 
-#: src/window_about.cpp:73
+#: src/window_about.cpp:55
 msgid "Credits"
 msgstr "Emeği Geçenler"
 
-#: src/window_settings.cpp:129
+#: src/window_settings.cpp:136
 msgid "Default Colors"
 msgstr "Varsayılan Renkler"
 
-#: src/window_about.cpp:79
+#: src/window_about.cpp:61
 msgid "Developer"
 msgstr "Geliştirici"
 
-#: src/window_about.cpp:77
+#: src/window_about.cpp:59
 msgid "Developers:"
 msgstr "Geliştiriciler:"
 
-#: src/window_settings.cpp:84 src/window_settings.cpp:138
+#: src/window_settings.cpp:70 src/window_settings.cpp:150
 msgid "Directories"
 msgstr "Klasörler"
 
-#: src/window_settings.cpp:97
+#: src/window_settings.cpp:83
 msgid "Display Lyrics"
 msgstr "Sözleri Göster"
 
-#: src/lyrics_fetcher.cpp:220
+#: src/lyrics_fetcher.cpp:218
 msgid "Error while fetching."
 msgstr "İndirme hatası!"
 
-#: src/main.cpp:33
-msgid "Error while initializing database!"
+#: src/main.cpp:27
+msgid "Error while initializing database"
 msgstr ""
 
-#: src/main.cpp:56
-msgid "Error while initializing sound system!"
-msgstr ""
-
-#: src/lyrics_fetcher.cpp:177
+#: src/lyrics_fetcher.cpp:176
 msgid "Error while redirecting."
 msgstr "Yönlendirme hatası!"
 
-#: src/main.cpp:51
-msgid "Error while registering keyboard hook!"
+#: src/main.cpp:32
+msgid "Error while sound system"
 msgstr ""
 
-#: src/window_main.cpp:649
+#: src/window_main.cpp:625
 msgid "Fetching..."
 msgstr "İndiriliyor..."
 
-#: src/window_settings.cpp:83 src/window_settings.cpp:91
+#: src/window_settings.cpp:69 src/window_settings.cpp:77
 msgid "General"
 msgstr "Genel"
 
-#: src/window_about.cpp:57
+#: src/window_about.cpp:39
 msgid "Info"
 msgstr "Bilgi"
 
-#: src/window_main.cpp:330
+#: src/window_main.cpp:527
 msgid "KISS Player"
 msgstr "KISS Player"
 
-#: src/window_main.cpp:298
+#: src/window_main.cpp:494
 msgid "KISS Player - Paused"
 msgstr "KISS Player - Bekliyor"
 
-#: src/window_settings.cpp:87 src/window_settings.cpp:181
+#: src/window_settings.cpp:73 src/window_settings.cpp:193
 msgid "Language"
 msgstr "Dil"
 
-#: src/window_about.cpp:98
+#: src/window_about.cpp:80
 msgid "License"
 msgstr "Lisans"
 
-#: src/window_loading.cpp:33
+#: src/window_loading.cpp:26
 msgid "Loading files..."
 msgstr "Dosyalar yükleniyor..."
 
-#: src/window_main.cpp:653
+#: src/window_main.cpp:630
 msgid "Lyrics Disabled"
 msgstr "Sözler Devredışı"
 
-#: src/window_settings.cpp:85 src/window_settings.cpp:163
+#: src/window_settings.cpp:71 src/window_settings.cpp:175
 msgid "Network"
 msgstr "Ağ"
 
-#: src/window_main.cpp:227
+#: src/window_main.cpp:194
 msgid "Next"
 msgstr "Sonraki"
 
-#: src/lyrics_fetcher.cpp:205
+#: src/lyrics_fetcher.cpp:198
 msgid "Not found :-("
 msgstr "Bulunamadı :("
 
-#: src/window_main.cpp:209
+#: src/window_main.cpp:170
 msgid "Play/Pause"
 msgstr "Çal/Bekle"
 
-#: src/window_loading.cpp:27
+#: src/window_loading.cpp:18
 msgid "Please Wait"
 msgstr "Lütfen bekleyin"
 
-#: src/sync.cpp:28
+#: src/sync.cpp:33
 msgid "Please, add at least one directory on the Settings Window."
 msgstr "Lütfen ayarlar penceresinde en az bir klasör ekleyin."
 
-#: src/window_settings.cpp:386
+#: src/window_settings.cpp:352
 msgid "Please, restart the program to change the language."
 msgstr "Lütfen dili değiştirmek için programı yeniden başlatın!"
 
-#: src/window_main.cpp:221
+#: src/window_main.cpp:186
 msgid "Previous"
 msgstr "Önceki"
 
-#: src/window_about.cpp:78
+#: src/window_about.cpp:60
 msgid "Project Leader"
 msgstr "Proje Lideri"
 
-#: src/window_settings.cpp:169
+#: src/window_settings.cpp:181
 msgid "Proxy:"
 msgstr "Vekil Sunucu:"
 
-#: src/window_main.cpp:245
+#: src/window_main.cpp:218
 msgid "Randomize"
 msgstr "Karıştır"
 
-#: src/window_settings.cpp:155
+#: src/window_settings.cpp:167
 msgid "Remove"
 msgstr "Çıkart"
 
-#: src/window_main.cpp:246
+#: src/window_main.cpp:219
 msgid "Repeat Playlist"
 msgstr "Listeyi Tekrarla"
 
-#: src/window_loading.cpp:30
+#: src/window_loading.cpp:23
 msgid "Scanning directories..."
 msgstr "Klasörler taranıyor..."
 
-#: src/window_settings.cpp:101
+#: src/window_settings.cpp:91
 msgid "Scroll Title"
 msgstr "Başlığı Kaydır"
 
-#: src/window_main.cpp:141
+#: src/window_main.cpp:89
 msgid "Search:"
 msgstr "Ara:"
 
-#: src/window_settings.cpp:113
+#: src/window_settings.cpp:112
 msgid "Selection Color"
 msgstr "Seçim Rengi"
 
-#: src/window_main.cpp:247 src/window_settings.cpp:77
+#: src/window_main.cpp:220 src/window_settings.cpp:60
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: src/window_main.cpp:215
+#: src/window_main.cpp:178
 msgid "Stop"
 msgstr "Dur"
 
-#: src/window_main.cpp:244
+#: src/window_main.cpp:217
 msgid "Synchronize Library"
 msgstr "Kitaplığı eşitle"
 
-#: src/window_settings.cpp:121
+#: src/window_settings.cpp:124
 msgid "Text Color"
 msgstr "Yazı Rengi"
 
-#: src/window_about.cpp:102
+#: src/window_about.cpp:84
 msgid ""
 "This program is licensed under the terms of the GNU General Public License "
 "version 2."
 msgstr "Bu program GNU Genel Halk Lisansı 2. Sürüm ile lisanslanmıştır."
 
-#: src/window_main.cpp:152 src/window_main.cpp:437
+#: src/window_main.cpp:102 src/window_main.cpp:553
 msgid "Title"
 msgstr "Başlık"
 
-#: src/window_about.cpp:87
+#: src/window_about.cpp:69
 msgid "Translators:"
 msgstr "Çevirmenler:"
 
-#: src/window_main.cpp:235
+#: src/window_main.cpp:206
 msgid "Volume"
 msgstr "Ses"
 
-#: src/main.cpp:30
+#: src/main.cpp:22
 msgid "Warning"
 msgstr "Uyarı"
 
-#: src/window_about.cpp:64
+#: src/window_about.cpp:46
 msgid "Website:"
 msgstr "Web sayfası:"
