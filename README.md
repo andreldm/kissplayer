@@ -37,7 +37,7 @@ Check [Arch's wiki](https://wiki.archlinux.org/index.php/Locale#Setting_the_loca
 
 #### Copyright
     KISS Player
-    Copyright (C) 2012-2014 by André Miranda
+    Copyright (C) 2012-2017 by André Miranda
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
