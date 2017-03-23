@@ -1,15 +1,15 @@
 # el translation for KISS Player.
-# Copyright (C) 2017 THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) 2017 André Miranda
+# This file is distributed under the same license as the kissplayer package.
 # 
 # Translators:
 # Wasilis Mandratzis-Walz, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-14 22:04-0300\n"
-"PO-Revision-Date: 2015-09-15 01:05+0000\n"
+"Report-Msgid-Bugs-To: andre42m@gmail.com\n"
+"POT-Creation-Date: 2017-03-23 17:14-0300\n"
+"PO-Revision-Date: 2017-03-23 20:42+0000\n"
 "Last-Translator: André Miranda <andre42m@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/kissplayer/kissplayer/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -18,260 +18,256 @@ msgstr ""
 "Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/window_about.cpp:85
-msgid "<translators_credits>"
-msgstr "<translators_credits>"
-
-#: src/window_about.cpp:61
-msgid "A Simple and Lightweight Music Player"
-msgstr "Ένα απλό και ελαφρύ πρόγραμμα αναπαραγωγής μουσικής"
-
-#: src/window_about.cpp:42 src/window_main.cpp:248
-msgid "About"
-msgstr "Σχετικά με"
-
-#: src/window_settings.cpp:150
-msgid "Add"
-msgstr "Προσθήκη"
-
-#: src/window_main.cpp:154 src/window_main.cpp:439
-msgid "Album"
-msgstr "Αλμπουμ"
-
-#: src/window_main.cpp:151 src/window_main.cpp:436
-msgid "All"
-msgstr "Ολα"
-
-#: src/window_main.cpp:153 src/window_main.cpp:438
-msgid "Artist"
-msgstr "Καλλιτέχνης"
-
-#: src/window_about.cpp:103
-msgid "Available online under:"
-msgstr "Διαθέσιμο στο διαδίκτυο:"
-
-#: src/window_settings.cpp:105
-msgid "Background Color"
-msgstr "Χρώμα φόντου"
-
-#: src/window_loading.cpp:36
-msgid "Cancel"
-msgstr "Ακύρωση"
-
-#: src/window_settings.cpp:364
-msgid "Choose Color"
-msgstr "Επιλογή χρώματος"
-
-#: src/window_about.cpp:114 src/window_settings.cpp:205
-msgid "Close"
-msgstr "Κλείσιμο"
-
-#: src/window_about.cpp:81
-msgid "Collaborators:"
-msgstr "Συνεργάτες:"
-
-#: src/window_settings.cpp:173
-msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
-msgstr "Πλήρης διεύθυνση URL μεσολάβησης, π.χ: http://192.168.1.1:3128"
-
-#: src/lyrics_fetcher.cpp:156
-msgid "Connection failure!"
-msgstr "Αποτυχία σύνδεσης!"
-
-#: src/lyrics_fetcher.cpp:149
+#: src/lyrics_fetcher.cpp:155
 msgid "Connection timed out!"
 msgstr "Λήξη χρονικού ορίου σύνδεσης!"
 
-#: src/window_about.cpp:63
-msgid "Contact:"
-msgstr "Επικοινωνία:"
+#: src/lyrics_fetcher.cpp:162
+msgid "Connection failure!"
+msgstr "Αποτυχία σύνδεσης!"
 
-#: src/window_about.cpp:73
-msgid "Credits"
-msgstr "Συντελεστές"
-
-#: src/window_settings.cpp:129
-msgid "Default Colors"
-msgstr "Προεπιλογή χρωμάτων"
-
-#: src/window_about.cpp:79
-msgid "Developer"
-msgstr "Προγραμματιστής"
-
-#: src/window_about.cpp:77
-msgid "Developers:"
-msgstr "Προγραμματιστές:"
-
-#: src/window_settings.cpp:84 src/window_settings.cpp:138
-msgid "Directories"
-msgstr "Κατάλογοι"
-
-#: src/window_settings.cpp:97
-msgid "Display Lyrics"
-msgstr "Εμφάνιση στίχων"
-
-#: src/lyrics_fetcher.cpp:220
-msgid "Error while fetching."
-msgstr "Σφάλμα κατά την ανάκτηση."
-
-#: src/main.cpp:33
-msgid "Error while initializing database!"
-msgstr ""
-
-#: src/main.cpp:56
-msgid "Error while initializing sound system!"
-msgstr ""
-
-#: src/lyrics_fetcher.cpp:177
+#: src/lyrics_fetcher.cpp:176
 msgid "Error while redirecting."
 msgstr "Σφάλμα κατά την ανακατεύθυνση."
 
-#: src/main.cpp:51
-msgid "Error while registering keyboard hook!"
-msgstr ""
-
-#: src/window_main.cpp:649
-msgid "Fetching..."
-msgstr "Ανάκτηση..."
-
-#: src/window_settings.cpp:83 src/window_settings.cpp:91
-msgid "General"
-msgstr "Γενικά"
-
-#: src/window_about.cpp:57
-msgid "Info"
-msgstr "Πληροφορίες"
-
-#: src/window_main.cpp:330
-msgid "KISS Player"
-msgstr "KISS Player"
-
-#: src/window_main.cpp:298
-msgid "KISS Player - Paused"
-msgstr "KISS Player - Σε παύση"
-
-#: src/window_settings.cpp:87 src/window_settings.cpp:181
-msgid "Language"
-msgstr "Γλώσσα"
-
-#: src/window_about.cpp:98
-msgid "License"
-msgstr "Άδεια Χρήσης"
-
-#: src/window_loading.cpp:33
-msgid "Loading files..."
-msgstr "Φόρτωση αρχείων..."
-
-#: src/window_main.cpp:653
-msgid "Lyrics Disabled"
-msgstr "Απενεργοποιήση στίχων"
-
-#: src/window_settings.cpp:85 src/window_settings.cpp:163
-msgid "Network"
-msgstr "Δίκτυο"
-
-#: src/window_main.cpp:227
-msgid "Next"
-msgstr "Επόμενο"
-
-#: src/lyrics_fetcher.cpp:205
+#: src/lyrics_fetcher.cpp:198
 msgid "Not found :-("
 msgstr "Δεν βρέθηκε :-("
 
-#: src/window_main.cpp:209
-msgid "Play/Pause"
-msgstr "Αναπαραγωγή/Παύση"
+#: src/lyrics_fetcher.cpp:218
+msgid "Error while fetching."
+msgstr "Σφάλμα κατά την ανάκτηση."
 
-#: src/window_loading.cpp:27
-msgid "Please Wait"
-msgstr "Παρακαλούμε περιμένετε"
+#: src/main.cpp:22
+msgid "Warning"
+msgstr "Προειδοποίηση"
 
-#: src/sync.cpp:28
+#: src/main.cpp:27
+msgid "Error while initializing database"
+msgstr ""
+
+#: src/main.cpp:32
+msgid "Error while sound system"
+msgstr ""
+
+#: src/sync.cpp:33
 msgid "Please, add at least one directory on the Settings Window."
 msgstr "Παρακαλούμε προσθέστε τουλάχιστον έναν κατάλογο στο Παραθυρο ρυθμισεων"
 
-#: src/window_settings.cpp:386
-msgid "Please, restart the program to change the language."
-msgstr "Παρακαλούμε, επανεκκινήστε το πρόγραμμα για αλλαγή της γλώσσας."
+#: src/window_about.cpp:20 src/window_main.cpp:221
+msgid "About"
+msgstr "Σχετικά με"
 
-#: src/window_main.cpp:221
-msgid "Previous"
-msgstr "Προηγούμενο"
+#: src/window_about.cpp:39
+msgid "Info"
+msgstr "Πληροφορίες"
 
-#: src/window_about.cpp:78
+#: src/window_about.cpp:43
+msgid "A Simple and Lightweight Music Player"
+msgstr "Ένα απλό και ελαφρύ πρόγραμμα αναπαραγωγής μουσικής"
+
+#: src/window_about.cpp:45
+msgid "Contact:"
+msgstr "Επικοινωνία:"
+
+#: src/window_about.cpp:46
+msgid "Website:"
+msgstr "Ιστοσελίδα:"
+
+#: src/window_about.cpp:55
+msgid "Credits"
+msgstr "Συντελεστές"
+
+#: src/window_about.cpp:59
+msgid "Developers:"
+msgstr "Προγραμματιστές:"
+
+#: src/window_about.cpp:60
 msgid "Project Leader"
 msgstr "Υπεύθυνος Έργου"
 
-#: src/window_settings.cpp:169
-msgid "Proxy:"
-msgstr "Διακομιστής μεσολάβησης:"
+#: src/window_about.cpp:61
+msgid "Developer"
+msgstr "Προγραμματιστής"
 
-#: src/window_main.cpp:245
-msgid "Randomize"
-msgstr "Τυχαιοποίηση"
+#: src/window_about.cpp:63
+msgid "Collaborators:"
+msgstr "Συνεργάτες:"
 
-#: src/window_settings.cpp:155
-msgid "Remove"
-msgstr "Αφαίρεση"
+#: src/window_about.cpp:67
+msgid "<translators_credits>"
+msgstr "<translators_credits>"
 
-#: src/window_main.cpp:246
-msgid "Repeat Playlist"
-msgstr "Επανάληψη λίστας αναπαραγωγής"
+#: src/window_about.cpp:69
+msgid "Translators:"
+msgstr "Μεταφραστές:"
 
-#: src/window_loading.cpp:30
-msgid "Scanning directories..."
-msgstr "Σάρωση καταλόγων..."
+#: src/window_about.cpp:80
+msgid "License"
+msgstr "Άδεια Χρήσης"
 
-#: src/window_settings.cpp:101
-msgid "Scroll Title"
-msgstr "Κύλιση τίτλου"
-
-#: src/window_main.cpp:141
-msgid "Search:"
-msgstr "Αναζήτηση:"
-
-#: src/window_settings.cpp:113
-msgid "Selection Color"
-msgstr "Επιλογή χρώματος"
-
-#: src/window_main.cpp:247 src/window_settings.cpp:77
-msgid "Settings"
-msgstr "Ρυθμίσεις"
-
-#: src/window_main.cpp:215
-msgid "Stop"
-msgstr "Στοπ"
-
-#: src/window_main.cpp:244
-msgid "Synchronize Library"
-msgstr "Συγχρονισμός Βιβλιοθήκης"
-
-#: src/window_settings.cpp:121
-msgid "Text Color"
-msgstr "Χρώμα κειμένου"
-
-#: src/window_about.cpp:102
+#: src/window_about.cpp:84
 msgid ""
 "This program is licensed under the terms of the GNU General Public License "
 "version 2."
 msgstr "Αυτό το πρόγραμμα έχει αδειοδοτηθεί σύμφωνα με τους όρους της έκδοσης Άδειας Χρήσης GNU General Public 2."
 
-#: src/window_main.cpp:152 src/window_main.cpp:437
+#: src/window_about.cpp:85
+msgid "Available online under:"
+msgstr "Διαθέσιμο στο διαδίκτυο:"
+
+#: src/window_about.cpp:95 src/window_settings.cpp:217
+msgid "Close"
+msgstr "Κλείσιμο"
+
+#: src/window_loading.cpp:18
+msgid "Please Wait"
+msgstr "Παρακαλούμε περιμένετε"
+
+#: src/window_loading.cpp:23
+msgid "Scanning directories..."
+msgstr "Σάρωση καταλόγων..."
+
+#: src/window_loading.cpp:26
+msgid "Loading files..."
+msgstr "Φόρτωση αρχείων..."
+
+#: src/window_loading.cpp:29
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+#: src/window_main.cpp:89
+msgid "Search:"
+msgstr "Αναζήτηση:"
+
+#: src/window_main.cpp:101 src/window_main.cpp:552
+msgid "All"
+msgstr "Ολα"
+
+#: src/window_main.cpp:102 src/window_main.cpp:553
 msgid "Title"
 msgstr "Τίτλος"
 
-#: src/window_about.cpp:87
-msgid "Translators:"
-msgstr "Μεταφραστές:"
+#: src/window_main.cpp:103 src/window_main.cpp:554
+msgid "Artist"
+msgstr "Καλλιτέχνης"
 
-#: src/window_main.cpp:235
+#: src/window_main.cpp:104 src/window_main.cpp:555
+msgid "Album"
+msgstr "Αλμπουμ"
+
+#: src/window_main.cpp:170
+msgid "Play/Pause"
+msgstr "Αναπαραγωγή/Παύση"
+
+#: src/window_main.cpp:178
+msgid "Stop"
+msgstr "Στοπ"
+
+#: src/window_main.cpp:186
+msgid "Previous"
+msgstr "Προηγούμενο"
+
+#: src/window_main.cpp:194
+msgid "Next"
+msgstr "Επόμενο"
+
+#: src/window_main.cpp:206
 msgid "Volume"
 msgstr "Ένταση"
 
-#: src/main.cpp:30
-msgid "Warning"
-msgstr "Προειδοποίηση"
+#: src/window_main.cpp:217
+msgid "Synchronize Library"
+msgstr "Συγχρονισμός Βιβλιοθήκης"
 
-#: src/window_about.cpp:64
-msgid "Website:"
-msgstr "Ιστοσελίδα:"
+#: src/window_main.cpp:218
+msgid "Randomize"
+msgstr "Τυχαιοποίηση"
+
+#: src/window_main.cpp:219
+msgid "Repeat Playlist"
+msgstr "Επανάληψη λίστας αναπαραγωγής"
+
+#: src/window_main.cpp:220 src/window_settings.cpp:60
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+#: src/window_main.cpp:494
+msgid "KISS Player - Paused"
+msgstr "KISS Player - Σε παύση"
+
+#: src/window_main.cpp:527
+msgid "KISS Player"
+msgstr "KISS Player"
+
+#: src/window_main.cpp:625
+msgid "Fetching..."
+msgstr "Ανάκτηση..."
+
+#: src/window_main.cpp:630
+msgid "Lyrics Disabled"
+msgstr "Απενεργοποιήση στίχων"
+
+#: src/window_settings.cpp:51
+msgid "Choose Color"
+msgstr "Επιλογή χρώματος"
+
+#: src/window_settings.cpp:69 src/window_settings.cpp:77
+msgid "General"
+msgstr "Γενικά"
+
+#: src/window_settings.cpp:70 src/window_settings.cpp:150
+msgid "Directories"
+msgstr "Κατάλογοι"
+
+#: src/window_settings.cpp:71 src/window_settings.cpp:175
+msgid "Network"
+msgstr "Δίκτυο"
+
+#: src/window_settings.cpp:73 src/window_settings.cpp:193
+msgid "Language"
+msgstr "Γλώσσα"
+
+#: src/window_settings.cpp:83
+msgid "Display Lyrics"
+msgstr "Εμφάνιση στίχων"
+
+#: src/window_settings.cpp:91
+msgid "Scroll Title"
+msgstr "Κύλιση τίτλου"
+
+#: src/window_settings.cpp:100
+msgid "Background Color"
+msgstr "Χρώμα φόντου"
+
+#: src/window_settings.cpp:112
+msgid "Selection Color"
+msgstr "Επιλογή χρώματος"
+
+#: src/window_settings.cpp:124
+msgid "Text Color"
+msgstr "Χρώμα κειμένου"
+
+#: src/window_settings.cpp:136
+msgid "Default Colors"
+msgstr "Προεπιλογή χρωμάτων"
+
+#: src/window_settings.cpp:162
+msgid "Add"
+msgstr "Προσθήκη"
+
+#: src/window_settings.cpp:167
+msgid "Remove"
+msgstr "Αφαίρεση"
+
+#: src/window_settings.cpp:181
+msgid "Proxy:"
+msgstr "Διακομιστής μεσολάβησης:"
+
+#: src/window_settings.cpp:185
+msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
+msgstr "Πλήρης διεύθυνση URL μεσολάβησης, π.χ: http://192.168.1.1:3128"
+
+#: src/window_settings.cpp:352
+msgid "Please, restart the program to change the language."
+msgstr "Παρακαλούμε, επανεκκινήστε το πρόγραμμα για αλλαγή της γλώσσας."

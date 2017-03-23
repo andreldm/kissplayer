@@ -63,7 +63,7 @@ COPYRIGHT_HOLDER = André Miranda
 # It can be your email address, or a mailing list address where translators
 # can write to without being subscribed, or the URL of a web page through
 # which the translators can contact you.
-MSGID_BUGS_ADDRESS = andreldm1989@gmail.com
+MSGID_BUGS_ADDRESS = andre42m@gmail.com
 
 # This is the list of locale categories, beyond LC_MESSAGES, for which the
 # message catalogs shall be used.  It is usually empty.

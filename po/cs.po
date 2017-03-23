@@ -1,17 +1,18 @@
 # cs translation for KISS Player.
-# Copyright (C) 2017 THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) 2017 André Miranda
+# This file is distributed under the same license as the kissplayer package.
 # 
 # Translators:
+# André Miranda <andre42m@gmail.com>, 2017
 # fri, 2015
 # fri, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-14 22:04-0300\n"
-"PO-Revision-Date: 2015-09-15 05:58+0000\n"
-"Last-Translator: fri\n"
+"Report-Msgid-Bugs-To: andre42m@gmail.com\n"
+"POT-Creation-Date: 2017-03-23 17:14-0300\n"
+"PO-Revision-Date: 2017-03-23 20:47+0000\n"
+"Last-Translator: André Miranda <andre42m@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/kissplayer/kissplayer/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,260 +20,256 @@ msgstr ""
 "Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: src/window_about.cpp:85
-msgid "<translators_credits>"
-msgstr "Pavel Fric"
-
-#: src/window_about.cpp:61
-msgid "A Simple and Lightweight Music Player"
-msgstr "Jednoduchý lehký hudební přehrávač"
-
-#: src/window_about.cpp:42 src/window_main.cpp:248
-msgid "About"
-msgstr "O programu"
-
-#: src/window_settings.cpp:150
-msgid "Add"
-msgstr "Přidat"
-
-#: src/window_main.cpp:154 src/window_main.cpp:439
-msgid "Album"
-msgstr "Album"
-
-#: src/window_main.cpp:151 src/window_main.cpp:436
-msgid "All"
-msgstr "Vše"
-
-#: src/window_main.cpp:153 src/window_main.cpp:438
-msgid "Artist"
-msgstr "Umělec"
-
-#: src/window_about.cpp:103
-msgid "Available online under:"
-msgstr "Dostupné na internetu:"
-
-#: src/window_settings.cpp:105
-msgid "Background Color"
-msgstr "Barva pozadí"
-
-#: src/window_loading.cpp:36
-msgid "Cancel"
-msgstr "Zrušit"
-
-#: src/window_settings.cpp:364
-msgid "Choose Color"
-msgstr "Vybrat barvu"
-
-#: src/window_about.cpp:114 src/window_settings.cpp:205
-msgid "Close"
-msgstr "Zavřít"
-
-#: src/window_about.cpp:81
-msgid "Collaborators:"
-msgstr "Spolupracovníci"
-
-#: src/window_settings.cpp:173
-msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
-msgstr "Úplná adresa proxy (URL), např.: http://192.168.1.1:3128"
-
-#: src/lyrics_fetcher.cpp:156
-msgid "Connection failure!"
-msgstr "Chyba spojení!"
-
-#: src/lyrics_fetcher.cpp:149
+#: src/lyrics_fetcher.cpp:155
 msgid "Connection timed out!"
 msgstr "Připojení vypršelo"
 
-#: src/window_about.cpp:63
-msgid "Contact:"
-msgstr "Spojení:"
+#: src/lyrics_fetcher.cpp:162
+msgid "Connection failure!"
+msgstr "Chyba spojení!"
 
-#: src/window_about.cpp:73
-msgid "Credits"
-msgstr "Zásluhy"
-
-#: src/window_settings.cpp:129
-msgid "Default Colors"
-msgstr "Výchozí barvy"
-
-#: src/window_about.cpp:79
-msgid "Developer"
-msgstr "Vývojář"
-
-#: src/window_about.cpp:77
-msgid "Developers:"
-msgstr "Vývojáři:"
-
-#: src/window_settings.cpp:84 src/window_settings.cpp:138
-msgid "Directories"
-msgstr "Adresáře"
-
-#: src/window_settings.cpp:97
-msgid "Display Lyrics"
-msgstr "Zobrazit slova písní"
-
-#: src/lyrics_fetcher.cpp:220
-msgid "Error while fetching."
-msgstr "Chyba při natahování."
-
-#: src/main.cpp:33
-msgid "Error while initializing database!"
-msgstr "Chyba při inicializaci databáze!"
-
-#: src/main.cpp:56
-msgid "Error while initializing sound system!"
-msgstr "Chyba při inicializaci zvukového systému!"
-
-#: src/lyrics_fetcher.cpp:177
+#: src/lyrics_fetcher.cpp:176
 msgid "Error while redirecting."
 msgstr "Chyba při přesměrování."
 
-#: src/main.cpp:51
-msgid "Error while registering keyboard hook!"
-msgstr "Chyba při registraci háčku klávesnice!"
-
-#: src/window_main.cpp:649
-msgid "Fetching..."
-msgstr "Natahuje se..."
-
-#: src/window_settings.cpp:83 src/window_settings.cpp:91
-msgid "General"
-msgstr "Obecné"
-
-#: src/window_about.cpp:57
-msgid "Info"
-msgstr "Informace"
-
-#: src/window_main.cpp:330
-msgid "KISS Player"
-msgstr "KISS Player"
-
-#: src/window_main.cpp:298
-msgid "KISS Player - Paused"
-msgstr "KISS Player - Pozastaveno"
-
-#: src/window_settings.cpp:87 src/window_settings.cpp:181
-msgid "Language"
-msgstr "Jazyk"
-
-#: src/window_about.cpp:98
-msgid "License"
-msgstr "Povolení"
-
-#: src/window_loading.cpp:33
-msgid "Loading files..."
-msgstr "Nahrávají se soubory..."
-
-#: src/window_main.cpp:653
-msgid "Lyrics Disabled"
-msgstr "Slova písní zakázána"
-
-#: src/window_settings.cpp:85 src/window_settings.cpp:163
-msgid "Network"
-msgstr "Síť"
-
-#: src/window_main.cpp:227
-msgid "Next"
-msgstr "Další"
-
-#: src/lyrics_fetcher.cpp:205
+#: src/lyrics_fetcher.cpp:198
 msgid "Not found :-("
 msgstr " Nenalezeno"
 
-#: src/window_main.cpp:209
-msgid "Play/Pause"
-msgstr "Přehrát/Pozastavit"
+#: src/lyrics_fetcher.cpp:218
+msgid "Error while fetching."
+msgstr "Chyba při natahování."
 
-#: src/window_loading.cpp:27
-msgid "Please Wait"
-msgstr "Počkejte, prosím"
+#: src/main.cpp:22
+msgid "Warning"
+msgstr "Varování"
 
-#: src/sync.cpp:28
+#: src/main.cpp:27
+msgid "Error while initializing database"
+msgstr "Chyba při inicializaci databáze"
+
+#: src/main.cpp:32
+msgid "Error while sound system"
+msgstr "Chyba při inicializaci zvukového systému"
+
+#: src/sync.cpp:33
 msgid "Please, add at least one directory on the Settings Window."
 msgstr "Přidejte, prosím, alespoň jeden adresář v okně s nastavením."
 
-#: src/window_settings.cpp:386
-msgid "Please, restart the program to change the language."
-msgstr "Spusťte, prosím, program znovu, aby se jazyk změnil."
+#: src/window_about.cpp:20 src/window_main.cpp:221
+msgid "About"
+msgstr "O programu"
 
-#: src/window_main.cpp:221
-msgid "Previous"
-msgstr "Předchozí"
+#: src/window_about.cpp:39
+msgid "Info"
+msgstr "Informace"
 
-#: src/window_about.cpp:78
+#: src/window_about.cpp:43
+msgid "A Simple and Lightweight Music Player"
+msgstr "Jednoduchý lehký hudební přehrávač"
+
+#: src/window_about.cpp:45
+msgid "Contact:"
+msgstr "Spojení:"
+
+#: src/window_about.cpp:46
+msgid "Website:"
+msgstr "Stránky:"
+
+#: src/window_about.cpp:55
+msgid "Credits"
+msgstr "Zásluhy"
+
+#: src/window_about.cpp:59
+msgid "Developers:"
+msgstr "Vývojáři:"
+
+#: src/window_about.cpp:60
 msgid "Project Leader"
 msgstr "Vedoucí projektu"
 
-#: src/window_settings.cpp:169
-msgid "Proxy:"
-msgstr "Proxy:"
+#: src/window_about.cpp:61
+msgid "Developer"
+msgstr "Vývojář"
 
-#: src/window_main.cpp:245
-msgid "Randomize"
-msgstr "Náhodně"
+#: src/window_about.cpp:63
+msgid "Collaborators:"
+msgstr "Spolupracovníci"
 
-#: src/window_settings.cpp:155
-msgid "Remove"
-msgstr "Odstranit"
+#: src/window_about.cpp:67
+msgid "<translators_credits>"
+msgstr "Pavel Fric"
 
-#: src/window_main.cpp:246
-msgid "Repeat Playlist"
-msgstr "Opakovat seznam skladeb"
+#: src/window_about.cpp:69
+msgid "Translators:"
+msgstr "Překladatelé:"
 
-#: src/window_loading.cpp:30
-msgid "Scanning directories..."
-msgstr "Prohledávají se adresáře..."
+#: src/window_about.cpp:80
+msgid "License"
+msgstr "Povolení"
 
-#: src/window_settings.cpp:101
-msgid "Scroll Title"
-msgstr "Posunovat název"
-
-#: src/window_main.cpp:141
-msgid "Search:"
-msgstr "Hledání:"
-
-#: src/window_settings.cpp:113
-msgid "Selection Color"
-msgstr "Barva výběru"
-
-#: src/window_main.cpp:247 src/window_settings.cpp:77
-msgid "Settings"
-msgstr "Nastavení"
-
-#: src/window_main.cpp:215
-msgid "Stop"
-msgstr "Zastavit"
-
-#: src/window_main.cpp:244
-msgid "Synchronize Library"
-msgstr "Seřídit knihovnu"
-
-#: src/window_settings.cpp:121
-msgid "Text Color"
-msgstr "Barva textu"
-
-#: src/window_about.cpp:102
+#: src/window_about.cpp:84
 msgid ""
 "This program is licensed under the terms of the GNU General Public License "
 "version 2."
 msgstr "Tento program je licencován pod GNU General Public License ve verzi 2."
 
-#: src/window_main.cpp:152 src/window_main.cpp:437
+#: src/window_about.cpp:85
+msgid "Available online under:"
+msgstr "Dostupné na internetu:"
+
+#: src/window_about.cpp:95 src/window_settings.cpp:217
+msgid "Close"
+msgstr "Zavřít"
+
+#: src/window_loading.cpp:18
+msgid "Please Wait"
+msgstr "Počkejte, prosím"
+
+#: src/window_loading.cpp:23
+msgid "Scanning directories..."
+msgstr "Prohledávají se adresáře..."
+
+#: src/window_loading.cpp:26
+msgid "Loading files..."
+msgstr "Nahrávají se soubory..."
+
+#: src/window_loading.cpp:29
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: src/window_main.cpp:89
+msgid "Search:"
+msgstr "Hledání:"
+
+#: src/window_main.cpp:101 src/window_main.cpp:552
+msgid "All"
+msgstr "Vše"
+
+#: src/window_main.cpp:102 src/window_main.cpp:553
 msgid "Title"
 msgstr "Název"
 
-#: src/window_about.cpp:87
-msgid "Translators:"
-msgstr "Překladatelé:"
+#: src/window_main.cpp:103 src/window_main.cpp:554
+msgid "Artist"
+msgstr "Umělec"
 
-#: src/window_main.cpp:235
+#: src/window_main.cpp:104 src/window_main.cpp:555
+msgid "Album"
+msgstr "Album"
+
+#: src/window_main.cpp:170
+msgid "Play/Pause"
+msgstr "Přehrát/Pozastavit"
+
+#: src/window_main.cpp:178
+msgid "Stop"
+msgstr "Zastavit"
+
+#: src/window_main.cpp:186
+msgid "Previous"
+msgstr "Předchozí"
+
+#: src/window_main.cpp:194
+msgid "Next"
+msgstr "Další"
+
+#: src/window_main.cpp:206
 msgid "Volume"
 msgstr "Hlasitost"
 
-#: src/main.cpp:30
-msgid "Warning"
-msgstr "Varování"
+#: src/window_main.cpp:217
+msgid "Synchronize Library"
+msgstr "Seřídit knihovnu"
 
-#: src/window_about.cpp:64
-msgid "Website:"
-msgstr "Stránky:"
+#: src/window_main.cpp:218
+msgid "Randomize"
+msgstr "Náhodně"
+
+#: src/window_main.cpp:219
+msgid "Repeat Playlist"
+msgstr "Opakovat seznam skladeb"
+
+#: src/window_main.cpp:220 src/window_settings.cpp:60
+msgid "Settings"
+msgstr "Nastavení"
+
+#: src/window_main.cpp:494
+msgid "KISS Player - Paused"
+msgstr "KISS Player - Pozastaveno"
+
+#: src/window_main.cpp:527
+msgid "KISS Player"
+msgstr "KISS Player"
+
+#: src/window_main.cpp:625
+msgid "Fetching..."
+msgstr "Natahuje se..."
+
+#: src/window_main.cpp:630
+msgid "Lyrics Disabled"
+msgstr "Slova písní zakázána"
+
+#: src/window_settings.cpp:51
+msgid "Choose Color"
+msgstr "Vybrat barvu"
+
+#: src/window_settings.cpp:69 src/window_settings.cpp:77
+msgid "General"
+msgstr "Obecné"
+
+#: src/window_settings.cpp:70 src/window_settings.cpp:150
+msgid "Directories"
+msgstr "Adresáře"
+
+#: src/window_settings.cpp:71 src/window_settings.cpp:175
+msgid "Network"
+msgstr "Síť"
+
+#: src/window_settings.cpp:73 src/window_settings.cpp:193
+msgid "Language"
+msgstr "Jazyk"
+
+#: src/window_settings.cpp:83
+msgid "Display Lyrics"
+msgstr "Zobrazit slova písní"
+
+#: src/window_settings.cpp:91
+msgid "Scroll Title"
+msgstr "Posunovat název"
+
+#: src/window_settings.cpp:100
+msgid "Background Color"
+msgstr "Barva pozadí"
+
+#: src/window_settings.cpp:112
+msgid "Selection Color"
+msgstr "Barva výběru"
+
+#: src/window_settings.cpp:124
+msgid "Text Color"
+msgstr "Barva textu"
+
+#: src/window_settings.cpp:136
+msgid "Default Colors"
+msgstr "Výchozí barvy"
+
+#: src/window_settings.cpp:162
+msgid "Add"
+msgstr "Přidat"
+
+#: src/window_settings.cpp:167
+msgid "Remove"
+msgstr "Odstranit"
+
+#: src/window_settings.cpp:181
+msgid "Proxy:"
+msgstr "Proxy:"
+
+#: src/window_settings.cpp:185
+msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
+msgstr "Úplná adresa proxy (URL), např.: http://192.168.1.1:3128"
+
+#: src/window_settings.cpp:352
+msgid "Please, restart the program to change the language."
+msgstr "Spusťte, prosím, program znovu, aby se jazyk změnil."
