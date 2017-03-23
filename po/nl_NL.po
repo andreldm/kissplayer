@@ -1,148 +1,146 @@
-# pt_BR translation for KISS Player.
+# nl_NL translation for KISS Player.
 # Copyright (C) 2017 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# André Miranda <andre42m@gmail.com>, 2014
-# André Miranda <andre42m@gmail.com>, 2014-2015
-# Maykon Silva <maykosiqueira@gmail.com>, 2014
+# Heimen Stoffels <vistausss@outlook.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-14 22:04-0300\n"
-"PO-Revision-Date: 2015-09-15 01:09+0000\n"
-"Last-Translator: André Miranda <andre42m@gmail.com>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/kissplayer/kissplayer/language/pt_BR/)\n"
+"PO-Revision-Date: 2017-03-23 12:57+0000\n"
+"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/kissplayer/kissplayer/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt_BR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: nl_NL\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/window_about.cpp:85
 msgid "<translators_credits>"
-msgstr "André Miranda <andreldm1989@gmail.com>"
+msgstr "Heimen Stoffels"
 
 #: src/window_about.cpp:61
 msgid "A Simple and Lightweight Music Player"
-msgstr "Um Tocador de Músicas Simples e Leve"
+msgstr "Een eenvoudige, lichtgewicht muziekspeler"
 
 #: src/window_about.cpp:42 src/window_main.cpp:248
 msgid "About"
-msgstr "Sobre"
+msgstr "Over"
 
 #: src/window_settings.cpp:150
 msgid "Add"
-msgstr "Adicionar"
+msgstr "Toevoegen"
 
 #: src/window_main.cpp:154 src/window_main.cpp:439
 msgid "Album"
-msgstr "Álbum"
+msgstr "Albu"
 
 #: src/window_main.cpp:151 src/window_main.cpp:436
 msgid "All"
-msgstr "Todos"
+msgstr "Alles"
 
 #: src/window_main.cpp:153 src/window_main.cpp:438
 msgid "Artist"
-msgstr "Artista"
+msgstr "Artiest"
 
 #: src/window_about.cpp:103
 msgid "Available online under:"
-msgstr "Disponível on-line em:"
+msgstr "Online beschikbaar als:"
 
 #: src/window_settings.cpp:105
 msgid "Background Color"
-msgstr "Cor de fundo"
+msgstr "Achtergrondkleur"
 
 #: src/window_loading.cpp:36
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "Annuleren"
 
 #: src/window_settings.cpp:364
 msgid "Choose Color"
-msgstr "Escolha a cor"
+msgstr "Kleur kiezen"
 
 #: src/window_about.cpp:114 src/window_settings.cpp:205
 msgid "Close"
-msgstr "Fechar"
+msgstr "Sluiten"
 
 #: src/window_about.cpp:81
 msgid "Collaborators:"
-msgstr "Colaboradores:"
+msgstr "Medewerkers:"
 
 #: src/window_settings.cpp:173
 msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
-msgstr "URL completa do proxy, ex: http://192.168.1.1:3128"
+msgstr "Volledige proxy-URL, bijv.: http://192.168.1.1:3128"
 
 #: src/lyrics_fetcher.cpp:156
 msgid "Connection failure!"
-msgstr "Falha na conexão!"
+msgstr "Verbindingsfout!"
 
 #: src/lyrics_fetcher.cpp:149
 msgid "Connection timed out!"
-msgstr "Tempo esgotado!"
+msgstr "De verbinding is verlopen!"
 
 #: src/window_about.cpp:63
 msgid "Contact:"
-msgstr "Contato:"
+msgstr "Contact:"
 
 #: src/window_about.cpp:73
 msgid "Credits"
-msgstr "Créditos"
+msgstr "Met dank aan"
 
 #: src/window_settings.cpp:129
 msgid "Default Colors"
-msgstr "Cor Padrão"
+msgstr "Standaard kleuren"
 
 #: src/window_about.cpp:79
 msgid "Developer"
-msgstr "Desenvolvedor"
+msgstr "Ontwikkelaar"
 
 #: src/window_about.cpp:77
 msgid "Developers:"
-msgstr "Desenvolvedores:"
+msgstr "Ontwikkelaars:"
 
 #: src/window_settings.cpp:84 src/window_settings.cpp:138
 msgid "Directories"
-msgstr "Diretórios"
+msgstr "Mappe"
 
 #: src/window_settings.cpp:97
 msgid "Display Lyrics"
-msgstr "Mostrar Letras"
+msgstr "Songteksten weergeven"
 
 #: src/lyrics_fetcher.cpp:220
 msgid "Error while fetching."
-msgstr "Erro ao buscar."
+msgstr "Er is een fout opgetreden tijdens het ophalen."
 
 #: src/main.cpp:33
 msgid "Error while initializing database!"
-msgstr "Erro ao inicializar banco de dados!"
+msgstr "Er is een fout opgetreden tijdens het initialiseren van de database!"
 
 #: src/main.cpp:56
 msgid "Error while initializing sound system!"
-msgstr "Erro ao inicializar sistema de áudio!"
+msgstr "Er is een fout opgetreden tijdens het initialiseren van het geluidssysteem!"
 
 #: src/lyrics_fetcher.cpp:177
 msgid "Error while redirecting."
-msgstr "Erro ao redirecionar."
+msgstr "Er is een fout opgetreden tijdens het doorsturen."
 
 #: src/main.cpp:51
 msgid "Error while registering keyboard hook!"
-msgstr "Erro ao registrar monitor de teclado!"
+msgstr "Er is een fout opgetreden tijdens het registreren van het toetsenbord!"
 
 #: src/window_main.cpp:649
 msgid "Fetching..."
-msgstr "Pesquisando..."
+msgstr "Bezig met ophalen..."
 
 #: src/window_settings.cpp:83 src/window_settings.cpp:91
 msgid "General"
-msgstr "Geral"
+msgstr "Algemeen"
 
 #: src/window_about.cpp:57
 msgid "Info"
-msgstr "Info"
+msgstr "Informatie"
 
 #: src/window_main.cpp:330
 msgid "KISS Player"
@@ -150,59 +148,59 @@ msgstr "KISS Player"
 
 #: src/window_main.cpp:298
 msgid "KISS Player - Paused"
-msgstr "KISS Player - Em Pausa"
+msgstr "KISS Player - Gepauzeerd"
 
 #: src/window_settings.cpp:87 src/window_settings.cpp:181
 msgid "Language"
-msgstr "Idioma"
+msgstr "Taal"
 
 #: src/window_about.cpp:98
 msgid "License"
-msgstr "Licença"
+msgstr "Licentie"
 
 #: src/window_loading.cpp:33
 msgid "Loading files..."
-msgstr "Carregando arquivos..."
+msgstr "Bezig met laden van bestanden..."
 
 #: src/window_main.cpp:653
 msgid "Lyrics Disabled"
-msgstr "Letras de música desativada"
+msgstr "Songteksten zijn uitgeschakeld"
 
 #: src/window_settings.cpp:85 src/window_settings.cpp:163
 msgid "Network"
-msgstr "Rede"
+msgstr "Netwerk"
 
 #: src/window_main.cpp:227
 msgid "Next"
-msgstr "Próximo"
+msgstr "Volgende"
 
 #: src/lyrics_fetcher.cpp:205
 msgid "Not found :-("
-msgstr "Não encontrado :-("
+msgstr "Niet gevonden :-("
 
 #: src/window_main.cpp:209
 msgid "Play/Pause"
-msgstr "Tocar/Pausar"
+msgstr "Afspelen/Pauzeren"
 
 #: src/window_loading.cpp:27
 msgid "Please Wait"
-msgstr "Aguarde"
+msgstr "Even geduld"
 
 #: src/sync.cpp:28
 msgid "Please, add at least one directory on the Settings Window."
-msgstr "Por favor, adicione pelo menos um diretório na Janela de Configurações."
+msgstr "Voeg minimaal één map toe in het Instellingenvenster."
 
 #: src/window_settings.cpp:386
 msgid "Please, restart the program to change the language."
-msgstr "Por favor, reinicie o programa para alterar o idioma."
+msgstr "Herstart de app om de taalwijziging toe te passen."
 
 #: src/window_main.cpp:221
 msgid "Previous"
-msgstr "Anterior"
+msgstr "Vorige"
 
 #: src/window_about.cpp:78
 msgid "Project Leader"
-msgstr "Líder do Projeto"
+msgstr "Projectleider"
 
 #: src/window_settings.cpp:169
 msgid "Proxy:"
@@ -210,61 +208,61 @@ msgstr "Proxy:"
 
 #: src/window_main.cpp:245
 msgid "Randomize"
-msgstr "Aleatório"
+msgstr "Willekeurig"
 
 #: src/window_settings.cpp:155
 msgid "Remove"
-msgstr "Remover"
+msgstr "Verwijderen"
 
 #: src/window_main.cpp:246
 msgid "Repeat Playlist"
-msgstr "Repetir Playlist"
+msgstr "Afspeellijst herhalen"
 
 #: src/window_loading.cpp:30
 msgid "Scanning directories..."
-msgstr "Lendo diretórios..."
+msgstr "Bezig met doorzoeken van mappen..."
 
 #: src/window_settings.cpp:101
 msgid "Scroll Title"
-msgstr "Rolar título"
+msgstr "Titel laten scrollen"
 
 #: src/window_main.cpp:141
 msgid "Search:"
-msgstr "Procurar:"
+msgstr "Zoeken:"
 
 #: src/window_settings.cpp:113
 msgid "Selection Color"
-msgstr "Cor de Seleção"
+msgstr "Selectiekleur"
 
 #: src/window_main.cpp:247 src/window_settings.cpp:77
 msgid "Settings"
-msgstr "Configurações"
+msgstr "Instellingen"
 
 #: src/window_main.cpp:215
 msgid "Stop"
-msgstr "Parar"
+msgstr "Stoppen"
 
 #: src/window_main.cpp:244
 msgid "Synchronize Library"
-msgstr "Sincronizar Biblioteca"
+msgstr "Bibliotheek synchroniseren"
 
 #: src/window_settings.cpp:121
 msgid "Text Color"
-msgstr "Cor do Texto"
+msgstr "Tekstkleur"
 
 #: src/window_about.cpp:102
 msgid ""
 "This program is licensed under the terms of the GNU General Public License "
 "version 2."
-msgstr "Este programa é licenciado sob os termos da GNU General Public License versão 2."
+msgstr "Deze applicatie wordt uitgebracht onder de voorwaarden van de GNU General Public License versie 2."
 
 #: src/window_main.cpp:152 src/window_main.cpp:437
 msgid "Title"
-msgstr "Título"
+msgstr "Titel"
 
 #: src/window_about.cpp:87
 msgid "Translators:"
-msgstr "Tradutores:"
+msgstr "Vertalers:"
 
 #: src/window_main.cpp:235
 msgid "Volume"
@@ -272,7 +270,7 @@ msgstr "Volume"
 
 #: src/main.cpp:30
 msgid "Warning"
-msgstr "Aviso"
+msgstr "Waarschuwing"
 
 #: src/window_about.cpp:64
 msgid "Website:"

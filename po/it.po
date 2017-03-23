@@ -1,280 +1,279 @@
 # it translation for KISS Player.
-# Copyright (C) 2015 THE PACKAGE'S COPYRIGHT HOLDER
+# Copyright (C) 2017 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
-# Giuseppe Pignataro <rogepix@gmail.com>, 2014
-# Giuseppe Pignataro <rogepix@gmail.com>, 2015
+# Giuseppe Pignataro (Fasbyte01) <rogepix@gmail.com>, 2014
+# Giuseppe Pignataro (Fasbyte01) <rogepix@gmail.com>, 2017
+# Giuseppe Pignataro (Fasbyte01) <rogepix@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-02 17:31-0300\n"
-"PO-Revision-Date: 2015-09-15 01:05+0000\n"
-"Last-Translator: André Miranda <andreldm1989@gmail.com>\n"
-"Language-Team: Italian (http://www.transifex.com/kissplayer/kissplayer/"
-"language/it/)\n"
-"Language: it\n"
+"POT-Creation-Date: 2015-09-14 22:04-0300\n"
+"PO-Revision-Date: 2017-02-27 23:43+0000\n"
+"Last-Translator: Giuseppe Pignataro (Fasbyte01) <rogepix@gmail.com>\n"
+"Language-Team: Italian (http://www.transifex.com/kissplayer/kissplayer/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/window_about.cpp:67
+#: src/window_about.cpp:85
 msgid "<translators_credits>"
-msgstr ""
-"Giuseppe Pignataro\n"
-"rogepix at gmail dot com"
+msgstr "Giuseppe Pignataro\nrogepix at gmail dot com"
 
-#: src/window_about.cpp:43
+#: src/window_about.cpp:61
 msgid "A Simple and Lightweight Music Player"
 msgstr "Un lettore musicale semplice e leggero"
 
-#: src/window_about.cpp:20 src/window_main.cpp:221
+#: src/window_about.cpp:42 src/window_main.cpp:248
 msgid "About"
 msgstr "Informazioni su"
 
-#: src/window_settings.cpp:162
+#: src/window_settings.cpp:150
 msgid "Add"
 msgstr "Aggiungi"
 
-#: src/window_main.cpp:104 src/window_main.cpp:555
+#: src/window_main.cpp:154 src/window_main.cpp:439
 msgid "Album"
 msgstr "Album"
 
-#: src/window_main.cpp:101 src/window_main.cpp:552
+#: src/window_main.cpp:151 src/window_main.cpp:436
 msgid "All"
 msgstr "Tutto"
 
-#: src/window_main.cpp:103 src/window_main.cpp:554
+#: src/window_main.cpp:153 src/window_main.cpp:438
 msgid "Artist"
 msgstr "Artista"
 
-#: src/window_about.cpp:85
+#: src/window_about.cpp:103
 msgid "Available online under:"
 msgstr "Disponibile online sotto:"
 
-#: src/window_settings.cpp:100
+#: src/window_settings.cpp:105
 msgid "Background Color"
 msgstr "Colore sfondo"
 
-#: src/window_loading.cpp:29
+#: src/window_loading.cpp:36
 msgid "Cancel"
 msgstr "Annulla"
 
-#: src/window_settings.cpp:51
+#: src/window_settings.cpp:364
 msgid "Choose Color"
 msgstr "Seleziona colore"
 
-#: src/window_about.cpp:95 src/window_settings.cpp:217
+#: src/window_about.cpp:114 src/window_settings.cpp:205
 msgid "Close"
 msgstr "Chiudi"
 
-#: src/window_about.cpp:63
+#: src/window_about.cpp:81
 msgid "Collaborators:"
 msgstr "Collaboratori:"
 
-#: src/window_settings.cpp:185
+#: src/window_settings.cpp:173
 msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
 msgstr "URL proxy completo, p.e.: http://192.168.1.1:3128"
 
-#: src/lyrics_fetcher.cpp:162
+#: src/lyrics_fetcher.cpp:156
 msgid "Connection failure!"
 msgstr "Connessione fallita!"
 
-#: src/lyrics_fetcher.cpp:155
+#: src/lyrics_fetcher.cpp:149
 msgid "Connection timed out!"
 msgstr "Timeout della connessione!"
 
-#: src/window_about.cpp:45
+#: src/window_about.cpp:63
 msgid "Contact:"
 msgstr "Contatti:"
 
-#: src/window_about.cpp:55
+#: src/window_about.cpp:73
 msgid "Credits"
 msgstr "Crediti"
 
-#: src/window_settings.cpp:136
+#: src/window_settings.cpp:129
 msgid "Default Colors"
 msgstr "Colori di default"
 
-#: src/window_about.cpp:61
+#: src/window_about.cpp:79
 msgid "Developer"
 msgstr "Sviluppatore"
 
-#: src/window_about.cpp:59
+#: src/window_about.cpp:77
 msgid "Developers:"
 msgstr "Sviluppatori:"
 
-#: src/window_settings.cpp:70 src/window_settings.cpp:150
+#: src/window_settings.cpp:84 src/window_settings.cpp:138
 msgid "Directories"
 msgstr "Cartelle"
 
-#: src/window_settings.cpp:83
+#: src/window_settings.cpp:97
 msgid "Display Lyrics"
 msgstr "Mostra testi"
 
-#: src/lyrics_fetcher.cpp:218
+#: src/lyrics_fetcher.cpp:220
 msgid "Error while fetching."
 msgstr "Errore durante il recupero."
 
-#: src/main.cpp:27
-msgid "Error while initializing database"
-msgstr ""
+#: src/main.cpp:33
+msgid "Error while initializing database!"
+msgstr "Errore durante l'inizializzazione del database!"
 
-#: src/lyrics_fetcher.cpp:176
+#: src/main.cpp:56
+msgid "Error while initializing sound system!"
+msgstr "Errore durante l'inizializzazione del sistema audio!"
+
+#: src/lyrics_fetcher.cpp:177
 msgid "Error while redirecting."
 msgstr "Errore durante il reindirizzamento."
 
-#: src/main.cpp:32
-msgid "Error while sound system"
-msgstr ""
+#: src/main.cpp:51
+msgid "Error while registering keyboard hook!"
+msgstr "Errore durante la registrazione dei tocchi della tastiera!"
 
-#: src/window_main.cpp:625
+#: src/window_main.cpp:649
 msgid "Fetching..."
 msgstr "Recupero..."
 
-#: src/window_settings.cpp:69 src/window_settings.cpp:77
+#: src/window_settings.cpp:83 src/window_settings.cpp:91
 msgid "General"
 msgstr "Generale"
 
-#: src/window_about.cpp:39
+#: src/window_about.cpp:57
 msgid "Info"
 msgstr "Info"
 
-#: src/window_main.cpp:527
+#: src/window_main.cpp:330
 msgid "KISS Player"
 msgstr "KISS Player"
 
-#: src/window_main.cpp:494
+#: src/window_main.cpp:298
 msgid "KISS Player - Paused"
 msgstr "KISS Player - Pausa"
 
-#: src/window_settings.cpp:73 src/window_settings.cpp:193
+#: src/window_settings.cpp:87 src/window_settings.cpp:181
 msgid "Language"
 msgstr "Lingua"
 
-#: src/window_about.cpp:80
+#: src/window_about.cpp:98
 msgid "License"
 msgstr "Licenza"
 
-#: src/window_loading.cpp:26
+#: src/window_loading.cpp:33
 msgid "Loading files..."
 msgstr "Caricamento file..."
 
-#: src/window_main.cpp:630
+#: src/window_main.cpp:653
 msgid "Lyrics Disabled"
 msgstr "Testi disattivati"
 
-#: src/window_settings.cpp:71 src/window_settings.cpp:175
+#: src/window_settings.cpp:85 src/window_settings.cpp:163
 msgid "Network"
 msgstr "Rete"
 
-#: src/window_main.cpp:194
+#: src/window_main.cpp:227
 msgid "Next"
 msgstr "Prossimo"
 
-#: src/lyrics_fetcher.cpp:198
+#: src/lyrics_fetcher.cpp:205
 msgid "Not found :-("
 msgstr "Non trovato :-("
 
-#: src/window_main.cpp:170
+#: src/window_main.cpp:209
 msgid "Play/Pause"
 msgstr "Play/Pausa"
 
-#: src/window_loading.cpp:18
+#: src/window_loading.cpp:27
 msgid "Please Wait"
 msgstr "Attendere prego"
 
-#: src/sync.cpp:33
+#: src/sync.cpp:28
 msgid "Please, add at least one directory on the Settings Window."
-msgstr ""
-"Per piacere, aggiungi almeno una cartella nella finestra delle impostazioni."
+msgstr "Per piacere, aggiungi almeno una cartella nella finestra delle impostazioni."
 
-#: src/window_settings.cpp:352
+#: src/window_settings.cpp:386
 msgid "Please, restart the program to change the language."
 msgstr "Riavvia il programma per cambiare la lingua"
 
-#: src/window_main.cpp:186
+#: src/window_main.cpp:221
 msgid "Previous"
 msgstr "Precedente"
 
-#: src/window_about.cpp:60
+#: src/window_about.cpp:78
 msgid "Project Leader"
 msgstr "Project Leader"
 
-#: src/window_settings.cpp:181
+#: src/window_settings.cpp:169
 msgid "Proxy:"
 msgstr "Proxy:"
 
-#: src/window_main.cpp:218
+#: src/window_main.cpp:245
 msgid "Randomize"
 msgstr "Casuale"
 
-#: src/window_settings.cpp:167
+#: src/window_settings.cpp:155
 msgid "Remove"
 msgstr "Rimuovi"
 
-#: src/window_main.cpp:219
+#: src/window_main.cpp:246
 msgid "Repeat Playlist"
 msgstr "Ripeti Playlist"
 
-#: src/window_loading.cpp:23
+#: src/window_loading.cpp:30
 msgid "Scanning directories..."
 msgstr "Scansione cartelle..."
 
-#: src/window_settings.cpp:91
+#: src/window_settings.cpp:101
 msgid "Scroll Title"
 msgstr "Scorri titolo"
 
-#: src/window_main.cpp:89
+#: src/window_main.cpp:141
 msgid "Search:"
 msgstr "Cerca:"
 
-#: src/window_settings.cpp:112
+#: src/window_settings.cpp:113
 msgid "Selection Color"
 msgstr "Selezione colore"
 
-#: src/window_main.cpp:220 src/window_settings.cpp:60
+#: src/window_main.cpp:247 src/window_settings.cpp:77
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: src/window_main.cpp:178
+#: src/window_main.cpp:215
 msgid "Stop"
 msgstr "Stop"
 
-#: src/window_main.cpp:217
+#: src/window_main.cpp:244
 msgid "Synchronize Library"
 msgstr "Sincronizza libreria"
 
-#: src/window_settings.cpp:124
+#: src/window_settings.cpp:121
 msgid "Text Color"
 msgstr "Colore testo"
 
-#: src/window_about.cpp:84
+#: src/window_about.cpp:102
 msgid ""
 "This program is licensed under the terms of the GNU General Public License "
 "version 2."
-msgstr ""
-"Questo programma è rilasciato secondo u termini della GNU General Public "
-"License versione 2."
+msgstr "Questo programma è rilasciato secondo u termini della GNU General Public License versione 2."
 
-#: src/window_main.cpp:102 src/window_main.cpp:553
+#: src/window_main.cpp:152 src/window_main.cpp:437
 msgid "Title"
 msgstr "Titolo"
 
-#: src/window_about.cpp:69
+#: src/window_about.cpp:87
 msgid "Translators:"
 msgstr "Traduttori:"
 
-#: src/window_main.cpp:206
+#: src/window_main.cpp:235
 msgid "Volume"
 msgstr "Volume"
 
-#: src/main.cpp:22
+#: src/main.cpp:30
 msgid "Warning"
 msgstr "Attenzione"
 
-#: src/window_about.cpp:46
+#: src/window_about.cpp:64
 msgid "Website:"
 msgstr "Sito web:"
