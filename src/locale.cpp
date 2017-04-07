@@ -1,6 +1,9 @@
 #include "locale.h"
 
+#include <FL/Fl.H>
 #include <FL/fl_utf8.h>
+
+#include <unistd.h>
 
 #include "constants.h"
 #include "util.h"
@@ -25,7 +28,7 @@ static Language* languages[] = {
     NULL
 };
 
-void Locale::init(Dao* dao)
+void Locale::init(Dao* dao, int argc, char** argv)
 {
     this->dao = dao;
 
@@ -40,6 +43,14 @@ void Locale::init(Dao* dao)
 #elif __linux__
     bindtextdomain("kissplayer", LOCALEDIR);
     setlocale(LC_ALL, "");
+
+    // Set font if -f argument is present
+    for (int opt; (opt = getopt(argc, argv, "f:")) != EOF;) {
+        if (opt == 'f') {
+            Fl::set_font(FL_HELVETICA, optarg);
+            break;
+        }
+    }
 #endif
 
     textdomain("kissplayer");

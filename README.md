@@ -35,6 +35,8 @@ On Windows, there is an option for this under settings.<br/>
 On Linux, check the current locale with the command: `locale`<br/>
 Check [Arch's wiki](https://wiki.archlinux.org/index.php/Locale#Setting_the_locale) for instructions on how to manage locales.
 
+For CJK languages under Linux, due FLTK limitations, it is necessary to pass as argument the name of a font that supports CJK characters, i.e. `./kissplayer -f Code2000`.
+
 #### Copyright
     KISS Player
     Copyright (C) 2012-2017 by André Miranda

@@ -33,7 +33,7 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    context->locale->init(context->dao);
+    context->locale->init(context->dao, argc, argv);
 
     WindowMain windowMain(context);
     windowMain.init(argc, argv);

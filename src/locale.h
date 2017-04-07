@@ -28,7 +28,7 @@ private:
     Dao* dao;
 
 public:
-    void init(Dao* dao);
+    void init(Dao* dao, int argc, char** argv);
     void setLanguage(int index);
     Language** getDefinedLanguages();
 };
