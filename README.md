@@ -30,6 +30,9 @@ Note: The name has nothing to do with the metal band or the act of kissing. It's
 
 [Check the project's wiki for instructions](https://github.com/andreldm/kissplayer/wiki/Building%20from%20source)
 
+#### Translation
+If you'd like to contribute and see KISS Player in your native language, please head over [Transifex](https://www.transifex.com/kissplayer/kissplayer).
+
 #### Change the language
 On Windows, there is an option for this under settings.<br/>
 On Linux, check the current locale with the command: `locale`<br/>
