@@ -9,7 +9,6 @@ addons:
   coverity_scan:
     project:
       name: "andreldm/kissplayer"
-      description: "A Simple and Lightweight Music Player "
     notification_email: andre42m@gmail.com
     build_command_prepend: ./configure; make clean"
     build_command:   "make -j 4"
