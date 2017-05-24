@@ -25,11 +25,13 @@ int main(int argc, char** argv)
 
     if (context->dao->init(context->osSpecific) != 0) {
         fl_alert(_("Error while initializing database"));
+        delete context;
         return -1;
     }
 
     if (context->sound->init() != 0) {
         fl_alert(_("Error while sound system"));
+        delete context;
         return -1;
     }
 
@@ -38,7 +40,7 @@ int main(int argc, char** argv)
     WindowMain windowMain(context);
     windowMain.init(argc, argv);
     context->osSpecific->set_app_icon(&windowMain);
-    windowMain.show(0, NULL);
+    windowMain.show();
 
     context->osSpecific->init(&windowMain);
 

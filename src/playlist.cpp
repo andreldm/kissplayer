@@ -21,6 +21,7 @@ Playlist::Playlist(Context* context, KSP_Browser* browser_music)
 {
     this->context = context;
     this->browser_music = browser_music;
+    this->musicPlayingCod = 0;
 }
 
 /**

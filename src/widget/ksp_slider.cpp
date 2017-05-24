@@ -92,16 +92,6 @@ double KSP_Slider::calc_value(int event, int X, int Y, int W, int H)
 {
     int mx = Fl::event_x() - X;
     int T = H / 2;
-    if (event == FL_PUSH) {
-        double val = 0.5;
-        if (minimum() != maximum()) {
-            val = (value() - minimum()) / (maximum() - minimum());
-            if (val > 1.0) val = 1.0;
-            else if (val < 0.0) val = 0.0;
-        }
-        // int xx = int(val * (W - T) + .5);
-    }
-
     int xx = mx - 7;
 
     if (xx < 0) {
