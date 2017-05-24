@@ -5,6 +5,16 @@ env:
   global:
     - secure: "Hju6MXSpDUWn8KcdJycu0DkzeL8lsZ4+nbNLgh/S1hFVvOjDyJR0JX0+c6MSdVK/38DZ79SEbBBDOmB6RBnBAi68kNSU+Z6enZo/xfW7q6MFjYERhXVe2XudzlG5kL7PVlpFki7y8hgOtAp57J6f0ZbSiZG4uLXUe+ruJeRXQ44="
 
+addons:
+  coverity_scan:
+    project:
+      name: "andreldm/kissplayer"
+      description: "A Simple and Lightweight Music Player "
+    notification_email: andre42m@gmail.com
+    build_command_prepend: ./configure; make clean"
+    build_command:   "make -j 4"
+    branch_pattern: coverity_scan
+
 before_install:
   - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
   - echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list
@@ -23,13 +33,3 @@ before_script:
 script:
   - ./configure
   - make
-
-addons:
-  coverity_scan:
-    project:
-      name: "andreldm/kissplayer"
-      description: "A Simple and Lightweight Music Player "
-    notification_email: andre42m@gmail.com
-    build_command_prepend: ./configure; make clean"
-    build_command:   "make -j 4"
-    branch_pattern: coverity_scan
