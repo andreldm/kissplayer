@@ -101,7 +101,7 @@ bool do_fetch(LyricsData* lyrics_data, bool firstTry) {
 
     CURL* curl;
     string data;
-    unsigned int findResult = 0;
+    size_t findResult = 0;
 
     // Maybe we can upgrade this code to support
     // several sites, if one fail, try the next.

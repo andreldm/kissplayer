@@ -22,6 +22,7 @@ public:
     void     removeDir                   (void);
     void     updateDirList               (void);
     void     changeLanguage              (void);
+    using Fl_Window::show;
 };
 
 #endif

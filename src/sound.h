@@ -13,7 +13,6 @@ class Sound {
 private:
     char current_file[PATH_LENGTH];
     bool loaded = false;
-    bool playing = false;
     FMOD_SYSTEM* system;
     FMOD_SOUND* sound;
     FMOD_CHANNEL* channel;

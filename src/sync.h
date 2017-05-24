@@ -8,7 +8,6 @@ class Sync
 {
 private:
     Context* context;
-    WindowLoading* windowLoading;
 
 public:
     Sync(Context* context);

@@ -9,6 +9,7 @@ public:
             WindowAbout         (void);
     void    show                (Fl_Window* parent);
     void    close               (void);
+    using Fl_Window::show;
 };
 
 #endif
