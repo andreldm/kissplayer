@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the kissplayer package.
 # 
 # Translators:
-# André Miranda <andre42m@gmail.com>, 2017
+# Andre Miranda <andre42m@gmail.com>, 2017
 # fri, 2015
-# fri, 2015
+# fri, 2015,2017
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: andre42m@gmail.com\n"
 "POT-Creation-Date: 2017-03-23 17:14-0300\n"
-"PO-Revision-Date: 2017-03-23 20:47+0000\n"
-"Last-Translator: André Miranda <andre42m@gmail.com>\n"
+"PO-Revision-Date: 2017-03-24 06:52+0000\n"
+"Last-Translator: fri\n"
 "Language-Team: Czech (http://www.transifex.com/kissplayer/kissplayer/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -50,7 +50,7 @@ msgstr "Chyba při inicializaci databáze"
 
 #: src/main.cpp:32
 msgid "Error while sound system"
-msgstr "Chyba při inicializaci zvukového systému"
+msgstr "Chyba zvukového systému"
 
 #: src/sync.cpp:33
 msgid "Please, add at least one directory on the Settings Window."
