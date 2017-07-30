@@ -1,0 +1,273 @@
+# lt translation for KISS Player.
+# Copyright (C) 2017 André Miranda
+# This file is distributed under the same license as the kissplayer package.
+# 
+# Translators:
+# Moo, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: KISS Player\n"
+"Report-Msgid-Bugs-To: andre42m@gmail.com\n"
+"POT-Creation-Date: 2017-03-23 17:14-0300\n"
+"PO-Revision-Date: 2017-07-16 14:56+0000\n"
+"Last-Translator: Moo\n"
+"Language-Team: Lithuanian (http://www.transifex.com/kissplayer/kissplayer/language/lt/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: lt\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: src/lyrics_fetcher.cpp:155
+msgid "Connection timed out!"
+msgstr "Baigėsi ryšiui skirtas laikas!"
+
+#: src/lyrics_fetcher.cpp:162
+msgid "Connection failure!"
+msgstr "Lemtingoji ryšio klaida!"
+
+#: src/lyrics_fetcher.cpp:176
+msgid "Error while redirecting."
+msgstr "Klaida nukreipiant."
+
+#: src/lyrics_fetcher.cpp:198
+msgid "Not found :-("
+msgstr "Nerasta :-("
+
+#: src/lyrics_fetcher.cpp:218
+msgid "Error while fetching."
+msgstr "Klaida gaunant."
+
+#: src/main.cpp:22
+msgid "Warning"
+msgstr "Įspėjimas"
+
+#: src/main.cpp:27
+msgid "Error while initializing database"
+msgstr "Klaida inicijuojant duomenų bazę"
+
+#: src/main.cpp:32
+msgid "Error while sound system"
+msgstr "Klaida įkeliant garso sistemą"
+
+#: src/sync.cpp:33
+msgid "Please, add at least one directory on the Settings Window."
+msgstr "Prašome nustatymų lange pridėti bent vieną katalogą."
+
+#: src/window_about.cpp:20 src/window_main.cpp:221
+msgid "About"
+msgstr "Apie"
+
+#: src/window_about.cpp:39
+msgid "Info"
+msgstr "Informacija"
+
+#: src/window_about.cpp:43
+msgid "A Simple and Lightweight Music Player"
+msgstr "Nesudėtingas ir supaprastintas muzikos grotuvas"
+
+#: src/window_about.cpp:45
+msgid "Contact:"
+msgstr "Kontaktai:"
+
+#: src/window_about.cpp:46
+msgid "Website:"
+msgstr "Internetinė svetainė:"
+
+#: src/window_about.cpp:55
+msgid "Credits"
+msgstr "Padėkos"
+
+#: src/window_about.cpp:59
+msgid "Developers:"
+msgstr "Kūrėjai:"
+
+#: src/window_about.cpp:60
+msgid "Project Leader"
+msgstr "Projekto vadovas"
+
+#: src/window_about.cpp:61
+msgid "Developer"
+msgstr "Kūrėjas"
+
+#: src/window_about.cpp:63
+msgid "Collaborators:"
+msgstr "Talkininkai:"
+
+#: src/window_about.cpp:67
+msgid "<translators_credits>"
+msgstr "<translators_credits>"
+
+#: src/window_about.cpp:69
+msgid "Translators:"
+msgstr "Vertėjai:"
+
+#: src/window_about.cpp:80
+msgid "License"
+msgstr "Licencija"
+
+#: src/window_about.cpp:84
+msgid ""
+"This program is licensed under the terms of the GNU General Public License "
+"version 2."
+msgstr "Ši programa yra licencijuota pagal GNU Bendrosios Viešosios Licencijos, versijos 2, nuostatas."
+
+#: src/window_about.cpp:85
+msgid "Available online under:"
+msgstr "Prieinama internete:"
+
+#: src/window_about.cpp:95 src/window_settings.cpp:217
+msgid "Close"
+msgstr "Užverti"
+
+#: src/window_loading.cpp:18
+msgid "Please Wait"
+msgstr "Prašome palaukti"
+
+#: src/window_loading.cpp:23
+msgid "Scanning directories..."
+msgstr "Peržiūrimi katalogai..."
+
+#: src/window_loading.cpp:26
+msgid "Loading files..."
+msgstr "Įkeliami failai..."
+
+#: src/window_loading.cpp:29
+msgid "Cancel"
+msgstr "Atsisakyti"
+
+#: src/window_main.cpp:89
+msgid "Search:"
+msgstr "Ieškoti:"
+
+#: src/window_main.cpp:101 src/window_main.cpp:552
+msgid "All"
+msgstr "Visi"
+
+#: src/window_main.cpp:102 src/window_main.cpp:553
+msgid "Title"
+msgstr "Pavadinimas"
+
+#: src/window_main.cpp:103 src/window_main.cpp:554
+msgid "Artist"
+msgstr "Atlikėjas"
+
+#: src/window_main.cpp:104 src/window_main.cpp:555
+msgid "Album"
+msgstr "Albumas"
+
+#: src/window_main.cpp:170
+msgid "Play/Pause"
+msgstr "Groti/Pristabdyti"
+
+#: src/window_main.cpp:178
+msgid "Stop"
+msgstr "Stabdyti"
+
+#: src/window_main.cpp:186
+msgid "Previous"
+msgstr "Ankstesnis"
+
+#: src/window_main.cpp:194
+msgid "Next"
+msgstr "Kitas"
+
+#: src/window_main.cpp:206
+msgid "Volume"
+msgstr "Garsis"
+
+#: src/window_main.cpp:217
+msgid "Synchronize Library"
+msgstr "Sinchronizuoti biblioteką"
+
+#: src/window_main.cpp:218
+msgid "Randomize"
+msgstr "Išdėstyti atsitiktinai"
+
+#: src/window_main.cpp:219
+msgid "Repeat Playlist"
+msgstr "Kartoti grojaraštį"
+
+#: src/window_main.cpp:220 src/window_settings.cpp:60
+msgid "Settings"
+msgstr "Nustatymai"
+
+#: src/window_main.cpp:494
+msgid "KISS Player - Paused"
+msgstr "KISS grotuvas - Pristabdyta"
+
+#: src/window_main.cpp:527
+msgid "KISS Player"
+msgstr "KISS grotuvas"
+
+#: src/window_main.cpp:625
+msgid "Fetching..."
+msgstr "Gaunama..."
+
+#: src/window_main.cpp:630
+msgid "Lyrics Disabled"
+msgstr "Dainos žodžiai išjungti"
+
+#: src/window_settings.cpp:51
+msgid "Choose Color"
+msgstr "Pasirinkti spalvą"
+
+#: src/window_settings.cpp:69 src/window_settings.cpp:77
+msgid "General"
+msgstr "Bendra"
+
+#: src/window_settings.cpp:70 src/window_settings.cpp:150
+msgid "Directories"
+msgstr "Katalogai"
+
+#: src/window_settings.cpp:71 src/window_settings.cpp:175
+msgid "Network"
+msgstr "Tinklas"
+
+#: src/window_settings.cpp:73 src/window_settings.cpp:193
+msgid "Language"
+msgstr "Kalba"
+
+#: src/window_settings.cpp:83
+msgid "Display Lyrics"
+msgstr "Rodyti dainos žodžius"
+
+#: src/window_settings.cpp:91
+msgid "Scroll Title"
+msgstr "Slinkti pavadinimą"
+
+#: src/window_settings.cpp:100
+msgid "Background Color"
+msgstr "Fono spalva"
+
+#: src/window_settings.cpp:112
+msgid "Selection Color"
+msgstr "Žymėjimo spalva"
+
+#: src/window_settings.cpp:124
+msgid "Text Color"
+msgstr "Teksto spalva"
+
+#: src/window_settings.cpp:136
+msgid "Default Colors"
+msgstr "Numatytosios spalvos"
+
+#: src/window_settings.cpp:162
+msgid "Add"
+msgstr "Pridėti"
+
+#: src/window_settings.cpp:167
+msgid "Remove"
+msgstr "Šalinti"
+
+#: src/window_settings.cpp:181
+msgid "Proxy:"
+msgstr "Įgaliotasis serveris:"
+
+#: src/window_settings.cpp:185
+msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
+msgstr "Pilnas įgaliotojo serverio URL, pvz.,: http://192.168.1.1:3128"
+
+#: src/window_settings.cpp:352
+msgid "Please, restart the program to change the language."
+msgstr "Norėdami pakeisti kalbą, paleiskite programą iš naujo."
