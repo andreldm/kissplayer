@@ -18,7 +18,7 @@ Note: The name has nothing to do with the metal band or the act of kissing. It's
 
 #### Download
 
-- **Windows** - just [Download](https://github.com/andreldm/kissplayer/releases) the lastest release and extract.
+- **Windows** - [download](https://github.com/andreldm/kissplayer/releases) the lastest release and extract.
 - **Arch Linux** - an [AUR package](https://aur.archlinux.org/packages/kissplayer/) is available: `yaourt -S kissplayer`.
 
 #### Usage
