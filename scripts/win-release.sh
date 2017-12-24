@@ -25,6 +25,7 @@ cp "$MINGW_PATH/fmodex.dll" $OUTPUT
 cp "$MINGW_PATH/libgcc_s_dw2-1.dll" $OUTPUT
 cp "$MINGW_PATH/libiconv-2.dll" $OUTPUT
 cp "$MINGW_PATH/libintl-8.dll" $OUTPUT
+cp "$MINGW_PATH/libsigc-2.0-0.dll" $OUTPUT
 cp "$MINGW_PATH/libsqlite3-0.dll" $OUTPUT
 cp "$MINGW_PATH/libstdc++-6.dll" $OUTPUT
 cp "$MINGW_PATH/libtag.dll" $OUTPUT
