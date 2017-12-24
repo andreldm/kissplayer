@@ -1,7 +1,13 @@
-v 0.7.0 - 02/03/2017:
+v 0.7.0 - 24/12/2017:
 - Code Rewrite
+- Support CJK languages with an option to set the proper font
+- Fix clang compilation
+- New Locale: Bulgarian
+- New Locale: Lithuanian
+- New Locale: Malaysian
 - New Locale: Turkish
 - New Locale: Chinese(China)
+- Update other translations
 
 v 0.6.4 - 29/04/2015:
 - Project hosted on GitHub
