@@ -1,0 +1,273 @@
+# ms translation for KISS Player.
+# Copyright (C) 2017 André Miranda
+# This file is distributed under the same license as the kissplayer package.
+# 
+# Translators:
+# abuyop <abuyop@gmail.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: KISS Player\n"
+"Report-Msgid-Bugs-To: andre42m@gmail.com\n"
+"POT-Creation-Date: 2017-03-23 17:14-0300\n"
+"PO-Revision-Date: 2017-12-19 21:56+0000\n"
+"Last-Translator: abuyop <abuyop@gmail.com>\n"
+"Language-Team: Malay (http://www.transifex.com/kissplayer/kissplayer/language/ms/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ms\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: src/lyrics_fetcher.cpp:155
+msgid "Connection timed out!"
+msgstr "Had masa tamat!"
+
+#: src/lyrics_fetcher.cpp:162
+msgid "Connection failure!"
+msgstr "Sambungan gagal!"
+
+#: src/lyrics_fetcher.cpp:176
+msgid "Error while redirecting."
+msgstr "Ralat ketika mengarah semula."
+
+#: src/lyrics_fetcher.cpp:198
+msgid "Not found :-("
+msgstr "Tidak ditemui :-("
+
+#: src/lyrics_fetcher.cpp:218
+msgid "Error while fetching."
+msgstr "Ralat ketika memperoleh."
+
+#: src/main.cpp:22
+msgid "Warning"
+msgstr "Amaran"
+
+#: src/main.cpp:27
+msgid "Error while initializing database"
+msgstr "Ralat ketika mengawalkan pangkalan data"
+
+#: src/main.cpp:32
+msgid "Error while sound system"
+msgstr "Ralat ketika sistem berbunyi"
+
+#: src/sync.cpp:33
+msgid "Please, add at least one directory on the Settings Window."
+msgstr "Sila, tambah sekurang-kurangnya satu direktori pada Tetingkap Tetapan."
+
+#: src/window_about.cpp:20 src/window_main.cpp:221
+msgid "About"
+msgstr "Perihal"
+
+#: src/window_about.cpp:39
+msgid "Info"
+msgstr "Maklumat"
+
+#: src/window_about.cpp:43
+msgid "A Simple and Lightweight Music Player"
+msgstr "Sebuah Pemain Muzik yang Ringan dan Ringkas"
+
+#: src/window_about.cpp:45
+msgid "Contact:"
+msgstr "Hubungi:"
+
+#: src/window_about.cpp:46
+msgid "Website:"
+msgstr "Laman Sesawang:"
+
+#: src/window_about.cpp:55
+msgid "Credits"
+msgstr "Penghargaan"
+
+#: src/window_about.cpp:59
+msgid "Developers:"
+msgstr "Pembangun:"
+
+#: src/window_about.cpp:60
+msgid "Project Leader"
+msgstr "Peneraju Projek"
+
+#: src/window_about.cpp:61
+msgid "Developer"
+msgstr "Pembangun"
+
+#: src/window_about.cpp:63
+msgid "Collaborators:"
+msgstr "Rakan Usahasama:"
+
+#: src/window_about.cpp:67
+msgid "<translators_credits>"
+msgstr "<translators_credits>"
+
+#: src/window_about.cpp:69
+msgid "Translators:"
+msgstr "Penterjemah:"
+
+#: src/window_about.cpp:80
+msgid "License"
+msgstr "Lesen"
+
+#: src/window_about.cpp:84
+msgid ""
+"This program is licensed under the terms of the GNU General Public License "
+"version 2."
+msgstr "Program ini dilesenkan di bawah terma Lesen Awam Am GNU versi 2."
+
+#: src/window_about.cpp:85
+msgid "Available online under:"
+msgstr "Sedia diatas talian:"
+
+#: src/window_about.cpp:95 src/window_settings.cpp:217
+msgid "Close"
+msgstr "Tutup"
+
+#: src/window_loading.cpp:18
+msgid "Please Wait"
+msgstr "Tunggu Sebentar"
+
+#: src/window_loading.cpp:23
+msgid "Scanning directories..."
+msgstr "Mengimbas direktori..."
+
+#: src/window_loading.cpp:26
+msgid "Loading files..."
+msgstr "Memuatkan fail..."
+
+#: src/window_loading.cpp:29
+msgid "Cancel"
+msgstr "Batal"
+
+#: src/window_main.cpp:89
+msgid "Search:"
+msgstr "Gelintar:"
+
+#: src/window_main.cpp:101 src/window_main.cpp:552
+msgid "All"
+msgstr "Semua"
+
+#: src/window_main.cpp:102 src/window_main.cpp:553
+msgid "Title"
+msgstr "Tajuk"
+
+#: src/window_main.cpp:103 src/window_main.cpp:554
+msgid "Artist"
+msgstr "Artis"
+
+#: src/window_main.cpp:104 src/window_main.cpp:555
+msgid "Album"
+msgstr "Album"
+
+#: src/window_main.cpp:170
+msgid "Play/Pause"
+msgstr "Main/Jeda"
+
+#: src/window_main.cpp:178
+msgid "Stop"
+msgstr "Henti"
+
+#: src/window_main.cpp:186
+msgid "Previous"
+msgstr "Terdahulu"
+
+#: src/window_main.cpp:194
+msgid "Next"
+msgstr "Berikutnya"
+
+#: src/window_main.cpp:206
+msgid "Volume"
+msgstr "Volum"
+
+#: src/window_main.cpp:217
+msgid "Synchronize Library"
+msgstr "Segerak Pustaka"
+
+#: src/window_main.cpp:218
+msgid "Randomize"
+msgstr "Rawakkan"
+
+#: src/window_main.cpp:219
+msgid "Repeat Playlist"
+msgstr "Ulang Senarai Main"
+
+#: src/window_main.cpp:220 src/window_settings.cpp:60
+msgid "Settings"
+msgstr "Tetapan"
+
+#: src/window_main.cpp:494
+msgid "KISS Player - Paused"
+msgstr "Pemain KISS - Dijeda"
+
+#: src/window_main.cpp:527
+msgid "KISS Player"
+msgstr "Pemain KISS"
+
+#: src/window_main.cpp:625
+msgid "Fetching..."
+msgstr "Mendapatkan..."
+
+#: src/window_main.cpp:630
+msgid "Lyrics Disabled"
+msgstr "Lirik Dilumpuhkan"
+
+#: src/window_settings.cpp:51
+msgid "Choose Color"
+msgstr "Pilih Warna"
+
+#: src/window_settings.cpp:69 src/window_settings.cpp:77
+msgid "General"
+msgstr "Am"
+
+#: src/window_settings.cpp:70 src/window_settings.cpp:150
+msgid "Directories"
+msgstr "Direktori"
+
+#: src/window_settings.cpp:71 src/window_settings.cpp:175
+msgid "Network"
+msgstr "Rangkaian"
+
+#: src/window_settings.cpp:73 src/window_settings.cpp:193
+msgid "Language"
+msgstr "Bahasa"
+
+#: src/window_settings.cpp:83
+msgid "Display Lyrics"
+msgstr "Papar Lirik"
+
+#: src/window_settings.cpp:91
+msgid "Scroll Title"
+msgstr "Tatal Tajuk"
+
+#: src/window_settings.cpp:100
+msgid "Background Color"
+msgstr "Warna Latar Belakang"
+
+#: src/window_settings.cpp:112
+msgid "Selection Color"
+msgstr "Warna Pemilihan"
+
+#: src/window_settings.cpp:124
+msgid "Text Color"
+msgstr "Warna Teks"
+
+#: src/window_settings.cpp:136
+msgid "Default Colors"
+msgstr "Warna Lalai"
+
+#: src/window_settings.cpp:162
+msgid "Add"
+msgstr "Tambah"
+
+#: src/window_settings.cpp:167
+msgid "Remove"
+msgstr "Buang "
+
+#: src/window_settings.cpp:181
+msgid "Proxy:"
+msgstr "Proksi:"
+
+#: src/window_settings.cpp:185
+msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
+msgstr "URL proksi lengkap cth: http://192.168.1.1:3128"
+
+#: src/window_settings.cpp:352
+msgid "Please, restart the program to change the language."
+msgstr "Sila, mulakan semula program supaya perubahan bahasa yang dibuat berkesan."
