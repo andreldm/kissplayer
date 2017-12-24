@@ -40,10 +40,8 @@ kissplayer_SOURCES = src/dao.cpp \
 EXTRA_DIST = img/kiss.ico \
   img/img_thumb_buttons.bmp \
   src/*.h \
-  src/linux/*.h \
   src/linux/icon.xpm \
   src/widget/*.h \
-  src/win/*.h \
   src/win/*.rc
 
 ####################################
