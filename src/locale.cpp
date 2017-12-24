@@ -16,12 +16,16 @@ using namespace std;
 
 static Language* languages[] = {
     new Language("System Default", ""),
+    new Language("Български", "bg.UTF-8"),
     new Language("Čeština", "cs.UTF-8"),
     new Language("Deutsch", "de.UTF-8"),
     new Language("English", "en.UTF-8"),
     new Language("ελληνικά", "el.UTF-8"),
     new Language("Español", "es.UTF-8"),
     new Language("Italiano", "it.UTF-8"),
+    new Language("Lietuvių", "lt.UTF-8"),
+    new Language("Malaysia", "ms.UTF-8"),
+    new Language("Nederlands", "nl_NL.UTF-8"),
     new Language("Português (Brasil)", "pt_BR.UTF-8"),
     new Language("Türkçe", "tr.UTF-8"),
     new Language("中文 (中国)", "zh_CN.UTF-8"),
