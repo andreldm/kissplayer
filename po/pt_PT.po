@@ -1,273 +1,273 @@
-# bg translation for KISS Player.
+# pt_PT translation for KISS Player.
 # Copyright (C) 2018 André Miranda
 # This file is distributed under the same license as the kissplayer package.
 # 
 # Translators:
-# Tony Ivanov <duskull88@fastmail.fm>, 2017
+# Rui <xymarior@yandex.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: andre42m@gmail.com\n"
 "POT-Creation-Date: 2017-03-23 17:14-0300\n"
-"PO-Revision-Date: 2017-12-13 22:28+0000\n"
-"Last-Translator: Tony Ivanov <duskull88@fastmail.fm>\n"
-"Language-Team: Bulgarian (http://www.transifex.com/kissplayer/kissplayer/language/bg/)\n"
+"PO-Revision-Date: 2018-05-01 01:58+0000\n"
+"Last-Translator: Rui <xymarior@yandex.com>\n"
+"Language-Team: Portuguese (Portugal) (http://www.transifex.com/kissplayer/kissplayer/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: bg\n"
+"Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/lyrics_fetcher.cpp:155
 msgid "Connection timed out!"
-msgstr "Връзката изтече!"
+msgstr "A conexão excedeu o tempo limite!"
 
 #: src/lyrics_fetcher.cpp:162
 msgid "Connection failure!"
-msgstr "Грешка при свързване!"
+msgstr "Falha de conexão!"
 
 #: src/lyrics_fetcher.cpp:176
 msgid "Error while redirecting."
-msgstr "Грешка при пренасочване."
+msgstr "Erro ao tentar redirecionar."
 
 #: src/lyrics_fetcher.cpp:198
 msgid "Not found :-("
-msgstr "Не е намерено :-("
+msgstr "Não encontrado :-("
 
 #: src/lyrics_fetcher.cpp:218
 msgid "Error while fetching."
-msgstr "Грешка при прихващане."
+msgstr "Erro ao tentar obter."
 
 #: src/main.cpp:22
 msgid "Warning"
-msgstr "Внимание"
+msgstr "Aviso"
 
 #: src/main.cpp:27
 msgid "Error while initializing database"
-msgstr "Грешка при инициализиране на база данни"
+msgstr "Erro ao inicializar a base de dados"
 
 #: src/main.cpp:32
 msgid "Error while sound system"
-msgstr "Грешка звукува система"
+msgstr "Erro no sistema de som"
 
 #: src/sync.cpp:33
 msgid "Please, add at least one directory on the Settings Window."
-msgstr "Моля, добавете поне една директория в Прозореца за Настройки."
+msgstr "Por favor adicione pelo menos um diretório na Janela de Configurações."
 
 #: src/window_about.cpp:20 src/window_main.cpp:221
 msgid "About"
-msgstr "Относно"
+msgstr "Sobre"
 
 #: src/window_about.cpp:39
 msgid "Info"
-msgstr "Инфо"
+msgstr "Info"
 
 #: src/window_about.cpp:43
 msgid "A Simple and Lightweight Music Player"
-msgstr "Прост и Лек Музикален Плейър"
+msgstr "Um Reprodutor de Música Simples e Leve"
 
 #: src/window_about.cpp:45
 msgid "Contact:"
-msgstr "Контакт:"
+msgstr "Contacto:"
 
 #: src/window_about.cpp:46
 msgid "Website:"
-msgstr "Сайт:"
+msgstr "Site:"
 
 #: src/window_about.cpp:55
 msgid "Credits"
-msgstr "Балгодарности"
+msgstr "Créditos"
 
 #: src/window_about.cpp:59
 msgid "Developers:"
-msgstr "Разработчици:"
+msgstr "Programadores:"
 
 #: src/window_about.cpp:60
 msgid "Project Leader"
-msgstr "Лидер на Проекта"
+msgstr "Líder do Projeto"
 
 #: src/window_about.cpp:61
 msgid "Developer"
-msgstr "Разработчик"
+msgstr "Programador"
 
 #: src/window_about.cpp:63
 msgid "Collaborators:"
-msgstr "Доброволци:"
+msgstr "Colaboradores:"
 
 #: src/window_about.cpp:67
 msgid "<translators_credits>"
-msgstr "1"
+msgstr "Rui (xendez)"
 
 #: src/window_about.cpp:69
 msgid "Translators:"
-msgstr "Преводачи:"
+msgstr "Tradutores:"
 
 #: src/window_about.cpp:80
 msgid "License"
-msgstr "Лиценз:"
+msgstr "Licença"
 
 #: src/window_about.cpp:84
 msgid ""
 "This program is licensed under the terms of the GNU General Public License "
 "version 2."
-msgstr "Тази програма е лицензирана при условията на GNU General Public License версия 2."
+msgstr "Este programa é licenciado segundo os termos da GNU General Public License, versão 2."
 
 #: src/window_about.cpp:85
 msgid "Available online under:"
-msgstr "Налично онлайн на:"
+msgstr "Disponível online em:"
 
 #: src/window_about.cpp:95 src/window_settings.cpp:217
 msgid "Close"
-msgstr "Затвори"
+msgstr "Fechar"
 
 #: src/window_loading.cpp:18
 msgid "Please Wait"
-msgstr "Моля Изчакайте"
+msgstr "Por favor aguarde"
 
 #: src/window_loading.cpp:23
 msgid "Scanning directories..."
-msgstr "Сканиране на директории..."
+msgstr "A pesquisar nos diretórios..."
 
 #: src/window_loading.cpp:26
 msgid "Loading files..."
-msgstr "Зареждане на файлове..."
+msgstr "A carregar ficheiros..."
 
 #: src/window_loading.cpp:29
 msgid "Cancel"
-msgstr "Отмени"
+msgstr "Cancelar"
 
 #: src/window_main.cpp:89
 msgid "Search:"
-msgstr "Търсене:"
+msgstr "Pesquisar:"
 
 #: src/window_main.cpp:101 src/window_main.cpp:552
 msgid "All"
-msgstr "Всичко"
+msgstr "Tudo"
 
 #: src/window_main.cpp:102 src/window_main.cpp:553
 msgid "Title"
-msgstr "Заглавие"
+msgstr "Título"
 
 #: src/window_main.cpp:103 src/window_main.cpp:554
 msgid "Artist"
-msgstr "Изпълнител"
+msgstr "Artista"
 
 #: src/window_main.cpp:104 src/window_main.cpp:555
 msgid "Album"
-msgstr "Албум"
+msgstr "Álbum"
 
 #: src/window_main.cpp:170
 msgid "Play/Pause"
-msgstr "Пусни/Пауза"
+msgstr "Reproduzir/Pausa"
 
 #: src/window_main.cpp:178
 msgid "Stop"
-msgstr "Стоп"
+msgstr "Parar"
 
 #: src/window_main.cpp:186
 msgid "Previous"
-msgstr "Предишен"
+msgstr "Anterior"
 
 #: src/window_main.cpp:194
 msgid "Next"
-msgstr "Следващ"
+msgstr "Seguinte"
 
 #: src/window_main.cpp:206
 msgid "Volume"
-msgstr "Сила на звука"
+msgstr "Volume"
 
 #: src/window_main.cpp:217
 msgid "Synchronize Library"
-msgstr "Синхронизирай Библиотека"
+msgstr "Sincronizar Biblioteca"
 
 #: src/window_main.cpp:218
 msgid "Randomize"
-msgstr "Разбъркай"
+msgstr "Reproduzir Aleatoriamente"
 
 #: src/window_main.cpp:219
 msgid "Repeat Playlist"
-msgstr "Повтаряй Плейлист"
+msgstr "Repetir Lista de Músicas"
 
 #: src/window_main.cpp:220 src/window_settings.cpp:60
 msgid "Settings"
-msgstr "Настройки"
+msgstr "Configurações"
 
 #: src/window_main.cpp:494
 msgid "KISS Player - Paused"
-msgstr "KISS Плейър - Пауза"
+msgstr "KISS Player - Pausa"
 
 #: src/window_main.cpp:527
 msgid "KISS Player"
-msgstr "KISS Плейър"
+msgstr "KISS Player"
 
 #: src/window_main.cpp:625
 msgid "Fetching..."
-msgstr "Прихващане..."
+msgstr "A obter..."
 
 #: src/window_main.cpp:630
 msgid "Lyrics Disabled"
-msgstr "Текст Изключен"
+msgstr "Letras de Músicas Desativadas"
 
 #: src/window_settings.cpp:51
 msgid "Choose Color"
-msgstr "Избери Цвят"
+msgstr "Escolher Cor"
 
 #: src/window_settings.cpp:69 src/window_settings.cpp:77
 msgid "General"
-msgstr "Общи"
+msgstr "Geral"
 
 #: src/window_settings.cpp:70 src/window_settings.cpp:150
 msgid "Directories"
-msgstr "Директории"
+msgstr "Diretórios"
 
 #: src/window_settings.cpp:71 src/window_settings.cpp:175
 msgid "Network"
-msgstr "Мрежа"
+msgstr "Rede"
 
 #: src/window_settings.cpp:73 src/window_settings.cpp:193
 msgid "Language"
-msgstr "Език"
+msgstr "Idioma"
 
 #: src/window_settings.cpp:83
 msgid "Display Lyrics"
-msgstr "Пазвай Текст"
+msgstr "Mostrar Letras de Músicas"
 
 #: src/window_settings.cpp:91
 msgid "Scroll Title"
-msgstr "Превъртай Заглавие"
+msgstr "Rodar Título"
 
 #: src/window_settings.cpp:100
 msgid "Background Color"
-msgstr "Фонов Цвят"
+msgstr "Cor do Fundo"
 
 #: src/window_settings.cpp:112
 msgid "Selection Color"
-msgstr "Избран Цят"
+msgstr "Cor da Seleção"
 
 #: src/window_settings.cpp:124
 msgid "Text Color"
-msgstr "Текстов Цвят"
+msgstr "Cor do Texto"
 
 #: src/window_settings.cpp:136
 msgid "Default Colors"
-msgstr "Стандартни Цветове"
+msgstr "Cores Padrão"
 
 #: src/window_settings.cpp:162
 msgid "Add"
-msgstr "Добави"
+msgstr "Adicionar"
 
 #: src/window_settings.cpp:167
 msgid "Remove"
-msgstr "Премахни"
+msgstr "Remover"
 
 #: src/window_settings.cpp:181
 msgid "Proxy:"
-msgstr "Прокси:"
+msgstr "Proxy:"
 
 #: src/window_settings.cpp:185
 msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
-msgstr "Пълно прокси URL, напр: http://192.168.1.1:3128"
+msgstr "URL do proxy completo, por ex.: http://192.168.1.1:3128"
 
 #: src/window_settings.cpp:352
 msgid "Please, restart the program to change the language."
-msgstr "Моля, рестартирайте програмата за да се смени езика"
+msgstr "Por favor reinicie o programa para alterar o idioma."

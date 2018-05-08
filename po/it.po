@@ -1,19 +1,19 @@
 # it translation for KISS Player.
-# Copyright (C) 2017 André Miranda
+# Copyright (C) 2018 André Miranda
 # This file is distributed under the same license as the kissplayer package.
 # 
 # Translators:
 # Andre Miranda <andre42m@gmail.com>, 2017
-# Giuseppe Pignataro (Fasbyte01) <rogepix@gmail.com>, 2014
-# Giuseppe Pignataro (Fasbyte01) <rogepix@gmail.com>, 2017
-# Giuseppe Pignataro (Fasbyte01) <rogepix@gmail.com>, 2015
+# Giuseppe Pignataro (Fastbyte01) <rogepix@gmail.com>, 2014
+# Giuseppe Pignataro (Fastbyte01) <rogepix@gmail.com>, 2017
+# Giuseppe Pignataro (Fastbyte01) <rogepix@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: andre42m@gmail.com\n"
 "POT-Creation-Date: 2017-03-23 17:14-0300\n"
-"PO-Revision-Date: 2017-03-26 01:27+0000\n"
-"Last-Translator: Giuseppe Pignataro (Fasbyte01) <rogepix@gmail.com>\n"
+"PO-Revision-Date: 2017-09-23 19:41+0000\n"
+"Last-Translator: Giuseppe Pignataro (Fastbyte01) <rogepix@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/kissplayer/kissplayer/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

@@ -1,5 +1,5 @@
 # zh_CN translation for KISS Player.
-# Copyright (C) 2017 André Miranda
+# Copyright (C) 2018 André Miranda
 # This file is distributed under the same license as the kissplayer package.
 # 
 # Translators:
@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: KISS Player\n"
 "Report-Msgid-Bugs-To: andre42m@gmail.com\n"
 "POT-Creation-Date: 2017-03-23 17:14-0300\n"
-"PO-Revision-Date: 2017-03-23 20:46+0000\n"
+"PO-Revision-Date: 2017-09-22 15:08+0000\n"
 "Last-Translator: Andre Miranda <andre42m@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/kissplayer/kissplayer/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
