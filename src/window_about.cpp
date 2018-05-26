@@ -62,7 +62,8 @@ WindowAbout::WindowAbout()
     sstream << "<p></p>";
     sstream << "<b>" << _("Collaborators:") << "</b><br>";
     sstream << "Carlos Sanchez<br>";
-    sstream << "Herman Polloni";
+    sstream << "Herman Polloni<br>";
+    sstream << "Nuno Jesus (New Logo)";
 
     std::string translators_credits = _("<translators_credits>");
     if (translators_credits.compare("<translators_credits>") != 0) {
