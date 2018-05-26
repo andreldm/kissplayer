@@ -3,7 +3,7 @@
 ################################################################
 
 AC_PREREQ([2.68])
-AC_INIT([KISS Player], [0.7.0], [andre42m@gmail.com], [kissplayer], [https://github.com/andreldm/kissplayer])
+AC_INIT([KISS Player], [0.7.1], [andre42m@gmail.com], [kissplayer], [https://github.com/andreldm/kissplayer])
 AC_CONFIG_AUX_DIR(autotools)
 AC_CONFIG_MACRO_DIR(m4)
 
