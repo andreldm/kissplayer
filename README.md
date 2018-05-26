@@ -1,9 +1,5 @@
-                       _  _____ ____ ____    ____  _
-                      | |/ /_ _/ ___/ ___|  |  _ \| | __ _ _   _  ___ _ __
-                      | ' / | |\___ \___ \  | |_) | |/ _` | | | |/ _ \ '__|
-                      | . \ | | ___) |__) | |  __/| | (_| | |_| |  __/ |
-                      |_|\_\___|____/____/  |_|   |_|\__,_|\__, |\___|_|
-                                                           |___/
+<img align="center" width="547,1178" height="86,699" src="https://user-images.githubusercontent.com/34600369/40232414-917452a4-5a96-11e8-9960-b358e99b0cd6.png">  
+
 
 ### A Simple and Lightweight Music Player [![Build Status](https://travis-ci.org/andreldm/kissplayer.svg?branch=master)](https://travis-ci.org/andreldm/kissplayer)
 
