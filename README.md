@@ -1,9 +1,10 @@
-<img align="center" width="547,1178" height="86,699" src="https://user-images.githubusercontent.com/34600369/40232414-917452a4-5a96-11e8-9960-b358e99b0cd6.png">  
+<img style="display: block; margin-left: auto; margin-right: auto;" width="547" height="87" src="https://user-images.githubusercontent.com/34600369/40232414-917452a4-5a96-11e8-9960-b358e99b0cd6.png">  
 
+<br/>
 
 ### A Simple and Lightweight Music Player [![Build Status](https://travis-ci.org/andreldm/kissplayer.svg?branch=master)](https://travis-ci.org/andreldm/kissplayer)
 
-![kissplayer](https://cloud.githubusercontent.com/assets/599565/6767569/9a85cff8-d015-11e4-9574-1f1b7b7a9213.png)
+![kissplayer](https://user-images.githubusercontent.com/599565/40580686-fe25937a-6119-11e8-82b3-01aded94b3e1.png)
 
 Cross-platform and open-source Music Player designed to be simple and lightweight.
 If you want a player full of features, most of them you don't use, exaggerated eye-candy and a memory hog, take a look around , there are lots. However if you want a different player that doesn't distract you or wastes your time, KISS Player can be a great alternative.
@@ -15,7 +16,7 @@ Note: The name has nothing to do with the metal band or the act of kissing. It's
 #### Download
 
 - **Windows** - [download](https://github.com/andreldm/kissplayer/releases) the lastest release and extract.
-- **Arch Linux** - an [AUR package](https://aur.archlinux.org/packages/kissplayer/) is available: `yaourt -S kissplayer`.
+- **Arch Linux** - an [AUR package](https://aur.archlinux.org/packages/kissplayer/) is available: `yaourt -S kissplayer`
 
 #### Usage
 
@@ -42,7 +43,7 @@ For CJK languages under Linux, due FLTK limitations, it is necessary to pass as 
 
 #### Copyright
     KISS Player
-    Copyright (C) 2012-2017 by André Miranda
+    Copyright (C) 2012-2018 by André Miranda
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
