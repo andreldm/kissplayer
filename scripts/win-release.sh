@@ -67,7 +67,7 @@ cd ..
 
 command -v 7z >/dev/null 2>&1 && {
   echo "* Zipping..."
-  7z a -tzip "kissplayer-$VERSION.zip" kissplayer
+  7z a -tzip "kissplayer-$VERSION-windows.zip" kissplayer
 } || {
   echo "* 7z not found, skipping zipping..."
 }
