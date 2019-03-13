@@ -1,0 +1,273 @@
+# br translation for KISS Player.
+# Copyright (C) 2019 André Miranda
+# This file is distributed under the same license as the kissplayer package.
+# 
+# Translators:
+# Irriep Nala Novram <allannkorh@yahoo.fr>, 2019
+msgid ""
+msgstr ""
+"Project-Id-Version: KISS Player\n"
+"Report-Msgid-Bugs-To: andre42m@gmail.com\n"
+"POT-Creation-Date: 2017-03-23 17:14-0300\n"
+"PO-Revision-Date: 2019-03-13 10:15+0000\n"
+"Last-Translator: Irriep Nala Novram <allannkorh@yahoo.fr>\n"
+"Language-Team: Breton (http://www.transifex.com/kissplayer/kissplayer/language/br/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: br\n"
+"Plural-Forms: nplurals=5; plural=((n%10 == 1) && (n%100 != 11) && (n%100 !=71) && (n%100 !=91) ? 0 :(n%10 == 2) && (n%100 != 12) && (n%100 !=72) && (n%100 !=92) ? 1 :(n%10 ==3 || n%10==4 || n%10==9) && (n%100 < 10 || n% 100 > 19) && (n%100 < 70 || n%100 > 79) && (n%100 < 90 || n%100 > 99) ? 2 :(n != 0 && n % 1000000 == 0) ? 3 : 4);\n"
+
+#: src/lyrics_fetcher.cpp:155
+msgid "Connection timed out!"
+msgstr "Kevreadenn diamzeriet!"
+
+#: src/lyrics_fetcher.cpp:162
+msgid "Connection failure!"
+msgstr "Kevreadenn c'hwitet!"
+
+#: src/lyrics_fetcher.cpp:176
+msgid "Error while redirecting."
+msgstr "Fazi en ur adhenchañ."
+
+#: src/lyrics_fetcher.cpp:198
+msgid "Not found :-("
+msgstr "Neket bet kavet :("
+
+#: src/lyrics_fetcher.cpp:218
+msgid "Error while fetching."
+msgstr "Fazi pa oa o klask."
+
+#: src/main.cpp:22
+msgid "Warning"
+msgstr "Kemenn-diwall"
+
+#: src/main.cpp:27
+msgid "Error while initializing database"
+msgstr "Fazi en ur zeraouekaat an diaz-roadenn"
+
+#: src/main.cpp:32
+msgid "Error while sound system"
+msgstr "Fazi da vare sonadur"
+
+#: src/sync.cpp:33
+msgid "Please, add at least one directory on the Settings Window."
+msgstr "Ouzhpennit da vihanañ ur c'havlec'h e-barzh Arventennoù ar Prenestr, mar plij."
+
+#: src/window_about.cpp:20 src/window_main.cpp:221
+msgid "About"
+msgstr "Diwar-benn"
+
+#: src/window_about.cpp:39
+msgid "Info"
+msgstr "Titou"
+
+#: src/window_about.cpp:43
+msgid "A Simple and Lightweight Music Player"
+msgstr "Ul lenner sonerezh eeun ha skañv"
+
+#: src/window_about.cpp:45
+msgid "Contact:"
+msgstr "Darempred:"
+
+#: src/window_about.cpp:46
+msgid "Website:"
+msgstr "Lec'hienn-internet:"
+
+#: src/window_about.cpp:55
+msgid "Credits"
+msgstr "Kreditoù"
+
+#: src/window_about.cpp:59
+msgid "Developers:"
+msgstr "Diorroerien:"
+
+#: src/window_about.cpp:60
+msgid "Project Leader"
+msgstr "Penn ar raktres"
+
+#: src/window_about.cpp:61
+msgid "Developer"
+msgstr "Diorroer"
+
+#: src/window_about.cpp:63
+msgid "Collaborators:"
+msgstr "Kenlabourerien:"
+
+#: src/window_about.cpp:67
+msgid "<translators_credits>"
+msgstr "<translators_credits>"
+
+#: src/window_about.cpp:69
+msgid "Translators:"
+msgstr "Troerien:"
+
+#: src/window_about.cpp:80
+msgid "License"
+msgstr "Lisañs"
+
+#: src/window_about.cpp:84
+msgid ""
+"This program is licensed under the terms of the GNU General Public License "
+"version 2."
+msgstr "Lisañset emañ ar programm-mañ dindan ar stumm 2 eus al Lisañs Publik Hollek GNU."
+
+#: src/window_about.cpp:85
+msgid "Available online under:"
+msgstr "Hegerz enlinenn dindan:"
+
+#: src/window_about.cpp:95 src/window_settings.cpp:217
+msgid "Close"
+msgstr "Serriñ"
+
+#: src/window_loading.cpp:18
+msgid "Please Wait"
+msgstr "Gortozit mar plij"
+
+#: src/window_loading.cpp:23
+msgid "Scanning directories..."
+msgstr "O skaniñ ar c'havlec'hioù..."
+
+#: src/window_loading.cpp:26
+msgid "Loading files..."
+msgstr "Kargañ ar restroù..."
+
+#: src/window_loading.cpp:29
+msgid "Cancel"
+msgstr "Nullañ"
+
+#: src/window_main.cpp:89
+msgid "Search:"
+msgstr "Klask:"
+
+#: src/window_main.cpp:101 src/window_main.cpp:552
+msgid "All"
+msgstr "Pep-tra"
+
+#: src/window_main.cpp:102 src/window_main.cpp:553
+msgid "Title"
+msgstr "Titl"
+
+#: src/window_main.cpp:103 src/window_main.cpp:554
+msgid "Artist"
+msgstr "Arzour"
+
+#: src/window_main.cpp:104 src/window_main.cpp:555
+msgid "Album"
+msgstr "Albom"
+
+#: src/window_main.cpp:170
+msgid "Play/Pause"
+msgstr "Lenn/Paouez"
+
+#: src/window_main.cpp:178
+msgid "Stop"
+msgstr "Herzel"
+
+#: src/window_main.cpp:186
+msgid "Previous"
+msgstr "Kent"
+
+#: src/window_main.cpp:194
+msgid "Next"
+msgstr "Da-heul"
+
+#: src/window_main.cpp:206
+msgid "Volume"
+msgstr "Live-son"
+
+#: src/window_main.cpp:217
+msgid "Synchronize Library"
+msgstr "Sinkronelaat al levraoueg"
+
+#: src/window_main.cpp:218
+msgid "Randomize"
+msgstr "Dre-zegouezhiñ"
+
+#: src/window_main.cpp:219
+msgid "Repeat Playlist"
+msgstr "Adlenn ar roll-lenn"
+
+#: src/window_main.cpp:220 src/window_settings.cpp:60
+msgid "Settings"
+msgstr "Arventennoù"
+
+#: src/window_main.cpp:494
+msgid "KISS Player - Paused"
+msgstr "Lenner KISS - Paouezet"
+
+#: src/window_main.cpp:527
+msgid "KISS Player"
+msgstr "Lenner KISS"
+
+#: src/window_main.cpp:625
+msgid "Fetching..."
+msgstr "O klask..."
+
+#: src/window_main.cpp:630
+msgid "Lyrics Disabled"
+msgstr "Pozioù lazhet"
+
+#: src/window_settings.cpp:51
+msgid "Choose Color"
+msgstr "Dibab ul liv"
+
+#: src/window_settings.cpp:69 src/window_settings.cpp:77
+msgid "General"
+msgstr "Hollek"
+
+#: src/window_settings.cpp:70 src/window_settings.cpp:150
+msgid "Directories"
+msgstr "Kavlec'hioù"
+
+#: src/window_settings.cpp:71 src/window_settings.cpp:175
+msgid "Network"
+msgstr "Kenrouedad"
+
+#: src/window_settings.cpp:73 src/window_settings.cpp:193
+msgid "Language"
+msgstr "Yezh"
+
+#: src/window_settings.cpp:83
+msgid "Display Lyrics"
+msgstr "Diskouez ar pozioù"
+
+#: src/window_settings.cpp:91
+msgid "Scroll Title"
+msgstr "Dibunañ an titl"
+
+#: src/window_settings.cpp:100
+msgid "Background Color"
+msgstr "Liv an drekleur"
+
+#: src/window_settings.cpp:112
+msgid "Selection Color"
+msgstr "Liv diuzañ"
+
+#: src/window_settings.cpp:124
+msgid "Text Color"
+msgstr "Liv an destenn"
+
+#: src/window_settings.cpp:136
+msgid "Default Colors"
+msgstr "Livioù dre-ziouer"
+
+#: src/window_settings.cpp:162
+msgid "Add"
+msgstr "Ouzhpennañ"
+
+#: src/window_settings.cpp:167
+msgid "Remove"
+msgstr "Dilemel"
+
+#: src/window_settings.cpp:181
+msgid "Proxy:"
+msgstr "Proksi:"
+
+#: src/window_settings.cpp:185
+msgid "Complete proxy URL, ex: http://192.168.1.1:3128"
+msgstr "URL proksi klok, da skouer: http://192.168.1.1:3128"
+
+#: src/window_settings.cpp:352
+msgid "Please, restart the program to change the language."
+msgstr "Adloc'hit ar programm evit cheñch ar yezh, mar plij."
