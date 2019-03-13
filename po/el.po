@@ -1,5 +1,5 @@
 # el translation for KISS Player.
-# Copyright (C) 2018 André Miranda
+# Copyright (C) 2019 André Miranda
 # This file is distributed under the same license as the kissplayer package.
 # 
 # Translators:
