@@ -1,3 +1,7 @@
+**Development has ceased a long time ago, but now I decided to archive this project. I would like thank everyone involved with the project.**
+
+-----
+
 <img style="display: block; margin-left: auto; margin-right: auto;" width="547" height="87" src="https://user-images.githubusercontent.com/34600369/40232414-917452a4-5a96-11e8-9960-b358e99b0cd6.png">  
 
 <br/>
